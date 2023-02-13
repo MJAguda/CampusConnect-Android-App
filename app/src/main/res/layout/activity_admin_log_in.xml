@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <!--Header-->
+    <LinearLayout
+        android:id="@+id/header_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#B83B5E"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/headerLogo_ImageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            app:srcCompat="@drawable/campus_connect_logo" />
+
+        <TextView
+            android:id="@+id/headerText_TextView"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Campus Connect"
+            android:textColor="#F9ED69"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <!--Body-->
+    <LinearLayout
+        android:id="@+id/body_LinearLayout"
+        layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#F08A5D"
+        android:orientation="vertical"
+        android:gravity="top">
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="?android:attr/listDivider" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter Admin Credentials"
+            android:textAlignment="center"
+            android:textColor="#6A2C70"
+            android:textSize="30sp"/>
+
+            <EditText
+                android:id="@+id/adminUsername_EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username"
+                android:textColor="#6A2C70"
+                android:textSize="30sp"
+                android:textAlignment="center"/>
+
+            <EditText
+                android:id="@+id/adminPassword_EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberPassword"
+                android:hint="Password"
+                android:textColor="#6A2C70"
+                android:textSize="30sp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+        <!--Footer-->
+        <LinearLayout
+            android:id="@+id/footer_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#B83B5E"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/adminLogIn_Button"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_margin="10px"
+                android:backgroundTint="#F9ED69"
+                android:text="Log In"
+                android:textColor="#6A2C70"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,115 @@
+package com.example.campusconnect;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+
+public class MainActivity extends AppCompatActivity {
+
+    SaveData save = SaveData.getInstance();
+    School school = School.getInstance();
+    Read read = new Read();
+
+    // TODO Remove the app title
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Declare components
+        TextView header = findViewById(R.id.headerText_TextView);
+        TextView schoolName = findViewById(R.id.schoolName_TextView);
+        EditText schoolID = findViewById(R.id.schoolID_EditText);
+        Button submit = findViewById(R.id.submit_Button);
+        Button attendance = findViewById(R.id.attendance_Button);
+        Button register = findViewById(R.id.register_Button);
+
+        attendance.setVisibility(View.GONE);
+        register.setVisibility(View.GONE);
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Store edittext to schoolID in the School class
+                school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
+
+                // Login as System admin
+                if(school.getSchoolID() == Integer.parseInt(save.getAdminPassword())){
+                    attendance.setVisibility(View.VISIBLE);
+                    register.setVisibility(View.VISIBLE);
+                }
+
+                read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        if(!dataSnapshot.exists()){
+                            Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            // Fetch data and store it in School Class
+                            school.setSchoolID(Integer.parseInt(dataSnapshot.child("schoolID").getValue().toString()));
+                            school.setSchoolName(dataSnapshot.child("schoolName").getValue().toString());
+                            school.setSchoolHead(dataSnapshot.child("schoolHead").getValue().toString());
+                            school.setAdminUsername(dataSnapshot.child("adminUsername").getValue().toString());
+                            school.setAdminPassword(dataSnapshot.child("adminPassword").getValue().toString());
+                            school.setLatitudeBottom(dataSnapshot.child("latitudeBottom").getValue().toString());
+                            school.setLatitudeTop(dataSnapshot.child("latitudeTop").getValue().toString());
+                            school.setLongitudeLeft(dataSnapshot.child("longitudeLeft").getValue().toString());
+                            school.setLongitudeRight(dataSnapshot.child("longitudeRight").getValue().toString());
+
+                            // Hide components
+                            schoolID.setVisibility(View.GONE);
+                            submit.setVisibility(View.GONE);
+
+                            // Unhide components
+                            attendance.setVisibility(View.VISIBLE);
+                            register.setVisibility(View.VISIBLE);
+
+                            // TODO set school LOGO
+                            // Set school name
+                            schoolName.setText(school.getSchoolName());
+                            header.setText("Campus Connect");
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+
+
+        attendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Attendance.class);
+                startActivity(intent);
+            }
+        });
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AdminLogIn.class);
+                startActivity(intent);
+            }
+        });
+    }
+}

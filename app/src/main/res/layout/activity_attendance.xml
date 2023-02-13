@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <!--Header-->
+    <LinearLayout
+        android:id="@+id/header_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#B83B5E"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/headerLogo_ImageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            app:srcCompat="@drawable/campus_connect_logo" />
+
+        <TextView
+            android:id="@+id/headerText_TextView"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Campus Connect"
+            android:textColor="#F9ED69"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <!--Body-->
+    <LinearLayout
+        android:id="@+id/body_LinearLayout"
+        layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#F08A5D"
+        android:orientation="vertical"
+        android:gravity="top">
+        <TextView
+            android:id="@+id/time_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="MM/dd/yyyy hh:mm:ss a"
+            android:textColor="#FFF000"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:background="#6A2C70"/>
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/campus_connect_logo" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="?android:attr/listDivider" />
+        <TextView
+            android:id="@+id/name_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#F9ED69"
+            android:textColor="#6A2C70"
+            android:text=""
+            android:textSize="20sp"
+            android:textAlignment="center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--
+            <TextView
+                android:id="@+id/day_TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="Day"/>
+
+            <TextView
+                android:id="@+id/timeIn_AM_TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:text="AM In"/>
+
+            <TextView
+                android:id="@+id/timeOut_AM_TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:text="AM Out"/>
+
+            <TextView
+                android:id="@+id/timeIn_PM_TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:text="PM In"/>
+
+            <TextView
+                android:id="@+id/timeOut_PM_TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:text="PM Out"/>
+                -->
+            <TableLayout
+                android:id="@+id/previewHeader_TableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="10px"
+                android:layout_marginRight="10px">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#B83B5E">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:textColor="@color/white"
+                        android:text="Day"
+                        android:textSize="12sp"
+                        android:textAlignment="center"/>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/listDivider" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:textColor="@color/white"
+                        android:text="AM In"
+                        android:textSize="12sp"
+                        android:textAlignment="center"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/listDivider" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:textColor="@color/white"
+                        android:text="AM Out"
+                        android:textSize="12sp"
+                        android:textAlignment="center"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/listDivider" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:backgroundTint="#F9ED69"
+                        android:textColor="@color/white"
+                        android:text="PM In"
+                        android:textSize="12sp"
+                        android:textAlignment="center"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/listDivider" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:backgroundTint="#F9ED69"
+                        android:textColor="@color/white"
+                        android:text="PM Out"
+                        android:textSize="12sp"
+                        android:textAlignment="center"/>
+                </TableRow>
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+            </TableLayout>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="10px">
+
+            <TableLayout
+                android:id="@+id/previewContent_TableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </TableLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <!--Footer-->
+    <LinearLayout
+        android:id="@+id/footer_LineanLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B83B5E"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10px">
+                <Button
+                    android:id="@+id/AMIn_Button"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.25"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#F9ED69"
+                    android:textColor="#6A2C70"
+                    android:text="AM In"
+                    android:textSize="12sp" />
+                <Button
+                    android:id="@+id/AMOut_Button"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.25"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#F9ED69"
+                    android:textColor="#6A2C70"
+                    android:text="AM Out"
+                    android:textSize="12sp" />
+                <Button
+                    android:id="@+id/PMIn_Button"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.25"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#F9ED69"
+                    android:textColor="#6A2C70"
+                    android:text="PM In"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/PMOut_Button"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.25"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#F9ED69"
+                    android:textColor="#6A2C70"
+                    android:text="PM Out"
+                    android:textSize="12sp" />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/generate_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:backgroundTint="#F9ED69"
+            android:textColor="#6A2C70"
+            android:text="Generate"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+</LinearLayout>

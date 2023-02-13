@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <!--Header-->
+    <LinearLayout
+        android:id="@+id/header_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#B83B5E"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/headerLogo_ImageView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            app:srcCompat="@drawable/campus_connect_logo" />
+
+        <TextView
+            android:id="@+id/headerText_TextView"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Attendance Monitoring App"
+            android:textColor="#F9ED69"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <!--Body-->
+    <LinearLayout
+        android:id="@+id/body_LinearLayout"
+        layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#F08A5D"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/bodyLogo_ImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/campus_connect_logo" />
+
+        <TextView
+            android:id="@+id/schoolName_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Campus Connect"
+            android:textAlignment="center"
+            android:textColor="#6A2C70"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/schoolID_EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter School ID"
+            android:textColor="#6A2C70"
+            android:inputType="number"
+            android:textSize="30sp"
+            android:textAlignment="center"/>
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="?android:attr/listDivider" />
+
+    </LinearLayout>
+
+    <!--Footer-->
+    <LinearLayout
+        android:id="@+id/footer_LineanLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B83B5E"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/submit_Button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:layout_margin="10px"
+            android:backgroundTint="#F9ED69"
+            android:text="Submit"
+            android:textColor="#6A2C70"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/attendance_Button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:layout_margin="10px"
+            android:backgroundTint="#F9ED69"
+            android:text="Attendance"
+            android:textColor="#6A2C70"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/register_Button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:layout_margin="10px"
+            android:backgroundTint="#F9ED69"
+            android:text="Register"
+            android:textColor="#6A2C70"
+            android:textSize="30sp" />
+    </LinearLayout>
+</LinearLayout>

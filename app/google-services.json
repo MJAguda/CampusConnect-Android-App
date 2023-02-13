@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "924296838353",
+    "firebase_url": "https://attendance-monitoring-sy-84e11-default-rtdb.firebaseio.com",
+    "project_id": "attendance-monitoring-sy-84e11",
+    "storage_bucket": "attendance-monitoring-sy-84e11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924296838353:android:fc6a4795c9a0d5768ed9f0",
+        "android_client_info": {
+          "package_name": "com.example.campusconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "924296838353-nktjb3dq339qin1hemgf1o6qm7r0qonn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALe5swK0mN4tgxvpygr00Fy2ACs58uZhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "924296838353-nktjb3dq339qin1hemgf1o6qm7r0qonn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
