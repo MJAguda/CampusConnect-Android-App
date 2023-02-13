@@ -87,9 +87,9 @@ public class GenerateDTR extends AppCompatActivity {
                 WebView webView = findViewById(R.id.web_view);
                 webView.loadUrl("F:/Miner/Documents/MJDMiner Papers/Resume/Mark Jayson Molina Aguda - Resume.pdf");
 
-
+                /*
                 // TODO do not delete this you will be able to use this code later on
-                /*for(int i = 1 ; i <= day ; i++){
+                for(int i = 1 ; i <= day ; i++){
                     int j = i;
                     read.readRecord("employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/"+ i , new Read.OnGetDataListener() {
                         @Override
@@ -118,6 +118,7 @@ public class GenerateDTR extends AppCompatActivity {
                         }
                     });
                 }
+
                  */
             }
         });
