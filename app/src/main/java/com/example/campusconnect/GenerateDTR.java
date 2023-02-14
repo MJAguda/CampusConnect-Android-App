@@ -89,9 +89,9 @@ public class GenerateDTR extends AppCompatActivity {
 
 
                 // TODO do not delete this you will be able to use this code later on
-                /*for(int i = 1 ; i <= day ; i++){
+                for(int i = 1 ; i <= day ; i++) {
                     int j = i;
-                    read.readRecord("employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/"+ i , new Read.OnGetDataListener() {
+                    read.readRecord("employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i, new Read.OnGetDataListener() {
                         @Override
                         public void onSuccess(DataSnapshot dataSnapshot) {
                             try {
@@ -103,11 +103,10 @@ public class GenerateDTR extends AppCompatActivity {
                                 // Display in Log
                                 Log.d(TAG, String.valueOf(j));
                                 Log.d(TAG, "timeAM_In: " + timeAM_In);
-                                Log.d(TAG,"timeAM_Out: " + timeAM_Out);
+                                Log.d(TAG, "timeAM_Out: " + timeAM_Out);
                                 Log.d(TAG, "timePM_In: " + timePM_In);
                                 Log.d(TAG, "timePM_Out: " + timePM_Out);
-                            }
-                            catch (NullPointerException e){
+                            } catch (NullPointerException e) {
                                 Toast.makeText(getApplicationContext(), "Null", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -118,7 +117,6 @@ public class GenerateDTR extends AppCompatActivity {
                         }
                     });
                 }
-                 */
             }
         });
     }
