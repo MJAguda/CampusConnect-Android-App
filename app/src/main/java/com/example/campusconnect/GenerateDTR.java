@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,7 +23,11 @@ import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +42,7 @@ import java.util.Calendar;
 public class GenerateDTR extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
+    School school = School.getInstance();
     Read read = new Read();
 
     private static final int PERMISSION_REQUEST_CODE = 10;
@@ -97,87 +103,72 @@ public class GenerateDTR extends AppCompatActivity {
                 String year = yearSpinner.getSelectedItem().toString();
                 int day = DateUtils.getNumberOfDays(year, month);
 
-                final Dialog dtrdialog = new Dialog(GenerateDTR.this);
-                dtrdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dtrdialog.setContentView(R.layout.activity_dtr_layout);
-                dtrdialog.setCancelable(true);
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(dtrdialog.getWindow().getAttributes());
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-                dtrdialog.getWindow().setAttributes(lp);
-                Button downloaddtr = dtrdialog.findViewById(R.id.downloadDTR_Button);
+                // display all data from month parent node try to store data to a 2d array first
+                // Initialize Firebase Realtime Database
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                // Define the reference to the desired node
+                DatabaseReference ref = database.getReference(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth());
 
-                dtrdialog.show();
+                // Attach a listener to the reference
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
+                        table.removeAllViews();
 
-                downloaddtr.setOnClickListener(v1 ->{
-                    generatePdfView(dtrdialog.findViewById(R.id.scrollView));
-                });
+                        // Iterate through all child nodes
+                        for (int i = 1 ; i <= day ; i++) {
+                            DataSnapshot child = dataSnapshot.child(String.valueOf(i));
+                            Log.d("Time", "KEY : " + child.getKey() + " : " + "Value : " + child.getValue());
 
-                // TODO do not delete this you will be able to use this code later on
-                /*for(int i = 1 ; i <= day ; i++) {
-                    int j = i;
-                    read.readRecord("employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i, new Read.OnGetDataListener() {
-                        @Override
-                        public void onSuccess(DataSnapshot dataSnapshot) {
-                            try {
-                                String timeAM_In = dataSnapshot.child("timeAM_In").getValue(String.class);
-                                String timeAM_Out = dataSnapshot.child("timeAM_Out").getValue(String.class);
-                                String timePM_In = dataSnapshot.child("timePM_In").getValue(String.class);
-                                String timePM_Out = dataSnapshot.child("timePM_Out").getValue(String.class);
+                            // Instance of the row
+                            TableRow row = new TableRow(GenerateDTR.this);
 
-                                // Display in Log
-                                Log.d(TAG, String.valueOf(j));
-                                Log.d(TAG, "timeAM_In: " + timeAM_In);
-                                Log.d(TAG, "timeAM_Out: " + timeAM_Out);
-                                Log.d(TAG, "timePM_In: " + timePM_In);
-                                Log.d(TAG, "timePM_Out: " + timePM_Out);
-                            } catch (NullPointerException e) {
-                                Toast.makeText(getApplicationContext(), "Null", Toast.LENGTH_SHORT).show();
+                            // Add day to the row
+                            TextView day = new TextView(GenerateDTR.this);
+                            day.setText(child.getKey());
+                            day.setTextSize(12);
+
+                            //day.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                            TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                            day.setLayoutParams(params);
+
+                            //day.setBackgroundColor(Color.WHITE);
+                            //day.setPadding(5,5,5,5);
+                            //day.setGravity(Gravity.CENTER);
+                            //day.setTextColor(Color.BLACK);
+                            //day.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.cell_shape));
+
+                            row.addView(day);
+
+                            // Add time TextView to the row
+                            for(DataSnapshot grandChild : child.getChildren()){
+                                Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
+
+                                // Add time to the row
+                                TextView time = new TextView(GenerateDTR.this);
+                                time.setText(grandChild.getValue().toString());
+                                time.setTextSize(12);
+                                time.setLayoutParams(params);
+                                time.setGravity(Gravity.CENTER);
+
+                                //time.setBackgroundColor(Color.WHITE);
+                                //time.setPadding(5,5,5,5);
+                                //time.setGravity(Gravity.CENTER);
+                                //time.setTextColor(Color.BLACK);
+                                //time.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.cell_shape));
+
+                                row.addView(time);
                             }
+                            table.addView(row);
                         }
+                    }
 
-                        @Override
-                        public void onFailure(DatabaseError databaseError) {
-                            Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-
-                 */
-            }
-
-            private void generatePdfView(View view) {
-                Bitmap bitmap = getBitmapView(view);
-                document = new PdfDocument();
-                PdfDocument.PageInfo mypageInfo = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), 1).create();
-                PdfDocument.Page myPage = document.startPage(mypageInfo);
-                Canvas canvas = myPage.getCanvas();
-                canvas.drawBitmap(bitmap,0,0,null);
-                document.finishPage(myPage);
-                createFile();
-            }
-
-            private void createFile() {
-                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("application/pdf");
-                intent.putExtra(Intent.EXTRA_TITLE, "dtr.pdf");
-                startActivityForResult(intent, CREATE_FILE);
-            }
-
-            private Bitmap getBitmapView(View view) {
-                Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(returnedBitmap);
-                Drawable bgDrawable = view.getBackground();
-                if(bgDrawable != null){
-                    bgDrawable.draw(canvas);
-                }
-                else{
-                    canvas.drawColor(Color.WHITE);
-                }
-                view.draw(canvas);
-                return returnedBitmap;
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        System.out.println("Error reading data: " + databaseError.getMessage());
+                    }
+                });
             }
         });
     }

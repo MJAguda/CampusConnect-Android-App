@@ -138,7 +138,7 @@ public class Attendance extends AppCompatActivity {
                         ref.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                TableLayout table = (TableLayout) findViewById(R.id.previewContent_TableLayout);
+                                TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
                                 table.removeAllViews();
 
                                 // Iterate through all child nodes
