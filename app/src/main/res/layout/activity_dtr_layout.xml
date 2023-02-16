@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10px">
@@ -384,6 +385,17 @@
                 android:textSize="7.5sp"
                 android:gravity="center"
                 android:textStyle="italic"/>
+
+            <Button
+                android:id="@+id/downloadDTR_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10px"
+                android:backgroundTint="#F9ED69"
+                android:text="Download"
+                android:textColor="#6A2C70"
+                android:textSize="10sp"
+                android:layout_gravity="center"/>
 
         </LinearLayout>
     </ScrollView>
