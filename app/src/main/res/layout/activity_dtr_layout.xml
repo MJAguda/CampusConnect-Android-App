@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="0.25in">
+        android:layout_margin="10px">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +50,8 @@
                 android:text="Last Name, First Name"
                 android:textSize="10sp"
                 android:underlineText="true"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:background="@drawable/table_border_underline"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -84,8 +85,8 @@
                         android:textColor="@color/black"
                         android:text="Month Year"
                         android:textSize="8sp"
-                        android:underlineText="true"
-                        android:textStyle="italic"/>
+                        android:textStyle="italic" />
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -118,11 +119,12 @@
                         android:gravity="right"
                         android:textStyle="italic"/>
                     <TextView
+                        android:background="@drawable/table_border_underline"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="____________________"
+                        android:text=""
                         android:textSize="8sp"
                         android:textStyle="italic"/>
                 </TableRow>
@@ -149,11 +151,12 @@
                         android:gravity="right"
                         android:textStyle="italic"/>
                     <TextView
+                        android:background="@drawable/table_border_underline"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="____________________"
+                        android:text=""
                         android:textSize="8sp"
                         android:textStyle="italic"/>
                 </TableRow>
@@ -295,7 +298,92 @@
                 </TableRow>
             </TableLayout>
 
+            <TableLayout
+                android:id="@+id/dtr_TableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:background="@drawable/table_border"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.714285714"
+                        android:textColor="@color/black"
+                        android:text="Total "
+                        android:textSize="9sp"
+                        android:gravity="right" />
+
+                    <TextView
+                        android:background="@drawable/table_border"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.28571428571428571428571428571429"
+                        android:textColor="@color/black"
+                        android:text=""
+                        android:textSize="9sp"
+                        android:gravity="center"
+                        android:textStyle="bold"/>
+                </TableRow>
+            </TableLayout>
+
             <!--Footer-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="I certify on my honor that the above is a true and correct report of the hours of work performed, record of which was made daily at the time of arrival and departure from office."
+                android:textSize="7.5sp"
+                android:gravity="left"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text=""
+                android:textSize="7.5sp"
+                android:gravity="left"
+                android:textStyle="italic"
+                android:background="@drawable/table_border_underline"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="VERIFIED as to the prescribed office hours:"
+                android:textSize="7.5sp"
+                android:gravity="center"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text=""
+                android:textSize="7.5sp"
+                android:gravity="left"
+                android:textStyle="italic"
+                android:background="@drawable/table_border_underline"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="SCHOOL HEAD"
+                android:textSize="7.5sp"
+                android:gravity="center"
+                android:textStyle="italic"/>
 
         </LinearLayout>
     </ScrollView>
