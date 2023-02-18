@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import static java.lang.Integer.parseInt;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -94,6 +95,11 @@ public class GenerateDTR extends AppCompatActivity {
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(yearAdapter);
 
+        // Declare components
+        TextView name = findViewById(R.id.name_TextView);
+        TextView date = findViewById(R.id.monthyear_TextView);
+        TextView schoolHead = findViewById(R.id.schoolHead_TextView);
+
         // TODO Generate DTR
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,8 +107,94 @@ public class GenerateDTR extends AppCompatActivity {
 
                 String month = monthSpinner.getSelectedItem().toString();
                 String year = yearSpinner.getSelectedItem().toString();
-                int day = DateUtils.getNumberOfDays(year, month);
 
+                save.setMonth(month);
+                save.setYear(year);
+
+                int day = DateUtils.getNumberOfDays(save.getMonth(), save.getYear());
+
+                read.readRecord(school.getSchoolID() + "/employee/" + save.getId(), new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        name.setText(dataSnapshot.child("fullname").getValue().toString());
+                        date.setText(month + " " + year);
+
+                        read.readRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth(), new Read.OnGetDataListener() {
+                            @Override
+                            public void onSuccess(DataSnapshot dataSnapshot) {
+
+                                TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
+                                table.removeAllViews();
+
+                                for(int i = 1 ; i <= day ; i++){
+
+                                    DataSnapshot child = dataSnapshot.child(String.valueOf(i));
+
+                                    // Instance of the row
+                                    TableRow row = new TableRow(GenerateDTR.this);
+
+                                    // Add day to the row
+                                    TextView day = new TextView(GenerateDTR.this);
+                                    day.setText(child.getKey());
+                                    day.setTextColor(Color.BLACK);
+                                    day.setTextSize(12);
+                                    day.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                    TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                                    day.setLayoutParams(params);
+                                    day.setBackground(ContextCompat.getDrawable(GenerateDTR.this, R.drawable.table_border));
+
+                                    row.addView(day);
+                                    // Add time TextView to the row
+                                    for(DataSnapshot grandChild : child.getChildren()){
+                                        Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
+
+                                        // Add time to the row
+                                        TextView time = new TextView(GenerateDTR.this);
+
+                                        time.setText(grandChild.getValue().toString());
+                                        time.setTextSize(12);
+                                        time.setTextColor(Color.BLACK);
+                                        time.setLayoutParams(params);
+                                        time.setGravity(Gravity.CENTER);
+                                        time.setBackground(ContextCompat.getDrawable(GenerateDTR.this, R.drawable.table_border));
+
+                                        row.addView(time);
+                                    }
+                                    table.addView(row);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(DatabaseError databaseError) {
+                                // handle error here
+                            }
+                        });
+
+
+                        // Set School head
+                        read.readRecord(school.getSchoolID() + "/", new Read.OnGetDataListener() {
+                            @Override
+                            public void onSuccess(DataSnapshot dataSnapshot) {
+                                schoolHead.setText(dataSnapshot.child("schoolHead").getValue().toString());
+                            }
+
+                            @Override
+                            public void onFailure(DatabaseError databaseError) {
+                                // handle error here
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
+                /*
                 // display all data from month parent node try to store data to a 2d array first
                 // Initialize Firebase Realtime Database
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -169,6 +261,8 @@ public class GenerateDTR extends AppCompatActivity {
                         System.out.println("Error reading data: " + databaseError.getMessage());
                     }
                 });
+
+                */
             }
         });
     }

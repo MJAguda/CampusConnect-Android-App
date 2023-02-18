@@ -128,23 +128,16 @@ public class Attendance extends AppCompatActivity {
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         name.setText(dataSnapshot.getValue().toString());
 
-                        // display all data from month parent node try to store data to a 2d array first
-                        // Initialize Firebase Realtime Database
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        // Define the reference to the desired node
-                        DatabaseReference ref = database.getReference(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth());
-
-                        // Attach a listener to the reference
-                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        read.readRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth(), new Read.OnGetDataListener() {
                             @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
+                            public void onSuccess(DataSnapshot dataSnapshot) {
+
                                 TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
                                 table.removeAllViews();
 
-                                // Iterate through all child nodes
-                                for (int i = 1 ; i <= DateUtils.getNumberOfDays(save.getMonth(), save.getYear()) ; i++) {
+                                for(int i = 1 ; i <= DateUtils.getNumberOfDays(save.getMonth(), save.getYear()) ; i++){
+
                                     DataSnapshot child = dataSnapshot.child(String.valueOf(i));
-                                    Log.d("Time", "KEY : " + child.getKey() + " : " + "Value : " + child.getValue());
 
                                     // Instance of the row
                                     TableRow row = new TableRow(Attendance.this);
@@ -152,36 +145,27 @@ public class Attendance extends AppCompatActivity {
                                     // Add day to the row
                                     TextView day = new TextView(Attendance.this);
                                     day.setText(child.getKey());
+                                    //day.setTextColor(Color.BLACK);
                                     day.setTextSize(12);
-
-                                    //day.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                    day.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                                     TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
                                     day.setLayoutParams(params);
-
-                                    //day.setBackgroundColor(Color.WHITE);
-                                    //day.setPadding(5,5,5,5);
-                                    //day.setGravity(Gravity.CENTER);
-                                    //day.setTextColor(Color.BLACK);
-                                    //day.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.cell_shape));
+                                    //day.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.table_border));
 
                                     row.addView(day);
-
                                     // Add time TextView to the row
                                     for(DataSnapshot grandChild : child.getChildren()){
                                         Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
 
                                         // Add time to the row
                                         TextView time = new TextView(Attendance.this);
+
                                         time.setText(grandChild.getValue().toString());
                                         time.setTextSize(12);
+                                        //time.setTextColor(Color.BLACK);
                                         time.setLayoutParams(params);
                                         time.setGravity(Gravity.CENTER);
-
-                                        //time.setBackgroundColor(Color.WHITE);
-                                        //time.setPadding(5,5,5,5);
-                                        //time.setGravity(Gravity.CENTER);
-                                        //time.setTextColor(Color.BLACK);
-                                        //time.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.cell_shape));
+                                        //time.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.table_border));
 
                                         row.addView(time);
                                     }
@@ -190,8 +174,8 @@ public class Attendance extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                System.out.println("Error reading data: " + databaseError.getMessage());
+                            public void onFailure(DatabaseError databaseError) {
+                                // handle error here
                             }
                         });
                     }

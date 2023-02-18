@@ -190,6 +190,27 @@ public class logInAttendance extends AppCompatActivity {
                                         }
                                     }
                                     catch (NullPointerException e){
+
+                                        // Create time cells for each day
+                                        read.readRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth(), new Read.OnGetDataListener() {
+                                            @Override
+                                            public void onSuccess(DataSnapshot dataSnapshot) {
+                                                for(int i = 1 ; i <= DateUtils.getNumberOfDays(save.getMonth(), save.getYear()); i++){
+                                                    if(!dataSnapshot.hasChild(String.valueOf(i))){
+                                                        create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timeAM_In", "");
+                                                        create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timeAM_Out", "");
+                                                        create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timePM_In", "");
+                                                        create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timePM_Out", "");
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(DatabaseError databaseError) {
+                                                // handle error here
+                                            }
+                                        });
+
                                         if(!dataSnapshot.child("timeAM_In").exists()){
                                             create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/timeAM_In", "");
                                         }

@@ -99,7 +99,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10px">
 
                 <!--Header-->
                 <TextView
@@ -385,7 +386,7 @@
                 <TableLayout
                     android:id="@+id/dtr_TableLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
                 </TableLayout>
 
                 <TableLayout
@@ -459,6 +460,7 @@
                     android:background="@drawable/table_border_underline"/>
 
                 <TextView
+                    android:id="@+id/schoolHead_TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
