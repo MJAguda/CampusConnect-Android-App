@@ -150,7 +150,7 @@ public class Attendance extends AppCompatActivity {
                                     day.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                                     TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
                                     day.setLayoutParams(params);
-                                    //day.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.table_border));
+                                    day.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.cell_shape));
 
                                     row.addView(day);
                                     // Add time TextView to the row
@@ -165,7 +165,7 @@ public class Attendance extends AppCompatActivity {
                                         //time.setTextColor(Color.BLACK);
                                         time.setLayoutParams(params);
                                         time.setGravity(Gravity.CENTER);
-                                        //time.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.table_border));
+                                        time.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.cell_shape));
 
                                         row.addView(time);
                                     }
