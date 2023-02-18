@@ -18,6 +18,9 @@
         android:theme="@style/Theme.CampusConnect"
         tools:targetApi="31">
         <activity
+            android:name=".DTRLayout"
+            android:exported="false" />
+        <activity
             android:name=".AdminScreen"
             android:exported="false" />
         <activity
