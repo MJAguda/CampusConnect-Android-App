@@ -91,16 +91,18 @@
         </TableLayout>
 
         <ScrollView
-            android:id="@+id/dtr_ScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10px"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:layout_gravity="center">
+
             <LinearLayout
+                android:id="@+id/dtr_LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10px">
+                android:padding="30px">
 
                 <!--Header-->
                 <TextView
@@ -267,6 +269,8 @@
                             android:layout_height="match_parent"
                             android:layout_weight="0.14285714285714285714285714285714"
                             android:gravity="center"
+                            android:paddingTop="5px"
+                            android:paddingBottom="5px"
                             android:text=""
                             android:textColor="@color/black"
                             android:textSize="9sp"/>
@@ -280,6 +284,8 @@
                             android:text="A.M."
                             android:textSize="9sp"
                             android:gravity="center"
+                            android:paddingTop="5px"
+                            android:paddingBottom="5px"
                             android:textStyle="bold"/>
 
                         <TextView
@@ -291,6 +297,8 @@
                             android:text="P.M."
                             android:textSize="9sp"
                             android:gravity="center"
+                            android:paddingTop="5px"
+                            android:paddingBottom="5px"
                             android:textStyle="bold"/>
                         <TextView
                             android:background="@drawable/table_border"
@@ -301,6 +309,8 @@
                             android:text="Undertime"
                             android:textSize="9sp"
                             android:gravity="center"
+                            android:paddingTop="5px"
+                            android:paddingBottom="5px"
                             android:textStyle="bold"/>
 
                     </TableRow>
@@ -317,7 +327,9 @@
                             android:textColor="@color/black"
                             android:text="Day"
                             android:textSize="9sp"
-                            android:gravity="center"/>
+                            android:gravity="center"
+                            android:paddingTop="5px"
+                            android:paddingBottom="5px"/>
 
                         <TextView
                             android:background="@drawable/table_border"
@@ -328,6 +340,8 @@
                             android:text="Arrival"
                             android:textSize="9sp"
                             android:gravity="center"
+                            android:paddingTop="5px"
+                            android:paddingBottom="5px"
                             android:textStyle="bold"/>
                         <TextView
                             android:background="@drawable/table_border"
@@ -349,6 +363,8 @@
                             android:text="Arrival"
                             android:textSize="9sp"
                             android:gravity="center"
+                            android:paddingTop="5px"
+                            android:paddingBottom="5px"
                             android:textStyle="bold"/>
                         <TextView
                             android:background="@drawable/table_border"
@@ -359,6 +375,8 @@
                             android:text="Departure"
                             android:textSize="9sp"
                             android:gravity="center"
+                            android:paddingTop="5px"
+                            android:paddingBottom="5px"
                             android:textStyle="bold"/>
                         <TextView
                             android:background="@drawable/table_border"
@@ -369,6 +387,8 @@
                             android:text="Hours"
                             android:textSize="9sp"
                             android:gravity="center"
+                            android:paddingTop="5px"
+                            android:paddingBottom="5px"
                             android:textStyle="bold"/>
                         <TextView
                             android:background="@drawable/table_border"
@@ -379,6 +399,8 @@
                             android:text="Minutes"
                             android:textSize="9sp"
                             android:gravity="center"
+                            android:paddingTop="5px"
+                            android:paddingBottom="5px"
                             android:textStyle="bold"/>
                     </TableRow>
                 </TableLayout>
@@ -420,6 +442,9 @@
                     </TableRow>
                 </TableLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"/>
                 <!--Footer-->
                 <TextView
                     android:layout_width="match_parent"

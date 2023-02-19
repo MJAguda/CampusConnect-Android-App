@@ -211,18 +211,6 @@ public class logInAttendance extends AppCompatActivity {
                                             }
                                         });
 
-                                        if(!dataSnapshot.child("timeAM_In").exists()){
-                                            create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/timeAM_In", "");
-                                        }
-                                        if(!dataSnapshot.child("timeAM_In").exists()){
-                                            create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/timeAM_Out", "");
-                                        }
-                                        if(!dataSnapshot.child("timeAM_In").exists()){
-                                            create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/timePM_In", "");
-                                        }
-                                        if(!dataSnapshot.child("timeAM_In").exists()){
-                                            create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/timePM_Out", "");
-                                        }
                                         Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_LONG).show();
                                     }
 

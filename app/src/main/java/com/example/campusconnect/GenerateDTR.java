@@ -59,6 +59,7 @@ public class GenerateDTR extends AppCompatActivity {
 
         // Find button in the Layout
         Button generate = findViewById(R.id.generateDTR_Button);
+        Button download = findViewById(R.id.downloadDTR_Button);
 
         //Find the spinner in the layout
         Spinner monthSpinner = findViewById(R.id.month_Spinner);
@@ -137,8 +138,9 @@ public class GenerateDTR extends AppCompatActivity {
                                     TextView day = new TextView(GenerateDTR.this);
                                     day.setText(child.getKey());
                                     day.setTextColor(Color.BLACK);
-                                    day.setTextSize(12);
+                                    day.setTextSize(9);
                                     day.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                    day.setPadding(0,5,0,5);
                                     TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
                                     day.setLayoutParams(params);
                                     day.setBackground(ContextCompat.getDrawable(GenerateDTR.this, R.drawable.table_border));
@@ -152,13 +154,28 @@ public class GenerateDTR extends AppCompatActivity {
                                         TextView time = new TextView(GenerateDTR.this);
 
                                         time.setText(grandChild.getValue().toString());
-                                        time.setTextSize(12);
+                                        time.setTextSize(9);
                                         time.setTextColor(Color.BLACK);
                                         time.setLayoutParams(params);
                                         time.setGravity(Gravity.CENTER);
+                                        time.setPadding(0,5,0,5);
                                         time.setBackground(ContextCompat.getDrawable(GenerateDTR.this, R.drawable.table_border));
 
                                         row.addView(time);
+                                    }
+
+                                    for(int j = 1 ; j <= 2 ; j++){
+                                        TextView blank = new TextView(GenerateDTR.this);
+
+                                        blank.setText(" ");
+                                        blank.setTextSize(9);
+                                        blank.setTextColor(Color.BLACK);
+                                        blank.setLayoutParams(params);
+                                        blank.setGravity(Gravity.CENTER);
+                                        blank.setPadding(0,5,0,5);
+                                        blank.setBackground(ContextCompat.getDrawable(GenerateDTR.this, R.drawable.table_border));
+
+                                        row.addView(blank);
                                     }
                                     table.addView(row);
                                 }
@@ -192,77 +209,13 @@ public class GenerateDTR extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
 
-
-                /*
-                // display all data from month parent node try to store data to a 2d array first
-                // Initialize Firebase Realtime Database
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                // Define the reference to the desired node
-                DatabaseReference ref = database.getReference(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth());
-
-                // Attach a listener to the reference
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
-                        table.removeAllViews();
-
-                        // Iterate through all child nodes
-                        for (int i = 1 ; i <= day ; i++) {
-                            DataSnapshot child = dataSnapshot.child(String.valueOf(i));
-                            Log.d("Time", "KEY : " + child.getKey() + " : " + "Value : " + child.getValue());
-
-                            // Instance of the row
-                            TableRow row = new TableRow(GenerateDTR.this);
-
-                            // Add day to the row
-                            TextView day = new TextView(GenerateDTR.this);
-                            day.setText(child.getKey());
-                            day.setTextSize(12);
-
-                            //day.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                            TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
-                            day.setLayoutParams(params);
-
-                            //day.setBackgroundColor(Color.WHITE);
-                            //day.setPadding(5,5,5,5);
-                            //day.setGravity(Gravity.CENTER);
-                            //day.setTextColor(Color.BLACK);
-                            //day.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.cell_shape));
-
-                            row.addView(day);
-
-                            // Add time TextView to the row
-                            for(DataSnapshot grandChild : child.getChildren()){
-                                Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
-
-                                // Add time to the row
-                                TextView time = new TextView(GenerateDTR.this);
-                                time.setText(grandChild.getValue().toString());
-                                time.setTextSize(12);
-                                time.setLayoutParams(params);
-                                time.setGravity(Gravity.CENTER);
-
-                                //time.setBackgroundColor(Color.WHITE);
-                                //time.setPadding(5,5,5,5);
-                                //time.setGravity(Gravity.CENTER);
-                                //time.setTextColor(Color.BLACK);
-                                //time.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.cell_shape));
-
-                                row.addView(time);
-                            }
-                            table.addView(row);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        System.out.println("Error reading data: " + databaseError.getMessage());
-                    }
-                });
-
-                */
+        download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DownloadDTR.downloadDTR(findViewById(R.id.dtr_LinearLayout), GenerateDTR.this);
             }
         });
     }
