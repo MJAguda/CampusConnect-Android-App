@@ -63,21 +63,27 @@
                 android:id="@+id/adminUsername_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="30px"
                 android:hint="Username"
                 android:textColor="#6A2C70"
+                android:inputType="number"
                 android:textSize="30sp"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:background="@drawable/round_edittext_bg"
+                android:padding="16dp"/>
 
             <EditText
                 android:id="@+id/adminPassword_EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="numberPassword"
+                android:layout_margin="30px"
                 android:hint="Password"
                 android:textColor="#6A2C70"
                 android:textSize="30sp"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:background="@drawable/round_edittext_bg"
+                android:padding="16dp"
+                android:inputType="numberPassword"/>
         </LinearLayout>
 
         <!--Footer-->

@@ -67,11 +67,14 @@
             android:id="@+id/schoolID_EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="30px"
             android:hint="Enter School ID"
             android:textColor="#6A2C70"
             android:inputType="number"
             android:textSize="30sp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:background="@drawable/round_edittext_bg"
+            android:padding="16dp"/>
 
         <View
             android:id="@+id/divider4"

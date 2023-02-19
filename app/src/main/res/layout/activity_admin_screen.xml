@@ -75,36 +75,48 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="School ID"
-
+                    android:inputType="number"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
                     android:textSize="20sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
                 <EditText
                     android:id="@+id/schoolName_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="School Name"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
                     android:textSize="20sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/schoolHead_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="School Head"
-                    android:textAlignment="center"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/adminUsername_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Admin Username"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
                     android:textSize="20sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/adminPassword_EditText"
@@ -113,45 +125,60 @@
                     android:hint="Admin Password"
                     android:ems="10"
                     android:inputType="numberPassword"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
                     android:textSize="20sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/latitudeBottom_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Latitude Bottom"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
                     android:textSize="20sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/latitudeTop_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Latitude Top"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
                     android:textSize="20sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/longitudeLeft_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Longitude Left"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
                     android:textSize="20sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/longitudeRight_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Longitude Right"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
                     android:textSize="20sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/id_EditText"
@@ -159,27 +186,36 @@
                     android:layout_height="wrap_content"
                     android:hint="Employee ID"
                     android:inputType="number"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
                     android:textSize="20sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/firstName_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="First Name"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
                     android:textSize="20sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/lastName_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Last Name"
+                    android:layout_margin="10px"
                     android:textColor="#6A2C70"
                     android:textSize="20sp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
 
             </LinearLayout>
         </ScrollView>
