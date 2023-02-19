@@ -31,14 +31,17 @@ public class MainActivity extends AppCompatActivity {
         // Declare components
         TextView header = findViewById(R.id.headerText_TextView);
         TextView schoolName = findViewById(R.id.schoolName_TextView);
+
         EditText schoolID = findViewById(R.id.schoolID_EditText);
+
         Button submit = findViewById(R.id.submit_Button);
         Button attendance = findViewById(R.id.attendance_Button);
         Button register = findViewById(R.id.register_Button);
+        Button generate = findViewById(R.id.generate_Button);
 
         attendance.setVisibility(View.GONE);
         register.setVisibility(View.GONE);
-
+        generate.setVisibility(View.GONE);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 if(school.getSchoolID() == Integer.parseInt(save.getAdminPassword())){
                     attendance.setVisibility(View.VISIBLE);
                     register.setVisibility(View.VISIBLE);
+                    generate.setVisibility(View.VISIBLE);
                 }
 
                 read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                             // Unhide components
                             attendance.setVisibility(View.VISIBLE);
                             register.setVisibility(View.VISIBLE);
+                            generate.setVisibility(View.VISIBLE);
 
                             // TODO set school LOGO
                             // Set school name
@@ -103,11 +108,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AdminLogIn.class);
+                startActivity(intent);
+            }
+        });
+
+        generate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Generate.class);
                 startActivity(intent);
             }
         });

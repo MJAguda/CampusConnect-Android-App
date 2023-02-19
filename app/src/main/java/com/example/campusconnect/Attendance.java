@@ -66,7 +66,6 @@ public class Attendance extends AppCompatActivity {
         Button AMOut = findViewById(R.id.AMOut_Button);
         Button PMIn = findViewById(R.id.PMIn_Button);
         Button PMOut = findViewById(R.id.PMOut_Button);
-        Button generate = findViewById(R.id.generate_Button);
 
         TextView name = findViewById(R.id.name_TextView);
 
@@ -106,14 +105,6 @@ public class Attendance extends AppCompatActivity {
             public void onClick(View view) {
                 save.setAuthenticate("timePM_Out");
                 Intent intent = new Intent(Attendance.this, logInAttendance.class);
-                startActivity(intent);
-            }
-        });
-
-        generate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Attendance.this, Generate.class);
                 startActivity(intent);
             }
         });

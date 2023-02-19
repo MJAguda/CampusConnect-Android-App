@@ -101,7 +101,7 @@ public class GenerateDTR extends AppCompatActivity {
         TextView date = findViewById(R.id.monthyear_TextView);
         TextView schoolHead = findViewById(R.id.schoolHead_TextView);
 
-        // TODO Generate DTR
+        // Generate DTR
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

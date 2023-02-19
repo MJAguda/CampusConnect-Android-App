@@ -102,7 +102,7 @@ public class Generate extends AppCompatActivity {
             }
         });
 
-        // TODO Generate DTR for employee
+        // Generate DTR for employee
         generateDTR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
