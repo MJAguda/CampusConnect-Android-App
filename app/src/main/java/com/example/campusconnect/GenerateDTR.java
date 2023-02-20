@@ -138,9 +138,9 @@ public class GenerateDTR extends AppCompatActivity {
                                     TextView day = new TextView(GenerateDTR.this);
                                     day.setText(child.getKey());
                                     day.setTextColor(Color.BLACK);
-                                    day.setTextSize(9);
+                                    day.setTextSize(7);
                                     day.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                    day.setPadding(0,5,0,5);
+                                    day.setPadding(0,10,0,10);
                                     TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
                                     day.setLayoutParams(params);
                                     day.setBackground(ContextCompat.getDrawable(GenerateDTR.this, R.drawable.table_border));
@@ -154,11 +154,11 @@ public class GenerateDTR extends AppCompatActivity {
                                         TextView time = new TextView(GenerateDTR.this);
 
                                         time.setText(grandChild.getValue().toString());
-                                        time.setTextSize(9);
+                                        time.setTextSize(7);
                                         time.setTextColor(Color.BLACK);
                                         time.setLayoutParams(params);
                                         time.setGravity(Gravity.CENTER);
-                                        time.setPadding(0,5,0,5);
+                                        time.setPadding(0,10,0,10);
                                         time.setBackground(ContextCompat.getDrawable(GenerateDTR.this, R.drawable.table_border));
 
                                         row.addView(time);
@@ -168,11 +168,11 @@ public class GenerateDTR extends AppCompatActivity {
                                         TextView blank = new TextView(GenerateDTR.this);
 
                                         blank.setText(" ");
-                                        blank.setTextSize(9);
+                                        blank.setTextSize(7);
                                         blank.setTextColor(Color.BLACK);
                                         blank.setLayoutParams(params);
                                         blank.setGravity(Gravity.CENTER);
-                                        blank.setPadding(0,5,0,5);
+                                        blank.setPadding(0,10,0,10);
                                         blank.setBackground(ContextCompat.getDrawable(GenerateDTR.this, R.drawable.table_border));
 
                                         row.addView(blank);

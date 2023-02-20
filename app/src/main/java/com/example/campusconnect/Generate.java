@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +39,7 @@ public class Generate extends AppCompatActivity {
 
         // Declare Components
         EditText id = findViewById(R.id.id_EditText);
+        TextView prompt = findViewById(R.id.prompt);
         Button submit = findViewById(R.id.submit_Button);
         Button generateQR = findViewById(R.id.generateQR_Button);
         Button generateDTR = findViewById(R.id.generateDTR_Button);
@@ -60,6 +62,10 @@ public class Generate extends AppCompatActivity {
                             generateQR.setVisibility(View.VISIBLE);
                             generateDTR.setVisibility(View.VISIBLE);
                             generateTAMS.setVisibility(View.VISIBLE);
+
+                            id.setVisibility(View.GONE);
+                            prompt.setVisibility(View.GONE);
+                            submit.setVisibility(View.GONE);
                         }
                         else{
                             Toast.makeText(getApplicationContext(), "ID Number not found", Toast.LENGTH_SHORT).show();

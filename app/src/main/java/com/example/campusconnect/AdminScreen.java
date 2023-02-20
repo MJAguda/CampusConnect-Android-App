@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +18,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AdminScreen extends AppCompatActivity {
 
@@ -34,7 +40,55 @@ public class AdminScreen extends AppCompatActivity {
         EditText id = findViewById(R.id.id_EditText);
         EditText firstName = findViewById(R.id.firstName_EditText);
         EditText lastName = findViewById(R.id.lastName_EditText);
-        DatePicker birthday = findViewById(R.id.birthday_DatePicker);
+
+        //Find the spinner in the layout
+        TableLayout birthday = findViewById(R.id.birthday_TableLayout);
+        Spinner monthSpinner = findViewById(R.id.month_Spinner);
+        Spinner daySpinner = findViewById(R.id.day_Spinner);
+        Spinner yearSpinner = findViewById(R.id.year_Spinner);
+        //DatePicker birthday = findViewById(R.id.birthday_DatePicker);
+
+        // Create an ArrayList for the month
+        ArrayList<String> monthList = new ArrayList<>();
+        monthList.add("January");
+        monthList.add("February");
+        monthList.add("March");
+        monthList.add("April");
+        monthList.add("May");
+        monthList.add("June");
+        monthList.add("July");
+        monthList.add("August");
+        monthList.add("September");
+        monthList.add("October");
+        monthList.add("November");
+        monthList.add("December");
+
+        // Create an ArrayAdapter for the month spinner
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, monthList);
+        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monthSpinner.setAdapter(monthAdapter);
+
+        // Create an ArrayList for the day
+        ArrayList<String> dayList = new ArrayList<>();
+        for (int i = 1 ; i <= 31 ; i++) {
+            dayList.add(String.valueOf(i));
+        }
+
+        // Create an ArrayAdapter for the day spinner
+        ArrayAdapter<String> dayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dayList);
+        dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        daySpinner.setAdapter(dayAdapter);
+
+        // Create an ArrayList for the year
+        ArrayList<String> yearList = new ArrayList<>();
+        for (int i = Calendar.getInstance().get(Calendar.YEAR)-100; i <= Calendar.getInstance().get(Calendar.YEAR); i++) {
+            yearList.add(String.valueOf(i));
+        }
+
+        // Create an ArrayAdapter for the year spinner
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, yearList);
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(yearAdapter);
 
         // For submit School
         EditText schoolID = findViewById(R.id.schoolId_EditText);
@@ -204,7 +258,7 @@ public class AdminScreen extends AppCompatActivity {
                     save.setId(id.getText().toString());
                     save.setFullName(save.getLastName() +", "+ save.getFirstName());
 
-                    save.setBirthday(String.valueOf(birthday.getMonth()+1) + "/" + String.valueOf(birthday.getDayOfMonth()) + "/" + String.valueOf(birthday.getYear()));
+                    save.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/"+ yearSpinner.getSelectedItem().toString());
 
                     /*// Initialize Firebase Realtime Database
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();

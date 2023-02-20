@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/layoutbackground"
     tools:context=".MainActivity"
     android:orientation="vertical">
 
@@ -37,14 +38,17 @@
 
     <!--Body-->
     <LinearLayout
-        android:id="@+id/body_LinearLayout"
-        layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#F08A5D"
-        android:orientation="vertical"
-        android:gravity="center">
+            android:id="@+id/body_LinearLayout"
+            layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/round_body_bg"
+            android:layout_margin="35px"
+            android:padding="50px">
+        <!--android:background="#F08A5D"-->
 
         <ImageView
             android:id="@+id/bodyLogo_ImageView"
@@ -60,7 +64,7 @@
             android:text="Campus Connect"
             android:textAlignment="center"
             android:textColor="#6A2C70"
-            android:textSize="50sp"
+            android:textSize="40sp"
             android:textStyle="bold" />
 
         <EditText
@@ -128,7 +132,8 @@
         <Button
             android:id="@+id/generate_Button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
             android:layout_margin="10px"
             android:backgroundTint="#F9ED69"
             android:textColor="#6A2C70"

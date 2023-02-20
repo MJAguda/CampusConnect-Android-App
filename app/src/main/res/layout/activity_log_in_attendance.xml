@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/layoutbackground"
     tools:context=".logInAttendance"
     android:orientation="vertical">
 
@@ -42,15 +43,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#F08A5D"
         android:orientation="vertical"
-        android:gravity="top">
+        android:gravity="top"
+        android:background="@drawable/round_body_bg"
+        android:layout_margin="35px"
+        android:padding="50px">
+        <!--android:background="#F08A5D"-->
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/campus_connect_logo" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,7 +57,7 @@
             android:text="Campus Connect"
             android:textAlignment="center"
             android:textColor="#6A2C70"
-            android:textSize="50sp"
+            android:textSize="40sp"
             android:textStyle="bold" />
         <View
             android:id="@+id/divider4"

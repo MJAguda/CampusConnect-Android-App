@@ -46,56 +46,62 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // Store edittext to schoolID in the School class
-                school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
-
-                // Login as System admin
-                if(school.getSchoolID() == Integer.parseInt(save.getAdminPassword())){
-                    attendance.setVisibility(View.VISIBLE);
-                    register.setVisibility(View.VISIBLE);
-                    generate.setVisibility(View.VISIBLE);
+                // Check if school edittext is not empty
+                if(schoolID.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Fill all Fields", Toast.LENGTH_SHORT).show();
                 }
+                else{
+                    // Store edittext to schoolID in the School class
+                    school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
 
-                read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
-                    @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        if(!dataSnapshot.exists()){
-                            Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            // Fetch data and store it in School Class
-                            school.setSchoolID(Integer.parseInt(dataSnapshot.child("schoolID").getValue().toString()));
-                            school.setSchoolName(dataSnapshot.child("schoolName").getValue().toString());
-                            school.setSchoolHead(dataSnapshot.child("schoolHead").getValue().toString());
-                            school.setAdminUsername(dataSnapshot.child("adminUsername").getValue().toString());
-                            school.setAdminPassword(dataSnapshot.child("adminPassword").getValue().toString());
-                            school.setLatitudeBottom(dataSnapshot.child("latitudeBottom").getValue().toString());
-                            school.setLatitudeTop(dataSnapshot.child("latitudeTop").getValue().toString());
-                            school.setLongitudeLeft(dataSnapshot.child("longitudeLeft").getValue().toString());
-                            school.setLongitudeRight(dataSnapshot.child("longitudeRight").getValue().toString());
-
-                            // Hide components
-                            schoolID.setVisibility(View.GONE);
-                            submit.setVisibility(View.GONE);
-
-                            // Unhide components
-                            attendance.setVisibility(View.VISIBLE);
-                            register.setVisibility(View.VISIBLE);
-                            generate.setVisibility(View.VISIBLE);
-
-                            // TODO set school LOGO
-                            // Set school name
-                            schoolName.setText(school.getSchoolName());
-                            header.setText("Campus Connect");
-
-                        }
+                    // Login as System admin
+                    if(school.getSchoolID() == Integer.parseInt(save.getAdminPassword())){
+                        attendance.setVisibility(View.VISIBLE);
+                        register.setVisibility(View.VISIBLE);
+                        generate.setVisibility(View.VISIBLE);
                     }
 
-                    @Override
-                    public void onFailure(DatabaseError databaseError) {
-                        Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
+                        @Override
+                        public void onSuccess(DataSnapshot dataSnapshot) {
+                            if(!dataSnapshot.exists()){
+                                Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                // Fetch data and store it in School Class
+                                school.setSchoolID(Integer.parseInt(dataSnapshot.child("schoolID").getValue().toString()));
+                                school.setSchoolName(dataSnapshot.child("schoolName").getValue().toString());
+                                school.setSchoolHead(dataSnapshot.child("schoolHead").getValue().toString());
+                                school.setAdminUsername(dataSnapshot.child("adminUsername").getValue().toString());
+                                school.setAdminPassword(dataSnapshot.child("adminPassword").getValue().toString());
+                                school.setLatitudeBottom(dataSnapshot.child("latitudeBottom").getValue().toString());
+                                school.setLatitudeTop(dataSnapshot.child("latitudeTop").getValue().toString());
+                                school.setLongitudeLeft(dataSnapshot.child("longitudeLeft").getValue().toString());
+                                school.setLongitudeRight(dataSnapshot.child("longitudeRight").getValue().toString());
+
+                                // Hide components
+                                schoolID.setVisibility(View.GONE);
+                                submit.setVisibility(View.GONE);
+
+                                // Unhide components
+                                attendance.setVisibility(View.VISIBLE);
+                                register.setVisibility(View.VISIBLE);
+                                generate.setVisibility(View.VISIBLE);
+
+                                // TODO set school LOGO
+                                // Set school name
+                                schoolName.setText(school.getSchoolName());
+                                header.setText("Campus Connect");
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(DatabaseError databaseError) {
+                            Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
 

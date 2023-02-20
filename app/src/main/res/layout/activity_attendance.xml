@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/layoutbackground"
     tools:context=".MainActivity"
     android:orientation="vertical">
 
@@ -42,9 +43,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#F08A5D"
         android:orientation="vertical"
-        android:gravity="top">
+        android:gravity="top"
+        android:background="@drawable/round_body_bg"
+        android:layout_margin="35px"
+        android:padding="50px">
+        <!--android:background="#F08A5D"-->
         <TextView
             android:id="@+id/time_TextView"
             android:layout_width="match_parent"
@@ -55,11 +59,6 @@
             android:textAlignment="center"
             android:textSize="30sp"
             android:background="#6A2C70"/>
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/campus_connect_logo" />
 
         <View
             android:id="@+id/divider4"
