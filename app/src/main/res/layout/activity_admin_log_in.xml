@@ -66,7 +66,6 @@
                 android:layout_margin="30px"
                 android:hint="Username"
                 android:textColor="#6A2C70"
-                android:inputType="number"
                 android:textSize="30sp"
                 android:textAlignment="center"
                 android:background="@drawable/round_edittext_bg"
