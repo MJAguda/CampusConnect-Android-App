@@ -51,20 +51,16 @@
         <!--android:background="#F08A5D"-->
         <TextView
             android:id="@+id/time_TextView"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-smallcaps"
             android:text="MM/dd/yyyy hh:mm:ss a"
             android:textColor="#FFF000"
             android:textAlignment="center"
+            android:layout_gravity="left"
             android:textSize="30sp"
             android:background="#6A2C70"/>
 
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider" />
         <TextView
             android:id="@+id/name_TextView"
             android:layout_width="match_parent"

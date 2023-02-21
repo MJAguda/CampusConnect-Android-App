@@ -50,18 +50,12 @@
         android:padding="50px">
         <!--android:background="#F08A5D"-->>
 
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Enter Admin Credentials"
-            android:textAlignment="center"
             android:textColor="#6A2C70"
-            android:textSize="30sp"/>
+            android:textSize="20sp"/>
 
             <EditText
                 android:id="@+id/adminUsername_EditText"

@@ -51,27 +51,12 @@
         <!--android:background="#F08A5D"-->
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-smallcaps"
-            android:text="Campus Connect"
-            android:textAlignment="center"
-            android:textColor="#6A2C70"
-            android:textSize="40sp"
-            android:textStyle="bold" />
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider" />
-        <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Authenticate"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="30sp"/>
+            android:gravity="left"
+            android:textSize="20sp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -80,12 +80,6 @@
             android:background="@drawable/round_edittext_bg"
             android:padding="16dp"/>
 
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider" />
-
     </LinearLayout>
 
     <!--Footer-->
@@ -100,44 +94,72 @@
             android:id="@+id/submit_Button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:layout_margin="10px"
             android:backgroundTint="#F9ED69"
             android:text="Submit"
             android:textColor="#6A2C70"
             android:textSize="30sp" />
 
-        <Button
-            android:id="@+id/attendance_Button"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:layout_margin="10px"
-            android:backgroundTint="#F9ED69"
-            android:text="Attendance"
-            android:textColor="#6A2C70"
-            android:textSize="30sp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/register_Button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:layout_margin="10px"
-            android:backgroundTint="#F9ED69"
-            android:text="Register"
-            android:textColor="#6A2C70"
-            android:textSize="30sp" />
+            <ImageButton
+                android:id="@+id/home_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#F9ED69"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/homebutton"/>
 
-        <Button
-            android:id="@+id/generate_Button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:layout_margin="10px"
-            android:backgroundTint="#F9ED69"
-            android:textColor="#6A2C70"
-            android:text="Generate"
-            android:textSize="30sp" />
+            <ImageButton
+                android:id="@+id/attendance_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:background="#F9ED69"
+                app:srcCompat="@drawable/attendancebutton"/>
+
+            <ImageView
+                android:id="@+id/footerlogo_ImageView"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_margin="15px"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:background="@drawable/round_bg"
+                app:srcCompat="@drawable/campus_connect_logo"/>
+
+            <ImageButton
+                android:id="@+id/register_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:background="#F9ED69"
+                app:srcCompat="@drawable/registerbutton" />
+
+            <ImageButton
+                android:id="@+id/generate_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:background="#F9ED69"
+                app:srcCompat="@drawable/generatebutton" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

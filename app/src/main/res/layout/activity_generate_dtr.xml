@@ -50,22 +50,17 @@
         android:padding="50px">
         <!--android:background="#F08A5D"-->>
 
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider" />
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Generate DTR"
-            android:textAlignment="center"
             android:textColor="#6A2C70"
-            android:textSize="30sp"/>
+            android:textSize="20sp"/>
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginRight="60px">
 
             <TableRow
                 android:layout_width="match_parent"

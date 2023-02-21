@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,12 +42,16 @@ public class Generate extends AppCompatActivity {
         EditText id = findViewById(R.id.id_EditText);
         TextView prompt = findViewById(R.id.prompt);
         Button submit = findViewById(R.id.submit_Button);
-        Button generateQR = findViewById(R.id.generateQR_Button);
-        Button generateDTR = findViewById(R.id.generateDTR_Button);
-        Button generateTAMS = findViewById(R.id.generateTAMS_Button);
+        ImageButton home = findViewById(R.id.home_Button);
+        ImageButton generateQR = findViewById(R.id.generateQR_Button);
+        ImageView logo = findViewById(R.id.footerlogo_ImageView);
+        ImageButton generateDTR = findViewById(R.id.generateDTR_Button);
+        ImageButton generateTAMS = findViewById(R.id.generateTAMS_Button);
 
         // Hide buttons
+        home.setVisibility(View.GONE);
         generateQR.setVisibility(View.GONE);
+        logo.setVisibility(View.GONE);
         generateDTR.setVisibility(View.GONE);
         generateTAMS.setVisibility(View.GONE);
 
@@ -59,7 +64,9 @@ public class Generate extends AppCompatActivity {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()){
+                            home.setVisibility(View.VISIBLE);
                             generateQR.setVisibility(View.VISIBLE);
+                            logo.setVisibility(View.VISIBLE);
                             generateDTR.setVisibility(View.VISIBLE);
                             generateTAMS.setVisibility(View.VISIBLE);
 
@@ -80,6 +87,14 @@ public class Generate extends AppCompatActivity {
             }
         });
 
+        // Home button
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Generate.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Generate QR for employee
         generateQR.setOnClickListener(new View.OnClickListener() {

@@ -9,6 +9,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,11 +37,15 @@ public class MainActivity extends AppCompatActivity {
         EditText schoolID = findViewById(R.id.schoolID_EditText);
 
         Button submit = findViewById(R.id.submit_Button);
-        Button attendance = findViewById(R.id.attendance_Button);
-        Button register = findViewById(R.id.register_Button);
-        Button generate = findViewById(R.id.generate_Button);
+        ImageButton home = findViewById(R.id.home_Button);
+        ImageButton attendance = findViewById(R.id.attendance_Button);
+        ImageView logo = findViewById(R.id.footerlogo_ImageView);
+        ImageButton register = findViewById(R.id.register_Button);
+        ImageButton generate = findViewById(R.id.generate_Button);
 
+        home.setVisibility(View.GONE);
         attendance.setVisibility(View.GONE);
+        logo.setVisibility(View.GONE);
         register.setVisibility(View.GONE);
         generate.setVisibility(View.GONE);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
                     // Login as System admin
                     if(school.getSchoolID() == Integer.parseInt(save.getAdminPassword())){
+                        home.setVisibility(View.VISIBLE);
                         attendance.setVisibility(View.VISIBLE);
+                        logo.setVisibility(View.VISIBLE);
                         register.setVisibility(View.VISIBLE);
                         generate.setVisibility(View.VISIBLE);
                     }
@@ -84,7 +92,9 @@ public class MainActivity extends AppCompatActivity {
                                 submit.setVisibility(View.GONE);
 
                                 // Unhide components
+                                home.setVisibility(View.VISIBLE);
                                 attendance.setVisibility(View.VISIBLE);
+                                logo.setVisibility(View.VISIBLE);
                                 register.setVisibility(View.VISIBLE);
                                 generate.setVisibility(View.VISIBLE);
 
@@ -105,7 +115,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         attendance.setOnClickListener(new View.OnClickListener() {
             @Override

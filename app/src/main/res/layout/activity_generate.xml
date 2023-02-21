@@ -50,19 +50,13 @@
         android:padding="50px">
         <!--android:background="#F08A5D"-->>
 
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider" />
         <TextView
             android:id="@+id/prompt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Authenticate"
-            android:textAlignment="center"
             android:textColor="#6A2C70"
-            android:textSize="30sp"/>
+            android:textSize="20sp"/>
 
         <EditText
             android:id="@+id/id_EditText"
@@ -80,8 +74,8 @@
         <ImageView
             android:id="@+id/qrCode_ImageView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:clickable="true"
             tools:srcCompat="@tools:sample/avatars"/>
 
@@ -106,37 +100,65 @@
             android:textColor="#6A2C70"
             android:textSize="30sp" />
 
-        <Button
-            android:id="@+id/generateQR_Button"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="10px"
-            android:layout_weight="1"
-            android:backgroundTint="#F9ED69"
-            android:text="Generate QR"
-            android:textColor="#6A2C70"
-            android:textSize="30sp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/generateDTR_Button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_margin="10px"
-            android:backgroundTint="#F9ED69"
-            android:text="Generate DTR"
-            android:textColor="#6A2C70"
-            android:textSize="30sp" />
-        <Button
-            android:id="@+id/generateTAMS_Button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_margin="10px"
-            android:backgroundTint="#F9ED69"
-            android:text="Generate TAMS"
-            android:textColor="#6A2C70"
-            android:textSize="30sp" />
+            <ImageButton
+                android:id="@+id/home_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#F9ED69"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/homebutton"/>
+
+            <ImageButton
+                android:id="@+id/generateQR_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#F9ED69"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/generateqrbutton" />
+
+            <ImageView
+                android:id="@+id/footerlogo_ImageView"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_margin="15px"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:background="@drawable/round_bg"
+                app:srcCompat="@drawable/campus_connect_logo"/>
+
+            <ImageButton
+                android:id="@+id/generateDTR_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#F9ED69"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/generatedtrbutton" />
+
+            <ImageButton
+                android:id="@+id/generateTAMS_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="#F9ED69"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/generatetamsbutton" />
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>
