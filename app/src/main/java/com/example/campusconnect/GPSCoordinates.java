@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -66,18 +68,28 @@ public class GPSCoordinates {
 
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 10, locationListener);
             currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (currentLocation == null) {
+                currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
+            while (currentLocation == null) {
+                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
+                locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locationListener, null);
+                currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (currentLocation == null) {
+                    currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                }
+            }
         } catch (SecurityException e) {
             e.printStackTrace();
         }
         return currentLocation;
     }
-
 }
 
-    /*
 
-// To call it in the main method
+/* To call it in the main method
 GPSCoordinates gpsCoordinates = new GPSCoordinates(this);
 Location currentLocation = gpsCoordinates.getCurrentLocation();
 
@@ -87,5 +99,4 @@ if (currentLocation != null) {
 else {
     Log.d("Location", "No location data available.");
 }
-
-     */
+*/

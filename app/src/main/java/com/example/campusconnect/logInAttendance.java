@@ -148,37 +148,28 @@ public class logInAttendance extends AppCompatActivity {
                                                     }
                                                     else{
 
-                                                    // Get the current location of phone through GPS
-                                                    GPSCoordinates gpsCoordinates = new GPSCoordinates(logInAttendance.this);
-                                                    Location currentLocation = gpsCoordinates.getCurrentLocation();
+                                                        // Get the current location of phone through GPS
+                                                        GPSCoordinates gpsCoordinates = new GPSCoordinates(logInAttendance.this);
+                                                        Location currentLocation = gpsCoordinates.getCurrentLocation();
 
-                                                    if (currentLocation != null) {
-                                                        save.setLatitude(currentLocation.getLatitude());
-                                                        save.setLongitude(currentLocation.getLongitude());
+                                                        if (currentLocation != null) {
+                                                            save.setLatitude(currentLocation.getLatitude());
+                                                            save.setLongitude(currentLocation.getLongitude());
 
-                                                        // Check employee Coordinate if employee is inside the 4 corners of the campus
-                                                        if(save.getLatitude() >= save.getFnhsBottonLat() && save.getLatitude() <= save.getFnhsTopLat() && save.getLongitude() >= save.getFnhsLeftLong() && save.getLongitude() <= save.getFnhsRightLong()){
-                                                            Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
+                                                            // Check employee Coordinate if employee is inside the 4 corners of the campus
+                                                            if(save.getLatitude() >= save.getFnhsBottonLat() && save.getLatitude() <= save.getFnhsTopLat() && save.getLongitude() >= save.getFnhsLeftLong() && save.getLongitude() <= save.getFnhsRightLong()){
+                                                                Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
-                                                            // Push Time in Database
-                                                            Create create = new Create();
-                                                            create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), dateFormat.format(dt));
+                                                                // Push Time in Database
+                                                                create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), dateFormat.format(dt));
+                                                            }
+                                                            else{
+                                                                Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        } else {
+                                                            Toast.makeText(getApplicationContext(), "No location data available", Toast.LENGTH_SHORT).show();
+                                                            Log.d("Location", "No location data available.");
                                                         }
-                                                        else{
-                                                            Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    } else {
-                                                        Toast.makeText(getApplicationContext(), "No location data available", Toast.LENGTH_SHORT).show();
-                                                        Log.d("Location", "No location data available.");
-                                                    }
-
-
-                                                        // TODO Fix GPS Accuracy
-                                                        Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
-
-                                                        // Push Time in Database
-
-                                                        create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), dateFormat.format(dt));
                                                     }
                                                 }
 
