@@ -19,15 +19,19 @@
         tools:targetApi="31">
         <activity
             android:name=".AdminScreen"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".ScanQR"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".Generate"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".GenerateDTR"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -35,6 +39,7 @@
         </activity>
         <activity
             android:name=".logInAttendance"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -42,6 +47,7 @@
         </activity>
         <activity
             android:name=".Attendance"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -49,6 +55,7 @@
         </activity>
         <activity
             android:name=".AdminLogIn"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -56,6 +63,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
