@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -47,6 +49,11 @@ public class Generate extends AppCompatActivity {
         ImageView logo = findViewById(R.id.footerlogo_ImageView);
         ImageButton generateDTR = findViewById(R.id.generateDTR_Button);
         ImageButton generateTAMS = findViewById(R.id.generateTAMS_Button);
+        TextView guide1 = findViewById(R.id.buttonGuide_TextView1);
+        TextView guide2 = findViewById(R.id.buttonGuide_TextView2);
+        TextView guide3 = findViewById(R.id.buttonGuide_TextView3);
+        TextView guide4 = findViewById(R.id.buttonGuide_TextView4);
+        TextView guide5 = findViewById(R.id.buttonGuide_TextView5);
 
         // Hide buttons
         home.setVisibility(View.GONE);
@@ -54,6 +61,11 @@ public class Generate extends AppCompatActivity {
         logo.setVisibility(View.GONE);
         generateDTR.setVisibility(View.GONE);
         generateTAMS.setVisibility(View.GONE);
+        guide1.setVisibility(View.GONE);
+        guide2.setVisibility(View.GONE);
+        guide3.setVisibility(View.GONE);
+        guide4.setVisibility(View.GONE);
+        guide5.setVisibility(View.GONE);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +81,11 @@ public class Generate extends AppCompatActivity {
                             logo.setVisibility(View.VISIBLE);
                             generateDTR.setVisibility(View.VISIBLE);
                             generateTAMS.setVisibility(View.VISIBLE);
+                            guide1.setVisibility(View.VISIBLE);
+                            guide2.setVisibility(View.VISIBLE);
+                            guide3.setVisibility(View.VISIBLE);
+                            guide4.setVisibility(View.VISIBLE);
+                            guide5.setVisibility(View.VISIBLE);
 
                             id.setVisibility(View.GONE);
                             prompt.setVisibility(View.GONE);

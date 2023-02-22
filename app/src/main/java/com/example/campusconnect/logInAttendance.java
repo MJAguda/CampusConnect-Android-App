@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -43,6 +44,9 @@ public class logInAttendance extends AppCompatActivity {
         // Declare and Initialized locationManager
         LocationManager locationManager;
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        // Declare thankyou sound
+        final MediaPlayer thankyou = MediaPlayer.create(this, R.raw.thankyou);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +166,7 @@ public class logInAttendance extends AppCompatActivity {
 
                                                                 // Push Time in Database
                                                                 create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), dateFormat.format(dt));
+                                                                thankyou.start();
                                                             }
                                                             else{
                                                                 Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();

@@ -3,10 +3,12 @@ package com.example.campusconnect;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AnalogClock;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Analog Clock
+        AnalogClock analogClock = findViewById(R.id.analog_clock);
+
         // Declare components
         TextView header = findViewById(R.id.headerText_TextView);
         TextView schoolName = findViewById(R.id.schoolName_TextView);
@@ -42,16 +47,26 @@ public class MainActivity extends AppCompatActivity {
         ImageView logo = findViewById(R.id.footerlogo_ImageView);
         ImageButton register = findViewById(R.id.register_Button);
         ImageButton generate = findViewById(R.id.generate_Button);
+        TextView guide1 = findViewById(R.id.buttonGuide_TextView1);
+        TextView guide2 = findViewById(R.id.buttonGuide_TextView2);
+        TextView guide3 = findViewById(R.id.buttonGuide_TextView3);
+        TextView guide4 = findViewById(R.id.buttonGuide_TextView4);
+        TextView guide5 = findViewById(R.id.buttonGuide_TextView5);
 
         home.setVisibility(View.GONE);
         attendance.setVisibility(View.GONE);
         logo.setVisibility(View.GONE);
         register.setVisibility(View.GONE);
         generate.setVisibility(View.GONE);
+        guide1.setVisibility(View.GONE);
+        guide2.setVisibility(View.GONE);
+        guide3.setVisibility(View.GONE);
+        guide4.setVisibility(View.GONE);
+        guide5.setVisibility(View.GONE);
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // Check if school edittext is not empty
                 if(schoolID.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(), "Fill all Fields", Toast.LENGTH_SHORT).show();
@@ -67,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
                         logo.setVisibility(View.VISIBLE);
                         register.setVisibility(View.VISIBLE);
                         generate.setVisibility(View.VISIBLE);
+                        guide1.setVisibility(View.VISIBLE);
+                        guide2.setVisibility(View.VISIBLE);
+                        guide3.setVisibility(View.VISIBLE);
+                        guide4.setVisibility(View.VISIBLE);
+                        guide5.setVisibility(View.VISIBLE);
                     }
 
                     read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
@@ -97,6 +117,11 @@ public class MainActivity extends AppCompatActivity {
                                 logo.setVisibility(View.VISIBLE);
                                 register.setVisibility(View.VISIBLE);
                                 generate.setVisibility(View.VISIBLE);
+                                guide1.setVisibility(View.VISIBLE);
+                                guide2.setVisibility(View.VISIBLE);
+                                guide3.setVisibility(View.VISIBLE);
+                                guide4.setVisibility(View.VISIBLE);
+                                guide5.setVisibility(View.VISIBLE);
 
                                 // TODO set school LOGO
                                 // Set school name

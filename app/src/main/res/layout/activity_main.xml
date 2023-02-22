@@ -13,7 +13,7 @@
     <LinearLayout
         android:id="@+id/header_LinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:background="#B83B5E"
         android:orientation="horizontal">
 
@@ -29,11 +29,17 @@
             android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center"
             android:text="Attendance Monitoring App"
             android:textColor="#F9ED69"
             android:textSize="20sp" />
+
+        <AnalogClock
+            android:id="@+id/analog_clock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"/>
     </LinearLayout>
 
     <!--Body-->
@@ -44,7 +50,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="center"
             android:background="@drawable/round_body_bg"
             android:layout_margin="35px"
             android:padding="50px">
@@ -110,7 +115,9 @@
                 android:id="@+id/home_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15px"
+                android:layout_marginTop="15px"
+                android:layout_marginLeft="15px"
+                android:layout_marginRight="15px"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#F9ED69"
@@ -121,7 +128,9 @@
                 android:id="@+id/attendance_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15px"
+                android:layout_marginTop="15px"
+                android:layout_marginLeft="15px"
+                android:layout_marginRight="15px"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
@@ -132,7 +141,9 @@
                 android:id="@+id/footerlogo_ImageView"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:layout_margin="15px"
+                android:layout_marginTop="15px"
+                android:layout_marginLeft="15px"
+                android:layout_marginRight="15px"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
                 android:background="@drawable/round_bg"
@@ -142,7 +153,9 @@
                 android:id="@+id/register_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15px"
+                android:layout_marginTop="15px"
+                android:layout_marginLeft="15px"
+                android:layout_marginRight="15px"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
@@ -153,12 +166,71 @@
                 android:id="@+id/generate_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15px"
+                android:layout_marginTop="15px"
+                android:layout_marginLeft="15px"
+                android:layout_marginRight="15px"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
                 android:background="#F9ED69"
                 app:srcCompat="@drawable/generatebutton" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/buttonGuide_TextView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="0.2"
+                android:text="Home"
+                android:textAlignment="center"
+                android:textColor="#F9ED69"
+                android:textSize="10sp" />
+            <TextView
+                android:id="@+id/buttonGuide_TextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="0.2"
+                android:text="Attendance"
+                android:textAlignment="center"
+                android:textColor="#F9ED69"
+                android:textSize="10sp" />
+            <TextView
+                android:id="@+id/buttonGuide_TextView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="0.2"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#F9ED69"
+                android:textSize="10sp" />
+            <TextView
+                android:id="@+id/buttonGuide_TextView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="0.2"
+                android:text="Register"
+                android:textAlignment="center"
+                android:textColor="#F9ED69"
+                android:textSize="10sp" />
+            <TextView
+                android:id="@+id/buttonGuide_TextView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px"
+                android:layout_weight="0.2"
+                android:text="Generate"
+                android:textAlignment="center"
+                android:textColor="#F9ED69"
+                android:textSize="10sp" />
         </LinearLayout>
 
     </LinearLayout>
