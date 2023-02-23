@@ -46,6 +46,7 @@ public class Generate extends AppCompatActivity {
 
         // Declare Button Components
         ImageButton back = findViewById(R.id.backButton_ImageButton);
+        ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);
         Button submit = findViewById(R.id.submit_Button);
         ImageButton home = findViewById(R.id.home_Button);
         ImageButton generateQR = findViewById(R.id.generateQR_Button);
@@ -54,6 +55,7 @@ public class Generate extends AppCompatActivity {
         ImageButton generateTAMS = findViewById(R.id.generateTAMS_Button);
 
         // Declare guide for footer buttons
+        TextView text = findViewById(R.id.generateQR_TextView);
         TextView guide1 = findViewById(R.id.buttonGuide_TextView1);
         TextView guide2 = findViewById(R.id.buttonGuide_TextView2);
         TextView guide3 = findViewById(R.id.buttonGuide_TextView3);
@@ -63,6 +65,7 @@ public class Generate extends AppCompatActivity {
         // Hide buttons
         home.setVisibility(View.GONE);
         generateQR.setVisibility(View.GONE);
+        text.setVisibility(View.GONE);
         logo.setVisibility(View.GONE);
         generateDTR.setVisibility(View.GONE);
         generateTAMS.setVisibility(View.GONE);
@@ -91,6 +94,7 @@ public class Generate extends AppCompatActivity {
                         if(dataSnapshot.exists()){
                             home.setVisibility(View.VISIBLE);
                             generateQR.setVisibility(View.VISIBLE);
+                            text.setVisibility(View.VISIBLE);
                             logo.setVisibility(View.VISIBLE);
                             generateDTR.setVisibility(View.VISIBLE);
                             generateTAMS.setVisibility(View.VISIBLE);
@@ -100,8 +104,9 @@ public class Generate extends AppCompatActivity {
                             guide4.setVisibility(View.VISIBLE);
                             guide5.setVisibility(View.VISIBLE);
 
-                            id.setVisibility(View.GONE);
                             prompt.setVisibility(View.GONE);
+                            id.setVisibility(View.GONE);
+                            scanQR.setVisibility(View.GONE);
                             submit.setVisibility(View.GONE);
                         }
                         else{
@@ -139,6 +144,8 @@ public class Generate extends AppCompatActivity {
                 // call generateQRCode method from GenerateQR class
                 qr.setImageBitmap(generateQR.generateQRCode(save.getId()));
 
+                // Set text Guide
+                text.setText("Tap QR code to download");
 
                 // Download qr if a ImageView is clicked
                 qr.setOnClickListener(new View.OnClickListener() {

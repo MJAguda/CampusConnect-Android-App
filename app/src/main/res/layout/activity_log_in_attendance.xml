@@ -71,16 +71,20 @@
             android:text="Authenticate"
             android:gravity="left"
             android:textSize="20sp"/>
+
         <LinearLayout
+            android:id="@+id/id_LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/id_EditText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="30px"
+                android:layout_weight="0.80"
+                android:layout_marginTop="30px"
+                android:layout_marginBottom="30px"
                 android:hint="Enter ID Number"
                 android:textColor="#6A2C70"
                 android:inputType="number"
@@ -88,6 +92,19 @@
                 android:textAlignment="center"
                 android:background="@drawable/round_edittext_bg"
                 android:padding="16dp"/>
+
+            <ImageButton
+                android:id="@+id/scanQR_ImageButton"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.20"
+                android:layout_marginRight="30px"
+                android:layout_marginTop="30px"
+                android:layout_marginBottom="30px"
+                android:adjustViewBounds="true"
+                android:background="@color/zxing_transparent"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/scanqrbutton" />
         </LinearLayout>
     </LinearLayout>
 

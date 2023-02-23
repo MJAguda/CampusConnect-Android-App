@@ -2,6 +2,7 @@ package com.example.campusconnect;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -32,12 +33,16 @@ public class LogInAttendance extends AppCompatActivity {
     Create create = new Create();
     Calendar calendar = Calendar.getInstance();
 
+    private static final int REQUEST_CODE_QR_SCAN = 101;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in_attendance);
 
+        // Declare Components
         EditText id = findViewById(R.id.id_EditText);
+        ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);
         Button submit = findViewById(R.id.submit_Button);
         ImageButton back = findViewById(R.id.backButton_ImageButton);
 
@@ -48,6 +53,16 @@ public class LogInAttendance extends AppCompatActivity {
         // Declare thankyou sound
         final MediaPlayer thankyou = MediaPlayer.create(this, R.raw.thankyou);
         final MediaPlayer alreadyhave = MediaPlayer.create(this, R.raw.alreadyhave);
+
+        // TODO Log in using QR
+        // Set click listener on button to start ScanQR activity
+        scanQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LogInAttendance.this, ScanQR.class);
+                startActivityForResult(intent, REQUEST_CODE_QR_SCAN);
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,14 +255,23 @@ public class LogInAttendance extends AppCompatActivity {
                     }
                 });
 
-
-
-
-                // TODO Log in using QR
                 // TODO Log in using Facial Recognition
                 // TODO Log in using Biometric
 
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_QR_SCAN)if (resultCode == RESULT_OK && data != null) {
+            String qrCode = data.getStringExtra("qrCode");
+            Toast.makeText(this, "Scanned QR code: " + qrCode, Toast.LENGTH_SHORT).show();
+        } else if (resultCode == RESULT_CANCELED) {
+            Toast.makeText(this, "Scanning cancelled", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
+

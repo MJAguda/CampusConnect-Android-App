@@ -38,6 +38,8 @@ public class AdminScreen extends AppCompatActivity {
         TextView prompt = findViewById(R.id.prompt);
 
         // TODO add search bar for School and Employee
+        // TODO edit school and employee
+        // TODO add Employee Time sheet
 
         // For submit employee
         EditText id = findViewById(R.id.id_EditText);
