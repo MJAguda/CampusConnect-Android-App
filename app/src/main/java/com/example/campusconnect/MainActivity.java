@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
     School school = School.getInstance();
     Read read = new Read();
 
-    // TODO Remove the app title
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
