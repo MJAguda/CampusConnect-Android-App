@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -102,6 +103,7 @@ public class AdminScreen extends AppCompatActivity {
         EditText longitudeRight = findViewById(R.id.longitudeRight_EditText);
 
         // Buttons
+        ImageButton back = findViewById(R.id.backButton_ImageButton);
         Button addSchool = findViewById(R.id.adminAddSchool_Button);
         Button addEmployee = findViewById(R.id.adminAddEmployee_Button);
         Button submitSchool = findViewById(R.id.submitSchool_Button);
@@ -127,6 +129,14 @@ public class AdminScreen extends AppCompatActivity {
         //Hide buttons
         submitSchool.setVisibility(View.GONE);
         submitEmployee.setVisibility(View.GONE);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (AdminScreen.this, AdminLogIn.class);
+                startActivity(intent);
+            }
+        });
 
         // If addSchool button is clicked
         addSchool.setOnClickListener(new View.OnClickListener() {
@@ -280,8 +290,13 @@ public class AdminScreen extends AppCompatActivity {
                                 create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/fullname", save.getFullName());
                                 create.createRecord(school.getSchoolID() + "/employee/"+save.getId()+ "/birthdate", save.getBirthday());
 
+                                firstName.setText("");
+                                lastName.setText("");
+                                id.setText("");
+                                /*
                                 Intent intent = new Intent(AdminScreen.this, MainActivity.class);
                                 startActivity(intent);
+                                 */
                             }
                         }
 

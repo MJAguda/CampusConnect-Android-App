@@ -11,11 +11,10 @@ import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class logInAttendance extends AppCompatActivity {
+public class LogInAttendance extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
@@ -40,6 +39,7 @@ public class logInAttendance extends AppCompatActivity {
 
         EditText id = findViewById(R.id.id_EditText);
         Button submit = findViewById(R.id.submit_Button);
+        ImageButton back = findViewById(R.id.backButton_ImageButton);
 
         // Declare and Initialized locationManager
         LocationManager locationManager;
@@ -47,6 +47,15 @@ public class logInAttendance extends AppCompatActivity {
 
         // Declare thankyou sound
         final MediaPlayer thankyou = MediaPlayer.create(this, R.raw.thankyou);
+        final MediaPlayer alreadyhave = MediaPlayer.create(this, R.raw.alreadyhave);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (LogInAttendance.this, Attendance.class);
+                startActivity(intent);
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +89,7 @@ public class logInAttendance extends AppCompatActivity {
                                     // check if dataSnapshot exists but not equal to ""
                                         if (!dataSnapshot.child(save.getAuthenticate()).getValue().equals("")) {
                                             Toast.makeText(getApplicationContext(), "Already Have", Toast.LENGTH_SHORT).show();
+                                            alreadyhave.start();
                                         }
                                         else{
                                             //Time must have 15 minutes interval
@@ -153,7 +163,7 @@ public class logInAttendance extends AppCompatActivity {
                                                     else{
 
                                                         // Get the current location of phone through GPS
-                                                        GPSCoordinates gpsCoordinates = new GPSCoordinates(logInAttendance.this);
+                                                        GPSCoordinates gpsCoordinates = new GPSCoordinates(LogInAttendance.this);
                                                         Location currentLocation = gpsCoordinates.getCurrentLocation();
 
                                                         if (currentLocation != null) {
@@ -210,7 +220,7 @@ public class logInAttendance extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_LONG).show();
                                     }
 
-                                    Intent intent = new Intent(logInAttendance.this, Attendance.class);
+                                    Intent intent = new Intent(LogInAttendance.this, Attendance.class);
                                     startActivity(intent);
                                 }
 

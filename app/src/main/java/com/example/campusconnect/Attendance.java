@@ -1,14 +1,13 @@
 package com.example.campusconnect;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -18,9 +17,6 @@ import androidx.core.content.ContextCompat;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 
 import java.text.DateFormat;
@@ -61,7 +57,8 @@ public class Attendance extends AppCompatActivity {
         };
         timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // 1000ms = 1s
 
-
+        // Declare button components
+        ImageButton back = findViewById(R.id.backButton_ImageButton);
         Button AMIn = findViewById(R.id.AMIn_Button);
         Button AMOut = findViewById(R.id.AMOut_Button);
         Button PMIn = findViewById(R.id.PMIn_Button);
@@ -73,11 +70,19 @@ public class Attendance extends AppCompatActivity {
         GPSCoordinates gpsCoordinates = new GPSCoordinates(this);
         Location currentLocation = gpsCoordinates.getCurrentLocation();
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Attendance.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
         AMIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 save.setAuthenticate("timeAM_In");
-                Intent intent = new Intent(Attendance.this, logInAttendance.class);
+                Intent intent = new Intent(Attendance.this, LogInAttendance.class);
                 startActivity(intent);
             }
         });
@@ -86,7 +91,7 @@ public class Attendance extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 save.setAuthenticate("timeAM_Out");
-                Intent intent = new Intent(Attendance.this, logInAttendance.class);
+                Intent intent = new Intent(Attendance.this, LogInAttendance.class);
                 startActivity(intent);
             }
         });
@@ -95,7 +100,7 @@ public class Attendance extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 save.setAuthenticate("timePM_In");
-                Intent intent = new Intent(Attendance.this, logInAttendance.class);
+                Intent intent = new Intent(Attendance.this, LogInAttendance.class);
                 startActivity(intent);
             }
         });
@@ -104,7 +109,7 @@ public class Attendance extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 save.setAuthenticate("timePM_Out");
-                Intent intent = new Intent(Attendance.this, logInAttendance.class);
+                Intent intent = new Intent(Attendance.this, LogInAttendance.class);
                 startActivity(intent);
             }
         });

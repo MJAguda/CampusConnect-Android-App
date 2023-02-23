@@ -43,12 +43,17 @@ public class Generate extends AppCompatActivity {
         // Declare Components
         EditText id = findViewById(R.id.id_EditText);
         TextView prompt = findViewById(R.id.prompt);
+
+        // Declare Button Components
+        ImageButton back = findViewById(R.id.backButton_ImageButton);
         Button submit = findViewById(R.id.submit_Button);
         ImageButton home = findViewById(R.id.home_Button);
         ImageButton generateQR = findViewById(R.id.generateQR_Button);
         ImageView logo = findViewById(R.id.footerlogo_ImageView);
         ImageButton generateDTR = findViewById(R.id.generateDTR_Button);
         ImageButton generateTAMS = findViewById(R.id.generateTAMS_Button);
+
+        // Declare guide for footer buttons
         TextView guide1 = findViewById(R.id.buttonGuide_TextView1);
         TextView guide2 = findViewById(R.id.buttonGuide_TextView2);
         TextView guide3 = findViewById(R.id.buttonGuide_TextView3);
@@ -66,6 +71,14 @@ public class Generate extends AppCompatActivity {
         guide3.setVisibility(View.GONE);
         guide4.setVisibility(View.GONE);
         guide5.setVisibility(View.GONE);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Generate.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

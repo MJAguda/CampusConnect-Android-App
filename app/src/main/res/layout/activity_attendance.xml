@@ -17,10 +17,18 @@
         android:background="#B83B5E"
         android:orientation="horizontal">
 
+        <ImageButton
+            android:id="@+id/backButton_ImageButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="#B83B5E"
+            app:srcCompat="?attr/actionModeCloseDrawable" />
+
         <ImageView
             android:id="@+id/headerLogo_ImageView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.25"
             app:srcCompat="@drawable/campus_connect_logo" />
 

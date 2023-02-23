@@ -24,6 +24,7 @@ import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -58,6 +59,7 @@ public class GenerateDTR extends AppCompatActivity {
         setContentView(R.layout.activity_generate_dtr);
 
         // Find button in the Layout
+        ImageButton back = findViewById(R.id.backButton_ImageButton);
         Button generate = findViewById(R.id.generateDTR_Button);
         Button download = findViewById(R.id.downloadDTR_Button);
 
@@ -100,6 +102,14 @@ public class GenerateDTR extends AppCompatActivity {
         TextView name = findViewById(R.id.name_TextView);
         TextView date = findViewById(R.id.monthyear_TextView);
         TextView schoolHead = findViewById(R.id.schoolHead_TextView);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (GenerateDTR.this, Generate.class);
+                startActivity(intent);
+            }
+        });
 
         // Generate DTR
         generate.setOnClickListener(new View.OnClickListener() {
