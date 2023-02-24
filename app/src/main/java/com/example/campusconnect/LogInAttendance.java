@@ -33,7 +33,7 @@ public class LogInAttendance extends AppCompatActivity {
     Create create = new Create();
     Calendar calendar = Calendar.getInstance();
 
-    private static final int REQUEST_CODE_QR_SCAN = 101;
+    private static final int REQUEST_CODE_SCAN_QR = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class LogInAttendance extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LogInAttendance.this, ScanQR.class);
-                startActivityForResult(intent, REQUEST_CODE_QR_SCAN);
+                startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
             }
         });
 
@@ -262,15 +262,15 @@ public class LogInAttendance extends AppCompatActivity {
         });
     }
 
+    // Handles Scanned QR Result
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE_QR_SCAN)if (resultCode == RESULT_OK && data != null) {
-            String qrCode = data.getStringExtra("qrCode");
-            Toast.makeText(this, "Scanned QR code: " + qrCode, Toast.LENGTH_SHORT).show();
-        } else if (resultCode == RESULT_CANCELED) {
-            Toast.makeText(this, "Scanning cancelled", Toast.LENGTH_SHORT).show();
+        if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
+            String qrResult = data.getStringExtra("QR_RESULT");
+            // Handle the QR code result here
+            Toast.makeText(this, "QR code result: " + qrResult, Toast.LENGTH_SHORT).show();
         }
     }
 }
