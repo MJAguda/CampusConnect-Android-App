@@ -5,13 +5,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
@@ -25,7 +24,6 @@ public class ScanQR extends AppCompatActivity {
 
     private static final String TAG = "ScanQR";
     private SurfaceView cameraSurfaceView;
-    private TextView textScanResult;
     private BarcodeDetector detector;
     private CameraSource cameraSource;
 
@@ -35,7 +33,6 @@ public class ScanQR extends AppCompatActivity {
         setContentView(R.layout.activity_scan_qr);
 
         cameraSurfaceView = findViewById(R.id.cameraSurfaceView);
-        textScanResult = findViewById(R.id.textScanResult);
 
         detector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.QR_CODE)
@@ -51,12 +48,10 @@ public class ScanQR extends AppCompatActivity {
                 if (detections != null && detections.getDetectedItems().size() > 0) {
                     final Barcode barcode = detections.getDetectedItems().valueAt(0);
                     if (barcode != null) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                textScanResult.setText(barcode.displayValue);
-                            }
-                        });
+                        Intent intent = new Intent();
+                        intent.putExtra("QR_RESULT", barcode.displayValue);
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }
                 }
             }
@@ -111,8 +106,6 @@ public class ScanQR extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -121,3 +114,33 @@ public class ScanQR extends AppCompatActivity {
         cameraSource.release();
     }
 }
+
+/*
+    private static final int REQUEST_CODE_SCAN_QR = 123;
+
+    // Put inside the main, Button action Listener in the Main
+    // Set click listener on button to start ScanQR activity
+        scanQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Generate.this, ScanQR.class);
+                startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
+            }
+        });
+
+    // Put Outside the Main
+    // Handles Scanned QR Result
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        id = findViewById(R.id.id_EditText);
+
+        if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
+            String qrResult = data.getStringExtra("QR_RESULT");
+            // Handle the QR code result here
+            Toast.makeText(this, "QR code result: " + qrResult, Toast.LENGTH_SHORT).show();
+            id.setText(qrResult);
+        }
+    }
+ */

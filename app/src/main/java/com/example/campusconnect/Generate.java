@@ -1,6 +1,7 @@
 package com.example.campusconnect;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -35,13 +36,16 @@ public class Generate extends AppCompatActivity {
     School school = School.getInstance();
     Read read = new Read();
 
+    private static final int REQUEST_CODE_SCAN_QR = 123;
+    EditText id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generate);
 
         // Declare Components
-        EditText id = findViewById(R.id.id_EditText);
+        id = findViewById(R.id.id_EditText);
         TextView prompt = findViewById(R.id.prompt);
 
         // Declare Button Components
@@ -74,6 +78,15 @@ public class Generate extends AppCompatActivity {
         guide3.setVisibility(View.GONE);
         guide4.setVisibility(View.GONE);
         guide5.setVisibility(View.GONE);
+
+        // Set click listener on button to start ScanQR activity
+        scanQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Generate.this, ScanQR.class);
+                startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +189,20 @@ public class Generate extends AppCompatActivity {
 
             }
         });
+    }
 
+    // Handles Scanned QR Result
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        id = findViewById(R.id.id_EditText);
+
+        if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
+            String qrResult = data.getStringExtra("QR_RESULT");
+            // Handle the QR code result here
+            Toast.makeText(this, "QR code result: " + qrResult, Toast.LENGTH_SHORT).show();
+            id.setText(qrResult);
+        }
     }
 }

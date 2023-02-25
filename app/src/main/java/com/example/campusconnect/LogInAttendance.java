@@ -34,6 +34,7 @@ public class LogInAttendance extends AppCompatActivity {
     Calendar calendar = Calendar.getInstance();
 
     private static final int REQUEST_CODE_SCAN_QR = 123;
+    EditText id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class LogInAttendance extends AppCompatActivity {
         setContentView(R.layout.activity_log_in_attendance);
 
         // Declare Components
-        EditText id = findViewById(R.id.id_EditText);
+        id = findViewById(R.id.id_EditText);
         ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);
         Button submit = findViewById(R.id.submit_Button);
         ImageButton back = findViewById(R.id.backButton_ImageButton);
@@ -54,7 +55,6 @@ public class LogInAttendance extends AppCompatActivity {
         final MediaPlayer thankyou = MediaPlayer.create(this, R.raw.thankyou);
         final MediaPlayer alreadyhave = MediaPlayer.create(this, R.raw.alreadyhave);
 
-        // TODO Log in using QR
         // Set click listener on button to start ScanQR activity
         scanQR.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -267,10 +267,13 @@ public class LogInAttendance extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        id = findViewById(R.id.id_EditText);
+
         if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
             String qrResult = data.getStringExtra("QR_RESULT");
             // Handle the QR code result here
             Toast.makeText(this, "QR code result: " + qrResult, Toast.LENGTH_SHORT).show();
+            id.setText(qrResult);
         }
     }
 }
