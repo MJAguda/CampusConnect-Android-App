@@ -7,9 +7,6 @@
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Permission to write to the external storage -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA"/> <!-- Permission to use the device's camera -->
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
 
     <application
         android:allowBackup="true"
