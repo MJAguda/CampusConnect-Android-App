@@ -25,17 +25,29 @@
             android:background="#B83B5E"
             app:srcCompat="?attr/actionModeCloseDrawable" />
 
-        <ImageView
-            android:id="@+id/headerLogo_ImageView"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            app:srcCompat="@drawable/campus_connect_logo" />
+            android:layout_weight="0.25">
+
+            <ImageView
+                android:id="@+id/headerLogo_ImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/campus_connect_logo" />
+
+            <AnalogClock
+                android:id="@+id/analog_clock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
+
 
         <TextView
             android:id="@+id/headerText_TextView"
             android:layout_width="10dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="0.5"
             android:gravity="center"
@@ -43,11 +55,13 @@
             android:textColor="#F9ED69"
             android:textSize="20sp" />
 
-        <AnalogClock
-            android:id="@+id/analog_clock"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"/>
+        <ImageButton
+            android:id="@+id/hamburger_ImageButton"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:src="@drawable/hamburger"/>
+
     </LinearLayout>
 
     <!--Body-->

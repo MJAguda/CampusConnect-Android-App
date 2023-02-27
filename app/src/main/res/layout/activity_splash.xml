@@ -45,7 +45,7 @@
 
     <!--Footer-->
     <LinearLayout
-        android:id="@+id/footer_LineanLayout"
+        android:id="@+id/footer_LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/round_footer_bg"
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="Product of the talented minds of TVL-CPJ 12 Batch 2021-2022"
+            android:text="Product of the talented minds of TVL-CSS/CPJ 12 Batch 2021-2022"
             android:textAlignment="center"
             android:textColor="#F9ED69"
             android:textSize="20sp"
