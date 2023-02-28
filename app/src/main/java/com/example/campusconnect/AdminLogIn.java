@@ -46,8 +46,8 @@ public class AdminLogIn extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Check if admin account is school level or higher admin
+                // TODO add/separate system admin screen
                 if(adminUsername.getText().toString().equals(save.getAdminUsername()) && adminPassword.getText().toString().equals(save.getAdminPassword())){
-                    // TODO add/separate system admin screen
                     Toast.makeText(getApplicationContext(), "Welcome System Admin", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(AdminLogIn.this, AdminScreen.class);
                     startActivity(intent);
