@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Permission to connect to the Internet -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Permission to write to the external storage -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/> <!-- Permission to use the device's camera -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -18,6 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusConnect"
         tools:targetApi="31">
+        <activity
+            android:name=".GenerateTAMS"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".ScanQR"
             android:exported="false"
