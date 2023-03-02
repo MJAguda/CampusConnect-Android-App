@@ -8,7 +8,6 @@
     tools:context=".GenerateTAMS"
     android:orientation="vertical">
 
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0.5in"
