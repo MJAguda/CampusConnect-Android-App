@@ -194,7 +194,7 @@ public class LogInAttendance extends AppCompatActivity {
                                                                 thankyou.start();
                                                             }
                                                             else{
-                                                                Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(getApplicationContext(), "You are outside the Campus. Connect to School WIFI", Toast.LENGTH_SHORT).show();
                                                             }
                                                         } else {
                                                             Toast.makeText(getApplicationContext(), "No location data available", Toast.LENGTH_SHORT).show();

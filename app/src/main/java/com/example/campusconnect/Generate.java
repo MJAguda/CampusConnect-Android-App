@@ -186,7 +186,7 @@ public class Generate extends AppCompatActivity {
         generateTAMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(getApplicationContext(), "Coming soon!. Stay tuned.", Toast.LENGTH_SHORT).show();
             }
         });
     }
