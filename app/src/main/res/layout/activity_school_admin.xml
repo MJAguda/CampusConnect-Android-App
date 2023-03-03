@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/layoutbackground"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <!--Header-->
+    <LinearLayout
+        android:id="@+id/header_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#B83B5E"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/backButton_ImageButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="#B83B5E"
+            app:srcCompat="?attr/actionModeCloseDrawable" />
+
+        <include layout="@layout/header_layout"/>
+    </LinearLayout>
+
+    <!--Body-->
+    <LinearLayout
+        android:id="@+id/body_LinearLayout"
+        layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="top"
+        android:background="@drawable/round_body_bg"
+        android:layout_margin="35px"
+        android:padding="50px">
+        <!--android:background="#F08A5D"-->
+
+        <TextView
+            android:id="@+id/prompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome Admin"
+            android:textColor="#6A2C70"
+            android:textSize="20sp"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/id_EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Employee ID"
+                    android:inputType="number"
+                    android:layout_margin="10px"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
+
+                <EditText
+                    android:id="@+id/firstName_EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="First Name"
+                    android:layout_margin="10px"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
+
+                <EditText
+                    android:id="@+id/lastName_EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Last Name"
+                    android:layout_margin="10px"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    android:background="@drawable/round_edittext_bg"
+                    android:padding="16dp"/>
+
+                <TableLayout
+                    android:id="@+id/birthday_TableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#F9ED69"
+                        android:layout_margin="20px">
+
+                        <Spinner
+                            android:id="@+id/month_Spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.5"
+                            android:layout_height="30sp"
+                            android:layout_margin="10px"/>
+
+                        <View
+                            android:id="@+id/divider3"
+                            android:layout_width="2dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/listDivider" />
+
+                        <Spinner
+                            android:id="@+id/day_Spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.25"
+                            android:layout_height="30sp" />
+
+                        <View
+                            android:id="@+id/divider3"
+                            android:layout_width="2dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/listDivider" />
+
+                        <Spinner
+                            android:id="@+id/year_Spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.25"
+                            android:layout_height="30sp" />
+                    </TableRow>
+                </TableLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+        <!--<DatePicker
+            android:id="@+id/birthday_DatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+            -->
+    </LinearLayout>
+
+    <!--Footer-->
+    <LinearLayout
+        android:id="@+id/footer_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B83B5E"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/adminAddEmployee_Button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="10px"
+            android:backgroundTint="#F9ED69"
+            android:text="Add Employee"
+            android:textColor="#6A2C70"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/submitEmployee_Button"
+            android:layout_margin="10px"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:backgroundTint="#F9ED69"
+            android:textColor="#6A2C70"
+            android:text="Submit Employee"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+</LinearLayout>
