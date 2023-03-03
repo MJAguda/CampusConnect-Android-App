@@ -25,29 +25,8 @@
             android:background="#B83B5E"
             app:srcCompat="?attr/actionModeCloseDrawable" />
 
-        <ImageView
-            android:id="@+id/headerLogo_ImageView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            app:srcCompat="@drawable/campus_connect_logo" />
+        <include layout="@layout/header_layout"/>
 
-        <TextView
-            android:id="@+id/headerText_TextView"
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:text="Campus Connect"
-            android:textColor="#F9ED69"
-            android:textSize="20sp" />
-
-        <AnalogClock
-            android:id="@+id/analog_clock"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"/>
     </LinearLayout>
 
     <!--Body-->

@@ -86,8 +86,6 @@ public class LogInAttendance extends AppCompatActivity {
                 SimpleDateFormat dateFormat;
                 dateFormat = new SimpleDateFormat("hh:mm a");
 
-                // TODO Scan QR and Compare it with ID Number
-
                 // Check id if exist Log in Using ID Number
                 Read read = new Read();
                 read.readRecord(school.getSchoolID() + "/employee/" + save.getId(), new Read.OnGetDataListener() {
