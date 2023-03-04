@@ -25,29 +25,7 @@
             android:background="#B83B5E"
             app:srcCompat="?attr/actionModeCloseDrawable" />
 
-        <ImageView
-            android:id="@+id/headerLogo_ImageView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            app:srcCompat="@drawable/campus_connect_logo" />
-
-        <TextView
-            android:id="@+id/headerText_TextView"
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:text="Campus Connect"
-            android:textColor="#F9ED69"
-            android:textSize="20sp" />
-
-        <AnalogClock
-            android:id="@+id/analog_clock"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"/>
+        <include layout="@layout/header_layout"/>
     </LinearLayout>
 
     <!--Body-->
@@ -86,8 +64,7 @@
                     android:id="@+id/month_Spinner"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
-                    android:layout_height="30sp"
-                    android:layout_margin="10px"/>
+                    android:layout_height="30sp"/>
 
                 <View
                     android:id="@+id/divider3"
@@ -354,157 +331,154 @@
                     android:layout_height="8sp"/>
 
                 <!--Body-->
-                <TableLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                    <TextView
+                        android:background="@drawable/table_border"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.14285714285714285714285714285714"
+                        android:gravity="center"
+                        android:paddingTop="5px"
+                        android:paddingBottom="5px"
+                        android:text="Date"
+                        android:textColor="@color/black"
+                        android:textSize="9sp"/>
 
-                        <TextView
-                            android:background="@drawable/table_border"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.14285714285714285714285714285714"
-                            android:gravity="center"
-                            android:paddingTop="5px"
-                            android:paddingBottom="5px"
-                            android:text=""
-                            android:textColor="@color/black"
-                            android:textSize="9sp"/>
+                    <TableLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.85714285714285714285714285714284">
 
-                        <TextView
-                            android:background="@drawable/table_border"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.28571428571428571428571428571429"
-                            android:textColor="@color/black"
-                            android:text="A.M."
-                            android:textSize="9sp"
-                            android:gravity="center"
-                            android:paddingTop="5px"
-                            android:paddingBottom="5px"
-                            android:textStyle="bold"/>
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.28571428571428571428571428571429"
-                            android:background="@drawable/table_border"
-                            android:gravity="center"
-                            android:paddingTop="5px"
-                            android:paddingBottom="5px"
-                            android:text="P.M."
-                            android:textColor="@color/black"
-                            android:textSize="9sp"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:background="@drawable/table_border"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.28571428571428571428571428571429"
-                            android:textColor="@color/black"
-                            android:text="Undertime"
-                            android:textSize="9sp"
-                            android:gravity="center"
-                            android:paddingTop="5px"
-                            android:paddingBottom="5px"
-                            android:textStyle="bold"/>
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.28571428571428571428571428571429"
+                                android:textColor="@color/black"
+                                android:text="A.M."
+                                android:textSize="9sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
 
-                    </TableRow>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.28571428571428571428571428571429"
+                                android:background="@drawable/table_border"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:text="P.M."
+                                android:textColor="@color/black"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.28571428571428571428571428571429"
+                                android:textColor="@color/black"
+                                android:text="Undertime"
+                                android:textSize="9sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        </TableRow>
 
-                        <TextView
-                            android:background="@drawable/table_border"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black"
-                            android:text="Day"
-                            android:textSize="7sp"
-                            android:gravity="center"
-                            android:paddingTop="5px"
-                            android:paddingBottom="5px"/>
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                        <TextView
-                            android:background="@drawable/table_border"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black"
-                            android:text="Arrival"
-                            android:textSize="7sp"
-                            android:gravity="center"
-                            android:paddingTop="5px"
-                            android:paddingBottom="5px"
-                            android:textStyle="bold"/>
-                        <TextView
-                            android:background="@drawable/table_border"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black"
-                            android:text="Departure"
-                            android:textSize="7sp"
-                            android:gravity="center"
-                            android:paddingTop="5px"
-                            android:paddingBottom="5px"
-                            android:textStyle="bold"/>
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Arrival"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Departure"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
 
-                        <TextView
-                            android:background="@drawable/table_border"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black"
-                            android:text="Arrival"
-                            android:textSize="7sp"
-                            android:gravity="center"
-                            android:paddingTop="5px"
-                            android:paddingBottom="5px"
-                            android:textStyle="bold"/>
-                        <TextView
-                            android:background="@drawable/table_border"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black"
-                            android:text="Departure"
-                            android:textSize="7sp"
-                            android:gravity="center"
-                            android:paddingTop="5px"
-                            android:paddingBottom="5px"
-                            android:textStyle="bold"/>
-                        <TextView
-                            android:background="@drawable/table_border"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black"
-                            android:text="Hours"
-                            android:textSize="7sp"
-                            android:gravity="center"
-                            android:paddingTop="5px"
-                            android:paddingBottom="5px"
-                            android:textStyle="bold"/>
-                        <TextView
-                            android:background="@drawable/table_border"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black"
-                            android:text="Minutes"
-                            android:textSize="7sp"
-                            android:gravity="center"
-                            android:paddingTop="5px"
-                            android:paddingBottom="5px"
-                            android:textStyle="bold"/>
-                    </TableRow>
-                </TableLayout>
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Arrival"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Departure"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Hours"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Minutes"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+                        </TableRow>
+                    </TableLayout>
+
+                </LinearLayout>
+
 
                 <TableLayout
                     android:id="@+id/dtr_TableLayout"
@@ -524,7 +498,7 @@
                             android:background="@drawable/table_border"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.714285714"
+                            android:layout_weight="0.7142857142857142857142857142857"
                             android:textColor="@color/black"
                             android:text="Total "
                             android:textSize="9sp"
@@ -534,7 +508,7 @@
                             android:background="@drawable/table_border"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.28571428571428571428571428571429"
+                            android:layout_weight="0.28571428571428571428571428571428"
                             android:textColor="@color/black"
                             android:text=""
                             android:textSize="9sp"

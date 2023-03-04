@@ -140,26 +140,14 @@
                 android:id="@+id/home_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15px"
-                android:layout_marginLeft="15px"
-                android:layout_marginRight="15px"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#F9ED69"
-                android:scaleType="centerInside"
+                style="@style/MyImageButtonStyle"
                 app:srcCompat="@drawable/homebutton"/>
 
             <ImageButton
                 android:id="@+id/generateQR_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15px"
-                android:layout_marginLeft="15px"
-                android:layout_marginRight="15px"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#F9ED69"
-                android:scaleType="centerInside"
+                style="@style/MyImageButtonStyle"
                 app:srcCompat="@drawable/generateqrbutton" />
 
             <ImageView
@@ -178,26 +166,14 @@
                 android:id="@+id/generateDTR_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15px"
-                android:layout_marginLeft="15px"
-                android:layout_marginRight="15px"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#F9ED69"
-                android:scaleType="centerInside"
+                style="@style/MyImageButtonStyle"
                 app:srcCompat="@drawable/generatedtrbutton" />
 
             <ImageButton
                 android:id="@+id/generateTAMS_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15px"
-                android:layout_marginLeft="15px"
-                android:layout_marginRight="15px"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="#F9ED69"
-                android:scaleType="centerInside"
+                style="@style/MyImageButtonStyle"
                 app:srcCompat="@drawable/generatetamsbutton" />
         </LinearLayout>
 
