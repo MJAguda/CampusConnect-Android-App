@@ -140,9 +140,180 @@ ATTENDANCE MANAGEMENT SYSTEM (TAMS) ENTRY"
         android:layout_height="12sp" />
 
     <TextView
-        android:id="@+id/date_TextView"
+        android:id="@+id/FirstParag_TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="I, _________, of FLORA NATIONAL "
+        android:text="      I, _________________, of ________________________ regret to inform your good office that I missed to punch in/out through the Biometrics Device the time I arrived/left the office on the dates indicated below."
         android:textSize="11sp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="12sp" />
+
+    <TextView
+        android:id="@+id/SecondParag_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="      I respectfully request for the correction/adjustment of the entries as follows:"
+        android:textSize="11sp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="12sp" />
+
+    <TableLayout
+        android:id="@+id/log_TableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="Date"
+                android:textSize="11sp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:background="@drawable/table_border"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="AM Time In"
+                android:textSize="11sp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:background="@drawable/table_border"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="AM Time Out"
+                android:textSize="11sp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:background="@drawable/table_border"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="AM Time In"
+                android:textSize="11sp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:background="@drawable/table_border"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="AM Time Out"
+                android:textSize="11sp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:background="@drawable/table_border"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="Remarks"
+                android:textSize="11sp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:background="@drawable/table_border"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="12sp" />
+
+    <TextView
+        android:id="@+id/FirstParag_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="      Hoping for your kind consideration."
+        android:textSize="11sp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="12sp" />
+
+    <TextView
+        android:id="@+id/FirstParag_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="      Thank you."
+        android:textSize="11sp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="12sp" />
+
+    <TextView
+        android:id="@+id/FirstParag_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="      Very Truly yours,"
+        android:textSize="11sp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="24sp" />
+
+    <TextView
+        android:id="@+id/name_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="      Name"
+        android:textSize="11sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/rank_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="      Teacher"
+        android:textSize="11sp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="48sp" />
+
+    <TextView
+        android:id="@+id/FirstParag_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Noted by:"
+        android:textSize="11sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="24sp" />
+
+    <TextView
+        android:id="@+id/schoolHead_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="      School Head"
+        android:textSize="11sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="      School Principal II"
+        android:textSize="11sp"/>
+
 </LinearLayout>
