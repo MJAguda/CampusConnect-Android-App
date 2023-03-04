@@ -30,7 +30,7 @@ public class SchoolAdmin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_screen);
+        setContentView(R.layout.activity_school_admin);
 
         TextView prompt = findViewById(R.id.prompt);
 
@@ -95,9 +95,7 @@ public class SchoolAdmin extends AppCompatActivity {
 
         // Buttons
         ImageButton back = findViewById(R.id.backButton_ImageButton);
-        Button addSchool = findViewById(R.id.adminAddSchool_Button);
         Button addEmployee = findViewById(R.id.adminAddEmployee_Button);
-        Button submitSchool = findViewById(R.id.submitSchool_Button);
         Button submitEmployee = findViewById(R.id.submitEmployee_Button);
 
         // Hide add employee components
@@ -107,7 +105,6 @@ public class SchoolAdmin extends AppCompatActivity {
         birthday.setVisibility(View.GONE);
 
         //Hide buttons
-        submitSchool.setVisibility(View.GONE);
         submitEmployee.setVisibility(View.GONE);
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -132,9 +129,7 @@ public class SchoolAdmin extends AppCompatActivity {
                 birthday.setVisibility(View.VISIBLE);
 
                 // Unhide submitSchool button
-                submitSchool.setVisibility(View.GONE);
                 submitEmployee.setVisibility(View.VISIBLE);
-                addSchool.setVisibility(View.GONE);
                 addEmployee.setVisibility(View.GONE);
             }
         });

@@ -19,8 +19,13 @@
         android:theme="@style/Theme.CampusConnect"
         tools:targetApi="31">
         <activity
-            android:name=".schoolAdmin"
-            android:exported="false" />
+            android:name=".SystemAdmin"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".SchoolAdmin"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".GenerateTAMS"
             android:exported="false"
@@ -39,10 +44,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".AdminScreen"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Generate"
             android:exported="false"

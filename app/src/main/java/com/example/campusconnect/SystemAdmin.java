@@ -30,7 +30,7 @@ public class SystemAdmin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_screen);
+        setContentView(R.layout.activity_system_admin);
 
         TextView prompt = findViewById(R.id.prompt);
 
