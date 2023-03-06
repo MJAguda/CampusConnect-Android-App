@@ -38,7 +38,7 @@ public class Attendance extends AppCompatActivity {
         setContentView(R.layout.activity_attendance);
 
         // Initialize Clock
-        TextView dateTimeTextView = findViewById(R.id.time_TextView);
+        TextView dateTimeTextView = findViewById(R.id.dateAndTime_TextView);
         timer = new Timer();
 
         // Update clock every 1s
@@ -48,9 +48,7 @@ public class Attendance extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
-                        Date date = new Date();
-                        dateTimeTextView.setText(dateFormat.format(date));
+                        dateTimeTextView.setText(DateUtils.getCurrentDate());
                     }
                 });
             }
@@ -149,6 +147,7 @@ public class Attendance extends AppCompatActivity {
                                     day.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.cell_shape));
 
                                     row.addView(day);
+
                                     // Add time TextView to the row
                                     for(DataSnapshot grandChild : child.getChildren()){
                                         Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());

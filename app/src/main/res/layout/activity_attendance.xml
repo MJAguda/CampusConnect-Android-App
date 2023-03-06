@@ -42,7 +42,7 @@
         android:padding="50px">
         <!--android:background="#F08A5D"-->
         <TextView
-            android:id="@+id/time_TextView"
+            android:id="@+id/dateAndTime_TextView"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-smallcaps"
@@ -120,7 +120,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:layout_marginLeft="10px"
-                android:layout_marginRight="10px">
+                android:layout_marginRight="10px"
+                android:stretchColumns="*">
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -136,11 +137,6 @@
                         android:textSize="12sp"
                         android:textAlignment="center"/>
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="?android:attr/listDivider" />
-
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -149,10 +145,7 @@
                         android:text="AM In"
                         android:textSize="12sp"
                         android:textAlignment="center"/>
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="?android:attr/listDivider" />
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -161,10 +154,7 @@
                         android:text="AM Out"
                         android:textSize="12sp"
                         android:textAlignment="center"/>
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="?android:attr/listDivider" />
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -174,10 +164,7 @@
                         android:text="PM In"
                         android:textSize="12sp"
                         android:textAlignment="center"/>
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="?android:attr/listDivider" />
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

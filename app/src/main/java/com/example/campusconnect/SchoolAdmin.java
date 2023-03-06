@@ -1,9 +1,13 @@
 package com.example.campusconnect;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,14 +15,20 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SchoolAdmin extends AppCompatActivity {
 
@@ -26,18 +36,21 @@ public class SchoolAdmin extends AppCompatActivity {
     School school = School.getInstance();
     Read read = new Read();
     Create create = new Create();
+    Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_admin);
 
-        TextView prompt = findViewById(R.id.prompt);
 
         // TODO add search bar for Employee
         // TODO edit employee
         // TODO delete employee
-        // TODO add Employee Time sheet
+
+
+        TextView prompt = findViewById(R.id.prompt);
+        TextView date = findViewById(R.id.dateAndTime_TextView);
 
         // For submit employee
         EditText id = findViewById(R.id.id_EditText);
@@ -106,6 +119,66 @@ public class SchoolAdmin extends AppCompatActivity {
 
         //Hide buttons
         submitEmployee.setVisibility(View.GONE);
+
+        // Display a Display Date and Time
+        timer = new Timer();
+        TimerTask updateTimeTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        date.setText(DateUtils.getCurrentDate());
+                    }
+                });
+            }
+        };
+
+        timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // update every 1 second
+
+        // TODO Read all Personnel's Time Log for the day
+        save.setMonth(String.valueOf(Integer.parseInt(DateUtils.getCurrentMonth())));
+        save.setDay(String.valueOf(Integer.parseInt(DateUtils.getCurrentDay())));
+        save.setYear(String.valueOf(Integer.parseInt(DateUtils.getCurrentYear())));
+        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+
+                TableLayout table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
+                table.removeAllViews();
+
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    Log.d("TAG", child.child("fullname").getValue(String.class));
+
+                    // Instance of the row
+                    TableRow row = new TableRow(SchoolAdmin.this);
+
+                    // Add day to the row
+                    TextView name = new TextView(SchoolAdmin.this);
+                    String fullName = child.child("fullname").getValue(String.class);
+                    name.setText(fullName);
+                    //name.setTextColor(Color.BLACK);
+                    name.setTextSize(12);
+                    name.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                    name.setLayoutParams(params);
+                    name.setBackground(ContextCompat.getDrawable(SchoolAdmin.this, R.drawable.cell_shape));
+
+                    row.addView(name);
+
+                    // TODO display reference key inside the current day
+
+                    Log.d("TAG", child.child("attendance/" + DateUtils.getCurrentYear() + "/" + DateUtils.getMonthName(DateUtils.getCurrentMonth()) + "/" + Integer.parseInt(DateUtils.getCurrentDay()) + "/timeAM_In").getValue(String.class));
+
+                    table.addView(row);
+                }
+            }
+
+            @Override
+            public void onFailure(DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

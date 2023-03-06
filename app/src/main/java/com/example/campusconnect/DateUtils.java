@@ -1,5 +1,11 @@
 package com.example.campusconnect;
 
+// User Network Time Protocol / Time Zone
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class DateUtils {
 
     public static int getNumberOfDays(String month, String year) {
@@ -22,6 +28,37 @@ public class DateUtils {
         }
         return day;
     }
+
+    public static String getCurrentDate(){
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    public static String getCurrentMonth(){
+        DateFormat dateFormat = new SimpleDateFormat("MM");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    public static String getMonthName(String month) {
+        int monthInt = Integer.parseInt(month);
+        String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        return monthNames[monthInt-1];
+    }
+
+    public static String getCurrentDay(){
+        DateFormat dateFormat = new SimpleDateFormat("dd");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    public static String getCurrentYear(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
 }
 
 /*
