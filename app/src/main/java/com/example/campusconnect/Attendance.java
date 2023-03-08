@@ -148,6 +148,8 @@ public class Attendance extends AppCompatActivity {
 
                                     row.addView(day);
 
+                                    // TODO Fix Height each row
+
                                     // Add time TextView to the row
                                     for(DataSnapshot grandChild : child.getChildren()){
                                         Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());

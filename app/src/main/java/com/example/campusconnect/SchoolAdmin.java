@@ -7,12 +7,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -136,7 +139,7 @@ public class SchoolAdmin extends AppCompatActivity {
 
         timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // update every 1 second
 
-        // TODO Read all Personnel's Time Log for the day
+        //Read all Personnel's Time Log for the day
         save.setMonth(String.valueOf(Integer.parseInt(DateUtils.getCurrentMonth())));
         save.setDay(String.valueOf(Integer.parseInt(DateUtils.getCurrentDay())));
         save.setYear(String.valueOf(Integer.parseInt(DateUtils.getCurrentYear())));
@@ -159,17 +162,35 @@ public class SchoolAdmin extends AppCompatActivity {
                     String fullName = child.child("fullname").getValue(String.class);
                     name.setText(fullName);
                     //name.setTextColor(Color.BLACK);
-                    name.setTextSize(12);
+                    name.setTextSize(11);
                     name.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                    TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.33333333333333333333333333333334f);
                     name.setLayoutParams(params);
                     name.setBackground(ContextCompat.getDrawable(SchoolAdmin.this, R.drawable.cell_shape));
 
                     row.addView(name);
 
-                    // TODO display reference key inside the current day
+                    // Display reference key inside the current day
 
                     Log.d("TAG", child.child("attendance/" + DateUtils.getCurrentYear() + "/" + DateUtils.getMonthName(DateUtils.getCurrentMonth()) + "/" + Integer.parseInt(DateUtils.getCurrentDay()) + "/timeAM_In").getValue(String.class));
+
+                    for(DataSnapshot grandChild : child.child("attendance/" + DateUtils.getCurrentYear() + "/" + DateUtils.getMonthName(DateUtils.getCurrentMonth()) + "/" + Integer.parseInt(DateUtils.getCurrentDay())).getChildren()){
+                        Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
+
+                        // Add time to the row
+                        TextView time = new TextView(SchoolAdmin.this);
+
+                        time.setText(grandChild.getValue().toString());
+                        time.setTextSize(10);
+                        //time.setTextColor(Color.BLACK);
+                        TableRow.LayoutParams timeparams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT , 0.16666666666666666666666666666667f);
+                        time.setLayoutParams(timeparams);
+                        time.setGravity(Gravity.CENTER);
+                        time.setBackground(ContextCompat.getDrawable(SchoolAdmin.this, R.drawable.cell_shape));
+
+                        row.addView(time);
+
+                    }
 
                     table.addView(row);
                 }
