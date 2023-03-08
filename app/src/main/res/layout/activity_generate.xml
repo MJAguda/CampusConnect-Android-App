@@ -81,7 +81,7 @@
                 android:layout_marginBottom="30px"
                 android:adjustViewBounds="true"
                 android:background="@color/zxing_transparent"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/scanqrbutton" />
 
         </LinearLayout>
@@ -138,16 +138,18 @@
 
             <ImageButton
                 android:id="@+id/home_Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyImageButtonStyle"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/homebutton"/>
 
             <ImageButton
                 android:id="@+id/generateQR_Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyImageButtonStyle"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/generateqrbutton" />
 
             <ImageView
@@ -164,16 +166,18 @@
 
             <ImageButton
                 android:id="@+id/generateDTR_Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyImageButtonStyle"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/generatedtrbutton" />
 
             <ImageButton
                 android:id="@+id/generateTAMS_Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyImageButtonStyle"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/generatetamsbutton" />
         </LinearLayout>
 

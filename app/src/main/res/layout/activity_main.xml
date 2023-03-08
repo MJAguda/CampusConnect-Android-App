@@ -128,16 +128,18 @@
 
             <ImageButton
                 android:id="@+id/home_Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyImageButtonStyle"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/homebutton"/>
 
             <ImageButton
                 android:id="@+id/attendance_Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyImageButtonStyle"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/attendancebutton"/>
 
             <ImageView
@@ -154,16 +156,18 @@
 
             <ImageButton
                 android:id="@+id/register_Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyImageButtonStyle"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/registerbutton" />
 
             <ImageButton
                 android:id="@+id/generate_Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyImageButtonStyle"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/generatebutton" />
 
         </LinearLayout>
