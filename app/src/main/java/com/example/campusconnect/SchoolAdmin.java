@@ -162,8 +162,8 @@ public class SchoolAdmin extends AppCompatActivity {
                     String fullName = child.child("fullname").getValue(String.class);
                     name.setText(fullName);
                     //name.setTextColor(Color.BLACK);
-                    name.setTextSize(11);
-                    name.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    name.setTextSize(12);
+                    name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                     TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.33333333333333333333333333333334f);
                     name.setLayoutParams(params);
                     name.setBackground(ContextCompat.getDrawable(SchoolAdmin.this, R.drawable.cell_shape));
@@ -181,7 +181,7 @@ public class SchoolAdmin extends AppCompatActivity {
                         TextView time = new TextView(SchoolAdmin.this);
 
                         time.setText(grandChild.getValue().toString());
-                        time.setTextSize(10);
+                        time.setTextSize(12);
                         //time.setTextColor(Color.BLACK);
                         TableRow.LayoutParams timeparams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT , 0.16666666666666666666666666666667f);
                         time.setLayoutParams(timeparams);
