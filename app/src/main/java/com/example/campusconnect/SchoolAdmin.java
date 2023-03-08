@@ -153,6 +153,7 @@ public class SchoolAdmin extends AppCompatActivity {
                     // Instance of the row
                     TableRow row = new TableRow(SchoolAdmin.this);
 
+
                     // Add day to the row
                     TextView name = new TextView(SchoolAdmin.this);
                     String fullName = child.child("fullname").getValue(String.class);
