@@ -151,48 +151,43 @@ public class SchoolAdmin extends AppCompatActivity {
                 table.removeAllViews();
 
                 for(DataSnapshot child : dataSnapshot.getChildren()){
-                    Log.d("TAG", child.child("fullname").getValue(String.class));
-
-                    // Instance of the row
-                    TableRow row = new TableRow(SchoolAdmin.this);
-
-
-                    // Add day to the row
-                    TextView name = new TextView(SchoolAdmin.this);
                     String fullName = child.child("fullname").getValue(String.class);
-                    name.setText(fullName);
-                    //name.setTextColor(Color.BLACK);
-                    name.setTextSize(12);
-                    name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-                    TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.33333333333333333333333333333334f);
-                    name.setLayoutParams(params);
-                    name.setBackground(ContextCompat.getDrawable(SchoolAdmin.this, R.drawable.cell_shape));
+                    if (fullName != null) {
+                        Log.d("TAG", fullName);
+                        // Instance of the row
+                        TableRow row = new TableRow(SchoolAdmin.this);
 
-                    row.addView(name);
 
-                    // Display reference key inside the current day
+                        // Add day to the row
+                        TextView name = new TextView(SchoolAdmin.this);
+                        name.setText(fullName);
+                        name.setTextSize(12);
+                        name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                        TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.33333333333333333333333333333334f);
+                        name.setLayoutParams(params);
+                        name.setBackground(ContextCompat.getDrawable(SchoolAdmin.this, R.drawable.cell_shape));
 
-                    Log.d("TAG", child.child("attendance/" + DateUtils.getCurrentYear() + "/" + DateUtils.getMonthName(DateUtils.getCurrentMonth()) + "/" + Integer.parseInt(DateUtils.getCurrentDay()) + "/timeAM_In").getValue(String.class));
+                        row.addView(name);
 
-                    for(DataSnapshot grandChild : child.child("attendance/" + DateUtils.getCurrentYear() + "/" + DateUtils.getMonthName(DateUtils.getCurrentMonth()) + "/" + Integer.parseInt(DateUtils.getCurrentDay())).getChildren()){
-                        Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
+                        for(DataSnapshot grandChild : child.child("attendance/" + DateUtils.getCurrentYear() + "/" + DateUtils.getMonthName(DateUtils.getCurrentMonth()) + "/" + Integer.parseInt(DateUtils.getCurrentDay())).getChildren()){
+                            Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
 
-                        // Add time to the row
-                        TextView time = new TextView(SchoolAdmin.this);
+                            // Add time to the row
+                            TextView time = new TextView(SchoolAdmin.this);
 
-                        time.setText(grandChild.getValue().toString());
-                        time.setTextSize(12);
-                        //time.setTextColor(Color.BLACK);
-                        TableRow.LayoutParams timeparams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT , 0.16666666666666666666666666666667f);
-                        time.setLayoutParams(timeparams);
-                        time.setGravity(Gravity.CENTER);
-                        time.setBackground(ContextCompat.getDrawable(SchoolAdmin.this, R.drawable.cell_shape));
+                            time.setText(grandChild.getValue().toString());
+                            time.setTextSize(12);
+                            TableRow.LayoutParams timeparams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT , 0.16666666666666666666666666666667f);
+                            time.setLayoutParams(timeparams);
+                            time.setGravity(Gravity.CENTER);
+                            time.setBackground(ContextCompat.getDrawable(SchoolAdmin.this, R.drawable.cell_shape));
 
-                        row.addView(time);
+                            row.addView(time);
 
+                        }
+
+                        table.addView(row);
                     }
-
-                    table.addView(row);
                 }
             }
 
@@ -201,6 +196,7 @@ public class SchoolAdmin extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
             }
         });
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
