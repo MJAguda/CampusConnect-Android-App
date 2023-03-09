@@ -26,6 +26,15 @@
             app:srcCompat="?attr/actionModeCloseDrawable" />
 
         <include layout="@layout/header_layout"/>
+
+        <ImageButton
+            android:id="@+id/hamburger_ImageButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="#00000000"
+            android:src="@drawable/hamburger"/>
+
     </LinearLayout>
 
     <!--Body-->
@@ -43,7 +52,7 @@
         <!--android:background="#F08A5D"-->
         <TextView
             android:id="@+id/dateAndTime_TextView"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-smallcaps"
             android:text="MM/dd/yyyy hh:mm:ss a"

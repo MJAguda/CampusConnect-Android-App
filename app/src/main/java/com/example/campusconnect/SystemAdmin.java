@@ -24,6 +24,7 @@ public class SystemAdmin extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
+    Employee employee = Employee.getInstance();
     Read read = new Read();
     Create create = new Create();
 
@@ -264,19 +265,19 @@ public class SystemAdmin extends AppCompatActivity {
                 // Check if views are not empty
                 if(!firstName.getText().toString().isEmpty() || !lastName.getText().toString().isEmpty() || !id.getText().toString().isEmpty()){
                     // Get String from EditText components
-                    save.setFirstName(firstName.getText().toString());
-                    save.setLastName(lastName.getText().toString());
-                    save.setId(id.getText().toString());
-                    save.setFullName(save.getLastName() +", "+ save.getFirstName());
+                    employee.setFirstName(firstName.getText().toString());
+                    employee.setLastName(lastName.getText().toString());
+                    employee.setId(id.getText().toString());
+                    employee.setFullName(employee.getLastName() +", "+ employee.getFirstName());
 
-                    save.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/"+ yearSpinner.getSelectedItem().toString());
+                    employee.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/"+ yearSpinner.getSelectedItem().toString());
 
                     /*// Initialize Firebase Realtime Database
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 final DatabaseReference myRef = database.getReference(school.getSchoolID() + "/employee");
                                  */
                     // Check id if exist
-                    read.readRecord(school.getSchoolID() + "/employee" + save.getId(), new Read.OnGetDataListener() {
+                    read.readRecord(school.getSchoolID() + "/employee" + employee.getId(), new Read.OnGetDataListener() {
                         @Override
                         public void onSuccess(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
@@ -287,9 +288,9 @@ public class SystemAdmin extends AppCompatActivity {
 
                                 // Push data to Firebase Realtime Database
                                 Create create = new Create();
-                                create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/id", save.getId());
-                                create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/fullname", save.getFullName());
-                                create.createRecord(school.getSchoolID() + "/employee/"+save.getId()+ "/birthdate", save.getBirthday());
+                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
+                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
+                                create.createRecord(school.getSchoolID() + "/employee/"+employee.getId()+ "/birthdate", employee.getBirthday());
 
                                 firstName.setText("");
                                 lastName.setText("");

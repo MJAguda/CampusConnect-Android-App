@@ -45,6 +45,7 @@ public class GenerateDTR extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
+    Employee employee = Employee.getInstance();
     Read read = new Read();
 
     private static final int PERMISSION_REQUEST_CODE = 10;
@@ -124,13 +125,13 @@ public class GenerateDTR extends AppCompatActivity {
 
                 int day = DateUtils.getNumberOfDays(save.getMonth(), save.getYear());
 
-                read.readRecord(school.getSchoolID() + "/employee/" + save.getId(), new Read.OnGetDataListener() {
+                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         name.setText(dataSnapshot.child("fullname").getValue().toString());
                         date.setText(month + " " + year);
 
-                        read.readRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth(), new Read.OnGetDataListener() {
+                        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth(), new Read.OnGetDataListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
 

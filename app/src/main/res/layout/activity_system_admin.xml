@@ -26,6 +26,15 @@
             app:srcCompat="?attr/actionModeCloseDrawable" />
 
         <include layout="@layout/header_layout"/>
+
+        <ImageButton
+            android:id="@+id/hamburger_ImageButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="#00000000"
+            android:src="@drawable/hamburger"/>
+
     </LinearLayout>
 
     <!--Body-->

@@ -34,6 +34,7 @@ public class Generate extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
+    Employee employee = Employee.getInstance();
     Read read = new Read();
 
     private static final int REQUEST_CODE_SCAN_QR = 123;
@@ -99,9 +100,9 @@ public class Generate extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                save.setId(id.getText().toString());
+                employee.setId(id.getText().toString());
 
-                read.readRecord(school.getSchoolID() + "/employee/" + save.getId(), new Read.OnGetDataListener() {
+                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()){
@@ -155,7 +156,7 @@ public class Generate extends AppCompatActivity {
                 // Declare ImageView
                 ImageView qr = findViewById(R.id.qrCode_ImageView);
                 // call generateQRCode method from GenerateQR class
-                qr.setImageBitmap(generateQR.generateQRCode(save.getId()));
+                qr.setImageBitmap(generateQR.generateQRCode(employee.getId()));
 
                 // Set text Guide
                 text.setText("Tap QR code to download");

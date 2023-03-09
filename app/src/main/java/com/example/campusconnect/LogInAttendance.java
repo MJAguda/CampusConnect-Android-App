@@ -30,6 +30,7 @@ public class LogInAttendance extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
+    Employee employee = Employee.getInstance();
     Create create = new Create();
     Calendar calendar = Calendar.getInstance();
 
@@ -76,7 +77,7 @@ public class LogInAttendance extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Authenticate
-                save.setId(id.getText().toString());
+                employee.setId(id.getText().toString());
 
                 save.setYear(String.valueOf(calendar.get(Calendar.YEAR)));
                 save.setMonth(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
@@ -88,13 +89,13 @@ public class LogInAttendance extends AppCompatActivity {
 
                 // Check id if exist Log in Using ID Number
                 Read read = new Read();
-                read.readRecord(school.getSchoolID() + "/employee/" + save.getId(), new Read.OnGetDataListener() {
+                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
 
                         if (dataSnapshot.exists()) {
                             // Check if Time already exists
-                            read.readRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay(), new Read.OnGetDataListener() {
+                            read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay(), new Read.OnGetDataListener() {
                                 @Override
                                 public void onSuccess(DataSnapshot dataSnapshot) {
 
@@ -127,7 +128,7 @@ public class LogInAttendance extends AppCompatActivity {
 
                                             // get priorAuthenticate time and compare it with getAuthenticate
                                             Read read = new Read();
-                                            read.readRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + priorAuthenticate, new Read.OnGetDataListener() {
+                                            read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + priorAuthenticate, new Read.OnGetDataListener() {
                                                 @Override
                                                 public void onSuccess(DataSnapshot dataSnapshot) {
 
@@ -180,15 +181,15 @@ public class LogInAttendance extends AppCompatActivity {
                                                         Location currentLocation = gpsCoordinates.getCurrentLocation();
 
                                                         if (currentLocation != null) {
-                                                            save.setLatitude(currentLocation.getLatitude());
-                                                            save.setLongitude(currentLocation.getLongitude());
+                                                            employee.setLatitude(currentLocation.getLatitude());
+                                                            employee.setLongitude(currentLocation.getLongitude());
 
                                                             // Check employee Coordinate if employee is inside the 4 corners of the campus
-                                                            if(save.getLatitude() >= save.getFnhsBottonLat() && save.getLatitude() <= save.getFnhsTopLat() && save.getLongitude() >= save.getFnhsLeftLong() && save.getLongitude() <= save.getFnhsRightLong()){
+                                                            if(employee.getLatitude() >= Double.parseDouble(school.getLatitudeBottom()) && employee.getLatitude() <= Double.parseDouble(school.getLatitudeTop()) && employee.getLongitude() >= Double.parseDouble(school.getLongitudeLeft()) && employee.getLongitude() <= Double.parseDouble(school.getLongitudeRight())){
                                                                 Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                                                                 // Push Time in Database
-                                                                create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), dateFormat.format(dt));
+                                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), dateFormat.format(dt));
                                                                 thankyou.start();
                                                             }
                                                             else{
@@ -211,15 +212,15 @@ public class LogInAttendance extends AppCompatActivity {
                                     catch (NullPointerException e){
 
                                         // Create time cells for each day
-                                        read.readRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth(), new Read.OnGetDataListener() {
+                                        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth(), new Read.OnGetDataListener() {
                                             @Override
                                             public void onSuccess(DataSnapshot dataSnapshot) {
                                                 for(int i = 1 ; i <= DateUtils.getNumberOfDays(save.getMonth(), save.getYear()); i++){
                                                     if(!dataSnapshot.hasChild(String.valueOf(i))){
-                                                        create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timeAM_In", "");
-                                                        create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timeAM_Out", "");
-                                                        create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timePM_In", "");
-                                                        create.createRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timePM_Out", "");
+                                                        create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timeAM_In", "");
+                                                        create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timeAM_Out", "");
+                                                        create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timePM_In", "");
+                                                        create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timePM_Out", "");
                                                     }
                                                 }
                                             }

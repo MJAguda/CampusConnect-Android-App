@@ -29,6 +29,7 @@ public class Attendance extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
+    Employee employee = Employee.getInstance();
     Create create = new Create();
     Timer timer;
 
@@ -113,16 +114,16 @@ public class Attendance extends AppCompatActivity {
         });
 
         try {
-            if (!save.getId().isEmpty()) {
+            if (!employee.getId().isEmpty()) {
                 Read read = new Read();
 
                 // Get Fullname from database
-                read.readRecord(school.getSchoolID() + "/employee/" + save.getId() + "/fullname", new Read.OnGetDataListener() {
+                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         name.setText(dataSnapshot.getValue().toString());
 
-                        read.readRecord(school.getSchoolID() + "/employee/" + save.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth(), new Read.OnGetDataListener() {
+                        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth(), new Read.OnGetDataListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
 
