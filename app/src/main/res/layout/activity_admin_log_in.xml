@@ -72,7 +72,7 @@
                 android:textAlignment="center"
                 android:background="@drawable/round_edittext_bg"
                 android:padding="16dp"
-                android:inputType="numberPassword"/>
+                android:inputType="textPassword"/>
         </LinearLayout>
 
         <!--Footer-->
