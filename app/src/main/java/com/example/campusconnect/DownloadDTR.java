@@ -14,6 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class DownloadDTR {
+    static Employee employee = Employee.getInstance();
+    static SaveData save = SaveData.getInstance();
 
     private static final float PDF_WIDTH_INCHES = 8.27f; // A4 paper width
     private static final float PDF_HEIGHT_INCHES = 11.69f; // A4 paper height
@@ -64,7 +66,7 @@ public class DownloadDTR {
         document.finishPage(page);
 
         // Save the PDF to external storage and show a toast with the file path
-        String fileName = "DTR.pdf";
+        String fileName = "DTR_" + employee.getId() + "_" + save.getMonth() + ", " + save.getYear() + ".pdf";
         File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(directory, fileName);
         try {

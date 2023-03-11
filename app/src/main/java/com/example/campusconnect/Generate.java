@@ -1,19 +1,10 @@
 package com.example.campusconnect;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,11 +15,6 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.io.FileOutputStream;
 
 public class Generate extends AppCompatActivity {
 
@@ -165,7 +151,7 @@ public class Generate extends AppCompatActivity {
                 qr.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        DownloadImageView imageDownloader = new DownloadImageView(qr);
+                        DownloadQR imageDownloader = new DownloadQR(qr);
                         imageDownloader.downloadImage();
                         //Intent intent = new Intent(Generate.this, Attendance.class);
                         //startActivity(intent);

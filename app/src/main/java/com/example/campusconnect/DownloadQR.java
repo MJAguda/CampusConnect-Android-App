@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Environment;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -16,19 +15,22 @@ import androidx.core.content.ContextCompat;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class DownloadImageView {
+public class DownloadQR {
+
+    static Employee employee = Employee.getInstance();
+
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
     private ImageView imageView;
     private String fileName;
     private Bitmap bitmap;
     private FileOutputStream outputStream;
 
-    public DownloadImageView(ImageView imageView) {
+    public DownloadQR(ImageView imageView) {
         this.imageView = imageView;
     }
 
     public void downloadImage() {
-        fileName = "QRCode.png";
+        fileName = "QRCode_" + employee.getId() + ".png";
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         bitmap = drawable.getBitmap();
         if (ContextCompat.checkSelfPermission(imageView.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
