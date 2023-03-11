@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -33,7 +36,7 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SchoolAdmin extends AppCompatActivity {
+public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
@@ -47,6 +50,7 @@ public class SchoolAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_admin);
 
+        ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
 
         // TODO add search bar for Employee
         // TODO edit employee
@@ -112,7 +116,6 @@ public class SchoolAdmin extends AppCompatActivity {
 
         // Buttons
         ImageButton back = findViewById(R.id.backButton_ImageButton);
-        Button addEmployee = findViewById(R.id.adminAddEmployee_Button);
         Button submitEmployee = findViewById(R.id.submitEmployee_Button);
 
         // Hide add employee components
@@ -198,7 +201,6 @@ public class SchoolAdmin extends AppCompatActivity {
             }
         });
 
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,22 +209,14 @@ public class SchoolAdmin extends AppCompatActivity {
             }
         });
 
-
-        // If addEmployee is clicked
-        addEmployee.setOnClickListener(new View.OnClickListener() {
+        hamburger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prompt.setText("Register an Employee");
-
-                // Unhide add employee components
-                id.setVisibility(View.VISIBLE);
-                firstName.setVisibility(View.VISIBLE);
-                lastName.setVisibility(View.VISIBLE);
-                birthday.setVisibility(View.VISIBLE);
-
-                // Unhide submitSchool button
-                submitEmployee.setVisibility(View.VISIBLE);
-                addEmployee.setVisibility(View.GONE);
+                PopupMenu popup = new PopupMenu(SchoolAdmin.this, view);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.hamburger_schooladmin_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(SchoolAdmin.this);
+                popup.show();
             }
         });
 
@@ -281,5 +275,53 @@ public class SchoolAdmin extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+
+        TextView prompt = findViewById(R.id.prompt);
+        TextView date = findViewById(R.id.dateAndTime_TextView);
+
+        // For submit employee
+        EditText id = findViewById(R.id.id_EditText);
+        EditText firstName = findViewById(R.id.firstName_EditText);
+        EditText lastName = findViewById(R.id.lastName_EditText);
+
+        //Find the spinner in the layout
+        TableLayout birthday = findViewById(R.id.birthday_TableLayout);
+        Spinner monthSpinner = findViewById(R.id.month_Spinner);
+        Spinner daySpinner = findViewById(R.id.day_Spinner);
+        Spinner yearSpinner = findViewById(R.id.year_Spinner);
+        //DatePicker birthday = findViewById(R.id.birthday_DatePicker);
+
+        // Buttons
+        ImageButton back = findViewById(R.id.backButton_ImageButton);
+        Button submitEmployee = findViewById(R.id.submitEmployee_Button);
+
+        switch(menuItem.getItemId()){
+            case R.id.add_employee:{
+                prompt.setText("Register an Employee");
+
+                // Unhide add employee components
+                id.setVisibility(View.VISIBLE);
+                firstName.setVisibility(View.VISIBLE);
+                lastName.setVisibility(View.VISIBLE);
+                birthday.setVisibility(View.VISIBLE);
+
+                // Unhide submitSchool button
+                submitEmployee.setVisibility(View.VISIBLE);
+                return true;
+            }
+            case R.id.edit_employee:{
+
+                return true;
+            }
+            case R.id.delete_employee:{
+                return true;
+            }
+            default:
+                return false;
+        }
     }
 }

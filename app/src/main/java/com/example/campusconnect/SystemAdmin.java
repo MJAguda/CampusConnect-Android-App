@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -20,7 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class SystemAdmin extends AppCompatActivity {
+public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
@@ -33,11 +36,12 @@ public class SystemAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_admin);
 
+        // Declare and hook Hamburger button
+        ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
+
         TextView prompt = findViewById(R.id.prompt);
 
         // TODO add search bar for School and Employee
-        // TODO edit school and employee
-        // TODO add Employee Time sheet
 
         // For submit employee
         EditText id = findViewById(R.id.id_EditText);
@@ -106,8 +110,6 @@ public class SystemAdmin extends AppCompatActivity {
 
         // Buttons
         ImageButton back = findViewById(R.id.backButton_ImageButton);
-        Button addSchool = findViewById(R.id.adminAddSchool_Button);
-        Button addEmployee = findViewById(R.id.adminAddEmployee_Button);
         Button submitSchool = findViewById(R.id.submitSchool_Button);
         Button submitEmployee = findViewById(R.id.submitEmployee_Button);
 
@@ -140,65 +142,14 @@ public class SystemAdmin extends AppCompatActivity {
             }
         });
 
-        // If addSchool button is clicked
-        addSchool.setOnClickListener(new View.OnClickListener() {
+        hamburger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prompt.setText("Register a School");
-
-                // Unhide add school components
-                schoolID.setVisibility(View.VISIBLE);
-                schoolName.setVisibility(View.VISIBLE);
-                schoolHead.setVisibility(View.VISIBLE);
-                adminUsername.setVisibility(View.VISIBLE);
-                adminPassword.setVisibility(View.VISIBLE);
-                latitudeBottom.setVisibility(View.VISIBLE);
-                latitudeTop.setVisibility(View.VISIBLE);
-                longitudeLeft.setVisibility(View.VISIBLE);
-                longitudeRight.setVisibility(View.VISIBLE);
-
-                // Hide add employee components
-                id.setVisibility(View.GONE);
-                firstName.setVisibility(View.GONE);
-                lastName.setVisibility(View.GONE);
-                birthday.setVisibility(View.GONE);
-
-                // Unhide submitSchool button
-                submitSchool.setVisibility(View.VISIBLE);
-                submitEmployee.setVisibility(View.GONE);
-                addSchool.setVisibility(View.GONE);
-                addEmployee.setVisibility(View.GONE);
-            }
-        });
-
-        // If addEmployee is clicked
-        addEmployee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                prompt.setText("Register an Employee");
-
-                // Hide add school components
-                schoolID.setVisibility(View.GONE);
-                schoolName.setVisibility(View.GONE);
-                schoolHead.setVisibility(View.GONE);
-                adminUsername.setVisibility(View.GONE);
-                adminPassword.setVisibility(View.GONE);
-                latitudeBottom.setVisibility(View.GONE);
-                latitudeTop.setVisibility(View.GONE);
-                longitudeLeft.setVisibility(View.GONE);
-                longitudeRight.setVisibility(View.GONE);
-
-                // Unhide add employee components
-                id.setVisibility(View.VISIBLE);
-                firstName.setVisibility(View.VISIBLE);
-                lastName.setVisibility(View.VISIBLE);
-                birthday.setVisibility(View.VISIBLE);
-
-                // Unhide submitSchool button
-                submitSchool.setVisibility(View.GONE);
-                submitEmployee.setVisibility(View.VISIBLE);
-                addSchool.setVisibility(View.GONE);
-                addEmployee.setVisibility(View.GONE);
+                PopupMenu popup = new PopupMenu(SystemAdmin.this, view);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.hamburger_systemadmin_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(SystemAdmin.this);
+                popup.show();
             }
         });
 
@@ -313,5 +264,110 @@ public class SystemAdmin extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+
+        TextView prompt = findViewById(R.id.prompt);
+
+        // For submit employee
+        EditText id = findViewById(R.id.id_EditText);
+        EditText firstName = findViewById(R.id.firstName_EditText);
+        EditText lastName = findViewById(R.id.lastName_EditText);
+
+        //Find the spinner in the layout
+        TableLayout birthday = findViewById(R.id.birthday_TableLayout);
+        Spinner monthSpinner = findViewById(R.id.month_Spinner);
+        Spinner daySpinner = findViewById(R.id.day_Spinner);
+        Spinner yearSpinner = findViewById(R.id.year_Spinner);
+        //DatePicker birthday = findViewById(R.id.birthday_DatePicker);
+
+        // For submit School
+        EditText schoolID = findViewById(R.id.schoolId_EditText);
+        EditText schoolName = findViewById(R.id.schoolName_EditText);
+        EditText schoolHead = findViewById(R.id.schoolHead_EditText);
+        EditText adminUsername = findViewById(R.id.adminUsername_EditText);
+        EditText adminPassword = findViewById(R.id.adminPassword_EditText);
+        EditText latitudeBottom = findViewById(R.id.latitudeBottom_EditText);
+        EditText latitudeTop = findViewById(R.id.latitudeTop_EditText);
+        EditText longitudeLeft = findViewById(R.id.longitudeLeft_EditText);
+        EditText longitudeRight = findViewById(R.id.longitudeRight_EditText);
+
+        // Buttons
+        ImageButton back = findViewById(R.id.backButton_ImageButton);
+        Button submitSchool = findViewById(R.id.submitSchool_Button);
+        Button submitEmployee = findViewById(R.id.submitEmployee_Button);
+
+        switch (menuItem.getItemId()){
+            case R.id.add_school:{
+                // add school button clicked
+
+                prompt.setText("Register a School");
+
+                // Unhide add school components
+                schoolID.setVisibility(View.VISIBLE);
+                schoolName.setVisibility(View.VISIBLE);
+                schoolHead.setVisibility(View.VISIBLE);
+                adminUsername.setVisibility(View.VISIBLE);
+                adminPassword.setVisibility(View.VISIBLE);
+                latitudeBottom.setVisibility(View.VISIBLE);
+                latitudeTop.setVisibility(View.VISIBLE);
+                longitudeLeft.setVisibility(View.VISIBLE);
+                longitudeRight.setVisibility(View.VISIBLE);
+
+                // Hide add employee components
+                id.setVisibility(View.GONE);
+                firstName.setVisibility(View.GONE);
+                lastName.setVisibility(View.GONE);
+                birthday.setVisibility(View.GONE);
+
+                // Unhide submitSchool button
+                submitSchool.setVisibility(View.VISIBLE);
+                submitEmployee.setVisibility(View.GONE);
+                return true;
+            }
+            case R.id.edit_school:{
+                return true;
+            }
+            case R.id.delete_school:{
+                return true;
+            }
+            case R.id.add_employee:{
+                // add employee button clicked
+
+                prompt.setText("Register an Employee");
+
+                // Hide add school components
+                schoolID.setVisibility(View.GONE);
+                schoolName.setVisibility(View.GONE);
+                schoolHead.setVisibility(View.GONE);
+                adminUsername.setVisibility(View.GONE);
+                adminPassword.setVisibility(View.GONE);
+                latitudeBottom.setVisibility(View.GONE);
+                latitudeTop.setVisibility(View.GONE);
+                longitudeLeft.setVisibility(View.GONE);
+                longitudeRight.setVisibility(View.GONE);
+
+                // Unhide add employee components
+                id.setVisibility(View.VISIBLE);
+                firstName.setVisibility(View.VISIBLE);
+                lastName.setVisibility(View.VISIBLE);
+                birthday.setVisibility(View.VISIBLE);
+
+                // Unhide submitSchool button
+                submitSchool.setVisibility(View.GONE);
+                submitEmployee.setVisibility(View.VISIBLE);
+                return true;
+            }
+            case R.id.edit_employee:{
+                return true;
+            }
+            case R.id.delete_employee:{
+                return true;
+            }
+            default:
+                return false;
+        }
     }
 }
