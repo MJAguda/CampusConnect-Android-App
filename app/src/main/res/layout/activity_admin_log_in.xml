@@ -17,7 +17,6 @@
         android:background="#B83B5E"
         android:orientation="horizontal">
 
-
         <ImageButton
             android:id="@+id/backButton_ImageButton"
             android:layout_width="0dp"
