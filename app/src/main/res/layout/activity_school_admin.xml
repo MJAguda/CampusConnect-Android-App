@@ -60,18 +60,6 @@
             android:textColor="#6A2C70"
             android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/dateAndTime_TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-smallcaps"
-            android:text="MM/dd/yyyy hh:mm:ss a"
-            android:textColor="#FFF000"
-            android:textAlignment="center"
-            android:layout_gravity="left"
-            android:textSize="30sp"
-            android:background="#6A2C70"/>
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -161,91 +149,6 @@
                     </TableRow>
 
                 </TableLayout>
-
-                <TableLayout
-                    android:id="@+id/previewHeaderdailyLog_TableLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:stretchColumns="*">
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#B83B5E">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.33333333333333333333333333333334"
-                            android:textColor="@color/white"
-                            android:text="Name of Personnel"
-                            android:textSize="12sp"
-                            android:textAlignment="center"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.16666666666666666666666666666667"
-                            android:textColor="@color/white"
-                            android:text="AM In"
-                            android:textSize="12sp"
-                            android:textAlignment="center"
-                            android:gravity="center"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.16666666666666666666666666666667"
-                            android:textColor="@color/white"
-                            android:text="AM Out"
-                            android:textSize="12sp"
-                            android:textAlignment="center"
-                            android:gravity="center"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.16666666666666666666666666666667"
-                            android:textColor="@color/white"
-                            android:text="PM In"
-                            android:textSize="12sp"
-                            android:textAlignment="center"
-                            android:gravity="center"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.16666666666666666666666666666667"
-                            android:textColor="@color/white"
-                            android:text="PM In"
-                            android:textSize="12sp"
-                            android:textAlignment="center"
-                            android:gravity="center"/>
-
-                    </TableRow>
-
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                </TableLayout>
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white">
-
-                    <TableLayout
-                        android:id="@+id/dailyLog_TableLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:stretchColumns="*">
-
-                    </TableLayout>
-                </ScrollView>
 
             </LinearLayout>
 

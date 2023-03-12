@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/layoutbackground"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <!--Header-->
+    <LinearLayout
+        android:id="@+id/header_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#B83B5E"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25">
+
+            <ImageView
+                android:id="@+id/headerLogo_ImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/campus_connect_logo" />
+
+            <AnalogClock
+                android:id="@+id/analog_clock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
+
+
+
+        <TextView
+            android:id="@+id/headerText_TextView"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.75"
+            android:gravity="center"
+            android:text="Attendance Monitoring App"
+            android:textColor="#F9ED69"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <!--Body-->
+    <LinearLayout
+        android:id="@+id/body_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/round_body_bg"
+        android:layout_margin="35px"
+        android:padding="50px">
+        <!--android:background="#F08A5D"-->
+
+        <ImageView
+            android:id="@+id/bodyLogo_ImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/campus_connect_logo" />
+
+        <TextView
+            android:id="@+id/appName_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Campus Connect"
+            android:textAlignment="center"
+            android:textColor="#6A2C70"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/schoolID_EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30px"
+            android:hint="Enter School ID"
+            android:textColor="#6A2C70"
+            android:inputType="number"
+            android:textSize="30sp"
+            android:textAlignment="center"
+            android:background="@drawable/round_edittext_bg"
+            android:padding="16dp"/>
+
+    </LinearLayout>
+
+    <!--Footer-->
+    <LinearLayout
+        android:id="@+id/footer_LineanLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B83B5E"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/submit_Button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="10px"
+            android:backgroundTint="#F9ED69"
+            android:text="Submit"
+            android:textColor="#6A2C70"
+            android:textSize="30sp" />
+    </LinearLayout>
+</LinearLayout>

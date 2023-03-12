@@ -59,7 +59,7 @@
             android:textColor="#FFF000"
             android:textAlignment="center"
             android:layout_gravity="left"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:background="#6A2C70"/>
 
         <TextView

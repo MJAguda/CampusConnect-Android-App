@@ -62,11 +62,17 @@
             android:padding="50px">
         <!--android:background="#F08A5D"-->
 
-        <ImageView
-            android:id="@+id/bodyLogo_ImageView"
+        <TextView
+            android:id="@+id/dateAndTime_TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/campus_connect_logo" />
+            android:layout_gravity="left"
+            android:background="#6A2C70"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="MM/dd/yyyy hh:mm:ss a"
+            android:textAlignment="center"
+            android:textColor="#FFF000"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/schoolName_TextView"
@@ -79,18 +85,88 @@
             android:textSize="40sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/schoolID_EditText"
+        <TableLayout
+            android:id="@+id/previewHeaderdailyLog_TableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30px"
-            android:hint="Enter School ID"
-            android:textColor="#6A2C70"
-            android:inputType="number"
-            android:textSize="30sp"
-            android:textAlignment="center"
-            android:background="@drawable/round_edittext_bg"
-            android:padding="16dp"/>
+            android:stretchColumns="*">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#B83B5E">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33333333333333333333333333333334"
+                    android:textColor="@color/white"
+                    android:text="Name of Personnel"
+                    android:textSize="12sp"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.16666666666666666666666666666667"
+                    android:textColor="@color/white"
+                    android:text="AM In"
+                    android:textSize="12sp"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.16666666666666666666666666666667"
+                    android:textColor="@color/white"
+                    android:text="AM Out"
+                    android:textSize="12sp"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.16666666666666666666666666666667"
+                    android:textColor="@color/white"
+                    android:text="PM In"
+                    android:textSize="12sp"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.16666666666666666666666666666667"
+                    android:textColor="@color/white"
+                    android:text="PM In"
+                    android:textSize="12sp"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+
+            </TableRow>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+        </TableLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <TableLayout
+                android:id="@+id/dailyLog_TableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*">
+
+            </TableLayout>
+        </ScrollView>
 
     </LinearLayout>
 
@@ -101,17 +177,6 @@
         android:layout_height="wrap_content"
         android:background="#B83B5E"
         android:orientation="vertical">
-
-        <Button
-            android:id="@+id/submit_Button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_margin="10px"
-            android:backgroundTint="#F9ED69"
-            android:text="Submit"
-            android:textColor="#6A2C70"
-            android:textSize="30sp" />
 
         <LinearLayout
             android:layout_width="match_parent"

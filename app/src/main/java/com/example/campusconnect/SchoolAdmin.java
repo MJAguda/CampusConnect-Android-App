@@ -43,7 +43,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     Employee employee = Employee.getInstance();
     Read read = new Read();
     Create create = new Create();
-    Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +52,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
 
         // TODO add search bar for Employee
-        // TODO edit employee
-        // TODO delete employee
-
 
         TextView prompt = findViewById(R.id.prompt);
-        TextView date = findViewById(R.id.dateAndTime_TextView);
 
         // For submit employee
         EditText id = findViewById(R.id.id_EditText);
@@ -126,80 +121,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
         //Hide buttons
         submitEmployee.setVisibility(View.GONE);
-
-        // Display a Display Date and Time
-        timer = new Timer();
-        TimerTask updateTimeTask = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        date.setText(DateUtils.getCurrentDate());
-                    }
-                });
-            }
-        };
-
-        timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // update every 1 second
-
-        //Read all Personnel's Time Log for the day
-        save.setMonth(String.valueOf(Integer.parseInt(DateUtils.getCurrentMonth())));
-        save.setDay(String.valueOf(Integer.parseInt(DateUtils.getCurrentDay())));
-        save.setYear(String.valueOf(Integer.parseInt(DateUtils.getCurrentYear())));
-        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-
-                TableLayout table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
-                table.removeAllViews();
-
-                for(DataSnapshot child : dataSnapshot.getChildren()){
-                    String fullName = child.child("fullname").getValue(String.class);
-                    if (fullName != null) {
-                        Log.d("TAG", fullName);
-                        // Instance of the row
-                        TableRow row = new TableRow(SchoolAdmin.this);
-
-
-                        // Add day to the row
-                        TextView name = new TextView(SchoolAdmin.this);
-                        name.setText(fullName);
-                        name.setTextSize(12);
-                        name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-                        TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.33333333333333333333333333333334f);
-                        name.setLayoutParams(params);
-                        name.setBackground(ContextCompat.getDrawable(SchoolAdmin.this, R.drawable.cell_shape));
-
-                        row.addView(name);
-
-                        for(DataSnapshot grandChild : child.child("attendance/" + DateUtils.getCurrentYear() + "/" + DateUtils.getMonthName(DateUtils.getCurrentMonth()) + "/" + Integer.parseInt(DateUtils.getCurrentDay())).getChildren()){
-                            Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
-
-                            // Add time to the row
-                            TextView time = new TextView(SchoolAdmin.this);
-
-                            time.setText(grandChild.getValue().toString());
-                            time.setTextSize(12);
-                            TableRow.LayoutParams timeparams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT , 0.16666666666666666666666666666667f);
-                            time.setLayoutParams(timeparams);
-                            time.setGravity(Gravity.CENTER);
-                            time.setBackground(ContextCompat.getDrawable(SchoolAdmin.this, R.drawable.cell_shape));
-
-                            row.addView(time);
-
-                        }
-
-                        table.addView(row);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
