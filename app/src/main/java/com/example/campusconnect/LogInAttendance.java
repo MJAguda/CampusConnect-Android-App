@@ -32,8 +32,6 @@ public class LogInAttendance extends AppCompatActivity {
     School school = School.getInstance();
     Employee employee = Employee.getInstance();
     Create create = new Create();
-    Calendar calendar = Calendar.getInstance();
-
     private static final int REQUEST_CODE_SCAN_QR = 123;
     EditText id;
 
@@ -79,13 +77,9 @@ public class LogInAttendance extends AppCompatActivity {
                 // Authenticate
                 employee.setId(id.getText().toString());
 
-                save.setYear(String.valueOf(calendar.get(Calendar.YEAR)));
-                save.setMonth(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
-                save.setDay(String.valueOf(calendar. get(Calendar.DAY_OF_MONTH)));
-
-                Date dt = new Date();
-                SimpleDateFormat dateFormat;
-                dateFormat = new SimpleDateFormat("hh:mm a");
+                save.setYear(DateUtils.getCurrentYear());
+                save.setMonth(DateUtils.getMonthName(DateUtils.getCurrentMonth()));
+                save.setDay(DateUtils.getCurrentDay());
 
                 // Check id if exist Log in Using ID Number
                 Read read = new Read();
@@ -146,7 +140,7 @@ public class LogInAttendance extends AppCompatActivity {
                                                     catch (NullPointerException e){
                                                         priorTime = "00:00 AM";
                                                     }
-                                                    String currentTime = dateFormat.format(dt);
+                                                    String currentTime = DateUtils.getCurrentTime();
 
                                                     Log.d(TAG, "priorTime Value : " + priorTime);
 
@@ -189,7 +183,7 @@ public class LogInAttendance extends AppCompatActivity {
                                                                 Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                                                                 // Push Time in Database
-                                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), dateFormat.format(dt));
+                                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), DateUtils.getCurrentTime());
                                                                 thankyou.start();
                                                             }
                                                             else{

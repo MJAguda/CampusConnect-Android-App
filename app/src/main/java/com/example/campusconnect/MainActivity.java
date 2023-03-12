@@ -39,11 +39,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Analog Clock
-        AnalogClock analogClock = findViewById(R.id.analog_clock);
 
         // Declare components
-        TextView header = findViewById(R.id.headerText_TextView);
+        ImageButton back = findViewById(R.id.backButton_ImageButton);
         TextView schoolName = findViewById(R.id.schoolName_TextView);
 
         ImageButton home = findViewById(R.id.home_Button);
@@ -134,6 +132,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(DatabaseError databaseError) {
                 Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SchoolLogIn.class);
+                startActivity(intent);
             }
         });
 
