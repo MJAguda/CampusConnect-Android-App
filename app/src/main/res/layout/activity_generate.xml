@@ -9,6 +9,7 @@
     tools:context=".Generate"
     android:orientation="vertical">
 
+
     <!--Header-->
     <LinearLayout
         android:id="@+id/header_LinearLayout"
