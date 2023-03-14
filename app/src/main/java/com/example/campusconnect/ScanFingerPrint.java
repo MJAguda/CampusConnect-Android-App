@@ -58,6 +58,7 @@ public class ScanFingerPrint {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.USE_BIOMETRIC) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.USE_BIOMETRIC}, 1);
         } else {
+            // Check this
             biometricPrompt.authenticate(new BiometricPrompt.CryptoObject(null), cancellationSignal, activity.getMainExecutor(), createCallback());
         }
     }
