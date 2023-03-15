@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -32,8 +34,12 @@ public class LogInAttendance extends AppCompatActivity {
     School school = School.getInstance();
     Employee employee = Employee.getInstance();
     Create create = new Create();
-    private static final int REQUEST_CODE_SCAN_QR = 123;
+    private static final int REQUEST_CODE_SCAN_QR = 1;
     EditText id;
+
+    // Instance of scanFingerPrint
+    private static final String TAG = LogInAttendance.class.getSimpleName();
+    private ScanFingerPrint scanFingerPrint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,8 @@ public class LogInAttendance extends AppCompatActivity {
         // Declare Components
         id = findViewById(R.id.id_EditText);
         ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);
+        ImageButton scanFinger = findViewById(R.id.scanFingerPrint_ImageButton);
+        ImageButton scanFacial = findViewById(R.id.scanFacial_ImageButton);
         Button submit = findViewById(R.id.submit_Button);
         ImageButton back = findViewById(R.id.backButton_ImageButton);
 
@@ -54,6 +62,14 @@ public class LogInAttendance extends AppCompatActivity {
         final MediaPlayer thankyou = MediaPlayer.create(this, R.raw.thankyou);
         final MediaPlayer alreadyhave = MediaPlayer.create(this, R.raw.alreadyhave);
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (LogInAttendance.this, Attendance.class);
+                startActivity(intent);
+            }
+        });
+
         // Set click listener on button to start ScanQR activity
         scanQR.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,11 +79,17 @@ public class LogInAttendance extends AppCompatActivity {
             }
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
+        scanFinger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (LogInAttendance.this, Attendance.class);
-                startActivity(intent);
+
+            }
+        });
+
+        scanFacial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

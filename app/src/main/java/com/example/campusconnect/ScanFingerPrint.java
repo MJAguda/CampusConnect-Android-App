@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Signature;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -59,7 +60,7 @@ public class ScanFingerPrint {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.USE_BIOMETRIC}, 1);
         } else {
             // Check this
-            biometricPrompt.authenticate(new BiometricPrompt.CryptoObject(null), cancellationSignal, activity.getMainExecutor(), createCallback());
+            biometricPrompt.authenticate(new BiometricPrompt.CryptoObject((Signature) null), cancellationSignal, activity.getMainExecutor(), createCallback());
         }
     }
 
@@ -106,19 +107,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        scanFingerPrint = new ScanFingerPrint(this);
-        scanFingerPrint.startScan();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            scanFingerPrint = new ScanFingerPrint(LogInAttendance.this);
+            if (scanFingerPrint != null) {
+                scanFingerPrint.startScan();
+            } else {
+                Toast.makeText(this, "Error initializing fingerprint scanner", Toast.LENGTH_SHORT).show();
+            }
+        } else{
+            // Handle the case where BiometricPrompt is not available on the device
+        }
     }
 
+    // Handler Scanned FingerPrint Result
     @Override
     protected void onResume() {
         super.onResume();
 
-        byte[] fingerprintData = scanFingerPrint.getFingerprintData();
-        if (fingerprintData != null) {
-            Log.d(TAG, "Fingerprint data: " + Arrays.toString(fingerprintData));
-        } else {
-            Log.d(TAG, "Fingerprint data is null");
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            if (scanFingerPrint != null) {
+                byte[] fingerprintData = scanFingerPrint.getFingerprintData();
+                if (fingerprintData != null) {
+                    Log.d(TAG, "Fingerprint data: " + Arrays.toString(fingerprintData));
+                } else {
+                    Log.d(TAG, "Fingerprint data is null");
+                }
+            } else {
+                Toast.makeText(this, "Fingerprint scanner not initialized", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
