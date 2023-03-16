@@ -9,6 +9,7 @@
     tools:context=".AdminLogIn"
     android:orientation="vertical">
 
+
     <!--Header-->
     <LinearLayout
         android:id="@+id/header_LinearLayout"
