@@ -77,6 +77,8 @@ public class Attendance extends AppCompatActivity {
             }
         });
 
+        // TODO Disable Buttons depending on time
+
         AMIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,8 +150,6 @@ public class Attendance extends AppCompatActivity {
                                     day.setBackground(ContextCompat.getDrawable(Attendance.this, R.drawable.cell_shape));
 
                                     row.addView(day);
-
-                                    // TODO Fix Height each row
 
                                     // Add time TextView to the row
                                     for(DataSnapshot grandChild : child.getChildren()){

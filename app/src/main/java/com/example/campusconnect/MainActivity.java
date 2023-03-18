@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
 
                 table.removeAllViews();
 
+                // TODO Fix Height and Width of each ROW
+
                 for(DataSnapshot child : dataSnapshot.getChildren()){
                     String fullName = child.child("fullname").getValue(String.class);
                     if (fullName != null) {
