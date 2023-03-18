@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -88,8 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
                 table.removeAllViews();
 
-                // TODO Fix Height and Width of each ROW
-
                 for(DataSnapshot child : dataSnapshot.getChildren()){
                     String fullName = child.child("fullname").getValue(String.class);
                     if (fullName != null) {
@@ -97,16 +96,20 @@ public class MainActivity extends AppCompatActivity {
                         // Instance of the row
                         TableRow row = new TableRow(MainActivity.this);
 
-
-                        // Add day to the row
+                        // Add name to the row
                         TextView name = new TextView(MainActivity.this);
                         name.setText(fullName);
-                        name.setTextSize(12);
+                        name.setTextSize(10);
+                        name.setGravity(Gravity.TOP); // Set the vertical gravity to top
                         name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-                        TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.33333333333333333333333333333334f);
-                        name.setLayoutParams(params);
                         name.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
 
+                        // Get the height of the first TextView
+                        name.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                        int nameHeight = name.getMeasuredHeight();
+
+                        TableRow.LayoutParams nameParams = new TableRow.LayoutParams(0, nameHeight, 0.32f);
+                        name.setLayoutParams(nameParams);
                         row.addView(name);
 
                         for(DataSnapshot grandChild : child.child("attendance/" + DateUtils.getCurrentYear() + "/" + DateUtils.getMonthName(DateUtils.getCurrentMonth()) + "/" + Integer.parseInt(DateUtils.getCurrentDay())).getChildren()){
@@ -116,19 +119,19 @@ public class MainActivity extends AppCompatActivity {
                             TextView time = new TextView(MainActivity.this);
 
                             time.setText(grandChild.getValue().toString());
-                            time.setTextSize(12);
-                            TableRow.LayoutParams timeparams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT , 0.16666666666666666666666666666667f);
-                            time.setLayoutParams(timeparams);
+                            time.setTextSize(10);
+                            TableRow.LayoutParams timeParams = new TableRow.LayoutParams(0, nameHeight, 0.17f);
+                            time.setLayoutParams(timeParams);
                             time.setGravity(Gravity.CENTER);
                             time.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
 
                             row.addView(time);
-
                         }
 
                         table.addView(row);
                     }
                 }
+
             }
 
             @Override

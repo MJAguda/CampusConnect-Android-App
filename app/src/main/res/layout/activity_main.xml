@@ -78,7 +78,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.33333333333333333333333333333334"
+                    android:layout_weight="0.32"
                     android:textColor="@color/white"
                     android:text="Name of Personnel"
                     android:textSize="12sp"
@@ -87,7 +87,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.16666666666666666666666666666667"
+                    android:layout_weight="0.17"
                     android:textColor="@color/white"
                     android:text="AM In"
                     android:textSize="12sp"
@@ -97,7 +97,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.16666666666666666666666666666667"
+                    android:layout_weight="0.17"
                     android:textColor="@color/white"
                     android:text="AM Out"
                     android:textSize="12sp"
@@ -107,7 +107,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.16666666666666666666666666666667"
+                    android:layout_weight="0.17"
                     android:textColor="@color/white"
                     android:text="PM In"
                     android:textSize="12sp"
@@ -117,7 +117,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.16666666666666666666666666666667"
+                    android:layout_weight="0.17"
                     android:textColor="@color/white"
                     android:text="PM In"
                     android:textSize="12sp"
@@ -135,14 +135,16 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginBottom="20px">
 
             <TableLayout
                 android:id="@+id/dailyLog_TableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*">
+
 
             </TableLayout>
         </ScrollView>
