@@ -1,6 +1,6 @@
 package com.example.campusconnect;
 
-// User Network Time Protocol / Time Zone
+// TODO Use Network Time Protocol / Time Zone
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -67,7 +67,3 @@ public class DateUtils {
         return dateFormat.format(date).toUpperCase();
     }
 }
-
-/*
-int numOfDays = DateUtils.getNumberOfDays(month, year);
- */

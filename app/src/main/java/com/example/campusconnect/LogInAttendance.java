@@ -46,6 +46,8 @@ public class LogInAttendance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in_attendance);
 
+        // TODO Add VPN restriction
+
         // Declare Components
         id = findViewById(R.id.id_EditText);
         ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);

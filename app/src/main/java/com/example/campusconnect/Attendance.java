@@ -1,7 +1,10 @@
 package com.example.campusconnect;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -77,7 +80,49 @@ public class Attendance extends AppCompatActivity {
             }
         });
 
-        // TODO Disable Buttons depending on time
+        // Disable the time punch Buttons
+        AMIn.setEnabled(false);
+        AMOut.setEnabled(false);
+        PMIn.setEnabled(false);
+        PMOut.setEnabled(false);
+
+        // Greying all disabled button
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+            AMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+            PMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+            PMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+
+
+            // Enables Button Depending on time
+            // Get current time using DateUtils class
+            String currentTime = DateUtils.getCurrentTime();
+
+            // Parse time into hours and minutes
+            String[] parts = currentTime.split(":");
+            int hours = Integer.parseInt(parts[0]);
+            int minutes = Integer.parseInt(parts[1].substring(0, 2)); // remove AM/PM
+
+            // Enable AMIn button if current time is before 7:00 AM
+            if (hours < 7) {
+                AMIn.setEnabled(true);
+                AMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+            }
+            // Enable AMOut and PMIn buttons if current time is between 12:00 PM and 1:00 PM
+            else if (hours == 12 && minutes >= 0 || hours == 13 && minutes <= 0) {
+                AMOut.setEnabled(true);
+                PMIn.setEnabled(true);
+
+                AMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+                PMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+            }
+            // Enable PMOut button if current time is after 5:00 PM
+            else if (hours >= 17) {
+                PMOut.setEnabled(true);
+                PMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+            }
+        }
+
 
         AMIn.setOnClickListener(new View.OnClickListener() {
             @Override

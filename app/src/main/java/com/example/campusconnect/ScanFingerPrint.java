@@ -59,7 +59,6 @@ public class ScanFingerPrint {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.USE_BIOMETRIC) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.USE_BIOMETRIC}, 1);
         } else {
-            // Check this
             biometricPrompt.authenticate(new BiometricPrompt.CryptoObject((Signature) null), cancellationSignal, activity.getMainExecutor(), createCallback());
         }
     }
@@ -96,47 +95,22 @@ public class ScanFingerPrint {
         return new String(fingerprintData, StandardCharsets.ISO_8859_1);
     }
 }
-
 /*
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private ScanFingerPrint scanFingerPrint;
-
+Button scanButton = findViewById(R.id.scan_button);
+scanButton.setOnClickListener(new View.OnClickListener() {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+    public void onClick(View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            scanFingerPrint = new ScanFingerPrint(LogInAttendance.this);
-            if (scanFingerPrint != null) {
+            if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)) {
+                ScanFingerPrint scanFingerPrint = new ScanFingerPrint(activity);
                 scanFingerPrint.startScan();
             } else {
-                Toast.makeText(this, "Error initializing fingerprint scanner", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Your phone is not equipped with fingerprint scanner", Toast.LENGTH_SHORT).show();
             }
-        } else{
-            // Handle the case where BiometricPrompt is not available on the device
+        } else {
+            Toast.makeText(activity, "Fingerprint authentication is not supported in your device", Toast.LENGTH_SHORT).show();
         }
     }
-
-    // Handler Scanned FingerPrint Result
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-            if (scanFingerPrint != null) {
-                byte[] fingerprintData = scanFingerPrint.getFingerprintData();
-                if (fingerprintData != null) {
-                    Log.d(TAG, "Fingerprint data: " + Arrays.toString(fingerprintData));
-                } else {
-                    Log.d(TAG, "Fingerprint data is null");
-                }
-            } else {
-                Toast.makeText(this, "Fingerprint scanner not initialized", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-}
+});
 
  */
