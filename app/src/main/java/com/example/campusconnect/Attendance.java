@@ -98,18 +98,27 @@ public class Attendance extends AppCompatActivity {
             // Get current time using DateUtils class
             String currentTime = DateUtils.getCurrentTime();
 
+            int hours;
+            int minutes;
+
             // Parse time into hours and minutes
             String[] parts = currentTime.split(":");
-            int hours = Integer.parseInt(parts[0]);
-            int minutes = Integer.parseInt(parts[1].substring(0, 2)); // remove AM/PM
+            hours = Integer.parseInt(parts[0]);
+            minutes = Integer.parseInt(parts[1].substring(0, 2)); // remove AM/PM
+
+            // Check if current time is in PM
+            if (currentTime.contains("PM")) {
+                // Add 12 to the hours to convert to 24 hour format
+                hours = hours + 12;
+            }
 
             // Enable AMIn button if current time is before 7:00 AM
-            if (hours < 7) {
+            if (hours < 8 && minutes <= 30) {
                 AMIn.setEnabled(true);
                 AMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
             }
             // Enable AMOut and PMIn buttons if current time is between 12:00 PM and 1:00 PM
-            else if (hours == 12 && minutes >= 0 || hours == 13 && minutes <= 0) {
+            else if (hours == 12 && minutes >= 0 || hours == 14 && minutes <= 0) {
                 AMOut.setEnabled(true);
                 PMIn.setEnabled(true);
 
