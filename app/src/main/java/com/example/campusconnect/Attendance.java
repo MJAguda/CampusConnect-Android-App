@@ -123,7 +123,7 @@ public class Attendance extends AppCompatActivity {
                 PMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
             }
             // Enable PMOut button if current time is after 5:00 PM
-            else if (hours >= 17) {
+            else if (hours >= 13) {
                 PMOut.setEnabled(true);
                 PMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
             }
