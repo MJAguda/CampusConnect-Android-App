@@ -205,10 +205,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                             employee.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/"+ yearSpinner.getSelectedItem().toString());
 
-                    /*// Initialize Firebase Realtime Database
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                final DatabaseReference myRef = database.getReference(school.getSchoolID() + "/employee");
-                                 */
                             // Check id if exist
                             read.readRecord(school.getSchoolID() + "/employee" + employee.getId(), new Read.OnGetDataListener() {
                                 @Override
@@ -316,13 +312,12 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                         Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
                         startActivity(intent);
-
                     }
                 });
                 return true;
             }
             case R.id.delete_employee:{
-                // TODO deleter Employee
+                // TODO delete Employee
                 return true;
             }
             case R.id.transfer_employee:{

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
@@ -84,7 +85,16 @@ public class LogInAttendance extends AppCompatActivity {
         scanFinger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    if (getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)) {
+                        ScanFingerPrint scanFingerPrint = new ScanFingerPrint(LogInAttendance.this);
+                        scanFingerPrint.startScan();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Your phone is not equipped with fingerprint scanner", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Fingerprint authentication is not supported in your device", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
