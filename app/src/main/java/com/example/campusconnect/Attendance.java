@@ -115,7 +115,7 @@ public class Attendance extends AppCompatActivity {
                 AMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
             }
             // Enable AMOut and PMIn buttons if current time is between 12:00 PM and 2:00 PM
-            else if (hours == 12 && minutes >= 0 || hours == 14 && minutes <= 0) {
+            else if (hours == 12 && minutes >= 0 || hours == 13 && minutes <= 0) {
                 AMOut.setEnabled(true);
                 PMIn.setEnabled(true);
 
