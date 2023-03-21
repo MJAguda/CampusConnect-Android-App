@@ -96,7 +96,7 @@ public class Attendance extends AppCompatActivity {
 
             // Enables Button Depending on time
             // Get current time using DateUtils class
-            String currentTime = DateUtils.getCurrentTime();
+            String currentTime = DateUtils.getCurrentTimeInMilitary();
 
             int hours;
             int minutes;
@@ -106,11 +106,6 @@ public class Attendance extends AppCompatActivity {
             hours = Integer.parseInt(parts[0]);
             minutes = Integer.parseInt(parts[1].substring(0, 2)); // remove AM/PM
 
-            // Check if current time is in PM
-            if (currentTime.contains("PM")) {
-                // Add 12 to the hours to convert to 24 hour format
-                hours = hours + 12;
-            }
 
             Log.d("TAG", "Hours: " + hours + " Minutes: " + minutes);
 

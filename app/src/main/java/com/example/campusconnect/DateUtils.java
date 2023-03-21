@@ -66,4 +66,9 @@ public class DateUtils {
         Date date = new Date();
         return dateFormat.format(date).toUpperCase();
     }
+    public static String getCurrentTimeInMilitary(){
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        Date date = new Date();
+        return dateFormat.format(date).toUpperCase();
+    }
 }
