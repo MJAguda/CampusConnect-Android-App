@@ -58,9 +58,10 @@ public class ScanFingerPrint {
     public void startScan() {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.USE_BIOMETRIC) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.USE_BIOMETRIC}, 1);
-        } else {
-            biometricPrompt.authenticate(new BiometricPrompt.CryptoObject((Signature) null), cancellationSignal, activity.getMainExecutor(), createCallback());
+            return;
         }
+
+        biometricPrompt.authenticate(new BiometricPrompt.CryptoObject((Signature) null), cancellationSignal, activity.getMainExecutor(), createCallback());
     }
 
     private BiometricPrompt.AuthenticationCallback createCallback() {
@@ -81,6 +82,8 @@ public class ScanFingerPrint {
 
             @Override
             public void onAuthenticationFailed() {
+
+
                 super.onAuthenticationFailed();
                 Toast.makeText(activity, "Authentication Failed", Toast.LENGTH_SHORT).show();
             }
