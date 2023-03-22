@@ -110,7 +110,7 @@ public class Attendance extends AppCompatActivity {
             Log.d("TAG", "Hours: " + hours + " Minutes: " + minutes);
 
             // Enable AMIn button if current time is before 7:00 AM
-            if (hours < 11 && minutes <= 59) {
+            if (hours < 12 || (hours == 12 && minutes < 1)) {
                 AMIn.setEnabled(true);
                 AMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
             }
@@ -123,7 +123,7 @@ public class Attendance extends AppCompatActivity {
                 PMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
             }
             // Enable PMOut button if current time is after 5:00 PM
-            else if (hours >= 13) {
+            else if (hours >= 13 && minutes > 0) {
                 PMOut.setEnabled(true);
                 PMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
             }
