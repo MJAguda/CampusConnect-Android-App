@@ -40,6 +40,7 @@ public class ScanFingerPrint {
                 super.onAuthenticationSucceeded(result);
                 Toast.makeText(context, "Authentication Succeeded", Toast.LENGTH_SHORT).show();
                 fingerprintData = result.getCryptoObject().getCipher().getIV();
+                Toast.makeText(activity, "Finger data: " + getFingerprintDataAsString(), Toast.LENGTH_LONG).show();
             }
 
             @Override
