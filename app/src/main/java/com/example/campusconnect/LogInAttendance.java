@@ -82,18 +82,16 @@ public class LogInAttendance extends AppCompatActivity {
             }
         });
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            scanFingerPrint = new ScanFingerPrint(this);
+        }
+
         scanFinger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Call the startScan() method to initiate fingerprint authentication
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    if (getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)) {
-                        ScanFingerPrint scanFingerPrint = new ScanFingerPrint(LogInAttendance.this);
-                        scanFingerPrint.startScan();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Your phone is not equipped with fingerprint scanner", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "Fingerprint authentication is not supported in your device", Toast.LENGTH_SHORT).show();
+                    scanFingerPrint.startScan();
                 }
             }
         });

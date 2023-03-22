@@ -99,21 +99,20 @@ public class ScanFingerPrint {
     }
 }
 /*
-Button scanButton = findViewById(R.id.scan_button);
-scanButton.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            if (activity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)) {
-                ScanFingerPrint scanFingerPrint = new ScanFingerPrint(activity);
+
+// Initialize the ScanFingerPrint instance
+        scanFingerPrint = new ScanFingerPrint(this);
+
+        // Find the button view
+        Button button = findViewById(R.id.button);
+
+        // Set an OnClickListener for the button
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the startScan() method to initiate fingerprint authentication
                 scanFingerPrint.startScan();
-            } else {
-                Toast.makeText(activity, "Your phone is not equipped with fingerprint scanner", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(activity, "Fingerprint authentication is not supported in your device", Toast.LENGTH_SHORT).show();
-        }
-    }
-});
+        });
 
  */
