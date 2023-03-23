@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.CancellationSignal;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyProperties;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -15,6 +17,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.Signature;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -62,7 +70,40 @@ public class ScanFingerPrint {
             return;
         }
 
-        biometricPrompt.authenticate(new BiometricPrompt.CryptoObject((Signature) null), cancellationSignal, activity.getMainExecutor(), createCallback());
+        try {
+            // Create a Signature object and initialize it with a key pair
+            KeyPair keyPair = getKeyPair();
+            Signature signature = Signature.getInstance("SHA256withRSA");
+            signature.initSign(keyPair.getPrivate());
+
+            // Create a CryptoObject using the Signature object
+            BiometricPrompt.CryptoObject cryptoObject = new BiometricPrompt.CryptoObject(signature);
+
+            // Authenticate using the CryptoObject
+            biometricPrompt.authenticate(cryptoObject, cancellationSignal, activity.getMainExecutor(), createCallback());
+
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private KeyPair getKeyPair() {
+        try {
+            // Generate a key pair and store it in the Android Keystore
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
+            KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder("my_key", KeyProperties.PURPOSE_SIGN | KeyProperties.PURPOSE_VERIFY)
+                    .setDigests(KeyProperties.DIGEST_SHA256)
+                    .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1)
+                    .setKeySize(2048)
+                    .build();
+            keyPairGenerator.initialize(keyGenParameterSpec);
+            return keyPairGenerator.generateKeyPair();
+
+        } catch (NoSuchAlgorithmException | NoSuchProviderException |
+                 InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private BiometricPrompt.AuthenticationCallback createCallback() {
@@ -101,19 +142,42 @@ public class ScanFingerPrint {
 }
 /*
 
-// Initialize the ScanFingerPrint instance
+public class MainActivity extends AppCompatActivity {
+    private ScanFingerPrint scanFingerPrint;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
         scanFingerPrint = new ScanFingerPrint(this);
+        scanFingerPrint.startScan();
+    }
 
-        // Find the button view
-        Button button = findViewById(R.id.button);
-
-        // Set an OnClickListener for the button
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Call the startScan() method to initiate fingerprint authentication
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 2) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 scanFingerPrint.startScan();
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
             }
-        });
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (scanFingerPrint != null) {
+            scanFingerPrint.stopScan();
+        }
+    }
+
+    private void showFingerprintData(String data) {
+        Toast.makeText(this, "Finger data: " + data, Toast.LENGTH_LONG).show();
+    }
+}
+
 
  */

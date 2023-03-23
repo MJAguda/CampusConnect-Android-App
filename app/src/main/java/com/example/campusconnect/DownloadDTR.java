@@ -21,6 +21,8 @@ public class DownloadDTR {
     private static final float PDF_HEIGHT_INCHES = 11.69f; // A4 paper height
     private static final int COLUMN_MARGIN_DP = 20; // margin between columns in dp
 
+
+    // TODO add sending Gmail
     public static void downloadDTR(View view, Context context) {
         // Calculate the pixel dimensions based on the screen density
         int widthPixels = (int) (PDF_WIDTH_INCHES * context.getResources().getDisplayMetrics().densityDpi);

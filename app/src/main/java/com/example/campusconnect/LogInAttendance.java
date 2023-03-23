@@ -82,19 +82,14 @@ public class LogInAttendance extends AppCompatActivity {
             }
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            scanFingerPrint = new ScanFingerPrint(this);
-        }
-
         scanFinger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Call the startScan() method to initiate fingerprint authentication
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    scanFingerPrint.startScan();
-                }
+
             }
         });
+
+
 
         scanFacial.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -29,6 +29,7 @@ public class DownloadQR {
         this.imageView = imageView;
     }
 
+    // TODO add sending Gmail
     public void downloadImage() {
         fileName = "QRCode_" + employee.getId() + ".png";
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();

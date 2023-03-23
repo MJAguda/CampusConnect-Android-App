@@ -116,7 +116,7 @@ public class ScanQR extends AppCompatActivity {
 }
 
 /*
-    private static final int REQUEST_CODE_SCAN_QR = 123;
+    private static final int REQUEST_CODE_SCAN_QR = 1;
 
     // Put inside the main, Button action Listener in the Main
     // Set click listener on button to start ScanQR activity
