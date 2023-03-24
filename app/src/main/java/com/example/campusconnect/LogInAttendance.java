@@ -85,7 +85,7 @@ public class LogInAttendance extends AppCompatActivity {
         scanFinger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -94,7 +94,7 @@ public class LogInAttendance extends AppCompatActivity {
         scanFacial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
             }
         });
 

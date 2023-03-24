@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -61,6 +62,7 @@ public class Attendance extends AppCompatActivity {
 
         // Declare button components
         ImageButton back = findViewById(R.id.backButton_ImageButton);
+        ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
         Button AMIn = findViewById(R.id.AMIn_Button);
         Button AMOut = findViewById(R.id.AMOut_Button);
         Button PMIn = findViewById(R.id.PMIn_Button);
@@ -77,6 +79,13 @@ public class Attendance extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Attendance.this, MainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        hamburger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +38,10 @@ public class Generate extends AppCompatActivity {
 
         // Declare Button Components
         ImageButton back = findViewById(R.id.backButton_ImageButton);
+        ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
         ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);
+        ImageButton scanFingerPrint = findViewById(R.id.scanFingerPrint_ImageButton);
+        ImageButton scanFacial = findViewById(R.id.scanFacial_ImageButton);
         Button submit = findViewById(R.id.submit_Button);
         ImageButton home = findViewById(R.id.home_Button);
         ImageButton generateQR = findViewById(R.id.generateQR_Button);
@@ -75,11 +79,32 @@ public class Generate extends AppCompatActivity {
             }
         });
 
+        scanFingerPrint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        scanFacial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Generate.this, MainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        hamburger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -173,7 +198,7 @@ public class Generate extends AppCompatActivity {
         generateTAMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Coming soon!. Stay tuned.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
             }
         });
     }

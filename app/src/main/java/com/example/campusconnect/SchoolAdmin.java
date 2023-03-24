@@ -401,6 +401,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             }
             case R.id.transfer_employee:{
                 // TODO transfer Employee
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
             default:

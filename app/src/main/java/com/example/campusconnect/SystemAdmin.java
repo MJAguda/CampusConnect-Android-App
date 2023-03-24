@@ -328,9 +328,13 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 return true;
             }
             case R.id.edit_school:{
+                // TODO edit school
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
             case R.id.delete_school:{
+                // TODO delete school
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
             case R.id.add_employee:{
@@ -361,9 +365,13 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 return true;
             }
             case R.id.edit_employee:{
+                // TODO Edit employee
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
             case R.id.delete_employee:{
+                // TODO delete employee
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
             default:
