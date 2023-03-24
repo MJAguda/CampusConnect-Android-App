@@ -49,6 +49,16 @@ public class DateUtils {
         return monthNames[monthInt-1];
     }
 
+    public static int getMonthNumber(String monthName){
+        String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        for(int i = 0 ; i < monthNames.length ; i++){
+            if(monthName.equals(monthNames[i])){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public static String getCurrentDay(){
         DateFormat dateFormat = new SimpleDateFormat("dd");
         Date date = new Date();

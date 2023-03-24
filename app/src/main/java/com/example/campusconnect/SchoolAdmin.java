@@ -45,6 +45,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     Create create = new Create();
     Read read = new Read();
     Update update = new Update();
+    Delete delete = new Delete();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +189,15 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 lastName.setVisibility(View.VISIBLE);
                 birthday.setVisibility(View.VISIBLE);
 
+                // Hide idSpinner
+                idSpinner.setVisibility(View.GONE);
+
+                // Reset the component
+                idEditText.setText("");
+                idEditText.setText("");
+                firstName.setText("");
+                lastName.setText("");
+
                 // Unhide submitSchool button
                 submit.setVisibility(View.VISIBLE);
                 submit.setText("Add Employee");
@@ -282,7 +292,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 idEditText.setEnabled(false);
                                 lastName.setText(nameArray[0]);
                                 firstName.setText(nameArray[1]);
-                                monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1);
+                                //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
+                                monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
                                 daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
                                 yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(DateUtils.getCurrentYear()) - 100));
                             }
@@ -308,7 +319,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     @Override
                     public void onClick(View view) {
                         update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "fullname" , lastName.getText().toString() + ", " + firstName.getText().toString());
-                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "birthdate" , (monthSpinner.getSelectedItemPosition() + 1) + "/" + daySpinner.getSelectedItem().toString() + "/" + yearSpinner.getSelectedItem().toString());
+                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "birthdate" , (DateUtils.getMonthName(String.valueOf(monthSpinner.getSelectedItemPosition() + 1))) + "/" + daySpinner.getSelectedItem().toString() + "/" + yearSpinner.getSelectedItem().toString());
 
                         Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
                         startActivity(intent);
@@ -317,7 +328,75 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 return true;
             }
             case R.id.delete_employee:{
-                // TODO delete Employee
+                prompt.setText("Delete an Employee");
+
+                // Unhide add employee components
+                idEditText.setVisibility(View.VISIBLE);
+                firstName.setVisibility(View.VISIBLE);
+                lastName.setVisibility(View.VISIBLE);
+                birthday.setVisibility(View.VISIBLE);
+                idSpinner.setVisibility(View.VISIBLE);
+
+                // ActionListener for the selected Item in the idSpinner
+                idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        // Get the selected item from idSpinner
+                        String selectedItemId = parent.getItemAtPosition(position).toString();
+
+                        // Display a Toast message with the selected item
+                        Toast.makeText(getApplicationContext(), "Selected Item: " + selectedItemId, Toast.LENGTH_SHORT).show();
+
+                        // Read Employee data from the selectedItemId
+                        read.readRecord(school.getSchoolID() + "/employee/" + selectedItemId, new Read.OnGetDataListener() {
+                            @Override
+                            public void onSuccess(DataSnapshot dataSnapshot) {
+                                String id = dataSnapshot.child("id").getValue(String.class);
+                                String fullname = dataSnapshot.child("fullname").getValue(String.class);
+                                String birthday = dataSnapshot.child("birthdate").getValue(String.class);
+
+                                String [] nameArray = fullname.split(", ");
+                                String [] birthdayArray = birthday.split("/");
+
+                                employee.setId(id);
+
+                                // Set the values in the EditText
+                                idEditText.setText(id);
+                                idEditText.setEnabled(false);
+                                lastName.setText(nameArray[0]);
+                                firstName.setText(nameArray[1]);
+                                //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
+                                monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
+                                daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
+                                yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(DateUtils.getCurrentYear()) - 100));
+                            }
+
+                            @Override
+                            public void onFailure(DatabaseError databaseError) {
+                                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // Do nothing
+                    }
+                });
+
+                // Unhide submitSchool button
+                submit.setVisibility(View.VISIBLE);
+                submit.setText("Delete Employee");
+                // Submit Button ActionListener
+                submit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        delete.deleteRecord(school.getSchoolID() + "/employee", String.valueOf(idEditText.getText()));
+
+                        Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
+                        startActivity(intent);
+                    }
+                });
                 return true;
             }
             case R.id.transfer_employee:{
