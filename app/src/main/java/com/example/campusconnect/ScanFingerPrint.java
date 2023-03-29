@@ -30,7 +30,6 @@ import java.util.concurrent.Executors;
 @RequiresApi(api = Build.VERSION_CODES.P)
 public class ScanFingerPrint {
     private Activity activity;
-    //private Activity activity;
     private BiometricPrompt biometricPrompt;
     private CancellationSignal cancellationSignal;
     private byte[] fingerprintData;
