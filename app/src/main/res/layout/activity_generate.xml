@@ -97,7 +97,8 @@
                 android:adjustViewBounds="true"
                 android:background="@color/zxing_transparent"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/scanqrbutton" />
+                app:srcCompat="@drawable/scanqrbutton"
+                android:visibility="gone"/>
 
             <ImageButton
                 android:id="@+id/scanFingerPrint_ImageButton"
@@ -110,7 +111,8 @@
                 android:adjustViewBounds="true"
                 android:background="@color/zxing_transparent"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/scanfingerprintbutton" />
+                app:srcCompat="@drawable/scanfingerprintbutton"
+                android:visibility="gone"/>
 
             <ImageButton
                 android:id="@+id/scanFacial_ImageButton"
@@ -123,7 +125,8 @@
                 android:adjustViewBounds="true"
                 android:background="@color/zxing_transparent"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/scanfacialbutton" />
+                app:srcCompat="@drawable/scanfacialbutton"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
