@@ -106,7 +106,7 @@ public class LogInAttendance extends AppCompatActivity {
 
                 save.setYear(DateUtils.getCurrentYear());
                 save.setMonth(DateUtils.getMonthName(DateUtils.getCurrentMonth()));
-                save.setDay(DateUtils.getCurrentDay());
+                save.setDay(String.valueOf(Integer.parseInt(DateUtils.getCurrentDay())));
 
                 // Check id if exist Log in Using ID Number
                 Read read = new Read();
@@ -251,7 +251,6 @@ public class LogInAttendance extends AppCompatActivity {
                                                 // handle error here
                                             }
                                         });
-
                                         Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_LONG).show();
                                     }
 
