@@ -73,6 +73,7 @@ public class SchoolLogIn extends AppCompatActivity {
                                 school.setSchoolHead(dataSnapshot.child("schoolHead").getValue().toString());
                                 school.setAdminUsername(dataSnapshot.child("adminUsername").getValue().toString());
                                 school.setAdminPassword(dataSnapshot.child("adminPassword").getValue().toString());
+                                school.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
                                 school.setLatitudeBottom(dataSnapshot.child("latitudeBottom").getValue().toString());
                                 school.setLatitudeTop(dataSnapshot.child("latitudeTop").getValue().toString());
                                 school.setLongitudeLeft(dataSnapshot.child("longitudeLeft").getValue().toString());

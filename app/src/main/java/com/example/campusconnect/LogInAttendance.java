@@ -35,6 +35,7 @@ public class LogInAttendance extends AppCompatActivity {
     School school = School.getInstance();
     Employee employee = Employee.getInstance();
     Create create = new Create();
+    Read read = new Read();
     private static final int REQUEST_CODE_SCAN_QR = 1;
     EditText id;
 
@@ -106,10 +107,9 @@ public class LogInAttendance extends AppCompatActivity {
 
                 save.setYear(DateUtils.getCurrentYear());
                 save.setMonth(DateUtils.getMonthName(DateUtils.getCurrentMonth()));
-                save.setDay(String.valueOf(Integer.parseInt(DateUtils.getCurrentDay())));
+                save.setDay(String.valueOf(Integer.parseInt(DateUtils.getCurrentDay()))); // TODO make it 01 instead of 1
 
                 // Check id if exist Log in Using ID Number
-                Read read = new Read();
                 read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
@@ -206,16 +206,26 @@ public class LogInAttendance extends AppCompatActivity {
                                                             employee.setLongitude(currentLocation.getLongitude());
 
                                                             // Check employee Coordinate if employee is inside the 4 corners of the campus
-                                                            if(employee.getLatitude() >= Double.parseDouble(school.getLatitudeBottom()) && employee.getLatitude() <= Double.parseDouble(school.getLatitudeTop()) && employee.getLongitude() >= Double.parseDouble(school.getLongitudeLeft()) && employee.getLongitude() <= Double.parseDouble(school.getLongitudeRight())){
+                                                            // TODO add toggle switch to punch time without GPS
+                                                            if(school.getGpsFeature() == true){
+                                                                if(employee.getLatitude() >= Double.parseDouble(school.getLatitudeBottom()) && employee.getLatitude() <= Double.parseDouble(school.getLatitudeTop()) && employee.getLongitude() >= Double.parseDouble(school.getLongitudeLeft()) && employee.getLongitude() <= Double.parseDouble(school.getLongitudeRight())){
+                                                                    Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
+
+                                                                    // Push Time in Database
+                                                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), DateUtils.getCurrentTime());
+                                                                    thankyou.start();
+                                                                }
+                                                                else{
+                                                                    Toast.makeText(getApplicationContext(), "You are outside the Campus. Connect to School WIFI", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            } else if (school.getGpsFeature() == false) {
                                                                 Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                                                                 // Push Time in Database
                                                                 create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), DateUtils.getCurrentTime());
                                                                 thankyou.start();
                                                             }
-                                                            else{
-                                                                Toast.makeText(getApplicationContext(), "You are outside the Campus. Connect to School WIFI", Toast.LENGTH_SHORT).show();
-                                                            }
+
                                                         } else {
                                                             Toast.makeText(getApplicationContext(), "No location data available", Toast.LENGTH_SHORT).show();
                                                             Log.d("Location", "No location data available.");
@@ -225,7 +235,7 @@ public class LogInAttendance extends AppCompatActivity {
 
                                                 @Override
                                                 public void onFailure(DatabaseError databaseError) {
-
+                                                    Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
                                         }

@@ -119,7 +119,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.17"
                     android:textColor="@color/white"
-                    android:text="PM In"
+                    android:text="PM Out"
                     android:textSize="12sp"
                     android:textAlignment="center"
                     android:gravity="center"/>

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +54,6 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         Spinner monthSpinner = findViewById(R.id.month_Spinner);
         Spinner daySpinner = findViewById(R.id.day_Spinner);
         Spinner yearSpinner = findViewById(R.id.year_Spinner);
-        //DatePicker birthday = findViewById(R.id.birthday_DatePicker);
 
         // Create an ArrayList for the month
         ArrayList<String> monthList = new ArrayList<>();
@@ -103,6 +103,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         EditText schoolHead = findViewById(R.id.schoolHead_EditText);
         EditText adminUsername = findViewById(R.id.adminUsername_EditText);
         EditText adminPassword = findViewById(R.id.adminPassword_EditText);
+        TableLayout gpsFeature = findViewById(R.id.gpsFeature_TableLayout);
         EditText latitudeBottom = findViewById(R.id.latitudeBottom_EditText);
         EditText latitudeTop = findViewById(R.id.latitudeTop_EditText);
         EditText longitudeLeft = findViewById(R.id.longitudeLeft_EditText);
@@ -119,6 +120,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         schoolHead.setVisibility(View.GONE);
         adminUsername.setVisibility(View.GONE);
         adminPassword.setVisibility(View.GONE);
+        gpsFeature.setVisibility(View.GONE);
         latitudeBottom.setVisibility(View.GONE);
         latitudeTop.setVisibility(View.GONE);
         longitudeLeft.setVisibility(View.GONE);
@@ -188,6 +190,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 create.createRecord(school.getSchoolID() + "/schoolHead", school.getSchoolHead());
                                 create.createRecord(school.getSchoolID() + "/adminUsername", school.getAdminUsername());
                                 create.createRecord(school.getSchoolID() + "/adminPassword", school.getAdminPassword());
+                                create.createRecord(school.getSchoolID() + "/gpsFeature", school.getGpsFeature());
                                 create.createRecord(school.getSchoolID() + "/latitudeBottom", school.getLatitudeBottom());
                                 create.createRecord(school.getSchoolID() + "/latitudeTop", school.getLatitudeTop());
                                 create.createRecord(school.getSchoolID() + "/longitudeLeft", school.getLongitudeLeft());
@@ -289,6 +292,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         EditText schoolHead = findViewById(R.id.schoolHead_EditText);
         EditText adminUsername = findViewById(R.id.adminUsername_EditText);
         EditText adminPassword = findViewById(R.id.adminPassword_EditText);
+        TableLayout gpsFeature = findViewById(R.id.gpsFeature_TableLayout);
         EditText latitudeBottom = findViewById(R.id.latitudeBottom_EditText);
         EditText latitudeTop = findViewById(R.id.latitudeTop_EditText);
         EditText longitudeLeft = findViewById(R.id.longitudeLeft_EditText);
@@ -311,6 +315,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 schoolHead.setVisibility(View.VISIBLE);
                 adminUsername.setVisibility(View.VISIBLE);
                 adminPassword.setVisibility(View.VISIBLE);
+                gpsFeature.setVisibility(View.VISIBLE);
                 latitudeBottom.setVisibility(View.VISIBLE);
                 latitudeTop.setVisibility(View.VISIBLE);
                 longitudeLeft.setVisibility(View.VISIBLE);
@@ -348,6 +353,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 schoolHead.setVisibility(View.GONE);
                 adminUsername.setVisibility(View.GONE);
                 adminPassword.setVisibility(View.GONE);
+                gpsFeature.setVisibility(View.GONE);
                 latitudeBottom.setVisibility(View.GONE);
                 latitudeTop.setVisibility(View.GONE);
                 longitudeLeft.setVisibility(View.GONE);
