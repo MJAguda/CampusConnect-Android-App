@@ -99,6 +99,8 @@ public class LogInAttendance extends AppCompatActivity {
             }
         });
 
+        // TODO Remove Submit button then if qr, biometric, or facial is pressed it will submit directly without pressing submit
+        //TODO make PunchTime class
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
