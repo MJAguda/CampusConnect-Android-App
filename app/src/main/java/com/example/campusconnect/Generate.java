@@ -39,9 +39,9 @@ public class Generate extends AppCompatActivity {
         // Declare Button Components
         ImageButton back = findViewById(R.id.backButton_ImageButton);
         ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
-        ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);
-        ImageButton scanFingerPrint = findViewById(R.id.scanFingerPrint_ImageButton);
-        ImageButton scanFacial = findViewById(R.id.scanFacial_ImageButton);
+        //ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);
+        //ImageButton scanFingerPrint = findViewById(R.id.scanFingerPrint_ImageButton);
+        //ImageButton scanFacial = findViewById(R.id.scanFacial_ImageButton);
         Button submit = findViewById(R.id.submit_Button);
         ImageButton home = findViewById(R.id.home_Button);
         ImageButton generateQR = findViewById(R.id.generateQR_Button);
@@ -71,7 +71,7 @@ public class Generate extends AppCompatActivity {
         guide5.setVisibility(View.GONE);
 
         // Set click listener on button to start ScanQR activity
-        scanQR.setOnClickListener(new View.OnClickListener() {
+        /*scanQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Generate.this, ScanQR.class);
@@ -79,19 +79,25 @@ public class Generate extends AppCompatActivity {
             }
         });
 
-        scanFingerPrint.setOnClickListener(new View.OnClickListener() {
+         */
+
+        /*scanFingerPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
             }
         });
 
-        scanFacial.setOnClickListener(new View.OnClickListener() {
+         */
+
+        /*scanFacial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
             }
         });
+
+         */
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +137,7 @@ public class Generate extends AppCompatActivity {
 
                             prompt.setVisibility(View.GONE);
                             id.setVisibility(View.GONE);
-                            scanQR.setVisibility(View.GONE);
+                            //scanQR.setVisibility(View.GONE);
                             submit.setVisibility(View.GONE);
                         }
                         else{

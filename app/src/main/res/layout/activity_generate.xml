@@ -81,10 +81,12 @@
                 android:padding="16dp"/>
         </LinearLayout>
 
+        <!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
 
             <ImageButton
                 android:id="@+id/scanQR_ImageButton"
@@ -128,7 +130,9 @@
                 app:srcCompat="@drawable/scanfacialbutton"
                 android:visibility="gone"/>
 
+
         </LinearLayout>
+        -->
 
             <ImageView
                 android:id="@+id/qrCode_ImageView"
