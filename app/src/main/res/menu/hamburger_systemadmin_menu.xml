@@ -19,6 +19,9 @@
         android:id="@+id/delete_employee"
         android:title="Delete Employee"/>
     <item
-        android:id="@+id/trasnfer_employee"
+        android:id="@+id/transfer_employee"
         android:title="Transfer Employee"/>
+    <item
+        android:id="@+id/settings"
+        android:title="Settings"/>
 </menu>

@@ -380,6 +380,16 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
+            case R.id.transfer_employee:{
+                // TODO delete employee
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            case R.id.settings:{
+                // TODO delete employee
+                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
+                return true;
+            }
             default:
                 return false;
         }
