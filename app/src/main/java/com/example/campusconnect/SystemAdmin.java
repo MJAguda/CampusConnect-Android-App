@@ -329,7 +329,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                 // Unhide submitSchool button
                 submitSchool.setVisibility(View.VISIBLE);
-                submitEmployee.setVisibility(View.GONE);
+                submitEmployee.setVisibility(View.GONE); 
                 return true;
             }
             case R.id.edit_school:{
