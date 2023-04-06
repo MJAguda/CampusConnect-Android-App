@@ -404,7 +404,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
-            case R.id.setting:{
+            case R.id.settings:{
                 // TODO settings toggle switch of GPSFeature, BiometricFeature, and FacialRecognition Feature
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
