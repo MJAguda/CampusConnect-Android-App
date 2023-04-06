@@ -70,7 +70,8 @@
                 android:textSize="30sp"
                 android:textAlignment="center"
                 android:background="@drawable/round_edittext_bg"
-                android:padding="16dp"/>
+                android:padding="16dp"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout
@@ -138,6 +139,7 @@
             android:backgroundTint="#F9ED69"
             android:text="Submit"
             android:textColor="#6A2C70"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:visibility="gone"/>
     </LinearLayout>
 </LinearLayout>

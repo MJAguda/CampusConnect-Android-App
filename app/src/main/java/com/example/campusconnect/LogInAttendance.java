@@ -299,12 +299,20 @@ public class LogInAttendance extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         id = findViewById(R.id.id_EditText);
+        Button submit = findViewById(R.id.submit_Button);
 
         if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
             String qrResult = data.getStringExtra("QR_RESULT");
             // Handle the QR code result here
-            Toast.makeText(this, "QR code result: " + qrResult, Toast.LENGTH_SHORT).show();
+
+            // Print Toast message
+            Toast.makeText(this, ""+ qrResult, Toast.LENGTH_SHORT).show();
+
+            // set the idNumber_TextView
             id.setText(qrResult);
+
+            // Perform click
+            submit.performClick();
         }
     }
 }
