@@ -103,7 +103,6 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         EditText schoolHead = findViewById(R.id.schoolHead_EditText);
         EditText adminUsername = findViewById(R.id.adminUsername_EditText);
         EditText adminPassword = findViewById(R.id.adminPassword_EditText);
-        TableLayout gpsFeature = findViewById(R.id.gpsFeature_TableLayout);
         EditText latitudeBottom = findViewById(R.id.latitudeBottom_EditText);
         EditText latitudeTop = findViewById(R.id.latitudeTop_EditText);
         EditText longitudeLeft = findViewById(R.id.longitudeLeft_EditText);
@@ -120,7 +119,6 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         schoolHead.setVisibility(View.GONE);
         adminUsername.setVisibility(View.GONE);
         adminPassword.setVisibility(View.GONE);
-        gpsFeature.setVisibility(View.GONE);
         latitudeBottom.setVisibility(View.GONE);
         latitudeTop.setVisibility(View.GONE);
         longitudeLeft.setVisibility(View.GONE);
@@ -292,7 +290,6 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         EditText schoolHead = findViewById(R.id.schoolHead_EditText);
         EditText adminUsername = findViewById(R.id.adminUsername_EditText);
         EditText adminPassword = findViewById(R.id.adminPassword_EditText);
-        TableLayout gpsFeature = findViewById(R.id.gpsFeature_TableLayout);
         EditText latitudeBottom = findViewById(R.id.latitudeBottom_EditText);
         EditText latitudeTop = findViewById(R.id.latitudeTop_EditText);
         EditText longitudeLeft = findViewById(R.id.longitudeLeft_EditText);
@@ -315,7 +312,6 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 schoolHead.setVisibility(View.VISIBLE);
                 adminUsername.setVisibility(View.VISIBLE);
                 adminPassword.setVisibility(View.VISIBLE);
-                gpsFeature.setVisibility(View.VISIBLE);
                 latitudeBottom.setVisibility(View.VISIBLE);
                 latitudeTop.setVisibility(View.VISIBLE);
                 longitudeLeft.setVisibility(View.VISIBLE);
@@ -353,7 +349,6 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 schoolHead.setVisibility(View.GONE);
                 adminUsername.setVisibility(View.GONE);
                 adminPassword.setVisibility(View.GONE);
-                gpsFeature.setVisibility(View.GONE);
                 latitudeBottom.setVisibility(View.GONE);
                 latitudeTop.setVisibility(View.GONE);
                 longitudeLeft.setVisibility(View.GONE);
@@ -381,11 +376,6 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 return true;
             }
             case R.id.transfer_employee:{
-                // TODO delete employee
-                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            case R.id.settings:{
                 // TODO delete employee
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;

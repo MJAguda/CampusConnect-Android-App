@@ -61,6 +61,104 @@
             android:textColor="#6A2C70"
             android:textSize="20sp"/>
 
+        <TableLayout
+            android:id="@+id/features_TableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:text="ID Number TextBox"
+                    android:textSize="20sp"/>
+
+                <Switch
+                    android:id="@+id/idNumber_Switch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:text="GPS Feature"
+                    android:textSize="20sp"/>
+
+                <Switch
+                    android:id="@+id/gpsFeature_Switch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"/>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:text="QR Scanner Feature"
+                    android:textSize="20sp"/>
+
+                <Switch
+                    android:id="@+id/qrScannerFeature_Switch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"/>
+
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:text="Biometric Feature"
+                    android:textSize="20sp"/>
+
+                <Switch
+                    android:id="@+id/biometricFeature_Switch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"/>
+
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:text="Facial Recog Feature"
+                    android:textSize="20sp"/>
+
+                <Switch
+                    android:id="@+id/facialRecognitionFeature_Switch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"/>
+
+            </TableRow>
+        </TableLayout>
+
 
 
             <LinearLayout

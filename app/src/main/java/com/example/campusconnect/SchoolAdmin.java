@@ -1,7 +1,6 @@
 package com.example.campusconnect;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -68,6 +67,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         Spinner daySpinner = findViewById(R.id.day_Spinner);
         Spinner yearSpinner = findViewById(R.id.year_Spinner);
         Spinner idSpinner = findViewById(R.id.id_Spinner);
+        TableLayout features = findViewById(R.id.features_TableLayout);
         Button submit = findViewById(R.id.submitEmployee_Button);
 
         // Hide add employee components
@@ -401,11 +401,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             }
             case R.id.transfer_employee:{
                 // TODO transfer Employee
-                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            case R.id.settings:{
-                // TODO settings toggle switch of GPSFeature, BiometricFeature, and FacialRecognition Feature
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
