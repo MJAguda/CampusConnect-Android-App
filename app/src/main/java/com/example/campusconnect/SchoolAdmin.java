@@ -15,11 +15,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -178,6 +180,27 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, yearList);
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(yearAdapter);
+
+        // Toggle Switch
+        // Hook the toggle switches
+        Switch idSwitch = findViewById(R.id.idNumber_Switch);
+
+        // Set the value for the ToggleSwitch
+        idSwitch.setChecked(school.getIdNumberFeature());
+
+        // Set an OnCheckedChangedListener to listen for changes in the toggle switch
+        idSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                Toast.makeText(getApplicationContext(), "Toggle switch value: " + idSwitch.isChecked(), Toast.LENGTH_SHORT).show();
+
+                school.setIdNumberFeature(idSwitch.isChecked());
+
+                update.updateRecord(school.getSchoolID() + "", "idNumberFeature", school.getIdNumberFeature());
+            }
+        });
+
 
         Button submit = findViewById(R.id.submitEmployee_Button);
 

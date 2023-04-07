@@ -70,8 +70,7 @@
                 android:textSize="30sp"
                 android:textAlignment="center"
                 android:background="@drawable/round_edittext_bg"
-                android:padding="16dp"
-                android:visibility="gone"/>
+                android:padding="16dp"/>
         </LinearLayout>
 
         <LinearLayout

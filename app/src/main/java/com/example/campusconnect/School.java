@@ -19,6 +19,7 @@ public class School {
     private String adminUsername;
     private String adminPassword;
     private boolean gpsFeature;
+    private boolean idNumberFeature;
     private String latitudeBottom;
     private String latitudeTop;
     private String longitudeLeft;
@@ -31,6 +32,7 @@ public class School {
     public void setAdminUsername(String adminUsername){this.adminUsername = adminUsername;}
     public void setAdminPassword(String adminPassword){this.adminPassword = adminPassword;}
     public void setGpsFeature(boolean gpsFeature){this.gpsFeature = gpsFeature;}
+    public void setIdNumberFeature(boolean idNumberFeature){this.idNumberFeature = idNumberFeature;}
     public void setLatitudeBottom(String latitudeBottom){this.latitudeBottom = latitudeBottom;}
     public void setLatitudeTop(String latitudeTop){this.latitudeTop = latitudeTop;}
     public void setLongitudeLeft(String longitudeLeft){this.longitudeLeft = longitudeLeft;}
@@ -43,6 +45,7 @@ public class School {
     public String getAdminUsername(){return adminUsername;}
     public String getAdminPassword(){return adminPassword;}
     public boolean getGpsFeature(){return gpsFeature;}
+    public boolean getIdNumberFeature(){return idNumberFeature;}
     public String getLatitudeBottom(){return latitudeBottom;}
     public String getLatitudeTop(){return latitudeTop;}
     public String getLongitudeLeft(){return longitudeLeft;}

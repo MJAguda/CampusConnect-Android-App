@@ -37,7 +37,7 @@ public class LogInAttendance extends AppCompatActivity {
     Create create = new Create();
     Read read = new Read();
     private static final int REQUEST_CODE_SCAN_QR = 1;
-    EditText id;
+    EditText idNumber;
 
     // Instance of scanFingerPrint
     private static final String TAG = LogInAttendance.class.getSimpleName();
@@ -51,12 +51,15 @@ public class LogInAttendance extends AppCompatActivity {
         // TODO Add VPN restriction
 
         // Declare Components
-        id = findViewById(R.id.id_EditText);
+        idNumber = findViewById(R.id.id_EditText);
         ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);
         ImageButton scanFinger = findViewById(R.id.scanFingerPrint_ImageButton);
         ImageButton scanFacial = findViewById(R.id.scanFacial_ImageButton);
         Button submit = findViewById(R.id.submit_Button);
         ImageButton back = findViewById(R.id.backButton_ImageButton);
+
+        // Hide all components
+        idNumber.setVisibility(school.getIdNumberFeature() ? View.VISIBLE : View.GONE);
 
         // Declare and Initialized locationManager
         LocationManager locationManager;
@@ -103,7 +106,7 @@ public class LogInAttendance extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Authenticate
-                employee.setId(id.getText().toString());
+                employee.setId(idNumber.getText().toString());
 
                 save.setYear(DateUtils.getCurrentYear());
                 save.setMonth(DateUtils.getMonthName(DateUtils.getCurrentMonth()));
@@ -296,7 +299,7 @@ public class LogInAttendance extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        id = findViewById(R.id.id_EditText);
+        idNumber = findViewById(R.id.id_EditText);
         Button submit = findViewById(R.id.submit_Button);
 
         if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
@@ -307,7 +310,7 @@ public class LogInAttendance extends AppCompatActivity {
             Toast.makeText(this, ""+ qrResult, Toast.LENGTH_SHORT).show();
 
             // set the idNumber_TextView
-            id.setText(qrResult);
+            idNumber.setText(qrResult);
 
             // Perform click
             submit.performClick();
