@@ -138,7 +138,6 @@
             android:backgroundTint="#F9ED69"
             android:text="Submit"
             android:textColor="#6A2C70"
-            android:textSize="30sp"
-            android:visibility="gone"/>
+            android:textSize="30sp" />
     </LinearLayout>
 </LinearLayout>

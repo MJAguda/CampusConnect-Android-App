@@ -60,6 +60,7 @@ public class LogInAttendance extends AppCompatActivity {
 
         // Hide all components
         idNumber.setVisibility(school.getIdNumberFeature() ? View.VISIBLE : View.GONE);
+        submit.setVisibility(school.getIdNumberFeature() ? View.VISIBLE : View.GONE);
 
         // Declare and Initialized locationManager
         LocationManager locationManager;
