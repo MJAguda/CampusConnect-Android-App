@@ -229,7 +229,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                         Create create = new Create();
                                         create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
                                         create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
-                                        create.createRecord(school.getSchoolID() + "/employee/"+employee.getId()+ "/birthdate", employee.getBirthday());
+                                        create.createRecord(school.getSchoolID() + "/employee/"+ employee.getId()+ "/birthdate", employee.getBirthday());
 
                                         firstName.setText("");
                                         lastName.setText("");
@@ -289,7 +289,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                                 // Set the values in the EditText
                                 idEditText.setText(id);
-                                idEditText.setEnabled(false);
                                 lastName.setText(nameArray[0]);
                                 firstName.setText(nameArray[1]);
                                 //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
@@ -318,6 +317,10 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        // TODO make idnumber editable
+                        //update.updateRecord(school.getSchoolID() + "/employee/", employee.getId() , idEditText.getText().toString());
+                        //update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "id" , idEditText.getText().toString());
                         update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "fullname" , lastName.getText().toString() + ", " + firstName.getText().toString());
                         update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "birthdate" , (DateUtils.getMonthName(String.valueOf(monthSpinner.getSelectedItemPosition() + 1))) + "/" + daySpinner.getSelectedItem().toString() + "/" + yearSpinner.getSelectedItem().toString());
 
@@ -401,6 +404,14 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             }
             case R.id.transfer_employee:{
                 // TODO transfer Employee
+
+                // Select schoolID source using Dropdown
+                // Select schoolID destination using Dropdown
+
+                // Use ListView to display all employee inside schoolID source
+
+                // Submit button that will transfer employee CREATE ALGO to copy all subtree
+
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
