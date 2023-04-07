@@ -70,12 +70,13 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         TableLayout features = findViewById(R.id.features_TableLayout);
         Button submit = findViewById(R.id.submitEmployee_Button);
 
-        // Hide add employee components
+        // Hide all employee components
         id.setVisibility(View.GONE);
         firstName.setVisibility(View.GONE);
         lastName.setVisibility(View.GONE);
         birthday.setVisibility(View.GONE);
         idSpinner.setVisibility(View.GONE);
+        features.setVisibility(View.GONE);
         submit.setVisibility(View.GONE);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +114,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         Spinner daySpinner = findViewById(R.id.day_Spinner);
         Spinner yearSpinner = findViewById(R.id.year_Spinner);
         Spinner idSpinner = findViewById(R.id.id_Spinner);
+        TableLayout features = findViewById(R.id.features_TableLayout);
 
         // Create an ArrayList for the id employee
         ArrayList<String> idList = new ArrayList<>();
@@ -189,8 +191,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 lastName.setVisibility(View.VISIBLE);
                 birthday.setVisibility(View.VISIBLE);
 
-                // Hide idSpinner
+                // Hide components that are not part of this button
                 idSpinner.setVisibility(View.GONE);
+                features.setVisibility(View.GONE);
 
                 // Reset the component
                 idEditText.setText("");
@@ -264,6 +267,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 birthday.setVisibility(View.VISIBLE);
                 idSpinner.setVisibility(View.VISIBLE);
 
+                // Hide all components that are not needed in edit_employee
+                features.setVisibility(View.GONE);
+
                 // ActionListener for the selected Item in the idSpinner
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -318,7 +324,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     @Override
                     public void onClick(View view) {
 
-                        // TODO make idnumber editable
+                        // TODO make idNumber editable
                         //update.updateRecord(school.getSchoolID() + "/employee/", employee.getId() , idEditText.getText().toString());
                         //update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "id" , idEditText.getText().toString());
                         update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "fullname" , lastName.getText().toString() + ", " + firstName.getText().toString());
@@ -413,6 +419,18 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 // Submit button that will transfer employee CREATE ALGO to copy all subtree
 
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            case R.id.settings:{
+                // TODO Hide all components
+                idSpinner.setVisibility(View.GONE);
+                idEditText.setVisibility(View.GONE);
+                firstName.setVisibility(View.GONE);
+                lastName.setVisibility(View.GONE);
+                birthday.setVisibility(View.GONE);
+
+                // TODO Unhide features_table layout
+                features.setVisibility(View.VISIBLE);
                 return true;
             }
             default:
