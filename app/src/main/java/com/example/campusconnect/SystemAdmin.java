@@ -188,7 +188,11 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 create.createRecord(school.getSchoolID() + "/schoolHead", school.getSchoolHead());
                                 create.createRecord(school.getSchoolID() + "/adminUsername", school.getAdminUsername());
                                 create.createRecord(school.getSchoolID() + "/adminPassword", school.getAdminPassword());
-                                create.createRecord(school.getSchoolID() + "/gpsFeature", school.getGpsFeature());
+                                create.createRecord(school.getSchoolID() + "/idNumberFeature", true);
+                                create.createRecord(school.getSchoolID() + "/gpsFeature", true);
+                                create.createRecord(school.getSchoolID() + "/qrcodeFeature", true);
+                                create.createRecord(school.getSchoolID() + "/fingerPrintFeature", true);
+                                create.createRecord(school.getSchoolID() + "/facialRecognitionFeature", true);
                                 create.createRecord(school.getSchoolID() + "/latitudeBottom", school.getLatitudeBottom());
                                 create.createRecord(school.getSchoolID() + "/latitudeTop", school.getLatitudeTop());
                                 create.createRecord(school.getSchoolID() + "/longitudeLeft", school.getLongitudeLeft());

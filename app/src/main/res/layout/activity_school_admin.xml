@@ -164,7 +164,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.75"
-                            android:text="ID Number TextBox"
+                            android:text="ID Number"
                             android:textSize="20sp"/>
 
                         <Switch
@@ -209,7 +209,7 @@
                             android:id="@+id/qrScannerFeature_Switch"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.25"/>
+                            android:layout_weight="0.25" />
 
                     </TableRow>
                     <TableRow

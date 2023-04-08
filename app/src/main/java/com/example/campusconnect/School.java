@@ -20,6 +20,9 @@ public class School {
     private String adminPassword;
     private boolean gpsFeature;
     private boolean idNumberFeature;
+    private boolean qrScannerFeature;
+    private boolean fingerPrintScannerFeature;
+    private boolean facialRecognitionFeature;
     private String latitudeBottom;
     private String latitudeTop;
     private String longitudeLeft;
@@ -33,6 +36,9 @@ public class School {
     public void setAdminPassword(String adminPassword){this.adminPassword = adminPassword;}
     public void setGpsFeature(boolean gpsFeature){this.gpsFeature = gpsFeature;}
     public void setIdNumberFeature(boolean idNumberFeature){this.idNumberFeature = idNumberFeature;}
+    public void setQrScannerFeature(boolean qrScannerFeature){this.qrScannerFeature = qrScannerFeature;}
+    public void setFingerPrintScannerFeature(boolean fingerPrintScannerFeature){this.fingerPrintScannerFeature = fingerPrintScannerFeature;}
+    public void setFacialRecognitionFeature(boolean facialRecognitionFeature){this.facialRecognitionFeature = facialRecognitionFeature;}
     public void setLatitudeBottom(String latitudeBottom){this.latitudeBottom = latitudeBottom;}
     public void setLatitudeTop(String latitudeTop){this.latitudeTop = latitudeTop;}
     public void setLongitudeLeft(String longitudeLeft){this.longitudeLeft = longitudeLeft;}
@@ -46,9 +52,11 @@ public class School {
     public String getAdminPassword(){return adminPassword;}
     public boolean getGpsFeature(){return gpsFeature;}
     public boolean getIdNumberFeature(){return idNumberFeature;}
+    public boolean isQrScannerFeature(){return qrScannerFeature;}
+    public boolean isFingerPrintScannerFeature(){return fingerPrintScannerFeature;}
+    public boolean isFacialRecognitionFeature(){return facialRecognitionFeature;}
     public String getLatitudeBottom(){return latitudeBottom;}
     public String getLatitudeTop(){return latitudeTop;}
     public String getLongitudeLeft(){return longitudeLeft;}
     public String getLongitudeRight(){return longitudeRight;}
-
 }

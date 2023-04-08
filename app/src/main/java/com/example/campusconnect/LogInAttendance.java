@@ -60,6 +60,10 @@ public class LogInAttendance extends AppCompatActivity {
 
         // Hide all components
         idNumber.setVisibility(school.getIdNumberFeature() ? View.VISIBLE : View.GONE);
+        scanQR.setVisibility(school.isQrScannerFeature() ? View.VISIBLE : View.GONE);
+        scanFinger.setVisibility(school.isFingerPrintScannerFeature() ? View.VISIBLE : View.GONE);
+        scanFacial.setVisibility(school.isFacialRecognitionFeature() ? View.VISIBLE : View.GONE);
+
         submit.setVisibility(school.getIdNumberFeature() ? View.VISIBLE : View.GONE);
 
         // Declare and Initialized locationManager
@@ -210,7 +214,7 @@ public class LogInAttendance extends AppCompatActivity {
                                                             employee.setLongitude(currentLocation.getLongitude());
 
                                                             // Check employee Coordinate if employee is inside the 4 corners of the campus
-                                                            // TODO add toggle switch to punch time without GPS
+                                                            // Toggle switch to punch time without GPS
                                                             if(school.getGpsFeature() == true){
                                                                 if(employee.getLatitude() >= Double.parseDouble(school.getLatitudeBottom()) && employee.getLatitude() <= Double.parseDouble(school.getLatitudeTop()) && employee.getLongitude() >= Double.parseDouble(school.getLongitudeLeft()) && employee.getLongitude() <= Double.parseDouble(school.getLongitudeRight())){
                                                                     Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();

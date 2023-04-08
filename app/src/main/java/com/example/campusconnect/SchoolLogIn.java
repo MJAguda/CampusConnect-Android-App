@@ -75,10 +75,15 @@ public class SchoolLogIn extends AppCompatActivity {
                                 school.setAdminPassword(dataSnapshot.child("adminPassword").getValue().toString());
                                 school.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
                                 school.setIdNumberFeature(dataSnapshot.child("idNumberFeature").getValue(Boolean.class));
+                                school.setQrScannerFeature(dataSnapshot.child("qrcodeFeature").getValue(Boolean.class));
+                                school.setFingerPrintScannerFeature(dataSnapshot.child("fingerPrintFeature").getValue(Boolean.class));
+                                school.setFacialRecognitionFeature(dataSnapshot.child("facialRecognitionFeature").getValue(Boolean.class));
                                 school.setLatitudeBottom(dataSnapshot.child("latitudeBottom").getValue().toString());
                                 school.setLatitudeTop(dataSnapshot.child("latitudeTop").getValue().toString());
                                 school.setLongitudeLeft(dataSnapshot.child("longitudeLeft").getValue().toString());
                                 school.setLongitudeRight(dataSnapshot.child("longitudeRight").getValue().toString());
+
+                                //Toast.makeText(getApplicationContext(), "GPS : " + school.getGpsFeature() + "QR : " + school.isQrScannerFeature() + "Biometric : " + school.isFingerPrintScannerFeature() + "Facial : " + school.isFacialRecognitionFeature(), Toast.LENGTH_LONG).show();
 
                                 Intent intent = new Intent(SchoolLogIn.this, MainActivity.class);
                                 startActivity(intent);

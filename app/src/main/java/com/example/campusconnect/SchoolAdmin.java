@@ -98,6 +98,70 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 popup.show();
             }
         });
+
+        // Toggle Switches
+        // Hook the toggle switches
+        Switch idNumberSwitch = findViewById(R.id.idNumber_Switch);
+        Switch gpsSwitch = findViewById(R.id.gpsFeature_Switch);
+        Switch qrSwitch = findViewById(R.id.qrScannerFeature_Switch);
+        Switch fingerprintSwitch = findViewById(R.id.biometricFeature_Switch);
+        Switch facialrecognitionSwitch = findViewById(R.id.facialRecognitionFeature_Switch);
+
+        // Set the value for the ToggleSwitch
+        gpsSwitch.setChecked(school.getGpsFeature());
+        idNumberSwitch.setChecked(school.getIdNumberFeature());
+        qrSwitch.setChecked(school.isQrScannerFeature());
+        fingerprintSwitch.setChecked(school.isFingerPrintScannerFeature());
+        facialrecognitionSwitch.setChecked(school.isFacialRecognitionFeature());
+
+        // Set an OnCheckedChangedListener to listen for changes in the toggle switch
+        gpsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Log.d("SchoolAdmin", "gpsSwitch checked: " + b);
+                school.setGpsFeature(b);
+                update.updateRecord(String.valueOf(school.getSchoolID()), "gpsFeature", school.getGpsFeature());
+            }
+        });
+        idNumberSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Log.d("SchoolAdmin", "idSwitchSwitch checked: " + b);
+                school.setIdNumberFeature(b);
+
+                update.updateRecord(school.getSchoolID() + "", "idNumberFeature", school.getIdNumberFeature());
+            }
+        });
+
+        qrSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Log.d("SchoolAdmin", "qrSwitch checked: " + b);
+                school.setQrScannerFeature(b);
+
+                update.updateRecord(school.getSchoolID() + "", "qrcodeFeature", school.isQrScannerFeature());
+            }
+        });
+
+        fingerprintSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Log.d("SchoolAdmin", "fingerprintSwitch checked: " + b);
+                school.setFingerPrintScannerFeature(b);
+
+                update.updateRecord(school.getSchoolID() + "", "fingerPrintFeature", school.isFingerPrintScannerFeature());
+            }
+        });
+
+        facialrecognitionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Log.d("SchoolAdmin", "facialrecognitionSwitch checked: " + b);
+                school.setFacialRecognitionFeature(b);
+
+                update.updateRecord(school.getSchoolID() + "", "facialRecognitionFeature", school.isFacialRecognitionFeature());
+            }
+        });
     }
 
     @Override
@@ -180,27 +244,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, yearList);
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(yearAdapter);
-
-        // Toggle Switch
-        // Hook the toggle switches
-        Switch idSwitch = findViewById(R.id.idNumber_Switch);
-
-        // Set the value for the ToggleSwitch
-        idSwitch.setChecked(school.getIdNumberFeature());
-
-        // Set an OnCheckedChangedListener to listen for changes in the toggle switch
-        idSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
-                Toast.makeText(getApplicationContext(), "Toggle switch value: " + idSwitch.isChecked(), Toast.LENGTH_SHORT).show();
-
-                school.setIdNumberFeature(idSwitch.isChecked());
-
-                update.updateRecord(school.getSchoolID() + "", "idNumberFeature", school.getIdNumberFeature());
-            }
-        });
-
 
         Button submit = findViewById(R.id.submitEmployee_Button);
 
@@ -445,14 +488,14 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 return true;
             }
             case R.id.settings:{
-                // TODO Hide all components
+                // Hide all components
                 idSpinner.setVisibility(View.GONE);
                 idEditText.setVisibility(View.GONE);
                 firstName.setVisibility(View.GONE);
                 lastName.setVisibility(View.GONE);
                 birthday.setVisibility(View.GONE);
 
-                // TODO Unhide features_table layout
+                // Unhide features_table layout
                 features.setVisibility(View.VISIBLE);
                 return true;
             }
