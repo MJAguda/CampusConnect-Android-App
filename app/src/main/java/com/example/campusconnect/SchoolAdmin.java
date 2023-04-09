@@ -274,8 +274,16 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // Check if views are not empty
-                        if(!firstName.getText().toString().isEmpty() || !lastName.getText().toString().isEmpty() || !idEditText.getText().toString().isEmpty()){
+
+                        // Check if one of the TextView are empty
+                        if (idEditText.getText().toString().isEmpty() || firstName.getText().toString().isEmpty() || lastName.getText().toString().isEmpty()){
+                            Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
+                        }
+                        // Check if the length of id number is 12
+                        else if(idEditText.getText().toString().length() != 12){
+                            Toast.makeText(getApplicationContext(), "Id Number must be equal to 12", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
                             // Get String from EditText components
                             employee.setFirstName(firstName.getText().toString());
                             employee.setLastName(lastName.getText().toString());
@@ -315,9 +323,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                     Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
