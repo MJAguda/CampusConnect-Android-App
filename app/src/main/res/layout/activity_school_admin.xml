@@ -68,6 +68,30 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
+                <TableLayout
+                    android:id="@+id/sourceAndDestination_TableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20px">
+
+                        <Spinner
+                            android:id="@+id/source_Spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="30sp"
+                            android:layout_weight="0.5"/>
+                        <Spinner
+                            android:id="@+id/destination_Spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="30sp"
+                            android:layout_weight="0.5"/>
+
+                    </TableRow>
+                </TableLayout>
+
+
                 <Spinner
                     android:id="@+id/id_Spinner"
                     android:layout_width="match_parent"
@@ -84,7 +108,8 @@
                     android:textSize="20sp"
                     android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:padding="16dp"
+                    android:visibility="gone"/>
 
                 <EditText
                     android:id="@+id/firstName_EditText"
@@ -96,7 +121,8 @@
                     android:textSize="20sp"
                     android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:padding="16dp"
+                    android:visibility="gone"/>
 
                 <EditText
                     android:id="@+id/lastName_EditText"
@@ -108,12 +134,14 @@
                     android:textSize="20sp"
                     android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:padding="16dp"
+                    android:visibility="gone"/>
 
                 <TableLayout
                     android:id="@+id/birthday_TableLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -155,7 +183,8 @@
                 <TableLayout
                     android:id="@+id/features_TableLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -272,7 +301,8 @@
             android:backgroundTint="#F9ED69"
             android:textColor="#6A2C70"
             android:text="Submit"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 </LinearLayout>

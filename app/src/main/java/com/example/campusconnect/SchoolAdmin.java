@@ -74,6 +74,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         TableLayout features = findViewById(R.id.features_TableLayout);
         Button submit = findViewById(R.id.submitEmployee_Button);
 
+        /*
         // Hide all employee components
         id.setVisibility(View.GONE);
         firstName.setVisibility(View.GONE);
@@ -82,6 +83,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         idSpinner.setVisibility(View.GONE);
         features.setVisibility(View.GONE);
         submit.setVisibility(View.GONE);
+         */
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -482,9 +485,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 return true;
             }
             case R.id.transfer_employee:{
-                // TODO Add source drop down
-                // TODO Add destination drop down
-                // TODO Add Listview
+                // TODO Add source drop down Adapter
+                // TODO Add destination drop down Adapter
 
                 DatabaseReference source = FirebaseDatabase.getInstance().getReference("305113/employee/123456");
                 DatabaseReference destination = FirebaseDatabase.getInstance().getReference("135290/employee/123456");
