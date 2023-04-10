@@ -70,23 +70,54 @@
 
                 <TableLayout
                     android:id="@+id/sourceAndDestination_TableLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width = "match_parent"
+                    android:layout_height = "wrap_content"
+                    android:visibility = "gone">
+
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="20px">
 
-                        <Spinner
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Source"
+                            android:textColor="#6A2C70"
+                            android:textSize="20sp"
+                            android:textAlignment="center"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Destination"
+                            android:textColor="#6A2C70"
+                            android:textSize="20sp"
+                            android:textAlignment="center"/>
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20px">
+
+                        <TextView
+                            android:id="@+id/source_TextView"
+                            android:layout_width="0.25dp"
+                            android:layout_height="30sp"
+                            android:layout_weight="1"/>
+
+                        <!--<Spinner
                             android:id="@+id/source_Spinner"
                             android:layout_width="0dp"
                             android:layout_height="30sp"
-                            android:layout_weight="0.5"/>
+                            android:layout_weight="0.5" />
+                            -->
                         <Spinner
                             android:id="@+id/destination_Spinner"
                             android:layout_width="0dp"
                             android:layout_height="30sp"
-                            android:layout_weight="0.5"/>
+                            android:layout_weight="1"/>
 
                     </TableRow>
                 </TableLayout>
@@ -95,7 +126,8 @@
                 <Spinner
                     android:id="@+id/id_Spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="30sp" />
+                    android:layout_height="30sp"
+                    android:visibility="gone"/>
 
                 <EditText
                     android:id="@+id/id_EditText"

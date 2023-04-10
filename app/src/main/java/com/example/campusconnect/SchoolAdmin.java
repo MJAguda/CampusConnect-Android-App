@@ -50,6 +50,14 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     Update update = new Update();
     Delete delete = new Delete();
 
+    TableLayout sourceAndDestinationTableLayout;
+    Spinner idSpinner;
+    EditText idEditText;
+    EditText firstNameEditText;
+    EditText lastNameEditText;
+    TableLayout birthdayTableLayout;
+    TableLayout featuresTableLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +66,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
         ImageButton back = findViewById(R.id.backButton_ImageButton);
 
-        TextView prompt = findViewById(R.id.prompt);
+        /*TextView prompt = findViewById(R.id.prompt);
 
         // For submit employee
         EditText id = findViewById(R.id.id_EditText);
@@ -73,16 +81,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         Spinner idSpinner = findViewById(R.id.id_Spinner);
         TableLayout features = findViewById(R.id.features_TableLayout);
         Button submit = findViewById(R.id.submitEmployee_Button);
-
-        /*
-        // Hide all employee components
-        id.setVisibility(View.GONE);
-        firstName.setVisibility(View.GONE);
-        lastName.setVisibility(View.GONE);
-        birthday.setVisibility(View.GONE);
-        idSpinner.setVisibility(View.GONE);
-        features.setVisibility(View.GONE);
-        submit.setVisibility(View.GONE);
          */
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -184,11 +182,48 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         Spinner monthSpinner = findViewById(R.id.month_Spinner);
         Spinner daySpinner = findViewById(R.id.day_Spinner);
         Spinner yearSpinner = findViewById(R.id.year_Spinner);
+        TextView sourceTextView = findViewById(R.id.source_TextView);
+        //Spinner sourceSpinner = findViewById(R.id.source_Spinner);
+        Spinner destinationSpinner = findViewById(R.id.destination_Spinner);
         Spinner idSpinner = findViewById(R.id.id_Spinner);
         TableLayout features = findViewById(R.id.features_TableLayout);
 
+        // Create an ArrayList for the source schoolID
+        //ArrayList<String> sourceList = new ArrayList<>();
+
+        // Create an ArrayList for the destination schoolID
+        ArrayList<String> destinationList = new ArrayList<>();
+
         // Create an ArrayList for the id employee
         ArrayList<String> idList = new ArrayList<>();
+
+        // Read all school ID
+        read.readRecord("/", new Read.OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                    //sourceList.add(childSnapshot.getKey());
+                    destinationList.add(childSnapshot.getKey());
+                }
+
+                // Create an ArrayAdapter for the sourceList
+                //ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, sourceList);
+                //sourceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                //sourceSpinner.setAdapter(sourceAdapter);
+
+                // Create an ArrayAdapter for the destinationList
+                ArrayAdapter<String> destinationAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, destinationList);
+                destinationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                destinationSpinner.setAdapter(destinationAdapter);
+            }
+
+            @Override
+            public void onFailure(DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Read all employee and add it in the idList
         read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -256,15 +291,14 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             case R.id.add_employee:{
                 prompt.setText("Register an Employee");
 
+                // Hides all components
+                hideAllComponents();
+
                 // Unhide add employee components
                 idEditText.setVisibility(View.VISIBLE);
                 firstName.setVisibility(View.VISIBLE);
                 lastName.setVisibility(View.VISIBLE);
                 birthday.setVisibility(View.VISIBLE);
-
-                // Hide components that are not part of this button
-                idSpinner.setVisibility(View.GONE);
-                features.setVisibility(View.GONE);
 
                 // Reset the component
                 idEditText.setText("");
@@ -274,7 +308,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                 // Unhide submitSchool button
                 submit.setVisibility(View.VISIBLE);
-                submit.setText("Add Employee");
+                submit.setText("Add an Employee");
                 // Submit Button ActionListener
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -336,15 +370,15 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             case R.id.edit_employee:{
                 prompt.setText("Edit an Employee");
 
+                // Hides all components
+                hideAllComponents();
+
                 // Unhide add employee components
                 idEditText.setVisibility(View.VISIBLE);
                 firstName.setVisibility(View.VISIBLE);
                 lastName.setVisibility(View.VISIBLE);
                 birthday.setVisibility(View.VISIBLE);
                 idSpinner.setVisibility(View.VISIBLE);
-
-                // Hide all components that are not needed in edit_employee
-                features.setVisibility(View.GONE);
 
                 // ActionListener for the selected Item in the idSpinner
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -394,7 +428,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                 // Unhide submitSchool button
                 submit.setVisibility(View.VISIBLE);
-                submit.setText("Edit Employee");
+                submit.setText("Edit an Employee");
                 // Submit Button ActionListener
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -414,6 +448,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             }
             case R.id.delete_employee:{
                 prompt.setText("Delete an Employee");
+
+                // Hides all components
+                hideAllComponents();
 
                 // Unhide add employee components
                 idEditText.setVisibility(View.VISIBLE);
@@ -471,7 +508,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                 // Unhide submitSchool button
                 submit.setVisibility(View.VISIBLE);
-                submit.setText("Delete Employee");
+                submit.setText("Delete an Employee");
                 // Submit Button ActionListener
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -485,28 +522,39 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 return true;
             }
             case R.id.transfer_employee:{
-                // TODO Add source drop down Adapter
-                // TODO Add destination drop down Adapter
 
-                DatabaseReference source = FirebaseDatabase.getInstance().getReference("305113/employee/123456");
-                DatabaseReference destination = FirebaseDatabase.getInstance().getReference("135290/employee/123456");
+                // Hide components
+                hideAllComponents();
+                submit.setVisibility(View.GONE);
 
-                // Create an instance of the Transfer class
-                Transfer transfer = new Transfer(source, destination);
+                sourceTextView.setText(school.getSchoolID() + "");
 
-                // Call the copyRecord method to copy the subtree from the source to the destination node
-                transfer.copyRecord(source, destination);
+                // Unhide components needed in transfering employee
+                sourceAndDestinationTableLayout.setVisibility(View.VISIBLE);
+                idSpinner.setVisibility(View.VISIBLE);
+                submit.setVisibility(View.VISIBLE);
+                submit.setText("Transfer an Employee");
+                submit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DatabaseReference source = FirebaseDatabase.getInstance().getReference(school.getSchoolID() + "/employee/" + idSpinner.getSelectedItem().toString());
+                        DatabaseReference destination = FirebaseDatabase.getInstance().getReference(destinationSpinner.getSelectedItem().toString() + "/employee/" + idSpinner.getSelectedItem().toString());
 
-                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
+                        // Create an instance of the Transfer class
+                        Transfer transfer = new Transfer(source, destination, idSpinner.getSelectedItem().toString(), getApplicationContext());
+
+                        // Call the copyRecord method to copy the subtree from the source to the destination node
+                        transfer.copyRecord(source, destination);
+                    }
+                });
                 return true;
             }
             case R.id.settings:{
+                prompt.setText("Settings");
+
                 // Hide all components
-                idSpinner.setVisibility(View.GONE);
-                idEditText.setVisibility(View.GONE);
-                firstName.setVisibility(View.GONE);
-                lastName.setVisibility(View.GONE);
-                birthday.setVisibility(View.GONE);
+                hideAllComponents();
+                submit.setVisibility(View.GONE);
 
                 // Unhide features_table layout
                 features.setVisibility(View.VISIBLE);
@@ -515,5 +563,25 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             default:
                 return false;
         }
+    }
+
+    private void hideAllComponents() {
+        // Hook all components
+        sourceAndDestinationTableLayout = findViewById(R.id.sourceAndDestination_TableLayout);
+        idSpinner = findViewById(R.id.id_Spinner);
+        idEditText = findViewById(R.id.id_EditText);
+        firstNameEditText = findViewById(R.id.firstName_EditText);
+        lastNameEditText = findViewById(R.id.lastName_EditText);
+        birthdayTableLayout = findViewById(R.id.birthday_TableLayout);
+        featuresTableLayout = findViewById(R.id.features_TableLayout);
+
+        // Hide all components
+        sourceAndDestinationTableLayout.setVisibility(View.GONE);
+        idSpinner.setVisibility(View.GONE);
+        idEditText.setVisibility(View.GONE);
+        firstNameEditText.setVisibility(View.GONE);
+        lastNameEditText.setVisibility(View.GONE);
+        birthdayTableLayout.setVisibility(View.GONE);
+        featuresTableLayout.setVisibility(View.GONE);
     }
 }

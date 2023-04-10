@@ -1,19 +1,28 @@
 package com.example.campusconnect;
 
 // Import the required Firebase database package
+import android.content.Context;
+import android.widget.Toast;
+
 import com.google.firebase.database.*;
 
 public class Transfer {
 
+    School school = School.getInstance();
+
     private String source;
     private String destination;
+    private String key;
+    private Context context;
 
     // Create an instance of the Firebase database
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-    public Transfer(DatabaseReference source, DatabaseReference destination){
+    public Transfer(DatabaseReference source, DatabaseReference destination, String key, Context context){
         this.source = String.valueOf(source);
         this.source = String.valueOf(destination);
+        this.key = key;
+        this.context = context;
     }
 
     // Method to copy the data from 'fromPath' to 'toPath'
@@ -33,8 +42,8 @@ public class Transfer {
                             System.out.println("Data could not be copied: " + databaseError.getMessage());
                         } else {
                             Delete delete = new Delete();
-                            delete.deleteRecord("305113/employee", "123456");
-                            System.out.println("Data copied successfully.");
+                            delete.deleteRecord(school.getSchoolID() + "/employee", key);
+                            Toast.makeText(context, "Successfully Transferred ", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
