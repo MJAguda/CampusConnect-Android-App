@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.sql.Date;
 import java.text.DateFormat;
@@ -480,14 +482,18 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 return true;
             }
             case R.id.transfer_employee:{
-                // TODO transfer Employee
+                // TODO Add source drop down
+                // TODO Add destination drop down
+                // TODO Add Listview
 
-                // Select schoolID source using Dropdown
-                // Select schoolID destination using Dropdown
+                DatabaseReference source = FirebaseDatabase.getInstance().getReference("305113/employee/123456");
+                DatabaseReference destination = FirebaseDatabase.getInstance().getReference("135290/employee/123456");
 
-                // Use ListView to display all employee inside schoolID source
+                // Create an instance of the Transfer class
+                Transfer transfer = new Transfer(source, destination);
 
-                // Submit button that will transfer employee CREATE ALGO to copy all subtree
+                // Call the copyRecord method to copy the subtree from the source to the destination node
+                transfer.copyRecord(source, destination);
 
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
