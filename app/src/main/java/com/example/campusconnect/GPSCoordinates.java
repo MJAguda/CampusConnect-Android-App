@@ -18,7 +18,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 public class GPSCoordinates {
-
+    // TODO User android location APIs and Google Play Services
+    // TODO Implement server-side verification
+    // TODO Implement anti-tampering measures
+    // TODO Geofencing
     private LocationManager locationManager;
     private LocationListener locationListener;
     private Location currentLocation;
