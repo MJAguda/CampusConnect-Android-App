@@ -11,7 +11,6 @@ import java.util.TimeZone;
 public class DateUtils {
 
     public static int getNumberOfDays(String month, String year) {
-
         int day = 0;
         if(month.equals("January") || month.equals("March") || month.equals("May") || month.equals("July") || month.equals("August") || month.equals("October") || month.equals("December")) {
             day = 31;
