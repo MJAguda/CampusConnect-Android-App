@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -98,6 +99,13 @@ public class GPSCoordinates {
                 if (currentLocation == null) {
                     currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 }
+            }
+            // Check if location is valid
+            double latitude = currentLocation.getLatitude();
+            double longitude = currentLocation.getLongitude();
+            FirebaseUtils firebaseUtils = new FirebaseUtils();
+            if (!firebaseUtils.isLocationValid(latitude, longitude)) {
+                return null;
             }
         } catch (SecurityException e) {
             e.printStackTrace();
