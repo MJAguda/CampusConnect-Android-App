@@ -17,10 +17,16 @@ import android.util.Log;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+
 public class GPSCoordinates {
-    // TODO User android location APIs and Google Play Services
     // TODO Implement server-side verification
-    // TODO Implement anti-tampering measures
     // TODO Geofencing
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -62,6 +68,15 @@ public class GPSCoordinates {
             return null;
         }
 
+        // Check if device is using VPN
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        if (activeNetwork != null && activeNetwork.getType() == ConnectivityManager.TYPE_VPN) {
+            // The device is using a VPN, handle it appropriately
+            return null;
+        }
+
         // Open GPS if it's not enabled
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -70,8 +85,8 @@ public class GPSCoordinates {
         }
 
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, locationListener);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 10, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, locationListener);
             currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (currentLocation == null) {
                 currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -102,4 +117,6 @@ if (currentLocation != null) {
 else {
     Log.d("Location", "No location data available.");
 }
-*/
+
+ */
+
