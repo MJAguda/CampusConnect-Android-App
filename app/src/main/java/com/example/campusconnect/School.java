@@ -27,6 +27,8 @@ public class School {
     private String latitudeTop;
     private String longitudeLeft;
     private String longitudeRight;
+    private String latitudeCenter;
+    private String longitudeCenter;
 
     // Setters
     public void setSchoolID(int schoolID){this.schoolID = schoolID;}
@@ -43,6 +45,8 @@ public class School {
     public void setLatitudeTop(String latitudeTop){this.latitudeTop = latitudeTop;}
     public void setLongitudeLeft(String longitudeLeft){this.longitudeLeft = longitudeLeft;}
     public void setLongitudeRight(String longitudeRight){this.longitudeRight = longitudeRight;}
+    public void setLatitudeCenter(String latitudeCenter){this.latitudeCenter = latitudeCenter;}
+    public void setLongitudeCenter(String longitudeCenter){this.longitudeCenter = longitudeCenter;}
 
     // Getters
     public int getSchoolID(){return schoolID;}
@@ -59,4 +63,6 @@ public class School {
     public String getLatitudeTop(){return latitudeTop;}
     public String getLongitudeLeft(){return longitudeLeft;}
     public String getLongitudeRight(){return longitudeRight;}
+    public String getLatitudeCenter(){return latitudeCenter;}
+    public String getLongitudeCenter(){return longitudeCenter;}
 }

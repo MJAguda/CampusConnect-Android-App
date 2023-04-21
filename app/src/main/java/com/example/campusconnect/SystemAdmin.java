@@ -197,6 +197,8 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 create.createRecord(school.getSchoolID() + "/latitudeTop", school.getLatitudeTop());
                                 create.createRecord(school.getSchoolID() + "/longitudeLeft", school.getLongitudeLeft());
                                 create.createRecord(school.getSchoolID() + "/longitudeRight", school.getLongitudeRight());
+                                create.createRecord(school.getSchoolID() + "/latitudeCenter", "0"); // TODO add EditText for latitudeCenter
+                                create.createRecord(school.getSchoolID() + "/longitudeCenter", "0"); // TODO add EditText for longitudeCenter
 
                                 Toast.makeText(getApplicationContext(), "School Successfully Registered", Toast.LENGTH_SHORT).show();
 

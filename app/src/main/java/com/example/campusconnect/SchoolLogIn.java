@@ -82,6 +82,8 @@ public class SchoolLogIn extends AppCompatActivity {
                                 school.setLatitudeTop(dataSnapshot.child("latitudeTop").getValue().toString());
                                 school.setLongitudeLeft(dataSnapshot.child("longitudeLeft").getValue().toString());
                                 school.setLongitudeRight(dataSnapshot.child("longitudeRight").getValue().toString());
+                                school.setLatitudeCenter(dataSnapshot.child("latitudeCenter").getValue().toString());
+                                school.setLongitudeCenter(dataSnapshot.child("longitudeCenter").getValue().toString());
 
                                 //Toast.makeText(getApplicationContext(), "GPS : " + school.getGpsFeature() + "QR : " + school.isQrScannerFeature() + "Biometric : " + school.isFingerPrintScannerFeature() + "Facial : " + school.isFacialRecognitionFeature(), Toast.LENGTH_LONG).show();
 

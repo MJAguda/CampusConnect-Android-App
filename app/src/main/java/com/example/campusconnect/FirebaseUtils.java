@@ -9,6 +9,7 @@ public class FirebaseUtils {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference locationsReference;
+    private School school = School.getInstance();
 
     public FirebaseUtils() {
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -16,8 +17,8 @@ public class FirebaseUtils {
     }
 
     public boolean isLocationValid(double latitude, double longitude) {
-        double expectedLatitude = 18.2178;
-        double expectedLongitude = 121.4212;
+        double expectedLatitude = Double.parseDouble(school.getLatitudeCenter());
+        double expectedLongitude = Double.parseDouble(school.getLongitudeCenter());
         float[] results = new float[1];
         Location.distanceBetween(latitude, longitude, expectedLatitude, expectedLongitude, results);
         return results[0] < 1000; // location is valid if it is within 1 km of the expected location
