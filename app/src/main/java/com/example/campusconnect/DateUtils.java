@@ -2,13 +2,47 @@ package com.example.campusconnect;
 
 // TODO Use Network Time Protocol / Time Zone
 
+import android.util.Log;
+
+import org.apache.commons.net.ntp.NTPUDPClient;
+import org.apache.commons.net.ntp.TimeInfo;
+import java.net.InetAddress;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class DateUtils {
+    private static Date getCurrentTimeFromNTP() throws Exception {
+        String[] hosts = new String[]{
+                "pool.ntp.org",
+                "asia.pool.ntp.org",
+                "0.asia.pool.ntp.org",
+                "1.asia.pool.ntp.org",
+                "2.asia.pool.ntp.org",
+                "3.asia.pool.ntp.org",
+                "ph.pool.ntp.org"
+        };
+        NTPUDPClient client = new NTPUDPClient();
+        client.setDefaultTimeout(5000);
+        for (String host : hosts) {
+            try {
+                InetAddress hostAddr = InetAddress.getByName(host);
+                client.open();
+                client.setSoTimeout(5000);
+                TimeInfo info = client.getTime(hostAddr);
+                return new Date(info.getReturnTime());
+            } catch (Exception e) {
+                Log.d("TAG", "Failed to get time from " + host);
+                e.printStackTrace();
+            } finally {
+                client.close();
+            }
+        }
+        // If we're unable to get the time from any of the NTP servers,
+        // fall back to using the device's local clock
+        Log.d("TAG", "Failed to get time from all NTP servers. Using local time instead.");
+        return new Date();
+    }
 
     public static int getNumberOfDays(String month, String year) {
         int day = 0;
@@ -32,15 +66,25 @@ public class DateUtils {
     }
 
     public static String getCurrentDate(){
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
-        Date date = new Date();
-        return dateFormat.format(date);
+        try {
+            Date date = getCurrentTimeFromNTP();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+            return dateFormat.format(date);
+        } catch (Exception e) {
+            // Handle exception as per your requirement
+            return null;
+        }
     }
 
     public static String getCurrentMonth(){
-        DateFormat dateFormat = new SimpleDateFormat("MM");
-        Date date = new Date();
-        return dateFormat.format(date);
+        try {
+            Date date = getCurrentTimeFromNTP();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
+            return dateFormat.format(date);
+        } catch (Exception e) {
+            // Handle exception as per your requirement
+            return null;
+        }
     }
 
     public static String getMonthName(String month) {
@@ -60,25 +104,45 @@ public class DateUtils {
     }
 
     public static String getCurrentDay(){
-        DateFormat dateFormat = new SimpleDateFormat("dd");
-        Date date = new Date();
-        return dateFormat.format(date);
+        try {
+            Date date = getCurrentTimeFromNTP();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd");
+            return dateFormat.format(date);
+        } catch (Exception e) {
+            // Handle exception as per your requirement
+            return null;
+        }
     }
 
     public static String getCurrentYear(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy");
-        Date date = new Date();
-        return dateFormat.format(date);
+        try {
+            Date date = getCurrentTimeFromNTP();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
+            return dateFormat.format(date);
+        } catch (Exception e) {
+            // Handle exception as per your requirement
+            return null;
+        }
     }
 
     public static String getCurrentTime(){
-        DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
-        Date date = new Date();
-        return dateFormat.format(date).toUpperCase();
+        try {
+            Date date = getCurrentTimeFromNTP();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+            return dateFormat.format(date);
+        } catch (Exception e) {
+            // Handle exception as per your requirement
+            return null;
+        }
     }
     public static String getCurrentTimeInMilitary(){
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        Date date = new Date();
-        return dateFormat.format(date).toUpperCase();
+        try {
+            Date date = getCurrentTimeFromNTP();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            return dateFormat.format(date);
+        } catch (Exception e) {
+            // Handle exception as per your requirement
+            return null;
+        }
     }
 }

@@ -67,6 +67,6 @@ dependencies {
     // MultiDex
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    // Biometric Dependency
-    implementation 'androidx.biometric:biometric:1.0.1'
+    // NTP Dependency
+    implementation 'commons-net:commons-net:3.9.0'
 }
