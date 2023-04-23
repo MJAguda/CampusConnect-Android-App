@@ -63,6 +63,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_admin);
 
+        DateUtils dateUtils = new DateUtils(SchoolAdmin.this);
+
         ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
         ImageButton back = findViewById(R.id.backButton_ImageButton);
 
@@ -287,6 +289,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
         Button submit = findViewById(R.id.submitEmployee_Button);
 
+        DateUtils dateUtils = new DateUtils(SchoolAdmin.this);
+
         switch(menuItem.getItemId()){
             case R.id.add_employee:{
                 prompt.setText("Register an Employee");
@@ -410,7 +414,12 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
                                 monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
                                 daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
-                                yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(DateUtils.getCurrentYear()) - 100));
+                                dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
+                                    @Override
+                                    public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
+                                        yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100));
+                                    }
+                                });
                             }
 
                             @Override
@@ -490,7 +499,14 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
                                 monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
                                 daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
-                                yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(DateUtils.getCurrentYear()) - 100));
+
+                                dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
+                                    @Override
+                                    public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
+                                        yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100));
+                                    }
+                                });
+
                             }
 
                             @Override

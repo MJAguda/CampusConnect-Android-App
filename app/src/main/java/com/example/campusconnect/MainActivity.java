@@ -62,138 +62,126 @@ public class MainActivity extends AppCompatActivity {
         TableLayout previewHeader = findViewById(R.id.previewHeaderdailyLog_TableLayout);
         TableLayout table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
 
-        // Display a Display Date and Time
-        timer = new Timer();
-        TimerTask updateTimeTask = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
-                            @Override
-                            public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
-                                dateTimeTextView.setText(month + "/" + day + "/" + year + " " + currentTimeIn12Hours);
-                            }
-                        });
-
-                    }
-                });
-            }
-        };
-
-        timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // update every 1 second
-
-        //Set school Name
-        schoolName.setText(school.getSchoolName());
-
-        //Read all Personnel's Time Log for the day
         dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
             @Override
             public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
-                dateUtils.setCurrentMonth(month);
-                dateUtils.setCurrentDay(day);
-                dateUtils.setCurrentYear(year);
-                dateUtils.setCurrentTimeIn24Hours(currentTimeIn24Hours);
-                dateUtils.setCurrentTimeIn12Hours(currentTimeIn12Hours);
-            }
-        });
+                // Display a Display Date and Time
+                timer = new Timer();
+                TimerTask updateTimeTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dateTimeTextView.setText(month + "/" + day + "/" + year + " " + currentTimeIn12Hours);
+                            }
+                        });
+                    }
+                };
 
-        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
+                timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // update every 1 second
 
-                table.removeAllViews();
+                //Set school Name
+                schoolName.setText(school.getSchoolName());
 
-                for(DataSnapshot child : dataSnapshot.getChildren()){
-                    String fullName = child.child("fullname").getValue(String.class);
-                    if (fullName != null) {
-                        Log.d("TAG", fullName);
-                        // Instance of the row
-                        TableRow row = new TableRow(MainActivity.this);
+                read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
 
-                        // Add name to the row
-                        TextView name = new TextView(MainActivity.this);
-                        name.setText(fullName);
-                        name.setTextSize(10);
-                        name.setGravity(Gravity.TOP); // Set the vertical gravity to top
-                        name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-                        name.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
+                        table.removeAllViews();
 
-                        // Get the height of the first TextView
-                        name.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                        int nameHeight = name.getMeasuredHeight();
+                        for(DataSnapshot child : dataSnapshot.getChildren()){
+                            String fullName = child.child("fullname").getValue(String.class);
+                            if (fullName != null) {
+                                Log.d("TAG", fullName);
+                                // Instance of the row
+                                TableRow row = new TableRow(MainActivity.this);
 
-                        TableRow.LayoutParams nameParams = new TableRow.LayoutParams(0, nameHeight, 0.32f);
-                        name.setLayoutParams(nameParams);
-                        row.addView(name);
+                                // Add name to the row
+                                TextView name = new TextView(MainActivity.this);
+                                name.setText(fullName);
+                                name.setTextSize(10);
+                                name.setGravity(Gravity.TOP); // Set the vertical gravity to top
+                                name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                                name.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
 
-                        for(DataSnapshot grandChild : child.child("attendance/" + DateUtils.getCurrentYear() + "/" + dateUtils.getMonthName(dateUtils.getCurrentMonth()) + "/" + Integer.parseInt(dateUtils.getCurrentDay())).getChildren()){
-                            Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
+                                // Get the height of the first TextView
+                                name.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                                int nameHeight = name.getMeasuredHeight();
 
-                            // Add time to the row
-                            TextView time = new TextView(MainActivity.this);
+                                TableRow.LayoutParams nameParams = new TableRow.LayoutParams(0, nameHeight, 0.32f);
+                                name.setLayoutParams(nameParams);
+                                row.addView(name);
 
-                            time.setText(grandChild.getValue().toString());
-                            time.setTextSize(10);
-                            TableRow.LayoutParams timeParams = new TableRow.LayoutParams(0, nameHeight, 0.17f);
-                            time.setLayoutParams(timeParams);
-                            time.setGravity(Gravity.CENTER);
-                            time.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
+                                for(DataSnapshot grandChild : child.child("attendance/" + year + "/" + dateUtils.getMonthName(month) + "/" + Integer.parseInt(day)).getChildren()){
+                                    Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
 
-                            row.addView(time);
+                                    // Add time to the row
+                                    TextView time = new TextView(MainActivity.this);
+
+                                    time.setText(grandChild.getValue().toString());
+                                    time.setTextSize(10);
+                                    TableRow.LayoutParams timeParams = new TableRow.LayoutParams(0, nameHeight, 0.17f);
+                                    time.setLayoutParams(timeParams);
+                                    time.setGravity(Gravity.CENTER);
+                                    time.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
+
+                                    row.addView(time);
+                                }
+
+                                table.addView(row);
+                            }
                         }
 
-                        table.addView(row);
                     }
-                }
 
-            }
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-            @Override
-            public void onFailure(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                back.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MainActivity.this, SchoolLogIn.class);
+                        startActivity(intent);
+                    }
+                });
+
+                home.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                attendance.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MainActivity.this, Attendance.class);
+                        startActivity(intent);
+                    }
+                });
+                register.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MainActivity.this, AdminLogIn.class);
+                        startActivity(intent);
+                    }
+                });
+
+                generate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MainActivity.this, Generate.class);
+                        startActivity(intent);
+                    }
+                });
             }
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SchoolLogIn.class);
-                startActivity(intent);
-            }
-        });
 
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        attendance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Attendance.class);
-                startActivity(intent);
-            }
-        });
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AdminLogIn.class);
-                startActivity(intent);
-            }
-        });
-
-        generate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Generate.class);
-                startActivity(intent);
-            }
-        });
     }
 }

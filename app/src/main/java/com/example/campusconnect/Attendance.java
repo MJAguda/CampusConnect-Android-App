@@ -42,6 +42,8 @@ public class Attendance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
 
+        DateUtils dateUtils = new DateUtils(Attendance.this);
+
         // Initialize Clock
         TextView dateTimeTextView = findViewById(R.id.dateAndTime_TextView);
         timer = new Timer();
@@ -53,13 +55,13 @@ public class Attendance extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        DateUtils dateUtils = new DateUtils(Attendance.this);
                         dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
                             @Override
                             public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
                                 dateTimeTextView.setText(month + "/" + day + "/" + year + " " + currentTimeIn12Hours);
                             }
                         });
+
                     }
                 });
             }
@@ -111,37 +113,41 @@ public class Attendance extends AppCompatActivity {
 
             // Enables Button Depending on time
             // Get current time using DateUtils class
-            String currentTime = DateUtils.getCurrentTimeIn24Hours();
 
-            int hours;
-            int minutes;
 
             // Parse time into hours and minutes
-            String[] parts = currentTime.split(":");
-            hours = Integer.parseInt(parts[0]);
-            minutes = Integer.parseInt(parts[1].substring(0, 2)); // remove AM/PM
+            dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
+                @Override
+                public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
+                    int hours;
+                    int minutes;
 
+                    String[] parts = currentTimeIn24Hours.split(":");
+                    hours = Integer.parseInt(parts[0]);
+                    minutes = Integer.parseInt(parts[1].substring(0, 2)); // remove AM/PM
 
-            Log.d("TAG", "Hours: " + hours + " Minutes: " + minutes);
+                    Log.d("TAG", "Hours: " + hours + " Minutes: " + minutes);
 
-            // Enable AMIn button if current time is before 7:00 AM
-            if (hours < 12 || (hours == 12 && minutes < 1)) {
-                AMIn.setEnabled(true);
-                AMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-            }
-            // Enable AMOut and PMIn buttons if current time is between 12:00 PM and 2:00 PM
-            else if (hours == 12 && minutes >= 0 || hours == 13 && minutes <= 0) {
-                AMOut.setEnabled(true);
-                PMIn.setEnabled(true);
+                    // Enable AMIn button if current time is before 7:00 AM
+                    if (hours < 12 || (hours == 12 && minutes < 1)) {
+                        AMIn.setEnabled(true);
+                        AMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+                    }
+                    // Enable AMOut and PMIn buttons if current time is between 12:00 PM and 2:00 PM
+                    else if (hours == 12 && minutes >= 0 || hours == 13 && minutes <= 0) {
+                        AMOut.setEnabled(true);
+                        PMIn.setEnabled(true);
 
-                AMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-                PMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-            }
-            // Enable PMOut button if current time is after 5:00 PM
-            else if (hours >= 13 && minutes > 0) {
-                PMOut.setEnabled(true);
-                PMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-            }
+                        AMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+                        PMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+                    }
+                    // Enable PMOut button if current time is after 5:00 PM
+                    else if (hours >= 13 && minutes > 0) {
+                        PMOut.setEnabled(true);
+                        PMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+                    }
+                }
+            });
         }
 
 

@@ -71,7 +71,7 @@ public class DateUtils {
                     else{
                         meridiem = "AM";
                     }
-                    time12Hours = Hour + ":" + Minute + ":" + Seconds + " " + meridiem;
+                    time12Hours = String.format("%02d:%02d %s", Hour, Minute, meridiem);
 
                     volleyCallBack.onGetDateTime(response.getString("month"), response.getString("day"), response.getString("year"),time24Hours, time12Hours);
                 } catch (JSONException e) {
@@ -128,46 +128,5 @@ public class DateUtils {
             }
         }
         return -1;
-    }
-
-    // Getters
-    public static String getCurrentMonth() {
-        return month;
-    }
-    public static String getCurrentDay() {
-        return day;
-    }
-    public static String getCurrentYear() {
-        return year;
-    }
-    public static String getCurrentTimeIn24Hours() {
-        return currentTimeIn24Hours;
-    }
-    public static String getCurrentTimeIn12Hours() {
-        return currentTimeIn12Hours;
-    }
-
-    // Setters
-    public static void setCurrentMonth(String month) {
-        DateUtils.month = month;
-    }
-
-
-
-    public static void setCurrentDay(String day) {
-        DateUtils.day = day;
-    }
-
-    public static void setCurrentYear(String year) {
-        DateUtils.year = year;
-    }
-
-
-    public static void setCurrentTimeIn24Hours(String currentTimeIn24Hours) {
-        DateUtils.currentTimeIn24Hours = currentTimeIn24Hours;
-    }
-
-    public static void setCurrentTimeIn12Hours(String currentTimeIn12Hours) {
-        DateUtils.currentTimeIn12Hours = currentTimeIn12Hours;
     }
 }
