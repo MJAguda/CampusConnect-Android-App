@@ -53,7 +53,13 @@ public class Attendance extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        dateTimeTextView.setText(DateUtils.getCurrentDate());
+                        DateUtils dateUtils = new DateUtils(Attendance.this);
+                        dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
+                            @Override
+                            public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
+                                dateTimeTextView.setText(month + "/" + day + "/" + year + " " + currentTimeIn12Hours);
+                            }
+                        });
                     }
                 });
             }
@@ -105,7 +111,7 @@ public class Attendance extends AppCompatActivity {
 
             // Enables Button Depending on time
             // Get current time using DateUtils class
-            String currentTime = DateUtils.getCurrentTimeInMilitary();
+            String currentTime = DateUtils.getCurrentTimeIn24Hours();
 
             int hours;
             int minutes;

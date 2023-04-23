@@ -67,6 +67,6 @@ dependencies {
     // MultiDex
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    // NTP Dependency
-    implementation 'commons-net:commons-net:3.9.0'
+    // Date and TIme from Server Volley Dependency
+    implementation 'com.android.volley:volley:1.2.1'
 }

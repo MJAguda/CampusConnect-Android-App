@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Instantiate DateUtils
+        DateUtils dateUtils = new DateUtils(MainActivity.this);
 
         // Declare components
         ImageButton back = findViewById(R.id.backButton_ImageButton);
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         TextView guide4 = findViewById(R.id.buttonGuide_TextView4);
         TextView guide5 = findViewById(R.id.buttonGuide_TextView5);
 
-        TextView date = findViewById(R.id.dateAndTime_TextView);
+        TextView dateTimeTextView = findViewById(R.id.dateAndTime_TextView);
         TableLayout previewHeader = findViewById(R.id.previewHeaderdailyLog_TableLayout);
         TableLayout table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
 
@@ -68,7 +70,14 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        date.setText(DateUtils.getCurrentDate());
+
+                        dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
+                            @Override
+                            public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
+                                dateTimeTextView.setText(month + "/" + day + "/" + year + " " + currentTimeIn12Hours);
+                            }
+                        });
+
                     }
                 });
             }
@@ -80,9 +89,17 @@ public class MainActivity extends AppCompatActivity {
         schoolName.setText(school.getSchoolName());
 
         //Read all Personnel's Time Log for the day
-        save.setMonth(String.valueOf(Integer.parseInt(DateUtils.getCurrentMonth())));
-        save.setDay(String.valueOf(Integer.parseInt(DateUtils.getCurrentDay())));
-        save.setYear(String.valueOf(Integer.parseInt(DateUtils.getCurrentYear())));
+        dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
+            @Override
+            public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
+                dateUtils.setCurrentMonth(month);
+                dateUtils.setCurrentDay(day);
+                dateUtils.setCurrentYear(year);
+                dateUtils.setCurrentTimeIn24Hours(currentTimeIn24Hours);
+                dateUtils.setCurrentTimeIn12Hours(currentTimeIn12Hours);
+            }
+        });
+
         read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -112,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                         name.setLayoutParams(nameParams);
                         row.addView(name);
 
-                        for(DataSnapshot grandChild : child.child("attendance/" + DateUtils.getCurrentYear() + "/" + DateUtils.getMonthName(DateUtils.getCurrentMonth()) + "/" + Integer.parseInt(DateUtils.getCurrentDay())).getChildren()){
+                        for(DataSnapshot grandChild : child.child("attendance/" + DateUtils.getCurrentYear() + "/" + dateUtils.getMonthName(dateUtils.getCurrentMonth()) + "/" + Integer.parseInt(dateUtils.getCurrentDay())).getChildren()){
                             Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
 
                             // Add time to the row

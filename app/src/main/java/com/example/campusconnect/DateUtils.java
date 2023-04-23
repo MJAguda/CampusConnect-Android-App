@@ -2,46 +2,95 @@ package com.example.campusconnect;
 
 // TODO Use Network Time Protocol / Time Zone
 
-import android.util.Log;
+import android.app.Activity;
 
-import org.apache.commons.net.ntp.NTPUDPClient;
-import org.apache.commons.net.ntp.TimeInfo;
-import java.net.InetAddress;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateUtils {
-    private static Date getCurrentTimeFromNTP() throws Exception {
-        String[] hosts = new String[]{
-                "pool.ntp.org",
-                "asia.pool.ntp.org",
-                "0.asia.pool.ntp.org",
-                "1.asia.pool.ntp.org",
-                "2.asia.pool.ntp.org",
-                "3.asia.pool.ntp.org",
-                "ph.pool.ntp.org"
-        };
-        NTPUDPClient client = new NTPUDPClient();
-        client.setDefaultTimeout(5000);
-        for (String host : hosts) {
-            try {
-                InetAddress hostAddr = InetAddress.getByName(host);
-                client.open();
-                client.setSoTimeout(5000);
-                TimeInfo info = client.getTime(hostAddr);
-                return new Date(info.getReturnTime());
-            } catch (Exception e) {
-                Log.d("TAG", "Failed to get time from " + host);
-                e.printStackTrace();
-            } finally {
-                client.close();
+
+    private static final String URL_TIME_API = "https://timeapi.io/api/Time/current/coordinate";
+    private static final String LATITUDE = "18";
+    private static final String LONGITUDE = "121";
+
+    private static String month;
+    private static String day;
+    private static String year;
+    private static String currentTimeIn24Hours;
+    private static String currentTimeIn12Hours;
+
+    Activity activity;
+    String url = URL_TIME_API + "?latitude=" + LATITUDE + "&longitude=" + LONGITUDE;
+
+    RequestQueue requestQueue;
+
+
+    public DateUtils(Activity activity){
+        this.activity = activity;
+
+        requestQueue = Volley.newRequestQueue(activity);
+    }
+
+    public void getDateTime(VolleyCallBack volleyCallBack){
+        JSONObject jsonObject = new JSONObject();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    // get Hour from HH:mm
+                    String time24Hours = response.getString("time");
+                    String time12Hours;
+                    String[] parts = time24Hours.split(":");
+                    int Hour = Integer.parseInt(parts[0]);
+                    int Minute = Integer.parseInt(parts[1]);
+                    int Seconds = Integer.parseInt(response.getString("seconds"));
+
+                    String meridiem;
+
+                    if(Hour == 12){
+                        meridiem = "PM";
+                    }
+                    else if(Hour >= 12){
+                        Hour -= 12;
+                        meridiem = "PM";
+                    }
+                    else{
+                        meridiem = "AM";
+                    }
+                    time12Hours = Hour + ":" + Minute + ":" + Seconds + " " + meridiem;
+
+                    volleyCallBack.onGetDateTime(response.getString("month"), response.getString("day"), response.getString("year"),time24Hours, time12Hours);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
-        }
-        // If we're unable to get the time from any of the NTP servers,
-        // fall back to using the device's local clock
-        Log.d("TAG", "Failed to get time from all NTP servers. Using local time instead.");
-        return new Date();
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue.add(request);
+    }
+
+    public interface VolleyCallBack{
+        void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours);
     }
 
     public static int getNumberOfDays(String month, String year) {
@@ -65,28 +114,6 @@ public class DateUtils {
         return day;
     }
 
-    public static String getCurrentDate(){
-        try {
-            Date date = getCurrentTimeFromNTP();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
-            return dateFormat.format(date);
-        } catch (Exception e) {
-            // Handle exception as per your requirement
-            return null;
-        }
-    }
-
-    public static String getCurrentMonth(){
-        try {
-            Date date = getCurrentTimeFromNTP();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
-            return dateFormat.format(date);
-        } catch (Exception e) {
-            // Handle exception as per your requirement
-            return null;
-        }
-    }
-
     public static String getMonthName(String month) {
         int monthInt = Integer.parseInt(month);
         String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
@@ -103,46 +130,44 @@ public class DateUtils {
         return -1;
     }
 
-    public static String getCurrentDay(){
-        try {
-            Date date = getCurrentTimeFromNTP();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd");
-            return dateFormat.format(date);
-        } catch (Exception e) {
-            // Handle exception as per your requirement
-            return null;
-        }
+    // Getters
+    public static String getCurrentMonth() {
+        return month;
+    }
+    public static String getCurrentDay() {
+        return day;
+    }
+    public static String getCurrentYear() {
+        return year;
+    }
+    public static String getCurrentTimeIn24Hours() {
+        return currentTimeIn24Hours;
+    }
+    public static String getCurrentTimeIn12Hours() {
+        return currentTimeIn12Hours;
     }
 
-    public static String getCurrentYear(){
-        try {
-            Date date = getCurrentTimeFromNTP();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
-            return dateFormat.format(date);
-        } catch (Exception e) {
-            // Handle exception as per your requirement
-            return null;
-        }
+    // Setters
+    public static void setCurrentMonth(String month) {
+        DateUtils.month = month;
     }
 
-    public static String getCurrentTime(){
-        try {
-            Date date = getCurrentTimeFromNTP();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
-            return dateFormat.format(date);
-        } catch (Exception e) {
-            // Handle exception as per your requirement
-            return null;
-        }
+
+
+    public static void setCurrentDay(String day) {
+        DateUtils.day = day;
     }
-    public static String getCurrentTimeInMilitary(){
-        try {
-            Date date = getCurrentTimeFromNTP();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-            return dateFormat.format(date);
-        } catch (Exception e) {
-            // Handle exception as per your requirement
-            return null;
-        }
+
+    public static void setCurrentYear(String year) {
+        DateUtils.year = year;
+    }
+
+
+    public static void setCurrentTimeIn24Hours(String currentTimeIn24Hours) {
+        DateUtils.currentTimeIn24Hours = currentTimeIn24Hours;
+    }
+
+    public static void setCurrentTimeIn12Hours(String currentTimeIn12Hours) {
+        DateUtils.currentTimeIn12Hours = currentTimeIn12Hours;
     }
 }

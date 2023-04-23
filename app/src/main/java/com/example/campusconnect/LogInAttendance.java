@@ -175,7 +175,7 @@ public class LogInAttendance extends AppCompatActivity {
                                                     catch (NullPointerException e){
                                                         priorTime = "00:00 AM";
                                                     }
-                                                    String currentTime = DateUtils.getCurrentTime();
+                                                    String currentTime = DateUtils.getCurrentTimeIn12Hours();
 
                                                     Log.d(TAG, "priorTime Value : " + priorTime);
 
@@ -220,7 +220,7 @@ public class LogInAttendance extends AppCompatActivity {
                                                                     Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                                                                     // Push Time in Database
-                                                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), DateUtils.getCurrentTime());
+                                                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), DateUtils.getCurrentTimeIn12Hours());
                                                                     thankyou.start();
                                                                 }
                                                                 else{
@@ -230,7 +230,7 @@ public class LogInAttendance extends AppCompatActivity {
                                                                 Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                                                                 // Push Time in Database
-                                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), DateUtils.getCurrentTime());
+                                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), DateUtils.getCurrentTimeIn12Hours());
                                                                 thankyou.start();
                                                             }
 
