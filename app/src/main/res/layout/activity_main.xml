@@ -250,7 +250,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
                 android:layout_margin="15px"
-                android:text="Register"
+                android:text="Admin"
                 android:textAlignment="center"
                 android:textColor="#F9ED69"
                 android:textSize="10sp" />
