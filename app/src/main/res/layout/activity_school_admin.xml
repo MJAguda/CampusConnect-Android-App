@@ -129,88 +129,99 @@
                     android:layout_height="30sp"
                     android:visibility="gone"/>
 
-                <EditText
-                    android:id="@+id/id_EditText"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Employee ID"
-                    android:inputType="number"
-                    android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
-                    android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"
-                    android:visibility="gone"/>
+                    android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/firstName_EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="First Name"
-                    android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
-                    android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"
-                    android:visibility="gone"/>
-
-                <EditText
-                    android:id="@+id/lastName_EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Last Name"
-                    android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
-                    android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"
-                    android:visibility="gone"/>
-
-                <TableLayout
-                    android:id="@+id/birthday_TableLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone">
-                    <TableRow
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="20px">
+                        android:orientation="vertical">
+                        <EditText
+                            android:id="@+id/id_EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Employee ID"
+                            android:inputType="number"
+                            android:layout_margin="10px"
+                            android:textColor="#6A2C70"
+                            android:textSize="20sp"
+                            android:textAlignment="center"
+                            android:background="@drawable/round_edittext_bg"
+                            android:padding="16dp"
+                            android:visibility="gone"/>
 
-                        <Spinner
-                            android:id="@+id/month_Spinner"
-                            android:layout_width="0dp"
-                            android:layout_weight="0.5"
-                            android:layout_height="30sp"/>
+                        <EditText
+                            android:id="@+id/firstName_EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="First Name"
+                            android:layout_margin="10px"
+                            android:textColor="#6A2C70"
+                            android:textSize="20sp"
+                            android:textAlignment="center"
+                            android:background="@drawable/round_edittext_bg"
+                            android:padding="16dp"
+                            android:visibility="gone"/>
 
-                        <View
-                            android:id="@+id/divider3"
-                            android:layout_width="2dp"
-                            android:layout_height="match_parent"
-                            android:background="?android:attr/listDivider" />
+                        <EditText
+                            android:id="@+id/lastName_EditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Last Name"
+                            android:layout_margin="10px"
+                            android:textColor="#6A2C70"
+                            android:textSize="20sp"
+                            android:textAlignment="center"
+                            android:background="@drawable/round_edittext_bg"
+                            android:padding="16dp"
+                            android:visibility="gone"/>
 
-                        <Spinner
-                            android:id="@+id/day_Spinner"
-                            android:layout_width="0dp"
-                            android:layout_weight="0.25"
-                            android:layout_height="30sp" />
+                        <TableLayout
+                            android:id="@+id/birthday_TableLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="20px">
 
-                        <View
-                            android:id="@+id/divider3"
-                            android:layout_width="2dp"
-                            android:layout_height="match_parent"
-                            android:background="?android:attr/listDivider" />
+                                <Spinner
+                                    android:id="@+id/month_Spinner"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="0.5"
+                                    android:layout_height="30sp"/>
 
-                        <Spinner
-                            android:id="@+id/year_Spinner"
-                            android:layout_width="0dp"
-                            android:layout_weight="0.25"
-                            android:layout_height="30sp" />
-                    </TableRow>
+                                <View
+                                    android:id="@+id/divider3"
+                                    android:layout_width="2dp"
+                                    android:layout_height="match_parent"
+                                    android:background="?android:attr/listDivider" />
 
-                </TableLayout>
+                                <Spinner
+                                    android:id="@+id/day_Spinner"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="0.25"
+                                    android:layout_height="30sp" />
+
+                                <View
+                                    android:id="@+id/divider3"
+                                    android:layout_width="2dp"
+                                    android:layout_height="match_parent"
+                                    android:background="?android:attr/listDivider" />
+
+                                <Spinner
+                                    android:id="@+id/year_Spinner"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="0.25"
+                                    android:layout_height="30sp" />
+                            </TableRow>
+
+                        </TableLayout>
+                    </LinearLayout>
+
+                </ScrollView>
 
                 <TableLayout
                     android:id="@+id/features_TableLayout"

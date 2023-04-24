@@ -304,6 +304,12 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 lastName.setVisibility(View.VISIBLE);
                 birthday.setVisibility(View.VISIBLE);
 
+                // setEnabled to true so they are edittable
+                idEditText.setEnabled(true);
+                firstNameEditText.setEnabled(true);
+                lastNameEditText.setEnabled(true);
+                birthday.setEnabled(true);
+
                 // Reset the component
                 idEditText.setText("");
                 idEditText.setText("");
@@ -383,6 +389,12 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 lastName.setVisibility(View.VISIBLE);
                 birthday.setVisibility(View.VISIBLE);
                 idSpinner.setVisibility(View.VISIBLE);
+
+                // setEnabled to true so they are edittable
+                idEditText.setEnabled(true);
+                firstNameEditText.setEnabled(true);
+                lastNameEditText.setEnabled(true);
+                birthday.setEnabled(true);
 
                 // ActionListener for the selected Item in the idSpinner
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -468,6 +480,12 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 birthday.setVisibility(View.VISIBLE);
                 idSpinner.setVisibility(View.VISIBLE);
 
+                // setEnabled to true so they are edittable
+                idEditText.setEnabled(true);
+                firstNameEditText.setEnabled(true);
+                lastNameEditText.setEnabled(true);
+                birthday.setEnabled(true);
+
                 // ActionListener for the selected Item in the idSpinner
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -521,7 +539,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         // Do nothing
                     }
                 });
-
                 // Unhide submitSchool button
                 submit.setVisibility(View.VISIBLE);
                 submit.setText("Delete an Employee");
@@ -550,6 +567,70 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 idSpinner.setVisibility(View.VISIBLE);
                 submit.setVisibility(View.VISIBLE);
                 submit.setText("Transfer an Employee");
+                idEditText.setVisibility(View.VISIBLE);
+                firstNameEditText.setVisibility(View.VISIBLE);
+                lastNameEditText.setVisibility(View.VISIBLE);
+                birthday.setVisibility(View.VISIBLE);
+
+                // SetEnabled to false making them unedittable
+                idEditText.setEnabled(false);
+                firstNameEditText.setEnabled(false);
+                lastNameEditText.setEnabled(false);
+                birthday.setEnabled(false);
+
+                idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        // Get the selected item from idSpinner
+                        String selectedItemId = parent.getItemAtPosition(position).toString();
+
+                        // Display a Toast message with the selected item
+                        Toast.makeText(getApplicationContext(), "Selected Item: " + selectedItemId, Toast.LENGTH_SHORT).show();
+
+                        // Read Employee data from the selectedItemId
+                        read.readRecord(school.getSchoolID() + "/employee/" + selectedItemId, new Read.OnGetDataListener() {
+                            @Override
+                            public void onSuccess(DataSnapshot dataSnapshot) {
+                                String id = dataSnapshot.child("id").getValue(String.class);
+                                String fullname = dataSnapshot.child("fullname").getValue(String.class);
+                                String birthday = dataSnapshot.child("birthdate").getValue(String.class);
+
+                                String [] nameArray = fullname.split(", ");
+                                String [] birthdayArray = birthday.split("/");
+
+                                employee.setId(id);
+
+                                // Set the values in the EditText
+                                idEditText.setText(id);
+                                idEditText.setEnabled(false);
+                                lastName.setText(nameArray[0]);
+                                firstName.setText(nameArray[1]);
+                                //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
+                                monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
+                                daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
+
+                                dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
+                                    @Override
+                                    public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
+                                        yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100));
+                                    }
+                                });
+
+                            }
+
+                            @Override
+                            public void onFailure(DatabaseError databaseError) {
+                                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // Do nothing
+                    }
+                });
+
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -561,6 +642,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                         // Call the copyRecord method to copy the subtree from the source to the destination node
                         transfer.copyRecord(source, destination);
+
+                        Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
+                        startActivity(intent);
                     }
                 });
                 return true;
@@ -576,8 +660,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 features.setVisibility(View.VISIBLE);
                 return true;
             }
-            default:
+            default:{
                 return false;
+            }
         }
     }
 
