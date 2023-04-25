@@ -108,33 +108,43 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         // Hook the toggle switches
         Switch idNumberSwitch = findViewById(R.id.idNumber_Switch);
         Switch gpsSwitch = findViewById(R.id.gpsFeature_Switch);
+        Switch timeBasedSwitch = findViewById(R.id.timeBased_Switch);
         Switch qrSwitch = findViewById(R.id.qrScannerFeature_Switch);
         Switch fingerprintSwitch = findViewById(R.id.biometricFeature_Switch);
         Switch facialrecognitionSwitch = findViewById(R.id.facialRecognitionFeature_Switch);
 
         // Set the value for the ToggleSwitch
-        gpsSwitch.setChecked(school.getGpsFeature());
-        idNumberSwitch.setChecked(school.getIdNumberFeature());
+        idNumberSwitch.setChecked(school.isIdNumberFeature());
+        gpsSwitch.setChecked(school.isGpsFeature());
+        timeBasedSwitch.setChecked(school.isTimeBasedFeature());
         qrSwitch.setChecked(school.isQrScannerFeature());
         fingerprintSwitch.setChecked(school.isFingerPrintScannerFeature());
         facialrecognitionSwitch.setChecked(school.isFacialRecognitionFeature());
 
         // Set an OnCheckedChangedListener to listen for changes in the toggle switch
-        gpsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Log.d("SchoolAdmin", "gpsSwitch checked: " + b);
-                school.setGpsFeature(b);
-                update.updateRecord(String.valueOf(school.getSchoolID()), "gpsFeature", school.getGpsFeature());
-            }
-        });
         idNumberSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Log.d("SchoolAdmin", "idSwitchSwitch checked: " + b);
+                Log.d("idNumberSwitch", "idSwitchSwitch checked: " + b);
                 school.setIdNumberFeature(b);
 
-                update.updateRecord(school.getSchoolID() + "", "idNumberFeature", school.getIdNumberFeature());
+                update.updateRecord(school.getSchoolID() + "", "idNumberFeature", school.isIdNumberFeature());
+            }
+        });
+        gpsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Log.d("gpsSwitch", "gpsSwitch checked: " + b);
+                school.setGpsFeature(b);
+                update.updateRecord(String.valueOf(school.getSchoolID()), "gpsFeature", school.isGpsFeature());
+            }
+        });
+        timeBasedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Log.d("timeBasedSwitch", "timeBasedSwitch checked: " + b);
+                school.setTimeBasedFeature(b);
+                update.updateRecord(String.valueOf(school.getSchoolID()), "timeBasedFeature", school.isTimeBasedFeature());
             }
         });
 

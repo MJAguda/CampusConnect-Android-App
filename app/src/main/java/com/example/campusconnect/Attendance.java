@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
@@ -35,6 +36,8 @@ public class Attendance extends AppCompatActivity {
     School school = School.getInstance();
     Employee employee = Employee.getInstance();
     Create create = new Create();
+    Read read = new Read();
+
     Timer timer;
 
     @Override
@@ -97,6 +100,32 @@ public class Attendance extends AppCompatActivity {
             }
         });
 
+
+        read.readRecord(school.getSchoolID() + "/", new Read.OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                // Check if ID exists in the database
+                if(!dataSnapshot.exists()){
+                    Log.d("Error","School ID not found");
+                    Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    school.setIdNumberFeature(dataSnapshot.child("idNumberFeature").getValue(Boolean.class));
+                    school.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
+                    school.setTimeBasedFeature(dataSnapshot.child("timeBasedFeature").getValue(Boolean.class));
+                    school.setQrScannerFeature(dataSnapshot.child("qrcodeFeature").getValue(Boolean.class));
+                    school.setFingerPrintScannerFeature(dataSnapshot.child("fingerPrintFeature").getValue(Boolean.class));
+                    school.setFacialRecognitionFeature(dataSnapshot.child("facialRecognitionFeature").getValue(Boolean.class));
+                }
+            }
+
+            @Override
+            public void onFailure(DatabaseError databaseError) {
+                Log.d("Read", "Read Error");
+                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         // Disable the time punch Buttons
         AMIn.setEnabled(false);
         AMOut.setEnabled(false);
@@ -127,25 +156,45 @@ public class Attendance extends AppCompatActivity {
                     minutes = Integer.parseInt(parts[1].substring(0, 2)); // remove AM/PM
 
                     Log.d("TAG", "Hours: " + hours + " Minutes: " + minutes);
+                    Log.d("Time-Based Feature", "timeBasedFeature : " + school.isTimeBasedFeature());
 
-                    // Enable AMIn button if current time is before 7:00 AM
-                    if (hours < 12 || (hours == 12 && minutes < 1)) {
+                    // Check if Time-Based Button Feature is On/Off
+                    if(school.isTimeBasedFeature() == false){
+                        // Disable the time punch Buttons
                         AMIn.setEnabled(true);
-                        AMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-                    }
-                    // Enable AMOut and PMIn buttons if current time is between 12:00 PM and 2:00 PM
-                    else if (hours == 12 && minutes >= 0 || hours == 13 && minutes <= 0) {
                         AMOut.setEnabled(true);
                         PMIn.setEnabled(true);
+                        PMOut.setEnabled(true);
 
+                        AMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
                         AMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
                         PMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-                    }
-                    // Enable PMOut button if current time is after 5:00 PM
-                    else if (hours >= 13 && minutes > 0) {
-                        PMOut.setEnabled(true);
                         PMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
                     }
+                    else if(school.isTimeBasedFeature() == true){
+                        // Enable AMIn button if current time is before 7:00 AM
+                        if (hours < 12 || (hours == 12 && minutes < 1)) {
+                            AMIn.setEnabled(true);
+                            AMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+                        }
+                        // Enable AMOut and PMIn buttons if current time is between 12:00 PM and 2:00 PM
+                        else if (hours == 12 && minutes >= 0 || hours == 13 && minutes <= 0) {
+                            AMOut.setEnabled(true);
+                            PMIn.setEnabled(true);
+
+                            AMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+                            PMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+                        }
+                        // Enable PMOut button if current time is after 5:00 PM
+                        else if (hours >= 13 && minutes > 0) {
+                            PMOut.setEnabled(true);
+                            PMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+                        }
+                    }
+                    else {
+                        // Add Default
+                    }
+
                 }
             });
         }

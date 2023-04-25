@@ -18,8 +18,9 @@ public class School {
     private String schoolHead;
     private String adminUsername;
     private String adminPassword;
-    private boolean gpsFeature;
     private boolean idNumberFeature;
+    private boolean gpsFeature;
+    private boolean timeBasedFeature;
     private boolean qrScannerFeature;
     private boolean fingerPrintScannerFeature;
     private boolean facialRecognitionFeature;
@@ -36,8 +37,9 @@ public class School {
     public void setSchoolHead(String schoolHead) {this.schoolHead = schoolHead;}
     public void setAdminUsername(String adminUsername){this.adminUsername = adminUsername;}
     public void setAdminPassword(String adminPassword){this.adminPassword = adminPassword;}
-    public void setGpsFeature(boolean gpsFeature){this.gpsFeature = gpsFeature;}
     public void setIdNumberFeature(boolean idNumberFeature){this.idNumberFeature = idNumberFeature;}
+    public void setGpsFeature(boolean gpsFeature){this.gpsFeature = gpsFeature;}
+    public void setTimeBasedFeature(boolean timeBasedFeature){this.timeBasedFeature = timeBasedFeature;}
     public void setQrScannerFeature(boolean qrScannerFeature){this.qrScannerFeature = qrScannerFeature;}
     public void setFingerPrintScannerFeature(boolean fingerPrintScannerFeature){this.fingerPrintScannerFeature = fingerPrintScannerFeature;}
     public void setFacialRecognitionFeature(boolean facialRecognitionFeature){this.facialRecognitionFeature = facialRecognitionFeature;}
@@ -54,8 +56,9 @@ public class School {
     public String getSchoolHead() {return schoolHead;}
     public String getAdminUsername(){return adminUsername;}
     public String getAdminPassword(){return adminPassword;}
-    public boolean getGpsFeature(){return gpsFeature;}
-    public boolean getIdNumberFeature(){return idNumberFeature;}
+    public boolean isIdNumberFeature(){return idNumberFeature;}
+    public boolean isGpsFeature(){return gpsFeature;}
+    public boolean isTimeBasedFeature(){return timeBasedFeature;}
     public boolean isQrScannerFeature(){return qrScannerFeature;}
     public boolean isFingerPrintScannerFeature(){return fingerPrintScannerFeature;}
     public boolean isFacialRecognitionFeature(){return facialRecognitionFeature;}

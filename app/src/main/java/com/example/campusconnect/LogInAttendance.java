@@ -60,12 +60,12 @@ public class LogInAttendance extends AppCompatActivity {
         ImageButton back = findViewById(R.id.backButton_ImageButton);
 
         // Hide all components
-        idNumber.setVisibility(school.getIdNumberFeature() ? View.VISIBLE : View.GONE);
+        idNumber.setVisibility(school.isIdNumberFeature() ? View.VISIBLE : View.GONE);
         scanQR.setVisibility(school.isQrScannerFeature() ? View.VISIBLE : View.GONE);
         scanFinger.setVisibility(school.isFingerPrintScannerFeature() ? View.VISIBLE : View.GONE);
         scanFacial.setVisibility(school.isFacialRecognitionFeature() ? View.VISIBLE : View.GONE);
 
-        submit.setVisibility(school.getIdNumberFeature() ? View.VISIBLE : View.GONE);
+        submit.setVisibility(school.isIdNumberFeature() ? View.VISIBLE : View.GONE);
 
         // Declare and Initialized locationManager
         LocationManager locationManager;
@@ -211,7 +211,7 @@ public class LogInAttendance extends AppCompatActivity {
 
                                                                     // Check employee Coordinate if employee is inside the 4 corners of the campus
                                                                     // Toggle switch to punch time without GPS
-                                                                    if (school.getGpsFeature() == true) {
+                                                                    if (school.isGpsFeature() == true) {
                                                                         if (employee.getLatitude() >= Double.parseDouble(school.getLatitudeBottom()) && employee.getLatitude() <= Double.parseDouble(school.getLatitudeTop()) && employee.getLongitude() >= Double.parseDouble(school.getLongitudeLeft()) && employee.getLongitude() <= Double.parseDouble(school.getLongitudeRight())) {
                                                                             Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
@@ -221,7 +221,7 @@ public class LogInAttendance extends AppCompatActivity {
                                                                         } else {
                                                                             Toast.makeText(getApplicationContext(), "You are outside the Campus. Connect to School WIFI", Toast.LENGTH_SHORT).show();
                                                                         }
-                                                                    } else if (school.getGpsFeature() == false) {
+                                                                    } else if (school.isGpsFeature() == false) {
                                                                         Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                                                                         // Push Time in Database

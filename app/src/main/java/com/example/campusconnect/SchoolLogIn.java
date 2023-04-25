@@ -73,8 +73,9 @@ public class SchoolLogIn extends AppCompatActivity {
                                 school.setSchoolHead(dataSnapshot.child("schoolHead").getValue().toString());
                                 school.setAdminUsername(dataSnapshot.child("adminUsername").getValue().toString());
                                 school.setAdminPassword(dataSnapshot.child("adminPassword").getValue().toString());
-                                school.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
                                 school.setIdNumberFeature(dataSnapshot.child("idNumberFeature").getValue(Boolean.class));
+                                school.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
+                                school.setTimeBasedFeature(dataSnapshot.child("timeBasedFeature").getValue(Boolean.class));
                                 school.setQrScannerFeature(dataSnapshot.child("qrcodeFeature").getValue(Boolean.class));
                                 school.setFingerPrintScannerFeature(dataSnapshot.child("fingerPrintFeature").getValue(Boolean.class));
                                 school.setFacialRecognitionFeature(dataSnapshot.child("facialRecognitionFeature").getValue(Boolean.class));

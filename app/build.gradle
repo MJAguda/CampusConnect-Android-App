@@ -11,8 +11,8 @@ android {
         applicationId "com.example.campusconnect"
         minSdk 19
         targetSdk 32
-        versionCode 6
-        versionName "6"
+        versionCode 7
+        versionName "7"
 
         multiDexEnabled true
 
