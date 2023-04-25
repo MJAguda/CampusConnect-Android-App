@@ -122,7 +122,15 @@ public class Generate extends AppCompatActivity {
                 read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()){
+                        if(!dataSnapshot.exists()){
+                            Toast.makeText(getApplicationContext(), "ID Number not found", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            // Set data for Employee
+                            employee.setId(dataSnapshot.child("id").getValue().toString());
+                            employee.setFullName(dataSnapshot.child("fullname").getValue().toString());
+
+                            // Unhide Components
                             home.setVisibility(View.VISIBLE);
                             generateQR.setVisibility(View.VISIBLE);
                             text.setVisibility(View.VISIBLE);
@@ -135,13 +143,11 @@ public class Generate extends AppCompatActivity {
                             guide4.setVisibility(View.VISIBLE);
                             guide5.setVisibility(View.VISIBLE);
 
+                            // Hide Components
                             prompt.setVisibility(View.GONE);
                             id.setVisibility(View.GONE);
                             //scanQR.setVisibility(View.GONE);
                             submit.setVisibility(View.GONE);
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(), "ID Number not found", Toast.LENGTH_SHORT).show();
                         }
                     }
 

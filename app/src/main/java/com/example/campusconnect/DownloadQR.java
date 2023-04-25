@@ -32,7 +32,7 @@ public class DownloadQR {
 
     // TODO add sending Gmail
     public void downloadImage() {
-        fileName = "QRCode_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getLastName() + ".png";
+        fileName = "QRCode_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + ".png";
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         bitmap = drawable.getBitmap();
         if (ContextCompat.checkSelfPermission(imageView.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
