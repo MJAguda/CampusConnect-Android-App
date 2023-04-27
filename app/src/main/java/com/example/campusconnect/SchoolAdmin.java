@@ -231,7 +231,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
             @Override
             public void onFailure(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                Log.d("Read", "Error: " + databaseError.getMessage());
+                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -251,7 +252,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
             @Override
             public void onFailure(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                Log.d("Read", "Error: " + databaseError.getMessage());
+                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -352,7 +354,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             employee.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/"+ yearSpinner.getSelectedItem().toString());
 
                             // Check id if exist
-                            read.readRecord(school.getSchoolID() + "/employee" + employee.getId(), new Read.OnGetDataListener() {
+                            read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
                                 @Override
                                 public void onSuccess(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
@@ -379,7 +381,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                                 @Override
                                 public void onFailure(DatabaseError databaseError) {
-                                    Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                                    Log.d("Read", "Error: " + databaseError.getMessage());
+                                    Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -446,7 +449,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                             @Override
                             public void onFailure(DatabaseError databaseError) {
-                                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                                Log.d("Read", "Error: " + databaseError.getMessage());
+                                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -539,7 +543,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                             @Override
                             public void onFailure(DatabaseError databaseError) {
-                                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                                Log.d("Read", "Error: " + databaseError.getMessage());
+                                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -630,7 +635,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                             @Override
                             public void onFailure(DatabaseError databaseError) {
-                                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                                Log.d("Read", "Error: " + databaseError.getMessage());
+                                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

@@ -194,7 +194,8 @@ public class GenerateDTR extends AppCompatActivity {
 
                             @Override
                             public void onFailure(DatabaseError databaseError) {
-                                // handle error here
+                                Log.d("Read", "Error: " + databaseError.getMessage());
+                                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -208,7 +209,8 @@ public class GenerateDTR extends AppCompatActivity {
 
                             @Override
                             public void onFailure(DatabaseError databaseError) {
-                                // handle error here
+                                Log.d("Read", "Error: " + databaseError.getMessage());
+                                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -216,7 +218,8 @@ public class GenerateDTR extends AppCompatActivity {
 
                     @Override
                     public void onFailure(DatabaseError databaseError) {
-                        Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                        Log.d("Read", "Error: " + databaseError.getMessage());
+                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 

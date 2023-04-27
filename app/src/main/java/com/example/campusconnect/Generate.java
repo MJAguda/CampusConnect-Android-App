@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -153,7 +154,8 @@ public class Generate extends AppCompatActivity {
 
                     @Override
                     public void onFailure(DatabaseError databaseError) {
-                        // handle error here
+                        Log.d("Read", "Error: " + databaseError.getMessage());
+                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

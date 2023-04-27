@@ -121,8 +121,8 @@ public class Attendance extends AppCompatActivity {
 
             @Override
             public void onFailure(DatabaseError databaseError) {
-                Log.d("Read", "Read Error");
-                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                Log.d("Read", "Error: " + databaseError.getMessage());
+                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
