@@ -205,31 +205,31 @@ public class LogInAttendance extends AppCompatActivity {
                                                                 GPSCoordinates gpsCoordinates = new GPSCoordinates(LogInAttendance.this);
                                                                 Location currentLocation = gpsCoordinates.getCurrentLocation();
 
-                                                                if (currentLocation != null) {
+                                                                // Check employee Coordinate if employee is inside the 4 corners of the campus
+                                                                // Toggle switch to punch time without GPS
+                                                                // Check if currentLocation is not null
+                                                                if (school.isGpsFeature() == true && currentLocation != null) {
+
                                                                     employee.setLatitude(currentLocation.getLatitude());
                                                                     employee.setLongitude(currentLocation.getLongitude());
 
-                                                                    // Check employee Coordinate if employee is inside the 4 corners of the campus
-                                                                    // Toggle switch to punch time without GPS
-                                                                    if (school.isGpsFeature() == true) {
-                                                                        if (employee.getLatitude() >= Double.parseDouble(school.getLatitudeBottom()) && employee.getLatitude() <= Double.parseDouble(school.getLatitudeTop()) && employee.getLongitude() >= Double.parseDouble(school.getLongitudeLeft()) && employee.getLongitude() <= Double.parseDouble(school.getLongitudeRight())) {
-                                                                            Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
-
-                                                                            // Push Time in Database
-                                                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
-                                                                            thankyou.start();
-                                                                        } else {
-                                                                            Toast.makeText(getApplicationContext(), "You are outside the Campus. Connect to School WIFI", Toast.LENGTH_SHORT).show();
-                                                                        }
-                                                                    } else if (school.isGpsFeature() == false) {
+                                                                    if (employee.getLatitude() >= Double.parseDouble(school.getLatitudeBottom()) && employee.getLatitude() <= Double.parseDouble(school.getLatitudeTop()) && employee.getLongitude() >= Double.parseDouble(school.getLongitudeLeft()) && employee.getLongitude() <= Double.parseDouble(school.getLongitudeRight())) {
                                                                         Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                                                                         // Push Time in Database
                                                                         create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
                                                                         thankyou.start();
+                                                                    } else {
+                                                                        Toast.makeText(getApplicationContext(), "You are outside the Campus. Connect to School WIFI", Toast.LENGTH_SHORT).show();
                                                                     }
+                                                                } else if (school.isGpsFeature() == false) {
+                                                                    Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
-                                                                } else {
+                                                                    // Push Time in Database
+                                                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+                                                                    thankyou.start();
+                                                                }
+                                                                else {
                                                                     Toast.makeText(getApplicationContext(), "No location data available", Toast.LENGTH_SHORT).show();
                                                                     Log.d("Location", "No location data available.");
                                                                 }
