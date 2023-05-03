@@ -1,7 +1,5 @@
 package com.example.campusconnect;
 
-// TODO Use Network Time Protocol / Time Zone
-
 import android.app.Activity;
 
 import com.android.volley.Request;
