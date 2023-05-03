@@ -241,7 +241,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-                    idList.add(childSnapshot.getKey());
+                    idList.add(childSnapshot.child("fullname").getValue(String.class));
                 }
 
                 // Create an ArrayAdapter for the idSpinner
@@ -414,37 +414,64 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         // Get the selected item from idSpinner
-                        String selectedItemId = parent.getItemAtPosition(position).toString();
+                        String selectedItemName = parent.getItemAtPosition(position).toString();
 
                         // Display a Toast message with the selected item
-                        Toast.makeText(getApplicationContext(), "Selected Item: " + selectedItemId, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Selected Item: " + selectedItemName, Toast.LENGTH_SHORT).show();
 
-                        // Read Employee data from the selectedItemId
-                        read.readRecord(school.getSchoolID() + "/employee/" + selectedItemId, new Read.OnGetDataListener() {
+                        // Read the parent node of the selected fullname
+                        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
-                                String id = dataSnapshot.child("id").getValue(String.class);
-                                String fullname = dataSnapshot.child("fullname").getValue(String.class);
-                                String birthday = dataSnapshot.child("birthdate").getValue(String.class);
-
-                                String [] nameArray = fullname.split(", ");
-                                String [] birthdayArray = birthday.split("/");
-
-                                employee.setId(id);
-
-                                // Set the values in the EditText
-                                idEditText.setText(id);
-                                lastName.setText(nameArray[0]);
-                                firstName.setText(nameArray[1]);
-                                //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
-                                monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
-                                daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
-                                dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
-                                    @Override
-                                    public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
-                                        yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100));
+                                String parentKey = null;
+                                for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                                    String fullname = childSnapshot.child("fullname").getValue(String.class);
+                                    if (fullname != null && fullname.equals(selectedItemName)) {
+                                        parentKey = childSnapshot.getKey();
+                                        employee.setId(parentKey);
+                                        break;
                                     }
-                                });
+                                }
+                                if(parentKey != null){
+                                    // Read Employee data from the selectedItemId
+                                    read.readRecord(school.getSchoolID() + "/employee/" + parentKey, new Read.OnGetDataListener() {
+                                        @Override
+                                        public void onSuccess(DataSnapshot dataSnapshot) {
+                                            String id = dataSnapshot.child("id").getValue(String.class);
+                                            String fullname = dataSnapshot.child("fullname").getValue(String.class);
+                                            String birthday = dataSnapshot.child("birthdate").getValue(String.class);
+
+                                            String [] nameArray = fullname.split(", ");
+                                            String [] birthdayArray = birthday.split("/");
+
+                                            employee.setId(id);
+
+                                            // Set the values in the EditText
+                                            idEditText.setText(id);
+                                            idEditText.setEnabled(false);
+                                            lastName.setText(nameArray[0]);
+                                            firstName.setText(nameArray[1]);
+                                            //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
+                                            monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
+                                            daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
+
+                                            dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
+                                                @Override
+                                                public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
+                                                    yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100));
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onFailure(DatabaseError databaseError) {
+                                            Log.d("Read", "Error: " + databaseError.getMessage());
+                                            Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+
+                                }
                             }
 
                             @Override
@@ -474,6 +501,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         //update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "id" , idEditText.getText().toString());
                         update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "fullname" , lastName.getText().toString() + ", " + firstName.getText().toString());
                         update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "birthdate" , (DateUtils.getMonthName(String.valueOf(monthSpinner.getSelectedItemPosition() + 1))) + "/" + daySpinner.getSelectedItem().toString() + "/" + yearSpinner.getSelectedItem().toString());
+
+                        Toast.makeText(getApplicationContext(), "Successfully Edited", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
                         startActivity(intent);
@@ -505,40 +534,64 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         // Get the selected item from idSpinner
-                        String selectedItemId = parent.getItemAtPosition(position).toString();
+                        String selectedItemName = parent.getItemAtPosition(position).toString();
 
                         // Display a Toast message with the selected item
-                        Toast.makeText(getApplicationContext(), "Selected Item: " + selectedItemId, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Selected Item: " + selectedItemName, Toast.LENGTH_SHORT).show();
 
-                        // Read Employee data from the selectedItemId
-                        read.readRecord(school.getSchoolID() + "/employee/" + selectedItemId, new Read.OnGetDataListener() {
+                        // Read the parent node of the selected fullname
+                        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
-                                String id = dataSnapshot.child("id").getValue(String.class);
-                                String fullname = dataSnapshot.child("fullname").getValue(String.class);
-                                String birthday = dataSnapshot.child("birthdate").getValue(String.class);
-
-                                String [] nameArray = fullname.split(", ");
-                                String [] birthdayArray = birthday.split("/");
-
-                                employee.setId(id);
-
-                                // Set the values in the EditText
-                                idEditText.setText(id);
-                                idEditText.setEnabled(false);
-                                lastName.setText(nameArray[0]);
-                                firstName.setText(nameArray[1]);
-                                //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
-                                monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
-                                daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
-
-                                dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
-                                    @Override
-                                    public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
-                                        yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100));
+                                String parentKey = null;
+                                for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                                    String fullname = childSnapshot.child("fullname").getValue(String.class);
+                                    if (fullname != null && fullname.equals(selectedItemName)) {
+                                        parentKey = childSnapshot.getKey();
+                                        employee.setId(parentKey);
+                                        break;
                                     }
-                                });
+                                }
+                                if(parentKey != null){
+                                    // Read Employee data from the selectedItemId
+                                    read.readRecord(school.getSchoolID() + "/employee/" + parentKey, new Read.OnGetDataListener() {
+                                        @Override
+                                        public void onSuccess(DataSnapshot dataSnapshot) {
+                                            String id = dataSnapshot.child("id").getValue(String.class);
+                                            String fullname = dataSnapshot.child("fullname").getValue(String.class);
+                                            String birthday = dataSnapshot.child("birthdate").getValue(String.class);
 
+                                            String [] nameArray = fullname.split(", ");
+                                            String [] birthdayArray = birthday.split("/");
+
+                                            employee.setId(id);
+
+                                            // Set the values in the EditText
+                                            idEditText.setText(id);
+                                            idEditText.setEnabled(false);
+                                            lastName.setText(nameArray[0]);
+                                            firstName.setText(nameArray[1]);
+                                            //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
+                                            monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
+                                            daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
+
+                                            dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
+                                                @Override
+                                                public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
+                                                    yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100));
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onFailure(DatabaseError databaseError) {
+                                            Log.d("Read", "Error: " + databaseError.getMessage());
+                                            Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+
+                                }
                             }
 
                             @Override
@@ -562,6 +615,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     @Override
                     public void onClick(View view) {
                         delete.deleteRecord(school.getSchoolID() + "/employee", String.valueOf(idEditText.getText()));
+
+                        Toast.makeText(getApplicationContext(), "Successfully Deleted", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
                         startActivity(intent);
@@ -597,40 +652,64 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         // Get the selected item from idSpinner
-                        String selectedItemId = parent.getItemAtPosition(position).toString();
+                        String selectedItemName = parent.getItemAtPosition(position).toString();
 
                         // Display a Toast message with the selected item
-                        Toast.makeText(getApplicationContext(), "Selected Item: " + selectedItemId, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Selected Item: " + selectedItemName, Toast.LENGTH_SHORT).show();
 
-                        // Read Employee data from the selectedItemId
-                        read.readRecord(school.getSchoolID() + "/employee/" + selectedItemId, new Read.OnGetDataListener() {
+                        // Read the parent node of the selected fullname
+                        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
-                                String id = dataSnapshot.child("id").getValue(String.class);
-                                String fullname = dataSnapshot.child("fullname").getValue(String.class);
-                                String birthday = dataSnapshot.child("birthdate").getValue(String.class);
-
-                                String [] nameArray = fullname.split(", ");
-                                String [] birthdayArray = birthday.split("/");
-
-                                employee.setId(id);
-
-                                // Set the values in the EditText
-                                idEditText.setText(id);
-                                idEditText.setEnabled(false);
-                                lastName.setText(nameArray[0]);
-                                firstName.setText(nameArray[1]);
-                                //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
-                                monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
-                                daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
-
-                                dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
-                                    @Override
-                                    public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
-                                        yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100));
+                                String parentKey = null;
+                                for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                                    String fullname = childSnapshot.child("fullname").getValue(String.class);
+                                    if (fullname != null && fullname.equals(selectedItemName)) {
+                                        parentKey = childSnapshot.getKey();
+                                        employee.setId(parentKey);
+                                        break;
                                     }
-                                });
+                                }
+                                if(parentKey != null){
+                                    // Read Employee data from the selectedItemId
+                                    read.readRecord(school.getSchoolID() + "/employee/" + parentKey, new Read.OnGetDataListener() {
+                                        @Override
+                                        public void onSuccess(DataSnapshot dataSnapshot) {
+                                            String id = dataSnapshot.child("id").getValue(String.class);
+                                            String fullname = dataSnapshot.child("fullname").getValue(String.class);
+                                            String birthday = dataSnapshot.child("birthdate").getValue(String.class);
 
+                                            String [] nameArray = fullname.split(", ");
+                                            String [] birthdayArray = birthday.split("/");
+
+                                            employee.setId(id);
+
+                                            // Set the values in the EditText
+                                            idEditText.setText(id);
+                                            idEditText.setEnabled(false);
+                                            lastName.setText(nameArray[0]);
+                                            firstName.setText(nameArray[1]);
+                                            //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
+                                            monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
+                                            daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
+
+                                            dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
+                                                @Override
+                                                public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
+                                                    yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100));
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onFailure(DatabaseError databaseError) {
+                                            Log.d("Read", "Error: " + databaseError.getMessage());
+                                            Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+
+                                }
                             }
 
                             @Override
@@ -650,11 +729,11 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        DatabaseReference source = FirebaseDatabase.getInstance().getReference(school.getSchoolID() + "/employee/" + idSpinner.getSelectedItem().toString());
-                        DatabaseReference destination = FirebaseDatabase.getInstance().getReference(destinationSpinner.getSelectedItem().toString() + "/employee/" + idSpinner.getSelectedItem().toString());
+                        DatabaseReference source = FirebaseDatabase.getInstance().getReference(school.getSchoolID() + "/employee/" + employee.getId());
+                        DatabaseReference destination = FirebaseDatabase.getInstance().getReference(destinationSpinner.getSelectedItem().toString() + "/employee/" + employee.getId());
 
                         // Create an instance of the Transfer class
-                        Transfer transfer = new Transfer(source, destination, idSpinner.getSelectedItem().toString(), getApplicationContext());
+                        Transfer transfer = new Transfer(source, destination, employee.getId(), getApplicationContext());
 
                         // Call the copyRecord method to copy the subtree from the source to the destination node
                         transfer.copyRecord(source, destination);
