@@ -253,6 +253,8 @@ public class Attendance extends AppCompatActivity {
                                 TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
                                 table.removeAllViews();
 
+                                // TODO Sort the name display in Attendance
+
                                 for(int i = 1 ; i <= DateUtils.getNumberOfDays(save.getMonth(), save.getYear()) ; i++){
 
                                     DataSnapshot child = dataSnapshot.child(String.valueOf(i));

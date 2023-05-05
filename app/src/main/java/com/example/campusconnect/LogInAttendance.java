@@ -264,6 +264,8 @@ public class LogInAttendance extends AppCompatActivity {
                                                     }
                                                 });
                                                 Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_LONG).show();
+
+                                                // TODO Fix the Try again bug settext in IDNumberEditText then press submit
                                             }
 
                                             Intent intent = new Intent(LogInAttendance.this, Attendance.class);

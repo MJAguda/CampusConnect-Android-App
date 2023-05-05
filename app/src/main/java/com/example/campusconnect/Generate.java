@@ -115,6 +115,8 @@ public class Generate extends AppCompatActivity {
             }
         });
 
+        // TODO Add ScanQRCode Button
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

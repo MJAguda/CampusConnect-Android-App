@@ -738,6 +738,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         // Call the copyRecord method to copy the subtree from the source to the destination node
                         transfer.copyRecord(source, destination);
 
+                        // TODO In Transfer_Employee. Everytime transfer is success refresh the Screen instead of Intent
+
                         Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
                         startActivity(intent);
                     }
@@ -755,6 +757,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 features.setVisibility(View.VISIBLE);
                 return true;
             }
+            // TODO add case Download All QR
+            // TODO add case Download All DTR
             default:{
                 return false;
             }
