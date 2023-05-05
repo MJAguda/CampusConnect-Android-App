@@ -49,7 +49,7 @@
             android:layout_gravity="left"
             android:background="#6A2C70"
             android:fontFamily="sans-serif-smallcaps"
-            android:text="MM/dd/yyyy hh:mm:ss a"
+            android:text="Loading..."
             android:textAlignment="center"
             android:textColor="#FFF000"
             android:textSize="20sp" />
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-smallcaps"
-            android:text="School Name Here"
+            android:text="Loading..."
             android:textAlignment="center"
             android:textColor="#6A2C70"
             android:textSize="40sp"

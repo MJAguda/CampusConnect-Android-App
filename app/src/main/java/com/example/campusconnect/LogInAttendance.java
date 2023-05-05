@@ -119,7 +119,9 @@ public class LogInAttendance extends AppCompatActivity {
 
                         save.setYear(year);
                         save.setMonth(DateUtils.getMonthName(month));
-                        save.setDay(String.valueOf(Integer.parseInt(day))); // TODO make it 01 instead of 1
+                        save.setDay(String.valueOf(Integer.parseInt(day))); // TODO make it 01 instead of 1                         save.setDay(String.format("%02d", Integer.parseInt(day)));
+
+
 
                         // Check id if exist Log in Using ID Number
                         read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
@@ -264,9 +266,9 @@ public class LogInAttendance extends AppCompatActivity {
                                                         // handle error here
                                                     }
                                                 });
-                                                Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_LONG).show();
+                                                //Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_LONG).show();
 
-                                                // TODO Fix the Try again bug settext in IDNumberEditText then press submit
+                                                submit.performClick();
                                             }
 
                                             Intent intent = new Intent(LogInAttendance.this, Attendance.class);
