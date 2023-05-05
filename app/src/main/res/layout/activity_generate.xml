@@ -69,7 +69,7 @@
                 android:id="@+id/id_EditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.80"
+                android:layout_weight="0.8"
                 android:layout_marginTop="30px"
                 android:layout_marginBottom="30px"
                 android:hint="Enter ID Number"
@@ -79,6 +79,20 @@
                 android:textAlignment="center"
                 android:background="@drawable/round_edittext_bg"
                 android:padding="16dp"/>
+
+            <ImageButton
+                android:id="@+id/scanQR_ImageButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:layout_marginRight="30px"
+                android:layout_marginTop="30px"
+                android:layout_marginBottom="30px"
+                android:adjustViewBounds="true"
+                android:background="@color/zxing_transparent"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/scanqrbutton" />
+
         </LinearLayout>
 
         <!--

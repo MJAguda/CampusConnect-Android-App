@@ -25,8 +25,9 @@ public class Generate extends AppCompatActivity {
     Employee employee = Employee.getInstance();
     Read read = new Read();
 
-    private static final int REQUEST_CODE_SCAN_QR = 123;
-    EditText id;
+    private static final int REQUEST_CODE_SCAN_QR = 1;
+    EditText idEditText;
+    Button submit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +35,13 @@ public class Generate extends AppCompatActivity {
         setContentView(R.layout.activity_generate);
 
         // Declare Components
-        id = findViewById(R.id.id_EditText);
+        idEditText = findViewById(R.id.id_EditText);
         TextView prompt = findViewById(R.id.prompt);
 
         // Declare Button Components
         ImageButton back = findViewById(R.id.backButton_ImageButton);
         ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
-        //ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);
+        ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);
         //ImageButton scanFingerPrint = findViewById(R.id.scanFingerPrint_ImageButton);
         //ImageButton scanFacial = findViewById(R.id.scanFacial_ImageButton);
         Button submit = findViewById(R.id.submit_Button);
@@ -115,12 +116,20 @@ public class Generate extends AppCompatActivity {
             }
         });
 
-        // TODO Add ScanQRCode Button
+        scanQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Generate.this, ScanQR.class);
+                startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
+
+
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                employee.setId(id.getText().toString());
+                employee.setId(idEditText.getText().toString());
 
                 read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
                     @Override
@@ -148,8 +157,8 @@ public class Generate extends AppCompatActivity {
 
                             // Hide Components
                             prompt.setVisibility(View.GONE);
-                            id.setVisibility(View.GONE);
-                            //scanQR.setVisibility(View.GONE);
+                            idEditText.setVisibility(View.GONE);
+                            scanQR.setVisibility(View.GONE);
                             submit.setVisibility(View.GONE);
                         }
                     }
@@ -224,13 +233,21 @@ public class Generate extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        id = findViewById(R.id.id_EditText);
+        idEditText = findViewById(R.id.id_EditText);
+        submit = findViewById(R.id.submit_Button);
 
         if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
             String qrResult = data.getStringExtra("QR_RESULT");
+
             // Handle the QR code result here
             Toast.makeText(this, "QR code result: " + qrResult, Toast.LENGTH_SHORT).show();
-            id.setText(qrResult);
+
+            // set the idNumber_TextView
+
+            idEditText.setText(qrResult);
+
+            // Perform click
+            submit.performClick();
         }
     }
 }

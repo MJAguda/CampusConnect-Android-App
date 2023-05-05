@@ -38,6 +38,7 @@ public class LogInAttendance extends AppCompatActivity {
     Read read = new Read();
     private static final int REQUEST_CODE_SCAN_QR = 1;
     EditText idNumber;
+    Button submit;
 
     // Instance of scanFingerPrint
     private static final String TAG = LogInAttendance.class.getSimpleName();
@@ -303,7 +304,7 @@ public class LogInAttendance extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         idNumber = findViewById(R.id.id_EditText);
-        Button submit = findViewById(R.id.submit_Button);
+        submit = findViewById(R.id.submit_Button);
 
         if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
             String qrResult = data.getStringExtra("QR_RESULT");
