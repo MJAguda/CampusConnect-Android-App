@@ -134,15 +134,15 @@
         </LinearLayout>
         -->
 
-            <ImageView
-                android:id="@+id/qrCode_ImageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="50dp"
-                android:adjustViewBounds="true"
-                android:clickable="true"
-                android:layout_gravity="center"
-                android:background="@drawable/table_border"/>
+        <ImageView
+            android:id="@+id/qrCode_ImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:layout_gravity="center"
+            android:background="@drawable/table_border"/>
 
         <TextView
             android:id="@+id/generateQR_TextView"
