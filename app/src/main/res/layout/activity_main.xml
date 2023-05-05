@@ -24,7 +24,7 @@
             android:layout_weight="0.25"
             android:background="#B83B5E"
             android:scaleType="fitCenter"
-            app:srcCompat="@android:drawable/ic_menu_revert" />
+            app:srcCompat="@drawable/logout" />
 
         <include layout="@layout/header_layout"/>
 
