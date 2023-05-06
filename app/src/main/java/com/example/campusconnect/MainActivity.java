@@ -25,6 +25,9 @@ import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -87,52 +90,60 @@ public class MainActivity extends AppCompatActivity {
                 read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-
                         table.removeAllViews();
 
-                        for(DataSnapshot child : dataSnapshot.getChildren()){
+                        // Get all the names from the "employee" node and store them in a list
+                        List<String> names = new ArrayList<>();
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
                             String fullName = child.child("fullname").getValue(String.class);
                             if (fullName != null) {
-                                Log.d("TAG", fullName);
-                                // Instance of the row
-                                TableRow row = new TableRow(MainActivity.this);
-
-                                // Add name to the row
-                                TextView name = new TextView(MainActivity.this);
-                                name.setText(fullName);
-                                name.setTextSize(10);
-                                name.setGravity(Gravity.TOP); // Set the vertical gravity to top
-                                name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-                                name.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
-
-                                // Get the height of the first TextView
-                                name.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                                int nameHeight = name.getMeasuredHeight();
-
-                                TableRow.LayoutParams nameParams = new TableRow.LayoutParams(0, nameHeight, 0.32f);
-                                name.setLayoutParams(nameParams);
-                                row.addView(name);
-
-                                for(DataSnapshot grandChild : child.child("attendance/" + year + "/" + dateUtils.getMonthName(month) + "/" + Integer.parseInt(day)).getChildren()){
-                                    Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
-
-                                    // Add time to the row
-                                    TextView time = new TextView(MainActivity.this);
-
-                                    time.setText(grandChild.getValue().toString());
-                                    time.setTextSize(10);
-                                    TableRow.LayoutParams timeParams = new TableRow.LayoutParams(0, nameHeight, 0.17f);
-                                    time.setLayoutParams(timeParams);
-                                    time.setGravity(Gravity.CENTER);
-                                    time.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
-
-                                    row.addView(time);
-                                }
-
-                                table.addView(row);
+                                names.add(fullName);
                             }
                         }
 
+                        // Sort the names alphabetically
+                        Collections.sort(names);
+
+                        // Display the sorted names in the UI
+                        for (String fullName : names) {
+                            // Create a row for each name
+                            TableRow row = new TableRow(MainActivity.this);
+
+                            // Add the name to the row
+                            TextView name = new TextView(MainActivity.this);
+                            name.setText(fullName);
+                            name.setTextSize(10);
+                            name.setGravity(Gravity.TOP);
+                            name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                            name.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
+
+                            // Get the height of the first TextView
+                            name.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                            int nameHeight = name.getMeasuredHeight();
+
+                            TableRow.LayoutParams nameParams = new TableRow.LayoutParams(0, nameHeight, 0.32f);
+                            name.setLayoutParams(nameParams);
+                            row.addView(name);
+
+                            // Add the attendance times to the row
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                String employeeName = child.child("fullname").getValue(String.class);
+                                if (employeeName != null && employeeName.equals(fullName)) {
+                                    for (DataSnapshot grandChild : child.child("attendance/" + year + "/" + dateUtils.getMonthName(month) + "/" + Integer.parseInt(day)).getChildren()) {
+                                        TextView time = new TextView(MainActivity.this);
+                                        time.setText(grandChild.getValue().toString());
+                                        time.setTextSize(10);
+                                        TableRow.LayoutParams timeParams = new TableRow.LayoutParams(0, nameHeight, 0.17f);
+                                        time.setLayoutParams(timeParams);
+                                        time.setGravity(Gravity.CENTER);
+                                        time.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
+                                        row.addView(time);
+                                    }
+                                }
+                            }
+
+                            table.addView(row);
+                        }
                     }
 
                     @Override
@@ -141,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
 
                 back.setOnClickListener(new View.OnClickListener() {
                     @Override
