@@ -52,6 +52,17 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/announcement_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Announcement!"
+            android:textAlignment="center"
+            android:textColor="#6A2C70"
+            android:textSize="20sp"
+            android:textStyle="normal" />
 
     </LinearLayout>
 
