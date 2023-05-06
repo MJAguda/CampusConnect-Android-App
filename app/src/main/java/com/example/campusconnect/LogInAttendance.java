@@ -119,7 +119,7 @@ public class LogInAttendance extends AppCompatActivity {
 
                         save.setYear(year);
                         save.setMonth(DateUtils.getMonthName(month));
-                        save.setDay(String.valueOf(Integer.parseInt(day))); // TODO make it 01 instead of 1                         save.setDay(String.format("%02d", Integer.parseInt(day)));
+                        save.setDay(String.valueOf(Integer.parseInt(day)));
 
 
 

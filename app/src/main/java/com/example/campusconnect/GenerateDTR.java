@@ -147,7 +147,7 @@ public class GenerateDTR extends AppCompatActivity {
 
                                     // Add day to the row
                                     TextView day = new TextView(GenerateDTR.this);
-                                    day.setText(child.getKey());
+                                    day.setText(String.format("%02d", Integer.parseInt(child.getKey())));
                                     day.setTextColor(Color.BLACK);
                                     day.setTextSize(7);
                                     day.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
