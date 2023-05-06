@@ -214,15 +214,11 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-                    //sourceList.add(childSnapshot.getKey());
-                    destinationList.add(childSnapshot.getKey());
+                    // check if the key matches the sourceTextView text
+                    if(!childSnapshot.getKey().equals(sourceTextView.getText().toString())){
+                        destinationList.add(childSnapshot.getKey());
+                    }
                 }
-
-                // Create an ArrayAdapter for the sourceList
-                //ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, sourceList);
-                //sourceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                //sourceSpinner.setAdapter(sourceAdapter);
-
                 // Create an ArrayAdapter for the destinationList
                 ArrayAdapter<String> destinationAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, destinationList);
                 destinationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -236,7 +232,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             }
         });
 
-        // Read all employee and add it in the idList
+            // Read all employee and add it in the idList
         read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -737,8 +733,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                         // Call the copyRecord method to copy the subtree from the source to the destination node
                         transfer.copyRecord(source, destination);
-
-                        // TODO In Transfer_Employee. Everytime transfer is success refresh the Screen instead of Intent
 
                         Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
                         startActivity(intent);
