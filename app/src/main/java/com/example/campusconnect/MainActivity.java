@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 };
 
-                timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // update every 1 second
+                timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // TODO update every 1 second
 
                 //Set school Name
                 schoolName.setText(school.getSchoolName());

@@ -51,7 +51,7 @@ public class Attendance extends AppCompatActivity {
         TextView dateTimeTextView = findViewById(R.id.dateAndTime_TextView);
         timer = new Timer();
 
-        // Update clock every 1s
+        // TODO Update clock every 1s
         TimerTask updateTimeTask = new TimerTask() {
             @Override
             public void run() {
