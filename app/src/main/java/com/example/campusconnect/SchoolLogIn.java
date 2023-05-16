@@ -32,6 +32,7 @@ public class SchoolLogIn extends AppCompatActivity {
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
     Read read = new Read();
+    Delete delete = new Delete();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,10 @@ public class SchoolLogIn extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
                             }
                             else{
+                                if(dataSnapshot.child("employee").child("attendance").exists()){
+                                    delete.deleteRecord(school.getSchoolID() + "/employee", "attendance");
+                                }
+
                                 // Fetch data and store it in School Class
                                 school.setSchoolID(Integer.parseInt(dataSnapshot.child("schoolID").getValue().toString()));
                                 school.setSchoolName(dataSnapshot.child("schoolName").getValue().toString());
