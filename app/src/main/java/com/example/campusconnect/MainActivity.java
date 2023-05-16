@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton home = findViewById(R.id.home_Button);
         ImageButton attendance = findViewById(R.id.attendance_Button);
         ImageView logo = findViewById(R.id.footerlogo_ImageView);
-        ImageButton register = findViewById(R.id.register_Button);
+        ImageButton register = findViewById(R.id.admin_Button);
         ImageButton generate = findViewById(R.id.generate_Button);
         TextView guide1 = findViewById(R.id.buttonGuide_TextView1);
         TextView guide2 = findViewById(R.id.buttonGuide_TextView2);

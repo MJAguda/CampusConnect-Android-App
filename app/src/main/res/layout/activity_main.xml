@@ -196,12 +196,12 @@
                 app:srcCompat="@drawable/campus_connect_logo"/>
 
             <ImageButton
-                android:id="@+id/register_Button"
+                android:id="@+id/admin_Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyImageButtonStyle"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/registerbutton" />
+                app:srcCompat="@drawable/adminbutton" />
 
             <ImageButton
                 android:id="@+id/generate_Button"

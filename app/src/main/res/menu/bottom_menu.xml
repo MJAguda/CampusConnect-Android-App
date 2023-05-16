@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home_Button"
+        android:title="Home"
+        android:icon="@drawable/homebutton"/>
+
+    <item
+        android:id="@+id/attendance_Button"
+        android:title="Attendance"
+        android:icon="@drawable/attendancebutton"/>
+
+    <item
+        android:id="@+id/fab"
+        android:title=""
+        android:enabled="false"/>
+
+    <item
+        android:id="@+id/admin_Button"
+        android:title="Admin"
+        android:icon="@drawable/adminbutton"/>
+
+    <item
+        android:id="@+id/generate_Button"
+        android:title="Generate"
+        android:icon="@drawable/generatebutton"/>
+
+
+</menu>

@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
@@ -740,6 +741,45 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 });
                 return true;
             }
+            // TODO add case Download All QR
+            case R.id.GenerateAllQR:{
+                read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                            // Set ID and Set Name
+                            employee.setId((String) child.child("id").getValue());
+                            employee.setFullName((String) child.child("fullname").getValue());
+
+                            // Instance
+                            GenerateQR generateQR = new GenerateQR();
+
+                            // Declare ImageView
+                            ImageView qr = findViewById(R.id.qrCode_ImageView);
+
+                            // call generateQRCode method from GenerateQR class
+                            qr.setImageBitmap(generateQR.generateQRCode(child.getKey()));
+
+
+                            // Download qr if a ImageView
+                            DownloadQR imageDownloader = new DownloadQR(qr);
+                            imageDownloader.downloadImage();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        Log.d("Read", "Error: " + databaseError.getMessage());
+                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            // TODO add case Download All DTR
+            case R.id.GenerateAllDTR:{
+
+            }
             case R.id.settings:{
                 prompt.setText("Settings");
 
@@ -751,8 +791,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 features.setVisibility(View.VISIBLE);
                 return true;
             }
-            // TODO add case Download All QR
-            // TODO add case Download All DTR
             default:{
                 return false;
             }
