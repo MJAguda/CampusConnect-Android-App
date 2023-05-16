@@ -60,6 +60,8 @@ public class SchoolLogIn extends AppCompatActivity {
                     // Store edittext to schoolID in the School class
                     school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
 
+
+                    // TODO check if employee/attendance exists if so, delete
                     read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
                         @Override
                         public void onSuccess(DataSnapshot dataSnapshot) {
