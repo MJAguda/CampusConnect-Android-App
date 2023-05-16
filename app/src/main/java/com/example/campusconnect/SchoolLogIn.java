@@ -61,8 +61,6 @@ public class SchoolLogIn extends AppCompatActivity {
                     // Store edittext to schoolID in the School class
                     school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
 
-
-                    // TODO check if employee/attendance exists if so, delete
                     read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
                         @Override
                         public void onSuccess(DataSnapshot dataSnapshot) {
@@ -70,7 +68,7 @@ public class SchoolLogIn extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                if(dataSnapshot.child("employee").child("attendance").exists()){
+                                if(dataSnapshot.child("employee").child("attendance").exists()){ // Check if employee/attendance exists if so, delete
                                     delete.deleteRecord(school.getSchoolID() + "/employee", "attendance");
                                 }
 
