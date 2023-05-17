@@ -57,6 +57,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     EditText firstNameEditText;
     EditText lastNameEditText;
     TableLayout birthdayTableLayout;
+    TableLayout dateDTRTableLayout;
     TableLayout featuresTableLayout;
 
     @Override
@@ -68,23 +69,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
         ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
         ImageButton back = findViewById(R.id.backButton_ImageButton);
-
-        /*TextView prompt = findViewById(R.id.prompt);
-
-        // For submit employee
-        EditText id = findViewById(R.id.id_EditText);
-        EditText firstName = findViewById(R.id.firstName_EditText);
-        EditText lastName = findViewById(R.id.lastName_EditText);
-
-        //Find the spinner in the layout
-        TableLayout birthday = findViewById(R.id.birthday_TableLayout);
-        Spinner monthSpinner = findViewById(R.id.month_Spinner);
-        Spinner daySpinner = findViewById(R.id.day_Spinner);
-        Spinner yearSpinner = findViewById(R.id.year_Spinner);
-        Spinner idSpinner = findViewById(R.id.id_Spinner);
-        TableLayout features = findViewById(R.id.features_TableLayout);
-        Button submit = findViewById(R.id.submitEmployee_Button);
-         */
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,13 +169,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
         TextView prompt = findViewById(R.id.prompt);
 
-        // For submit employee
-        EditText idEditText = findViewById(R.id.id_EditText);
-        EditText firstName = findViewById(R.id.firstName_EditText);
-        EditText lastName = findViewById(R.id.lastName_EditText);
 
-        //Find the spinner in the layout
-        TableLayout birthday = findViewById(R.id.birthday_TableLayout);
         Spinner monthSpinner = findViewById(R.id.month_Spinner);
         Spinner daySpinner = findViewById(R.id.day_Spinner);
         Spinner yearSpinner = findViewById(R.id.year_Spinner);
@@ -199,7 +177,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         //Spinner sourceSpinner = findViewById(R.id.source_Spinner);
         Spinner destinationSpinner = findViewById(R.id.destination_Spinner);
         Spinner idSpinner = findViewById(R.id.id_Spinner);
-        TableLayout features = findViewById(R.id.features_TableLayout);
+        Spinner monthDTRSpinner = findViewById(R.id.monthDTR_Spinner);
+        Spinner yearDTRSpinner = findViewById(R.id.yearDTR_Spinner);
 
         // Create an ArrayList for the source schoolID
         //ArrayList<String> sourceList = new ArrayList<>();
@@ -274,6 +253,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monthSpinner.setAdapter(monthAdapter);
 
+        // Connecting monthAdapter with monthDTRSpinner
+        monthDTRSpinner.setAdapter(monthAdapter);
+
         // Create an ArrayList for the day
         ArrayList<String> dayList = new ArrayList<>();
         for (int i = 1 ; i <= 31 ; i++) {
@@ -287,7 +269,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
         // Create an ArrayList for the year
         ArrayList<String> yearList = new ArrayList<>();
-        for (int i = Calendar.getInstance().get(Calendar.YEAR)-100; i <= Calendar.getInstance().get(Calendar.YEAR); i++) {
+        for (int i = Calendar.getInstance().get(Calendar.YEAR); i >= Calendar.getInstance().get(Calendar.YEAR) - 100; i--) {
             yearList.add(String.valueOf(i));
         }
 
@@ -295,6 +277,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, yearList);
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(yearAdapter);
+
+        // Connecting yearAdapter with yearDTRSpinner
+        yearDTRSpinner.setAdapter(yearAdapter);
 
         Button submit = findViewById(R.id.submitEmployee_Button);
 
@@ -309,21 +294,21 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                 // Unhide add employee components
                 idEditText.setVisibility(View.VISIBLE);
-                firstName.setVisibility(View.VISIBLE);
-                lastName.setVisibility(View.VISIBLE);
-                birthday.setVisibility(View.VISIBLE);
+                firstNameEditText.setVisibility(View.VISIBLE);
+                lastNameEditText.setVisibility(View.VISIBLE);
+                birthdayTableLayout.setVisibility(View.VISIBLE);
 
                 // setEnabled to true so they are edittable
                 idEditText.setEnabled(true);
                 firstNameEditText.setEnabled(true);
                 lastNameEditText.setEnabled(true);
-                birthday.setEnabled(true);
+                birthdayTableLayout.setEnabled(true);
 
                 // Reset the component
                 idEditText.setText("");
                 idEditText.setText("");
-                firstName.setText("");
-                lastName.setText("");
+                firstNameEditText.setText("");
+                lastNameEditText.setText("");
 
                 // Unhide submitSchool button
                 submit.setVisibility(View.VISIBLE);
@@ -334,7 +319,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     public void onClick(View view) {
 
                         // Check if one of the TextView are empty
-                        if (idEditText.getText().toString().isEmpty() || firstName.getText().toString().isEmpty() || lastName.getText().toString().isEmpty()){
+                        if (idEditText.getText().toString().isEmpty() || firstNameEditText.getText().toString().isEmpty() || lastNameEditText.getText().toString().isEmpty()){
                             Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
                         }
                         // Check if the length of id number is 12
@@ -343,8 +328,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         }
                         else {
                             // Get String from EditText components
-                            employee.setFirstName(firstName.getText().toString());
-                            employee.setLastName(lastName.getText().toString());
+                            employee.setFirstName(firstNameEditText.getText().toString());
+                            employee.setLastName(lastNameEditText.getText().toString());
                             employee.setId(idEditText.getText().toString());
                             employee.setFullName(employee.getLastName() +", "+ employee.getFirstName());
 
@@ -366,8 +351,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                         create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
                                         create.createRecord(school.getSchoolID() + "/employee/"+ employee.getId()+ "/birthdate", employee.getBirthday());
 
-                                        firstName.setText("");
-                                        lastName.setText("");
+                                        firstNameEditText.setText("");
+                                        lastNameEditText.setText("");
                                         idEditText.setText("");
 
                                         Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
@@ -395,16 +380,16 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                 // Unhide add employee components
                 idEditText.setVisibility(View.VISIBLE);
-                firstName.setVisibility(View.VISIBLE);
-                lastName.setVisibility(View.VISIBLE);
-                birthday.setVisibility(View.VISIBLE);
+                firstNameEditText.setVisibility(View.VISIBLE);
+                lastNameEditText.setVisibility(View.VISIBLE);
+                birthdayTableLayout.setVisibility(View.VISIBLE);
                 idSpinner.setVisibility(View.VISIBLE);
 
                 // setEnabled to true so they are edittable
                 idEditText.setEnabled(true);
                 firstNameEditText.setEnabled(true);
                 lastNameEditText.setEnabled(true);
-                birthday.setEnabled(true);
+                birthdayTableLayout.setEnabled(true);
 
                 // ActionListener for the selected Item in the idSpinner
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -446,8 +431,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                             // Set the values in the EditText
                                             idEditText.setText(id);
                                             idEditText.setEnabled(false);
-                                            lastName.setText(nameArray[0]);
-                                            firstName.setText(nameArray[1]);
+                                            lastNameEditText.setText(nameArray[0]);
+                                            firstNameEditText.setText(nameArray[1]);
                                             //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
                                             monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
                                             daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
@@ -496,7 +481,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         // TODO make idNumber editable
                         //update.updateRecord(school.getSchoolID() + "/employee/", employee.getId() , idEditText.getText().toString());
                         //update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "id" , idEditText.getText().toString());
-                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "fullname" , lastName.getText().toString() + ", " + firstName.getText().toString());
+                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "fullname" , lastNameEditText.getText().toString() + ", " + firstNameEditText.getText().toString());
                         update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId() , "birthdate" , (DateUtils.getMonthName(String.valueOf(monthSpinner.getSelectedItemPosition() + 1))) + "/" + daySpinner.getSelectedItem().toString() + "/" + yearSpinner.getSelectedItem().toString());
 
                         Toast.makeText(getApplicationContext(), "Successfully Edited", Toast.LENGTH_SHORT).show();
@@ -515,16 +500,16 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                 // Unhide add employee components
                 idEditText.setVisibility(View.VISIBLE);
-                firstName.setVisibility(View.VISIBLE);
-                lastName.setVisibility(View.VISIBLE);
-                birthday.setVisibility(View.VISIBLE);
+                firstNameEditText.setVisibility(View.VISIBLE);
+                lastNameEditText.setVisibility(View.VISIBLE);
+                birthdayTableLayout.setVisibility(View.VISIBLE);
                 idSpinner.setVisibility(View.VISIBLE);
 
                 // setEnabled to true so they are edittable
                 idEditText.setEnabled(true);
                 firstNameEditText.setEnabled(true);
                 lastNameEditText.setEnabled(true);
-                birthday.setEnabled(true);
+                birthdayTableLayout.setEnabled(true);
 
                 // ActionListener for the selected Item in the idSpinner
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -566,8 +551,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                             // Set the values in the EditText
                                             idEditText.setText(id);
                                             idEditText.setEnabled(false);
-                                            lastName.setText(nameArray[0]);
-                                            firstName.setText(nameArray[1]);
+                                            lastNameEditText.setText(nameArray[0]);
+                                            firstNameEditText.setText(nameArray[1]);
                                             //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
                                             monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
                                             daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
@@ -622,6 +607,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 return true;
             }
             case R.id.transfer_employee:{
+                prompt.setText("Transfer Employee");
 
                 // Hide components
                 hideAllComponents();
@@ -637,13 +623,13 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 idEditText.setVisibility(View.VISIBLE);
                 firstNameEditText.setVisibility(View.VISIBLE);
                 lastNameEditText.setVisibility(View.VISIBLE);
-                birthday.setVisibility(View.VISIBLE);
+                birthdayTableLayout.setVisibility(View.VISIBLE);
 
                 // SetEnabled to false making them unedittable
                 idEditText.setEnabled(false);
                 firstNameEditText.setEnabled(false);
                 lastNameEditText.setEnabled(false);
-                birthday.setEnabled(false);
+                birthdayTableLayout.setEnabled(false);
 
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -684,8 +670,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                             // Set the values in the EditText
                                             idEditText.setText(id);
                                             idEditText.setEnabled(false);
-                                            lastName.setText(nameArray[0]);
-                                            firstName.setText(nameArray[1]);
+                                            lastNameEditText.setText(nameArray[0]);
+                                            firstNameEditText.setText(nameArray[1]);
                                             //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
                                             monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
                                             daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
@@ -741,8 +727,12 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 });
                 return true;
             }
-            // TODO add case Download All QR
-            case R.id.GenerateAllQR:{
+            case R.id.generateAllQR:{
+                prompt.setText("Generate QRs");
+
+                // Hide all components
+                hideAllComponents();
+
                 read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
@@ -775,10 +765,19 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+                return true;
             }
             // TODO add case Download All DTR
-            case R.id.GenerateAllDTR:{
+            case R.id.generateAllDTR:{
+                prompt.setText("Generate DTRs");
 
+                // Hide all components
+                hideAllComponents();
+
+                // Unhide month and year Component
+                dateDTRTableLayout.setVisibility(View.VISIBLE);
+
+                return true;
             }
             case R.id.settings:{
                 prompt.setText("Settings");
@@ -788,7 +787,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 submit.setVisibility(View.GONE);
 
                 // Unhide features_table layout
-                features.setVisibility(View.VISIBLE);
+                featuresTableLayout.setVisibility(View.VISIBLE);
                 return true;
             }
             default:{
@@ -805,6 +804,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         firstNameEditText = findViewById(R.id.firstName_EditText);
         lastNameEditText = findViewById(R.id.lastName_EditText);
         birthdayTableLayout = findViewById(R.id.birthday_TableLayout);
+        dateDTRTableLayout = findViewById(R.id.dateDTR_TableLayout);
         featuresTableLayout = findViewById(R.id.features_TableLayout);
 
         // Hide all components
@@ -814,6 +814,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         firstNameEditText.setVisibility(View.GONE);
         lastNameEditText.setVisibility(View.GONE);
         birthdayTableLayout.setVisibility(View.GONE);
+        dateDTRTableLayout.setVisibility(View.GONE);
         featuresTableLayout.setVisibility(View.GONE);
     }
 }

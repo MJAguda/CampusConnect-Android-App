@@ -13,10 +13,10 @@
         android:id="@+id/transfer_employee"
         android:title="Transfer Employee"/>
     <item
-        android:id="@+id/GenerateAllQR"
+        android:id="@+id/generateAllQR"
         android:title="Generate QR Codes"/>
     <item
-        android:id="@+id/GenerateAllDTR"
+        android:id="@+id/generateAllDTR"
         android:title="Generate DTRs"/>
     <item
         android:id="@+id/settings"

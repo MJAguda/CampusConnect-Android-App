@@ -237,6 +237,37 @@
                     android:visibility="gone"/>
 
                 <TableLayout
+                    android:id="@+id/dateDTR_TableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_margin="20px">
+
+                        <Spinner
+                            android:id="@+id/monthDTR_Spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.5"
+                            android:layout_height="30sp"/>
+
+                        <View
+                            android:id="@+id/divider3"
+                            android:layout_width="2dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/listDivider" />
+
+                        <Spinner
+                            android:id="@+id/yearDTR_Spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.5"
+                            android:layout_height="30sp" />
+                    </TableRow>
+                </TableLayout>
+
+                <TableLayout
                     android:id="@+id/features_TableLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
