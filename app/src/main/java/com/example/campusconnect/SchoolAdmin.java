@@ -59,6 +59,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     TableLayout birthdayTableLayout;
     TableLayout dateDTRTableLayout;
     TableLayout featuresTableLayout;
+    ImageView qrCodeImageView;
+    LinearLayout dtrLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,7 +170,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     public boolean onMenuItemClick(MenuItem menuItem) {
 
         TextView prompt = findViewById(R.id.prompt);
-
 
         Spinner monthSpinner = findViewById(R.id.month_Spinner);
         Spinner daySpinner = findViewById(R.id.day_Spinner);
@@ -733,6 +734,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 // Hide all components
                 hideAllComponents();
 
+                // Unhide QRImageView
+                qrCodeImageView.setVisibility(View.VISIBLE);
+
                 read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
@@ -774,8 +778,27 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 // Hide all components
                 hideAllComponents();
 
-                // Unhide month and year Component
+                // Unhide needed Component
                 dateDTRTableLayout.setVisibility(View.VISIBLE);
+                dtrLinearLayout.setVisibility(View.VISIBLE);
+
+                read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                            // TODO Generate DTR
+                            // TODO Download DTR
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        Log.d("Read", "Error: " + databaseError.getMessage());
+                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
                 return true;
             }
@@ -805,6 +828,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         lastNameEditText = findViewById(R.id.lastName_EditText);
         birthdayTableLayout = findViewById(R.id.birthday_TableLayout);
         dateDTRTableLayout = findViewById(R.id.dateDTR_TableLayout);
+        qrCodeImageView = findViewById(R.id.qrCode_ImageView);
+        dtrLinearLayout = findViewById(R.id.dtr_LinearLayout);
         featuresTableLayout = findViewById(R.id.features_TableLayout);
 
         // Hide all components
@@ -815,6 +840,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         lastNameEditText.setVisibility(View.GONE);
         birthdayTableLayout.setVisibility(View.GONE);
         dateDTRTableLayout.setVisibility(View.GONE);
+        qrCodeImageView.setVisibility(View.GONE);
+        dtrLinearLayout.setVisibility(View.GONE);
         featuresTableLayout.setVisibility(View.GONE);
     }
 }
