@@ -90,7 +90,7 @@ public class GenerateDTR extends AppCompatActivity {
 
         // Create an ArrayList for the year
         ArrayList<String> yearList = new ArrayList<>();
-        for (int i = Calendar.getInstance().get(Calendar.YEAR)-5; i <= Calendar.getInstance().get(Calendar.YEAR) + 10; i++) {
+        for (int i = Calendar.getInstance().get(Calendar.YEAR); i >= Calendar.getInstance().get(Calendar.YEAR) - 100; i--) {
             yearList.add(String.valueOf(i));
         }
 
@@ -103,6 +103,7 @@ public class GenerateDTR extends AppCompatActivity {
         TextView name = findViewById(R.id.name_TextView);
         TextView date = findViewById(R.id.monthyear_TextView);
         TextView schoolHead = findViewById(R.id.schoolHead_TextView);
+        TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,113 +124,17 @@ public class GenerateDTR extends AppCompatActivity {
                 save.setMonth(month);
                 save.setYear(year);
 
-                int day = DateUtils.getNumberOfDays(save.getMonth(), save.getYear());
+                //int day = DateUtils.getNumberOfDays(save.getMonth(), save.getYear());
+                int day = DateUtils.getNumberOfDays(month, year);
 
-                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
-                    @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        name.setText(dataSnapshot.child("fullname").getValue().toString());
-                        date.setText(month + " " + year);
-
-                        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth(), new Read.OnGetDataListener() {
-                            @Override
-                            public void onSuccess(DataSnapshot dataSnapshot) {
-
-                                TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
-                                table.removeAllViews();
-
-                                for(int i = 1 ; i <= day ; i++){
-
-                                    DataSnapshot child = dataSnapshot.child(String.valueOf(i));
-
-                                    // Instance of the row
-                                    TableRow row = new TableRow(GenerateDTR.this);
-
-                                    // Add day to the row
-                                    TextView day = new TextView(GenerateDTR.this);
-                                    day.setText(String.format("%02d", Integer.parseInt(child.getKey())));
-                                    day.setTextColor(Color.BLACK);
-                                    day.setTextSize(7);
-                                    day.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                    day.setPadding(0,10,0,10);
-                                    TableRow.LayoutParams params = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 0.2f);
-                                    day.setLayoutParams(params);
-                                    day.setBackground(ContextCompat.getDrawable(GenerateDTR.this, R.drawable.table_border));
-
-                                    row.addView(day);
-                                    // Add time TextView to the row
-                                    for(DataSnapshot grandChild : child.getChildren()){
-                                        Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
-
-                                        // Add time to the row
-                                        TextView time = new TextView(GenerateDTR.this);
-
-                                        time.setText(grandChild.getValue().toString());
-                                        time.setTextSize(7);
-                                        time.setTextColor(Color.BLACK);
-                                        time.setLayoutParams(params);
-                                        time.setGravity(Gravity.CENTER);
-                                        time.setPadding(0,10,0,10);
-                                        time.setBackground(ContextCompat.getDrawable(GenerateDTR.this, R.drawable.table_border));
-
-                                        row.addView(time);
-                                    }
-
-                                    for(int j = 1 ; j <= 2 ; j++){
-                                        TextView blank = new TextView(GenerateDTR.this);
-
-                                        blank.setText(" ");
-                                        blank.setTextSize(7);
-                                        blank.setTextColor(Color.BLACK);
-                                        blank.setLayoutParams(params);
-                                        blank.setGravity(Gravity.CENTER);
-                                        blank.setPadding(0,10,0,10);
-                                        blank.setBackground(ContextCompat.getDrawable(GenerateDTR.this, R.drawable.table_border));
-
-                                        row.addView(blank);
-                                    }
-                                    table.addView(row);
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(DatabaseError databaseError) {
-                                Log.d("Read", "Error: " + databaseError.getMessage());
-                                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-
-                        // Set School head
-                        read.readRecord(school.getSchoolID() + "/", new Read.OnGetDataListener() {
-                            @Override
-                            public void onSuccess(DataSnapshot dataSnapshot) {
-                                schoolHead.setText(dataSnapshot.child("schoolHead").getValue().toString());
-                            }
-
-                            @Override
-                            public void onFailure(DatabaseError databaseError) {
-                                Log.d("Read", "Error: " + databaseError.getMessage());
-                                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onFailure(DatabaseError databaseError) {
-                        Log.d("Read", "Error: " + databaseError.getMessage());
-                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                DTR.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, GenerateDTR.this);
             }
         });
 
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DownloadDTR.downloadDTR(findViewById(R.id.dtr_LinearLayout), GenerateDTR.this);
+                DTR.downloadDTR(findViewById(R.id.dtr_LinearLayout), GenerateDTR.this);
             }
         });
     }
