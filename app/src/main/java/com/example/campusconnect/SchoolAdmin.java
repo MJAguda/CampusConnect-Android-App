@@ -1,17 +1,17 @@
 package com.example.campusconnect;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,6 +38,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -56,8 +57,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     EditText idEditText;
     EditText firstNameEditText;
     EditText lastNameEditText;
-    TableLayout birthdayTableLayout;
-    TableLayout dateDTRTableLayout;
+    Spinner monthSpinner;
+    Spinner daySpinner;
+    Spinner yearSpinner;
     TableLayout featuresTableLayout;
     ImageView qrCodeImageView;
     LinearLayout dtrLinearLayout;
@@ -66,6 +68,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_admin);
+
+        hideAllComponents();
 
         DateUtils dateUtils = new DateUtils(SchoolAdmin.this);
 
@@ -170,16 +174,13 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     public boolean onMenuItemClick(MenuItem menuItem) {
 
         TextView prompt = findViewById(R.id.prompt);
-
-        Spinner monthSpinner = findViewById(R.id.month_Spinner);
-        Spinner daySpinner = findViewById(R.id.day_Spinner);
-        Spinner yearSpinner = findViewById(R.id.year_Spinner);
+        monthSpinner = findViewById(R.id.month_Spinner);
+        daySpinner = findViewById(R.id.day_Spinner);
+        yearSpinner = findViewById(R.id.year_Spinner);
         TextView sourceTextView = findViewById(R.id.source_TextView);
         //Spinner sourceSpinner = findViewById(R.id.source_Spinner);
         Spinner destinationSpinner = findViewById(R.id.destination_Spinner);
         Spinner idSpinner = findViewById(R.id.id_Spinner);
-        Spinner monthDTRSpinner = findViewById(R.id.monthDTR_Spinner);
-        Spinner yearDTRSpinner = findViewById(R.id.yearDTR_Spinner);
 
         // Create an ArrayList for the source schoolID
         //ArrayList<String> sourceList = new ArrayList<>();
@@ -254,9 +255,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monthSpinner.setAdapter(monthAdapter);
 
-        // Connecting monthAdapter with monthDTRSpinner
-        monthDTRSpinner.setAdapter(monthAdapter);
-
         // Create an ArrayList for the day
         ArrayList<String> dayList = new ArrayList<>();
         for (int i = 1 ; i <= 31 ; i++) {
@@ -279,9 +277,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(yearAdapter);
 
-        // Connecting yearAdapter with yearDTRSpinner
-        yearDTRSpinner.setAdapter(yearAdapter);
-
         Button submit = findViewById(R.id.submitEmployee_Button);
 
         DateUtils dateUtils = new DateUtils(SchoolAdmin.this);
@@ -297,13 +292,17 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 idEditText.setVisibility(View.VISIBLE);
                 firstNameEditText.setVisibility(View.VISIBLE);
                 lastNameEditText.setVisibility(View.VISIBLE);
-                birthdayTableLayout.setVisibility(View.VISIBLE);
+                monthSpinner.setVisibility(View.VISIBLE);
+                daySpinner.setVisibility(View.VISIBLE);
+                yearSpinner.setVisibility(View.VISIBLE);
 
                 // setEnabled to true so they are edittable
                 idEditText.setEnabled(true);
                 firstNameEditText.setEnabled(true);
                 lastNameEditText.setEnabled(true);
-                birthdayTableLayout.setEnabled(true);
+                monthSpinner.setEnabled(true);
+                daySpinner.setEnabled(true);
+                yearSpinner.setEnabled(true);
 
                 // Reset the component
                 idEditText.setText("");
@@ -383,14 +382,18 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 idEditText.setVisibility(View.VISIBLE);
                 firstNameEditText.setVisibility(View.VISIBLE);
                 lastNameEditText.setVisibility(View.VISIBLE);
-                birthdayTableLayout.setVisibility(View.VISIBLE);
+                monthSpinner.setVisibility(View.VISIBLE);
+                daySpinner.setVisibility(View.VISIBLE);
+                yearSpinner.setVisibility(View.VISIBLE);
                 idSpinner.setVisibility(View.VISIBLE);
 
                 // setEnabled to true so they are edittable
                 idEditText.setEnabled(true);
                 firstNameEditText.setEnabled(true);
                 lastNameEditText.setEnabled(true);
-                birthdayTableLayout.setEnabled(true);
+                monthSpinner.setEnabled(true);
+                daySpinner.setEnabled(true);
+                yearSpinner.setEnabled(true);
 
                 // ActionListener for the selected Item in the idSpinner
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -503,14 +506,18 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 idEditText.setVisibility(View.VISIBLE);
                 firstNameEditText.setVisibility(View.VISIBLE);
                 lastNameEditText.setVisibility(View.VISIBLE);
-                birthdayTableLayout.setVisibility(View.VISIBLE);
+                monthSpinner.setVisibility(View.VISIBLE);
+                daySpinner.setVisibility(View.VISIBLE);
+                yearSpinner.setVisibility(View.VISIBLE);
                 idSpinner.setVisibility(View.VISIBLE);
 
                 // setEnabled to true so they are edittable
                 idEditText.setEnabled(true);
                 firstNameEditText.setEnabled(true);
                 lastNameEditText.setEnabled(true);
-                birthdayTableLayout.setEnabled(true);
+                monthSpinner.setEnabled(true);
+                daySpinner.setEnabled(true);
+                yearSpinner.setEnabled(true);
 
                 // ActionListener for the selected Item in the idSpinner
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -624,13 +631,17 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 idEditText.setVisibility(View.VISIBLE);
                 firstNameEditText.setVisibility(View.VISIBLE);
                 lastNameEditText.setVisibility(View.VISIBLE);
-                birthdayTableLayout.setVisibility(View.VISIBLE);
+                monthSpinner.setVisibility(View.VISIBLE);
+                daySpinner.setVisibility(View.VISIBLE);
+                yearSpinner.setVisibility(View.VISIBLE);
 
                 // SetEnabled to false making them unedittable
                 idEditText.setEnabled(false);
                 firstNameEditText.setEnabled(false);
                 lastNameEditText.setEnabled(false);
-                birthdayTableLayout.setEnabled(false);
+                monthSpinner.setEnabled(false);
+                daySpinner.setEnabled(false);
+                yearSpinner.setEnabled(false);
 
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -710,6 +721,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     }
                 });
 
+                submit.setText("Download All QRs");
+
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -779,26 +792,64 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 hideAllComponents();
 
                 // Unhide needed Component
-                dateDTRTableLayout.setVisibility(View.VISIBLE);
+                monthSpinner.setVisibility(View.VISIBLE);
+                yearSpinner.setVisibility(View.VISIBLE);
                 dtrLinearLayout.setVisibility(View.VISIBLE);
 
-                read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+                // Declare components
+                TextView name = findViewById(R.id.name_TextView);
+                TextView date = findViewById(R.id.monthyear_TextView);
+                TextView schoolHead = findViewById(R.id.schoolHead_TextView);
+                TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
+
+                submit.setText("Download All DTRs");
+
+                submit.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    public void onClick(View view) {
+                        String month = monthSpinner.getSelectedItem().toString();
+                        String year = yearSpinner.getSelectedItem().toString();
+                        int day = DateUtils.getNumberOfDays(month, year);
 
-                            // TODO Generate DTR
-                            // TODO Download DTR
+                        save.setMonth(month);
+                        save.setYear(year);
 
+                        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+                            @Override
+                            public void onSuccess(DataSnapshot dataSnapshot) {
+                                processChildData(dataSnapshot.getChildren().iterator(), month, day, year);
+                            }
+
+                            @Override
+                            public void onFailure(DatabaseError databaseError) {
+                                Log.d("Read", "Error: " + databaseError.getMessage());
+                                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    private void processChildData(Iterator<DataSnapshot> iterator, String month, int day, String year) {
+                        if (iterator.hasNext()) {
+                            DataSnapshot child = iterator.next();
+                            employee.setId((String) child.child("id").getValue());
+                            Log.d("ID:", employee.getId());
+
+                            DTR.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, SchoolAdmin.this, new DTR.GenerateDTRCallback() {
+                                @Override
+                                public void onGenerateDTRFinished() {
+                                    DTR.downloadDTR(findViewById(R.id.dtr_LinearLayout), SchoolAdmin.this);
+                                    processChildData(iterator, month, day, year); // Recursive call to process the next child
+                                }
+                            });
+
+
+                        } else {
+                            // All children have been processed
+                            Log.d("Status:", "All DTR generated");
                         }
                     }
-
-                    @Override
-                    public void onFailure(DatabaseError databaseError) {
-                        Log.d("Read", "Error: " + databaseError.getMessage());
-                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
                 });
+
 
                 return true;
             }
@@ -826,8 +877,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         idEditText = findViewById(R.id.id_EditText);
         firstNameEditText = findViewById(R.id.firstName_EditText);
         lastNameEditText = findViewById(R.id.lastName_EditText);
-        birthdayTableLayout = findViewById(R.id.birthday_TableLayout);
-        dateDTRTableLayout = findViewById(R.id.dateDTR_TableLayout);
+        monthSpinner = findViewById(R.id.month_Spinner);
+        daySpinner = findViewById(R.id.day_Spinner);
+        yearSpinner = findViewById(R.id.year_Spinner);
         qrCodeImageView = findViewById(R.id.qrCode_ImageView);
         dtrLinearLayout = findViewById(R.id.dtr_LinearLayout);
         featuresTableLayout = findViewById(R.id.features_TableLayout);
@@ -838,8 +890,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         idEditText.setVisibility(View.GONE);
         firstNameEditText.setVisibility(View.GONE);
         lastNameEditText.setVisibility(View.GONE);
-        birthdayTableLayout.setVisibility(View.GONE);
-        dateDTRTableLayout.setVisibility(View.GONE);
+        monthSpinner.setVisibility(View.GONE);
+        daySpinner.setVisibility(View.GONE);
+        yearSpinner.setVisibility(View.GONE);
         qrCodeImageView.setVisibility(View.GONE);
         dtrLinearLayout.setVisibility(View.GONE);
         featuresTableLayout.setVisibility(View.GONE);
