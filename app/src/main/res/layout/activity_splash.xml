@@ -56,7 +56,7 @@
             android:id="@+id/announcement_TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="#F08A5D"
             android:fontFamily="sans-serif-smallcaps"
             android:text="Announcement!"
             android:textAlignment="center"
