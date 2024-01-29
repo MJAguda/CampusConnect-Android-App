@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashActivity"
+    tools:context="com.ams.campusconnect.SplashActivity"
     android:orientation="vertical"
     android:background="#F9ED69">
 
@@ -42,11 +42,11 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/schoolName_TextView"
+            android:id="@+id/version_TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-smallcaps"
-            android:text="Version : 11.1"
+            android:text="Version : 1.0.0"
             android:textAlignment="center"
             android:textColor="#6A2C70"
             android:textSize="20sp"
@@ -76,11 +76,11 @@
         android:gravity="bottom">
 
         <TextView
-            android:id="@+id/schoolName_TextView"
+            android:id="@+id/footer_TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="Product of the talented\nminds of TVL-CSS/CPJ 12 Batch 2021-2022.\nMade in Flora National High School"
+            android:text="Copyright © 2024 All rights reserved.\nMark Jayson Molina Aguda. "
             android:textAlignment="center"
             android:textColor="#F9ED69"
             android:textSize="20sp"

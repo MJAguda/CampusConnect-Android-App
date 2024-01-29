@@ -20,27 +20,27 @@
         android:theme="@style/Theme.CampusConnect"
         tools:targetApi="31">
         <activity
-            android:name=".SchoolLogIn"
+            android:name="com.ams.campusconnect.SchoolLogIn"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".SystemAdmin"
+            android:name="com.ams.campusconnect.SystemAdmin"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".SchoolAdmin"
+            android:name="com.ams.campusconnect.SchoolAdmin"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".GenerateTAMS"
+            android:name="com.ams.campusconnect.GenerateTAMS"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ScanQR"
+            android:name="com.ams.campusconnect.ScanQR"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".SplashActivity"
+            android:name="com.ams.campusconnect.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -50,11 +50,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Generate"
+            android:name="com.ams.campusconnect.Generate"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".GenerateDTR"
+            android:name="com.ams.campusconnect.GenerateDTR"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
@@ -62,7 +62,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".LogInAttendance"
+            android:name="com.ams.campusconnect.LogInAttendance"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
@@ -70,7 +70,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Attendance"
+            android:name="com.ams.campusconnect.Attendance"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
@@ -78,7 +78,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".AdminLogIn"
+            android:name="com.ams.campusconnect.AdminLogIn"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
@@ -86,7 +86,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.ams.campusconnect.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data

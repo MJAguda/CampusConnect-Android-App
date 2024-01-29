@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/layoutbackground"
-    tools:context=".SchoolAdmin"
+    tools:context="com.ams.campusconnect.SchoolAdmin"
     android:orientation="vertical">
 
     <!--Header-->

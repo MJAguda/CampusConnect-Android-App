@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/layoutbackground"
-    tools:context=".SystemAdmin"
+    tools:context="com.ams.campusconnect.SystemAdmin"
     android:orientation="vertical">
 
     <!--Header-->
@@ -260,29 +260,29 @@
                     </TableRow>
                 </TableLayout>
 
-                <TableLayout
-                    android:id="@+id/gpsFeature_TableLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+<!--                <TableLayout-->
+<!--                    android:id="@+id/gpsFeature_TableLayout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+<!--                    <TableRow-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content">-->
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.75"
-                            android:text="GPS Feature"
-                            android:textSize="20sp"/>
+<!--                        <TextView-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="0.75"-->
+<!--                            android:text="GPS Feature"-->
+<!--                            android:textSize="20sp"/>-->
 
-                        <Switch
-                            android:id="@+id/gpsFeature_Switch"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.25"/>
+<!--                        <Switch-->
+<!--                            android:id="@+id/gpsFeature_Switch"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="0.25"/>-->
 
-                    </TableRow>
-                </TableLayout>
+<!--                    </TableRow>-->
+<!--                </TableLayout>-->
 
             </LinearLayout>
 
