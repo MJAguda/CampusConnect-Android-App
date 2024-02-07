@@ -21,13 +21,13 @@
         android:padding="50px">
 
         <ImageView
-            android:id="@+id/bodyLogo_ImageView"
+            android:id="@+id/appLogo_ImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/campus_connect_logo" />
 
         <TextView
-            android:id="@+id/schoolName_TextView"
+            android:id="@+id/appName_TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-smallcaps"

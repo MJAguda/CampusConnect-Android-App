@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace 'com.ams.campusconnect'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.ams.campusconnect"
         minSdk 19
-        targetSdk 32
-        versionCode 11
-        versionName "11.1"
+        targetSdk 33
+        versionCode 1
+        versionName "1.0.0"
 
         multiDexEnabled true
 

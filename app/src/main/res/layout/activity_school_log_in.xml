@@ -35,18 +35,17 @@
 
         </FrameLayout>
 
-
-
         <TextView
             android:id="@+id/headerText_TextView"
-            android:layout_width="10dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="0.75"
             android:gravity="center"
             android:text="Attendance Monitoring App"
             android:textColor="#F9ED69"
-            android:textSize="20sp" />
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"/>
 
     </LinearLayout>
 
