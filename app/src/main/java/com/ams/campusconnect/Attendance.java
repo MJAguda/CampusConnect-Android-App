@@ -54,7 +54,6 @@ public class Attendance extends AppCompatActivity {
         Intent intent = new Intent(Attendance.this, ScanQR.class);
         startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
 
-
         // TODO: Set Employee model
 
 
