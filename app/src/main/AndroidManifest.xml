@@ -36,7 +36,7 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.ams.campusconnect.ScanQR"
+            android:name="com.ams.campusconnect.qrcode.ScanQR"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

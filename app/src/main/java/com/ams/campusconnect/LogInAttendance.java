@@ -1,7 +1,11 @@
 package com.ams.campusconnect;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,16 +13,28 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ams.campusconnect.R;
+import com.ams.campusconnect.firebase.Create;
+import com.ams.campusconnect.firebase.Read;
+import com.ams.campusconnect.gps.GPSCoordinates;
+import com.ams.campusconnect.model.Employee;
+import com.ams.campusconnect.model.SaveData;
+import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.qrcode.ScanQR;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+
+import java.util.concurrent.Executor;
+
+import com.ams.campusconnect.biometric.BiometricManagerWrapper;
 
 public class LogInAttendance extends AppCompatActivity {
 
@@ -31,9 +47,14 @@ public class LogInAttendance extends AppCompatActivity {
     EditText idNumber;
     Button submit;
 
-    // Instance of scanFingerPrint
+
     private static final String TAG = LogInAttendance.class.getSimpleName();
-    private ScanFingerPrint scanFingerPrint;
+
+    // Instance of scanFingerPrint
+    private ImageButton scanBiometric;
+
+    private BiometricManagerWrapper biometricManagerWrapper;
+    private TextView txinfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +64,20 @@ public class LogInAttendance extends AppCompatActivity {
         // Instantiate DateUtils
         DateUtils dateUtils = new DateUtils(LogInAttendance.this);
 
+        // biometricManagerWrapper
+        biometricManagerWrapper = new BiometricManagerWrapper(this);
+
         // Declare Components
         idNumber = findViewById(R.id.id_EditText);
         ImageButton scanQR = findViewById(R.id.scanQR_ImageButton);
-        ImageButton scanFinger = findViewById(R.id.scanFingerPrint_ImageButton);
-        ImageButton scanFacial = findViewById(R.id.scanFacial_ImageButton);
+        scanBiometric = findViewById(R.id.scanFingerPrint_ImageButton);
         Button submit = findViewById(R.id.submit_Button);
         ImageButton back = findViewById(R.id.backButton_ImageButton);
 
         // Hide all components
         idNumber.setVisibility(school.isIdNumberFeature() ? View.VISIBLE : View.GONE);
         scanQR.setVisibility(school.isQrScannerFeature() ? View.VISIBLE : View.GONE);
-        scanFinger.setVisibility(school.isFingerPrintScannerFeature() ? View.VISIBLE : View.GONE);
-        scanFacial.setVisibility(school.isFacialRecognitionFeature() ? View.VISIBLE : View.GONE);
+        scanBiometric.setVisibility(school.isFingerPrintScannerFeature() ? View.VISIBLE : View.GONE);
 
         submit.setVisibility(school.isIdNumberFeature() ? View.VISIBLE : View.GONE);
 
@@ -66,6 +88,31 @@ public class LogInAttendance extends AppCompatActivity {
         // Declare thankyou sound
         final MediaPlayer thankyou = MediaPlayer.create(this, R.raw.thankyou);
         final MediaPlayer alreadyhave = MediaPlayer.create(this, R.raw.alreadyhave);
+
+        // Checkbiometric Feature
+        checkBiometricSupported();
+
+        Executor executor = ContextCompat.getMainExecutor(this);
+        BiometricPrompt biometricPrompt = new BiometricPrompt(LogInAttendance.this,
+                executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(LogInAttendance.this, "Auth error: " + errString, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(LogInAttendance.this, "Auth succeeded", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(LogInAttendance.this, "Auth failed", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
             @Override
@@ -88,19 +135,7 @@ public class LogInAttendance extends AppCompatActivity {
                     }
                 });
 
-                scanFinger.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                scanFacial.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                scanBiometric.setOnClickListener(this::onBiometricButtonClick);
 
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -281,12 +316,13 @@ public class LogInAttendance extends AppCompatActivity {
                                 // handle error here
                             }
                         });
-
-                        // TODO Log in using Facial Recognition
-                        // TODO Log in using Biometric
-
                     }
                 });
+            }
+
+            // TODO: add submit if Auth Succeed
+            private void onBiometricButtonClick(View view) {
+                biometricManagerWrapper.authenticate(false);
             }
         });
     }
@@ -312,6 +348,29 @@ public class LogInAttendance extends AppCompatActivity {
             // Perform click
             submit.performClick();
         }
+    }
+
+
+
+    // Check the state of biometric feature
+    private void checkBiometricSupported() {
+        String info = biometricManagerWrapper.checkBiometricSupported();
+        txinfo = findViewById(R.id.tx_info);
+        txinfo.setText(info);
+    }
+
+    public void enableButton(boolean enable){
+        scanBiometric.setEnabled(enable);
+    }
+
+    public void enableButton(boolean enable, boolean enroll){
+        enableButton(enable);
+        if(!enroll) return;
+        Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
+        enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                BiometricManager.Authenticators.BIOMETRIC_STRONG
+                        | BiometricManager.Authenticators.BIOMETRIC_WEAK);
+        startActivity(enrollIntent);
     }
 }
 

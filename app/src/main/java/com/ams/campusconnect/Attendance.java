@@ -19,7 +19,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.ams.campusconnect.R;
+import com.ams.campusconnect.firebase.Create;
+import com.ams.campusconnect.firebase.Read;
+import com.ams.campusconnect.gps.GPSCoordinates;
+import com.ams.campusconnect.model.Employee;
+import com.ams.campusconnect.model.SaveData;
+import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.qrcode.ScanQR;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -35,12 +41,22 @@ public class Attendance extends AppCompatActivity {
     Create create = new Create();
     Read read = new Read();
 
+    private static final int REQUEST_CODE_SCAN_QR = 1;
+
     Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
+
+        // TODO: Scan QR
+        Intent intent = new Intent(Attendance.this, ScanQR.class);
+        startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
+
+
+        // TODO: Set Employee model
+
 
         DateUtils dateUtils = new DateUtils(Attendance.this);
 
@@ -313,4 +329,6 @@ public class Attendance extends AppCompatActivity {
         super.onDestroy();
         timer.cancel();
     }
+
 }
+

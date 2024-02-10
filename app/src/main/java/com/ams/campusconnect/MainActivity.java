@@ -15,7 +15,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ams.campusconnect.R;
+import com.ams.campusconnect.firebase.Read;
+import com.ams.campusconnect.model.SaveData;
+import com.ams.campusconnect.model.School;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 

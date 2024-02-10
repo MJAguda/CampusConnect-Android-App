@@ -10,7 +10,7 @@ database, and then uses the setValue() method to update the data at that key in 
 of the database.
  */
 
-package com.ams.campusconnect;
+package com.ams.campusconnect.firebase;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

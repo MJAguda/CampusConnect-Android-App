@@ -1,4 +1,4 @@
-package com.ams.campusconnect;
+package com.ams.campusconnect.gps;
 
 import android.Manifest;
 import android.app.Activity;
@@ -16,6 +16,8 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.ams.campusconnect.firebase.FirebaseUtils;
 
 public class GPSCoordinates {
     // TODO Implement server-side verification

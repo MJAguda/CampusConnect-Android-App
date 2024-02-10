@@ -23,7 +23,16 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ams.campusconnect.R;
+import com.ams.campusconnect.firebase.Create;
+import com.ams.campusconnect.firebase.Delete;
+import com.ams.campusconnect.firebase.Read;
+import com.ams.campusconnect.firebase.Transfer;
+import com.ams.campusconnect.firebase.Update;
+import com.ams.campusconnect.model.Employee;
+import com.ams.campusconnect.model.SaveData;
+import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.qrcode.DownloadQR;
+import com.ams.campusconnect.qrcode.GenerateQR;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

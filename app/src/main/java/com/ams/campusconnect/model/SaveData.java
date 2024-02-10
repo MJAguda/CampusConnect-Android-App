@@ -1,4 +1,4 @@
-package com.ams.campusconnect;
+package com.ams.campusconnect.model;
 
 public class SaveData {
 

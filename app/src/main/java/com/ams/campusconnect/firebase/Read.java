@@ -10,7 +10,7 @@ is called and the data is passed as a DataSnapshot object to the onSuccess() met
 If there is an error, the onCancelled()S method of the listener is called and the error is passed as a
 DatabaseError object to the onFailure() method of the listener interface.
  */
-package com.ams.campusconnect;
+package com.ams.campusconnect.firebase;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

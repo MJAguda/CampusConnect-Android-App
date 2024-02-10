@@ -1,9 +1,10 @@
-package com.ams.campusconnect;
+package com.ams.campusconnect.firebase;
 
 // Import the required Firebase database package
 import android.content.Context;
 import android.widget.Toast;
 
+import com.ams.campusconnect.model.School;
 import com.google.firebase.database.*;
 
 public class Transfer {

@@ -7,7 +7,7 @@ data to be inserted.
 The createRecord() method then uses the push() method to generate a unique key for the new data and the
 setValue() method to insert the data at that key in the specified node of the database.
  */
-package com.ams.campusconnect;
+package com.ams.campusconnect.firebase;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

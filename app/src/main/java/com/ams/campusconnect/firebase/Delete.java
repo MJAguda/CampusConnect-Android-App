@@ -8,7 +8,7 @@ The deleteRecord() method uses the child() method to navigate to the specified n
 database, and then uses the removeValue() method to delete the record at that key in the specified
 node of the database.
  */
-package com.ams.campusconnect;
+package com.ams.campusconnect.firebase;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

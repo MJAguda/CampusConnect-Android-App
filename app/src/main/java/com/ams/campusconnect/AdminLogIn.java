@@ -10,7 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.ams.campusconnect.R;
+import com.ams.campusconnect.model.SaveData;
+import com.ams.campusconnect.model.School;
 
 public class AdminLogIn extends AppCompatActivity {
 

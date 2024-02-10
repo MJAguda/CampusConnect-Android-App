@@ -1,4 +1,4 @@
-package com.ams.campusconnect;
+package com.ams.campusconnect.qrcode;
 
 import android.Manifest;
 import android.app.Activity;
@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.ams.campusconnect.model.Employee;
+import com.ams.campusconnect.model.School;
 
 import java.io.File;
 import java.io.FileOutputStream;

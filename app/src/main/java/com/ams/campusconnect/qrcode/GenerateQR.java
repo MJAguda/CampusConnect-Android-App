@@ -1,4 +1,4 @@
-package com.ams.campusconnect;
+package com.ams.campusconnect.qrcode;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

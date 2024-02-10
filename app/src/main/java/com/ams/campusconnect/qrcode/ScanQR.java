@@ -1,4 +1,4 @@
-package com.ams.campusconnect;
+package com.ams.campusconnect.qrcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -135,13 +135,21 @@ public class ScanQR extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        id = findViewById(R.id.id_EditText);
+        idNumber = findViewById(R.id.id_EditText);
+        submit = findViewById(R.id.submit_Button);
 
         if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
             String qrResult = data.getStringExtra("QR_RESULT");
             // Handle the QR code result here
-            Toast.makeText(this, "QR code result: " + qrResult, Toast.LENGTH_SHORT).show();
-            id.setText(qrResult);
+
+            // Print Toast message
+            Toast.makeText(this, ""+ qrResult, Toast.LENGTH_SHORT).show();
+
+            // set the idNumber_TextView
+            idNumber.setText(qrResult);
+
+            // Perform click
+            submit.performClick();
         }
     }
  */

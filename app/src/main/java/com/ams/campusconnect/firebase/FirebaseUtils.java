@@ -1,7 +1,8 @@
-package com.ams.campusconnect;
+package com.ams.campusconnect.firebase;
 
 import android.location.Location;
 
+import com.ams.campusconnect.model.School;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
