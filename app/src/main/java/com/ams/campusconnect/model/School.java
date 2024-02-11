@@ -1,10 +1,33 @@
 package com.ams.campusconnect.model;
 
+import android.util.Log;
+
 public class School {
 
     private static School instance; // Lazy Singleton
 
     private School(){}
+
+    public School(int schoolID, String schoolName, String schoolHead, String adminUsername, String adminPassword, boolean idNumberFeature, boolean gpsFeature, boolean timeBasedFeature, boolean qrScannerFeature, boolean fingerPrintScannerFeature, boolean facialRecognitionFeature, String latitudeBottom, String latitudeTop, String longitudeLeft, String longitudeRight, String latitudeCenter, String longitudeCenter) {
+        this.schoolID = schoolID;
+        this.schoolName = schoolName;
+        this.schoolHead = schoolHead;
+        this.adminUsername = adminUsername;
+        this.adminPassword = adminPassword;
+        this.idNumberFeature = idNumberFeature;
+        this.gpsFeature = gpsFeature;
+        this.timeBasedFeature = timeBasedFeature;
+        this.qrScannerFeature = qrScannerFeature;
+        this.fingerPrintScannerFeature = fingerPrintScannerFeature;
+        this.facialRecognitionFeature = facialRecognitionFeature;
+        this.latitudeBottom = latitudeBottom;
+        this.latitudeTop = latitudeTop;
+        this.longitudeLeft = longitudeLeft;
+        this.longitudeRight = longitudeRight;
+        this.latitudeCenter = latitudeCenter;
+        this.longitudeCenter = longitudeCenter;
+    }
+
 
     public static School getInstance(){
         if(instance == null){
