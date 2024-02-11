@@ -1,9 +1,7 @@
 package com.ams.campusconnect;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,7 +13,11 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.ams.campusconnect.firebase.Read;
+import com.ams.campusconnect.gps.GPSCoordinates;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
 import com.google.firebase.database.DataSnapshot;
@@ -34,13 +36,16 @@ public class MainActivity extends AppCompatActivity {
     Read read = new Read();
     Timer timer;
 
+    TableLayout table;
+    DateUtils dateUtils;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // Instantiate DateUtils
-        DateUtils dateUtils = new DateUtils(MainActivity.this);
+        dateUtils = new DateUtils(MainActivity.this);
 
         // Declare components
         ImageButton back = findViewById(R.id.backButton_ImageButton);
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView dateTimeTextView = findViewById(R.id.dateAndTime_TextView);
         TableLayout previewHeader = findViewById(R.id.previewHeaderdailyLog_TableLayout);
-        TableLayout table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
+        table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
 
         dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
             @Override
@@ -70,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         runOnUiThread(new Runnable() {
+
                             @Override
                             public void run() {
                                 dateTimeTextView.setText(month + "/" + day + "/" + year + " " + currentTimeIn12Hours);
@@ -82,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
                 //Set school Name
                 schoolName.setText(school.getSchoolName());
+
+                // Request GPS
+                GPSCoordinates gpsCoordinates = new GPSCoordinates(MainActivity.this);
+                Location currentLocation = gpsCoordinates.getCurrentLocation();
 
                 read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                     @Override
@@ -169,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 attendance.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         Intent intent = new Intent(MainActivity.this, Attendance.class);
                         startActivity(intent);
                     }
@@ -190,7 +201,5 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-
-
     }
 }
