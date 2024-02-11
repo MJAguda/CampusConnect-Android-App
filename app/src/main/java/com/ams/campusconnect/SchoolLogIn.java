@@ -45,56 +45,95 @@ public class SchoolLogIn extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Check if school edittext is not empty
-                if(schoolID.getText().toString().isEmpty()){
+                if (schoolID.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Fill all Fields", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     // Store edittext to schoolID in the School class
                     school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
 
-                    read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
-                        @Override
-                        public void onSuccess(DataSnapshot dataSnapshot) {
-                            if(!dataSnapshot.exists()){
-                                Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                if(dataSnapshot.child("employee").child("attendance").exists()){ // Check if employee/attendance exists if so, delete
-                                    delete.deleteRecord(school.getSchoolID() + "/employee", "attendance");
-                                }
-
-                                // Fetch data and store it in School Class
-                                school.setSchoolID(Integer.parseInt(dataSnapshot.child("schoolID").getValue().toString()));
-                                school.setSchoolName(dataSnapshot.child("schoolName").getValue().toString());
-                                school.setSchoolHead(dataSnapshot.child("schoolHead").getValue().toString());
-                                school.setAdminUsername(dataSnapshot.child("adminUsername").getValue().toString());
-                                school.setAdminPassword(dataSnapshot.child("adminPassword").getValue().toString());
-                                school.setIdNumberFeature(dataSnapshot.child("idNumberFeature").getValue(Boolean.class));
-                                school.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
-                                school.setTimeBasedFeature(dataSnapshot.child("timeBasedFeature").getValue(Boolean.class));
-                                school.setQrScannerFeature(dataSnapshot.child("qrcodeFeature").getValue(Boolean.class));
-                                school.setFingerPrintScannerFeature(dataSnapshot.child("fingerPrintFeature").getValue(Boolean.class));
-                                school.setFacialRecognitionFeature(dataSnapshot.child("facialRecognitionFeature").getValue(Boolean.class));
-                                school.setLatitudeBottom(dataSnapshot.child("latitudeBottom").getValue().toString());
-                                school.setLatitudeTop(dataSnapshot.child("latitudeTop").getValue().toString());
-                                school.setLongitudeLeft(dataSnapshot.child("longitudeLeft").getValue().toString());
-                                school.setLongitudeRight(dataSnapshot.child("longitudeRight").getValue().toString());
-                                school.setLatitudeCenter(dataSnapshot.child("latitudeCenter").getValue().toString());
-                                school.setLongitudeCenter(dataSnapshot.child("longitudeCenter").getValue().toString());
-
-                                //Toast.makeText(getApplicationContext(), "GPS : " + school.getGpsFeature() + "QR : " + school.isQrScannerFeature() + "Biometric : " + school.isFingerPrintScannerFeature() + "Facial : " + school.isFacialRecognitionFeature(), Toast.LENGTH_LONG).show();
-
-                                Intent intent = new Intent(SchoolLogIn.this, MainActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(DatabaseError databaseError) {
-                            Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    // getBySchoolID
+                    getBySchoolID(school.getSchoolID());
                 }
+            }
+
+            private void getBySchoolID(int schoolID) {
+                read.readRecord(schoolID + "/", new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.exists()) {
+                            Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (dataSnapshot.child("employee").child("attendance").exists()) { // Check if employee/attendance exists if so, delete
+                                delete.deleteRecord(school.getSchoolID() + "/employee", "attendance");
+                            }
+
+                            int schoolID = Integer.parseInt(dataSnapshot.child("schoolID").getValue().toString());
+                            String schoolName = dataSnapshot.child("schoolName").getValue().toString();
+                            String schoolHead = dataSnapshot.child("schoolHead").getValue().toString();
+                            String adminUsername = dataSnapshot.child("adminUsername").getValue().toString();
+                            String adminPassword = dataSnapshot.child("adminPassword").getValue().toString();
+                            boolean idNumberFeature = dataSnapshot.child("idNumberFeature").getValue(Boolean.class);
+                            boolean gpsFeature = dataSnapshot.child("gpsFeature").getValue(Boolean.class);
+                            boolean timeBasedFeature = dataSnapshot.child("timeBasedFeature").getValue(Boolean.class);
+                            boolean qrScannerFeature = dataSnapshot.child("qrcodeFeature").getValue(Boolean.class);
+                            boolean fingerPrintScannerFeature = dataSnapshot.child("fingerPrintFeature").getValue(Boolean.class);
+                            boolean facialRecognitionFeature = dataSnapshot.child("facialRecognitionFeature").getValue(Boolean.class);
+                            String latitudeBottom = dataSnapshot.child("latitudeBottom").getValue().toString();
+                            String latitudeTop = dataSnapshot.child("latitudeTop").getValue().toString();
+                            String longitudeLeft = dataSnapshot.child("longitudeLeft").getValue().toString();
+                            String longitudeRight = dataSnapshot.child("longitudeRight").getValue().toString();
+                            String latitudeCenter = dataSnapshot.child("latitudeCenter").getValue().toString();
+                            String longitudeCenter = dataSnapshot.child("longitudeCenter").getValue().toString();
+
+//                            School school1 = new School(schoolID,
+//                                    schoolName,
+//                                    schoolHead,
+//                                    adminUsername,
+//                                    adminPassword,
+//                                    idNumberFeature,
+//                                    gpsFeature,
+//                                    timeBasedFeature,
+//                                    qrScannerFeature,
+//                                    fingerPrintScannerFeature,
+//                                    facialRecognitionFeature,
+//                                    latitudeBottom,
+//                                    latitudeTop,
+//                                    longitudeLeft,
+//                                    longitudeRight,
+//                                    latitudeCenter,
+//                                    longitudeCenter);
+
+                            // Fetch data and store it in School Class
+                            school.setSchoolID(schoolID);
+                            school.setSchoolName(schoolName);
+                            school.setSchoolHead(schoolHead);
+                            school.setAdminUsername(adminUsername);
+                            school.setAdminPassword(adminPassword);
+                            school.setIdNumberFeature(idNumberFeature);
+                            school.setGpsFeature(gpsFeature);
+                            school.setTimeBasedFeature(timeBasedFeature);
+                            school.setQrScannerFeature(qrScannerFeature);
+                            school.setFingerPrintScannerFeature(fingerPrintScannerFeature);
+                            school.setFacialRecognitionFeature(facialRecognitionFeature);
+                            school.setLatitudeBottom(latitudeBottom);
+                            school.setLatitudeTop(latitudeTop);
+                            school.setLongitudeLeft(longitudeLeft);
+                            school.setLongitudeRight(longitudeRight);
+                            school.setLatitudeCenter(latitudeCenter);
+                            school.setLongitudeCenter(longitudeCenter);
+
+                            // Toast.makeText(getApplicationContext(), "GPS : " + school.getGpsFeature() + "QR : " + school.isQrScannerFeature() + "Biometric : " + school.isFingerPrintScannerFeature() + "Facial : " + school.isFacialRecognitionFeature(), Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(SchoolLogIn.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
