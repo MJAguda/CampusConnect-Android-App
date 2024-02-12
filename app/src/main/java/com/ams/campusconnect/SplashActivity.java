@@ -1,7 +1,5 @@
 package com.ams.campusconnect;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
@@ -11,8 +9,9 @@ import android.provider.Settings;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.ams.campusconnect.firebase.Read;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -36,29 +35,26 @@ public class SplashActivity extends AppCompatActivity {
         getAnnoucement();
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        handler.postDelayed(() -> {
 
-                if (checkDeveloperOptions()) {
-                    // Developer options are enabled, open settings
-                    finish();
-                    openDeveloperOptionsSettings();
-                }
+            if (checkDeveloperOptions()) {
+                // Developer options are enabled, open settings
+                finish();
+                openDeveloperOptionsSettings();
+            }
 //                else if (checkUnknownSources()) {
 //                    finish();
 //                    openUnknownSourcesSettings();
 //                }
-                else if (!checkGPS()) {
-                    // GPS is disabled, close the app and open settings
-                    finish();
-                    openGPSSettings();
-                }
-                else {
-                    Intent intent = new Intent(SplashActivity.this, SchoolLogIn.class);
-                    startActivity(intent);
-                    finish();
-                }
+            else if (!checkGPS()) {
+                // GPS is disabled, close the app and open settings
+                finish();
+                openGPSSettings();
+            }
+            else {
+                Intent intent = new Intent(SplashActivity.this, SchoolLogIn.class);
+                startActivity(intent);
+                finish();
             }
         }, 5000);
     }
@@ -68,10 +64,10 @@ public class SplashActivity extends AppCompatActivity {
         return developerOptions == 1;
     }
 
-    private boolean checkUnknownSources() {
-        int unknownSources = Settings.Secure.getInt(getContentResolver(), Settings.Secure.INSTALL_NON_MARKET_APPS, 0);
-        return unknownSources == 1;
-    }
+//    private boolean checkUnknownSources() {
+//        int unknownSources = Settings.Secure.getInt(getContentResolver(), Settings.Secure.INSTALL_NON_MARKET_APPS, 0);
+//        return unknownSources == 1;
+//    }
 
     private boolean checkGPS() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -85,12 +81,12 @@ public class SplashActivity extends AppCompatActivity {
         Toast.makeText(SplashActivity.this, "Please turn off Developer Options", Toast.LENGTH_LONG).show();
     }
 
-    private void openUnknownSourcesSettings() {
-        Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
-        startActivity(intent);
-        // Display a message informing the user
-        Toast.makeText(SplashActivity.this, "Please turn off Unknown Sources", Toast.LENGTH_LONG).show();
-    }
+//    private void openUnknownSourcesSettings() {
+//        Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+//        startActivity(intent);
+//        // Display a message informing the user
+//        Toast.makeText(SplashActivity.this, "Please turn off Unknown Sources", Toast.LENGTH_LONG).show();
+//    }
 
     private void openGPSSettings() {
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
