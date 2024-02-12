@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.ams.campusconnect.biometric.BiometricManagerWrapper;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.gps.GPSCoordinates;
 import com.ams.campusconnect.model.SaveData;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     TableLayout table;
     DateUtils dateUtils;
+
+    private BiometricManagerWrapper biometricManagerWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
         TableLayout previewHeader = findViewById(R.id.previewHeaderdailyLog_TableLayout);
         table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
 
+        // Request GPS
+        GPSCoordinates gpsCoordinates = new GPSCoordinates(MainActivity.this);
+        Location currentLocation = gpsCoordinates.getCurrentLocation();
+
         dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
             @Override
             public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
@@ -88,10 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
                 //Set school Name
                 schoolName.setText(school.getSchoolName());
-
-                // Request GPS
-                GPSCoordinates gpsCoordinates = new GPSCoordinates(MainActivity.this);
-                Location currentLocation = gpsCoordinates.getCurrentLocation();
 
                 read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                     @Override
