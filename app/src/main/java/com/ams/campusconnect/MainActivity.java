@@ -69,10 +69,6 @@ public class MainActivity extends AppCompatActivity {
         TableLayout previewHeader = findViewById(R.id.previewHeaderdailyLog_TableLayout);
         table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
 
-        // Request GPS
-        GPSCoordinates gpsCoordinates = new GPSCoordinates(MainActivity.this);
-        Location currentLocation = gpsCoordinates.getCurrentLocation();
-
         dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
             @Override
             public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
