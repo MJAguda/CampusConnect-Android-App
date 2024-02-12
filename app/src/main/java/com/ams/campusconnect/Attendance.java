@@ -50,7 +50,7 @@ public class Attendance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
 
-        // TODO: Scan QR
+        // Scan QR
         Intent intent = new Intent(Attendance.this, ScanQR.class);
         startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
 
