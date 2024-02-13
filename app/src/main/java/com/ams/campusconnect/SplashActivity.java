@@ -41,25 +41,25 @@ public class SplashActivity extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(() -> {
 
-            if (checkDeveloperOptions()) {
-                // Developer options are enabled, open settings
-                finish();
-                openDeveloperOptionsSettings();
-            }
-//                else if (checkUnknownSources()) {
-//                    finish();
-//                    openUnknownSourcesSettings();
-//                }
-            else if (!checkGPS()) {
-                // GPS is disabled, close the app and open settings
-                finish();
-                openGPSSettings();
-            }
-            else {
+//            if (checkDeveloperOptions()) {
+//                // Developer options are enabled, open settings
+//                finish();
+//                openDeveloperOptionsSettings();
+//            }
+////                else if (checkUnknownSources()) {
+////                    finish();
+////                    openUnknownSourcesSettings();
+////                }
+//            else if (!checkGPS()) {
+//                // GPS is disabled, close the app and open settings
+//                finish();
+//                openGPSSettings();
+//            }
+//            else {
                 Intent intent = new Intent(SplashActivity.this, SchoolLogIn.class);
                 startActivity(intent);
                 finish();
-            }
+//            }
         }, 5000);
     }
 

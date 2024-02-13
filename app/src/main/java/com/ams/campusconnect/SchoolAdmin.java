@@ -332,8 +332,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             employee.setLastName(lastNameEditText.getText().toString());
                             employee.setId(idEditText.getText().toString());
                             employee.setFullName(employee.getLastName() +", "+ employee.getFirstName());
-
                             employee.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/"+ yearSpinner.getSelectedItem().toString());
+                            employee.setLatitude(0);
+                            employee.setLongitude(0);
 
                             // Check id if exist
                             read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
@@ -350,6 +351,8 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                         create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
                                         create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
                                         create.createRecord(school.getSchoolID() + "/employee/"+ employee.getId()+ "/birthdate", employee.getBirthday());
+                                        create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/latitude", employee.getLatitude());
+                                        create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/longitude", employee.getLongitude());
 
                                         firstNameEditText.setText("");
                                         lastNameEditText.setText("");
