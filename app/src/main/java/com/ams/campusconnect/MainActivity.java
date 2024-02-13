@@ -1,7 +1,6 @@
 package com.ams.campusconnect;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.ams.campusconnect.firebase.Read;
-import com.ams.campusconnect.gps.GPSCoordinates;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +29,6 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    SaveData save = SaveData.getInstance();
     School school = School.getInstance();
     Read read = new Read();
     Timer timer;
@@ -156,44 +153,29 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-                back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(MainActivity.this, SchoolLogIn.class);
-                        startActivity(intent);
-                    }
+                back.setOnClickListener(view -> {
+                    Intent intent = new Intent(MainActivity.this, SchoolLogIn.class);
+                    startActivity(intent);
                 });
 
-                home.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
+                home.setOnClickListener(view -> {
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(intent);
                 });
 
-                attendance.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                attendance.setOnClickListener(view -> {
 
-                        Intent intent = new Intent(MainActivity.this, Attendance.class);
-                        startActivity(intent);
-                    }
+                    Intent intent = new Intent(MainActivity.this, Attendance.class);
+                    startActivity(intent);
                 });
-                register.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(MainActivity.this, AdminLogIn.class);
-                        startActivity(intent);
-                    }
+                register.setOnClickListener(view -> {
+                    Intent intent = new Intent(MainActivity.this, AdminLogIn.class);
+                    startActivity(intent);
                 });
 
-                generate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(MainActivity.this, Generate.class);
-                        startActivity(intent);
-                    }
+                generate.setOnClickListener(view -> {
+                    Intent intent = new Intent(MainActivity.this, Generate.class);
+                    startActivity(intent);
                 });
             }
         });
