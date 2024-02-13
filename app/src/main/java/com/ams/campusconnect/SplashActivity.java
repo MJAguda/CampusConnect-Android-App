@@ -9,8 +9,11 @@ import android.provider.Settings;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
 
+import com.ams.campusconnect.biometric.BiometricUtils;
 import com.ams.campusconnect.firebase.Read;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,12 +27,13 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // Check if developer options are enabled
-
-
         // Declare thankyou sound
         final MediaPlayer welcome = MediaPlayer.create(this, R.raw.welcometocampusconnect);
         welcome.start();
+
+        // Check the state of Biometric
+        BiometricUtils biometricManagerHelper = new BiometricUtils(this, createBiometricCallback());
+        biometricManagerHelper.checkBiometricSupported();
 
         // Fetch the Announcement in the Database
         getAnnoucement();
@@ -95,6 +99,27 @@ public class SplashActivity extends AppCompatActivity {
         Toast.makeText(SplashActivity.this, "Please turn on GPS", Toast.LENGTH_LONG).show();
     }
 
+    private BiometricPrompt.AuthenticationCallback createBiometricCallback() {
+        return new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(SplashActivity.this, "Auth error: " + errString, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(SplashActivity.this, "Auth succeeded", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(SplashActivity.this, "Auth failed", Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
     private void getAnnoucement() {
         read.readRecord("Announcement", new Read.OnGetDataListener() {
             @Override

@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ams.campusconnect.biometric.BiometricUtils;
 import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.gps.GPSCoordinates;
@@ -34,8 +35,6 @@ import com.google.firebase.database.DatabaseError;
 
 import java.util.concurrent.Executor;
 
-import com.ams.campusconnect.biometric.BiometricManagerWrapper;
-
 public class LogInAttendance extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
@@ -47,25 +46,21 @@ public class LogInAttendance extends AppCompatActivity {
     EditText idNumber;
     Button submit;
 
-
     private static final String TAG = LogInAttendance.class.getSimpleName();
 
     // Instance of scanFingerPrint
     private ImageButton scanBiometric;
-
-    private BiometricManagerWrapper biometricManagerWrapper;
-    private TextView txinfo;
-
+    BiometricUtils biometricManagerHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in_attendance);
 
+        biometricManagerHelper = new BiometricUtils(this, createBiometricCallback());
+        biometricManagerHelper.checkBiometricSupported();
+
         // Instantiate DateUtils
         DateUtils dateUtils = new DateUtils(LogInAttendance.this);
-
-        // biometricManagerWrapper
-        biometricManagerWrapper = new BiometricManagerWrapper(this);
 
         // Declare Components
         idNumber = findViewById(R.id.id_EditText);
@@ -88,9 +83,6 @@ public class LogInAttendance extends AppCompatActivity {
         // Declare thankyou sound
         final MediaPlayer thankyou = MediaPlayer.create(this, R.raw.thankyou);
         final MediaPlayer alreadyhave = MediaPlayer.create(this, R.raw.alreadyhave);
-
-        // Checkbiometric Feature
-        checkBiometricSupported();
 
         Executor executor = ContextCompat.getMainExecutor(this);
         BiometricPrompt biometricPrompt = new BiometricPrompt(LogInAttendance.this,
@@ -135,7 +127,7 @@ public class LogInAttendance extends AppCompatActivity {
                     }
                 });
 
-                scanBiometric.setOnClickListener(this::onBiometricButtonClick);
+                scanBiometric.setOnClickListener(view -> biometricManagerHelper.authenticate(false));
 
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -146,7 +138,6 @@ public class LogInAttendance extends AppCompatActivity {
                         save.setYear(year);
                         save.setMonth(DateUtils.getMonthName(month));
                         save.setDay(String.valueOf(Integer.parseInt(day)));
-
 
 
                         // Check id if exist Log in Using ID Number
@@ -321,10 +312,29 @@ public class LogInAttendance extends AppCompatActivity {
             }
 
             // TODO: add submit if Auth Succeed
-            private void onBiometricButtonClick(View view) {
-                biometricManagerWrapper.authenticate(false);
-            }
         });
+    }
+
+    private BiometricPrompt.AuthenticationCallback createBiometricCallback() {
+        return new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(LogInAttendance.this, "Auth error: " + errString, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(LogInAttendance.this, "Auth succeeded", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(LogInAttendance.this, "Auth failed", Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     // Handles Scanned QR Result
@@ -348,29 +358,6 @@ public class LogInAttendance extends AppCompatActivity {
             // Perform click
             submit.performClick();
         }
-    }
-
-
-
-    // Check the state of biometric feature
-    private void checkBiometricSupported() {
-        String info = biometricManagerWrapper.checkBiometricSupported();
-        txinfo = findViewById(R.id.tx_info);
-        txinfo.setText(info);
-    }
-
-    public void enableButton(boolean enable){
-        scanBiometric.setEnabled(enable);
-    }
-
-    public void enableButton(boolean enable, boolean enroll){
-        enableButton(enable);
-        if(!enroll) return;
-        Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
-        enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                BiometricManager.Authenticators.BIOMETRIC_STRONG
-                        | BiometricManager.Authenticators.BIOMETRIC_WEAK);
-        startActivity(enrollIntent);
     }
 }
 

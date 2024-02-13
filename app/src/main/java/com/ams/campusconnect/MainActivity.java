@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.ams.campusconnect.biometric.BiometricManagerWrapper;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.gps.GPSCoordinates;
 import com.ams.campusconnect.model.SaveData;
@@ -39,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
     TableLayout table;
     DateUtils dateUtils;
-
-    private BiometricManagerWrapper biometricManagerWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
