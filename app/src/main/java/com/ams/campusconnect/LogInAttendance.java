@@ -1,30 +1,28 @@
 package com.ams.campusconnect;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.biometric.BiometricManager;
-import androidx.biometric.BiometricPrompt;
-import androidx.core.content.ContextCompat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import com.ams.campusconnect.biometric.BiometricUtils;
 import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Read;
+import com.ams.campusconnect.firebase.Update;
 import com.ams.campusconnect.gps.GPSCoordinates;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
@@ -42,6 +40,8 @@ public class LogInAttendance extends AppCompatActivity {
     Employee employee = Employee.getInstance();
     Create create = new Create();
     Read read = new Read();
+
+    Update update = new Update();
     private static final int REQUEST_CODE_SCAN_QR = 1;
     EditText idNumber;
     Button submit;
@@ -159,17 +159,22 @@ public class LogInAttendance extends AppCompatActivity {
                                                 } else {
                                                     //Time must have 15 minutes interval
                                                     String priorAuthenticate = null;
-                                                    if (save.getAuthenticate().equals("timeAM_Out")) {
-                                                        //get timeAM_In and compare it with timeAM_Out
-                                                        priorAuthenticate = "timeAM_In";
-                                                    } else if (save.getAuthenticate().equals("timePM_In")) {
-                                                        //get timeAMOut and compare it with timePM_In
-                                                        priorAuthenticate = "timeAM_Out";
-                                                    } else if (save.getAuthenticate().equals("timePM_Out")) {
-                                                        //get timePM_In and compare it with timePM_Out
-                                                        priorAuthenticate = "timePM_In";
-                                                    } else {
+                                                    switch (save.getAuthenticate()) {
+                                                        case "timeAM_Out":
+                                                            //get timeAM_In and compare it with timeAM_Out
+                                                            priorAuthenticate = "timeAM_In";
+                                                            break;
+                                                        case "timePM_In":
+                                                            //get timeAMOut and compare it with timePM_In
+                                                            priorAuthenticate = "timeAM_Out";
+                                                            break;
+                                                        case "timePM_Out":
+                                                            //get timePM_In and compare it with timePM_Out
+                                                            priorAuthenticate = "timePM_In";
+                                                            break;
+                                                        default:
 
+                                                            break;
                                                     }
 
                                                     Log.d(TAG, "priorAuthenticate Value : " + priorAuthenticate);
@@ -184,9 +189,9 @@ public class LogInAttendance extends AppCompatActivity {
                                                             String priorTime;
 
                                                             try {
-                                                                if (dataSnapshot.getValue(String.class).equals("")) {
+                                                                if (dataSnapshot.getValue(String.class).equals(""))
                                                                     priorTime = "00:00 AM";
-                                                                } else {
+                                                                else {
                                                                     priorTime = dataSnapshot.getValue().toString();
                                                                 }
                                                             } catch (NullPointerException e) {
@@ -228,7 +233,8 @@ public class LogInAttendance extends AppCompatActivity {
                                                                 // Check employee Coordinate if employee is inside the 4 corners of the campus
                                                                 // Toggle switch to punch time without GPS
                                                                 // Check if currentLocation is not null
-                                                                if (school.isGpsFeature() == true && currentLocation != null) {
+                                                                // TODO: Fix Bug why coordinates is not saving
+                                                                if (school.isGpsFeature() && currentLocation != null) {
 
                                                                     employee.setLatitude(currentLocation.getLatitude());
                                                                     employee.setLongitude(currentLocation.getLongitude());
@@ -238,11 +244,16 @@ public class LogInAttendance extends AppCompatActivity {
 
                                                                         // Push Time in Database
                                                                         create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+
+                                                                        // Store employee's last known location
+                                                                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "latitude", employee.getLatitude());
+                                                                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
+
                                                                         thankyou.start();
                                                                     } else {
                                                                         Toast.makeText(getApplicationContext(), "You are outside the Campus. Connect to School WIFI", Toast.LENGTH_SHORT).show();
                                                                     }
-                                                                } else if (school.isGpsFeature() == false) {
+                                                                } else if (!school.isGpsFeature()) {
                                                                     Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                                                                     // Push Time in Database
@@ -252,6 +263,8 @@ public class LogInAttendance extends AppCompatActivity {
                                                                 else {
                                                                     Toast.makeText(getApplicationContext(), "No location data available", Toast.LENGTH_SHORT).show();
                                                                     Log.d("Location", "No location data available.");
+                                                                    Log.d("Latitude", currentLocation.getLatitude() + "");
+                                                                    Log.d("Longitude", currentLocation.getLongitude() + "");
                                                                 }
                                                             }
                                                         }
@@ -350,7 +363,7 @@ public class LogInAttendance extends AppCompatActivity {
             // Handle the QR code result here
 
             // Print Toast message
-            Toast.makeText(this, ""+ qrResult, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "" + qrResult, Toast.LENGTH_SHORT).show();
 
             // set the idNumber_TextView
             idNumber.setText(qrResult);
