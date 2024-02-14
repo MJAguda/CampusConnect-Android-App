@@ -41,6 +41,8 @@ public class SplashActivity extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(() -> {
 
+        // TODO: Make DeveloperCheck, GPSCheck dynamic and reusable
+
 //            if (checkDeveloperOptions()) {
 //                // Developer options are enabled, open settings
 //                finish();
