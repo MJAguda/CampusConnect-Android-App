@@ -1,7 +1,6 @@
 package com.ams.campusconnect;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -27,7 +26,6 @@ import com.ams.campusconnect.biometric.BiometricUtils;
 import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.firebase.Update;
-import com.ams.campusconnect.gps.GPSCoordinates;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
@@ -231,12 +229,11 @@ public class LogInAttendance extends AppCompatActivity {
                                                                 locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
 
-                                                                if(ContextCompat.checkSelfPermission(
+                                                                if (ContextCompat.checkSelfPermission(
                                                                         LogInAttendance.this,
                                                                         Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                                                                         &&
-                                                                        ContextCompat.checkSelfPermission(LogInAttendance.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                                                                {
+                                                                        ContextCompat.checkSelfPermission(LogInAttendance.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                                                     ActivityCompat.requestPermissions(LogInAttendance.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                                                                 }
 
