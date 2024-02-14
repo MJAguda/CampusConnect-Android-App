@@ -50,13 +50,6 @@ public class Attendance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
 
-        // Scan QR
-        Intent intent = new Intent(Attendance.this, ScanQR.class);
-        startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
-
-        // TODO: Set Employee model
-
-
         DateUtils dateUtils = new DateUtils(Attendance.this);
 
         // Initialize Clock
