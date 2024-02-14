@@ -1,8 +1,11 @@
 package com.ams.campusconnect;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.ams.campusconnect.biometric.BiometricUtils;
@@ -51,6 +55,7 @@ public class LogInAttendance extends AppCompatActivity {
     // Instance of scanFingerPrint
     private ImageButton scanBiometric;
     BiometricUtils biometricManagerHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +80,6 @@ public class LogInAttendance extends AppCompatActivity {
         scanBiometric.setVisibility(school.isFingerPrintScannerFeature() ? View.VISIBLE : View.GONE);
 
         submit.setVisibility(school.isIdNumberFeature() ? View.VISIBLE : View.GONE);
-
-        // Declare and Initialized locationManager
-        LocationManager locationManager;
-        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
         // Declare thankyou sound
         final MediaPlayer thankyou = MediaPlayer.create(this, R.raw.thankyou);
@@ -226,46 +227,60 @@ public class LogInAttendance extends AppCompatActivity {
                                                                 Toast.makeText(getApplicationContext(), "Wait 15 minutes", Toast.LENGTH_SHORT).show();
                                                             } else {
 
-                                                                // Get the current location of phone through GPS
-                                                                GPSCoordinates gpsCoordinates = new GPSCoordinates(LogInAttendance.this);
-                                                                Location currentLocation = gpsCoordinates.getCurrentLocation();
+                                                                LocationManager locationManager;
+                                                                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-                                                                // Check employee Coordinate if employee is inside the 4 corners of the campus
-                                                                // Toggle switch to punch time without GPS
-                                                                // Check if currentLocation is not null
-                                                                // TODO: Fix Bug why coordinates is not saving
-                                                                if (school.isGpsFeature() && currentLocation != null) {
 
-                                                                    employee.setLatitude(currentLocation.getLatitude());
-                                                                    employee.setLongitude(currentLocation.getLongitude());
+                                                                if(ContextCompat.checkSelfPermission(
+                                                                        LogInAttendance.this,
+                                                                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                                                                        &&
+                                                                        ContextCompat.checkSelfPermission(LogInAttendance.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                                                                {
+                                                                    ActivityCompat.requestPermissions(LogInAttendance.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                                                                }
 
-                                                                    if (employee.getLatitude() >= Double.parseDouble(school.getLatitudeBottom()) && employee.getLatitude() <= Double.parseDouble(school.getLatitudeTop()) && employee.getLongitude() >= Double.parseDouble(school.getLongitudeLeft()) && employee.getLongitude() <= Double.parseDouble(school.getLongitudeRight())) {
-                                                                        Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
+                                                                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, new LocationListener() {
+                                                                    @Override
+                                                                    public void onLocationChanged(@NonNull Location location) {
+                                                                        employee.setLatitude(location.getLatitude());
+                                                                        employee.setLongitude(location.getLongitude());
 
-                                                                        // Push Time in Database
-                                                                        create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+                                                                        // Check employee Coordinate if employee is inside the 4 corners of the campus
+                                                                        // Toggle switch to punch time without GPS
+                                                                        // Check if currentLocation is not null
+                                                                        if (school.isGpsFeature()) {
+                                                                            if (employee.getLatitude() >= Double.parseDouble(school.getLatitudeBottom()) && employee.getLatitude() <= Double.parseDouble(school.getLatitudeTop()) && employee.getLongitude() >= Double.parseDouble(school.getLongitudeLeft()) && employee.getLongitude() <= Double.parseDouble(school.getLongitudeRight())) {
+                                                                                Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
-                                                                        // Store employee's last known location
-                                                                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "latitude", employee.getLatitude());
-                                                                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
+                                                                                // Push Time in Database
+                                                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
 
-                                                                        thankyou.start();
-                                                                    } else {
-                                                                        Toast.makeText(getApplicationContext(), "You are outside the Campus. Connect to School WIFI", Toast.LENGTH_SHORT).show();
+                                                                                // Store employee's last known location
+                                                                                update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "latitude", employee.getLatitude());
+                                                                                update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
+
+                                                                                thankyou.start();
+                                                                            } else {
+                                                                                Toast.makeText(getApplicationContext(), "You are outside the Campus. Connect to School WIFI", Toast.LENGTH_SHORT).show();
+                                                                                Log.d("Latitude", employee.getLatitude() + "");
+                                                                                Log.d("Longitude", employee.getLongitude() + "");
+                                                                            }
+                                                                        } else if (!school.isGpsFeature()) {
+                                                                            Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
+
+                                                                            // Push Time in Database
+                                                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+                                                                            thankyou.start();
+                                                                        } else {
+                                                                            Toast.makeText(getApplicationContext(), "No location data available", Toast.LENGTH_SHORT).show();
+                                                                            Log.d("Location", "No location data available.");
+                                                                            Log.d("Latitude", employee.getLatitude() + "");
+                                                                            Log.d("Longitude", employee.getLongitude() + "");
+                                                                        }
+
                                                                     }
-                                                                } else if (!school.isGpsFeature()) {
-                                                                    Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
-
-                                                                    // Push Time in Database
-                                                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
-                                                                    thankyou.start();
-                                                                }
-                                                                else {
-                                                                    Toast.makeText(getApplicationContext(), "No location data available", Toast.LENGTH_SHORT).show();
-                                                                    Log.d("Location", "No location data available.");
-                                                                    Log.d("Latitude", currentLocation.getLatitude() + "");
-                                                                    Log.d("Longitude", currentLocation.getLongitude() + "");
-                                                                }
+                                                                });
                                                             }
                                                         }
 
