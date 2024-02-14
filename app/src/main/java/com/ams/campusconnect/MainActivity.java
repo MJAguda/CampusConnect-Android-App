@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.qrcode.ScanQR;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -164,6 +165,10 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 attendance.setOnClickListener(view -> {
+
+                    // TODO: Add QR Scan here
+
+                    // TODO: Set Employee model
 
                     Intent intent = new Intent(MainActivity.this, Attendance.class);
                     startActivity(intent);
