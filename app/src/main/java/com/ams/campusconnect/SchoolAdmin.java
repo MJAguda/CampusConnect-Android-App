@@ -728,7 +728,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 });
                 return true;
             }
-            // TODO add case Download All DTR
+            // Download All DTR
             case R.id.generateAllDTR: {
                 prompt.setText("Generate DTRs");
 

@@ -153,8 +153,6 @@ public class MainActivity extends AppCompatActivity {
             });
 
             attendance.setOnClickListener(view -> {
-
-                // TODO: Add QR Scan here
                 Intent intent = new Intent(MainActivity.this, ScanQR.class);
                 startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
             });
@@ -182,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             // Print Toast message
             Toast.makeText(this, qrResult, Toast.LENGTH_SHORT).show();
 
-            // TODO: verify if employee id exists
+            // Verify if employee id exists
             read.readRecord(school.getSchoolID() + "/employee/" + qrResult, new Read.OnGetDataListener() {
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
