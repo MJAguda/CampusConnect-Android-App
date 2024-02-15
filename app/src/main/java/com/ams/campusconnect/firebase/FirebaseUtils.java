@@ -8,13 +8,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseUtils {
 
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference locationsReference;
-    private School school = School.getInstance();
+    private final School school = School.getInstance();
 
     public FirebaseUtils() {
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        locationsReference = firebaseDatabase.getReference("locations");
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference locationsReference = firebaseDatabase.getReference("locations");
     }
 
     public boolean isLocationValid(double latitude, double longitude) {

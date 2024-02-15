@@ -1,13 +1,7 @@
 package com.ams.campusconnect;
 
-import static java.lang.Integer.parseInt;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -15,10 +9,10 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.ams.campusconnect.firebase.Read;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
-import com.ams.campusconnect.model.School;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,15 +20,9 @@ import java.util.Calendar;
 public class GenerateDTR extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
-    School school = School.getInstance();
     Employee employee = Employee.getInstance();
-    Read read = new Read();
 
-    private static final int PERMISSION_REQUEST_CODE = 10;
     //private static final String TAG
-    int pdfHeight = 1080;
-    int pdfWidth = 720;
-    private PdfDocument document;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,37 +75,26 @@ public class GenerateDTR extends AppCompatActivity {
         TextView schoolHead = findViewById(R.id.schoolHead_TextView);
         TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent (GenerateDTR.this, Generate.class);
-                startActivity(intent);
-            }
+        back.setOnClickListener(view -> {
+            Intent intent = new Intent(GenerateDTR.this, Generate.class);
+            startActivity(intent);
         });
 
         // Generate DTR
-        generate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        generate.setOnClickListener(view -> {
 
-                String month = monthSpinner.getSelectedItem().toString();
-                String year = yearSpinner.getSelectedItem().toString();
+            String month = monthSpinner.getSelectedItem().toString();
+            String year = yearSpinner.getSelectedItem().toString();
 
-                save.setMonth(month);
-                save.setYear(year);
+            save.setMonth(month);
+            save.setYear(year);
 
-                //int day = DateUtils.getNumberOfDays(save.getMonth(), save.getYear());
-                int day = DateUtils.getNumberOfDays(month, year);
+            //int day = DateUtils.getNumberOfDays(save.getMonth(), save.getYear());
+            int day = DateUtils.getNumberOfDays(month, year);
 
-                DTR.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, GenerateDTR.this);
-            }
+            DTR.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, GenerateDTR.this);
         });
 
-        download.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DTR.downloadDTR(findViewById(R.id.dtr_LinearLayout), GenerateDTR.this);
-            }
-        });
+        download.setOnClickListener(view -> DTR.downloadDTR(findViewById(R.id.dtr_LinearLayout), GenerateDTR.this));
     }
 }

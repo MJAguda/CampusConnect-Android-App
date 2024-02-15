@@ -112,7 +112,7 @@ public class DTR {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 name.setText(dataSnapshot.child("fullname").getValue().toString());
-                date.setText(month + " " + year);
+                date.setText(String.format("%s %s", month, year));
 
                 read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
                     @Override
@@ -203,7 +203,7 @@ public class DTR {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 name.setText(dataSnapshot.child("fullname").getValue().toString());
-                date.setText(month + " " + year);
+                date.setText(String.format("%s %s", month, year));
 
                 read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
                     @Override

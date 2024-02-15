@@ -115,123 +115,95 @@ public class Generate extends AppCompatActivity {
             }
         });
 
-        hamburger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
-            }
+        hamburger.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show());
+
+        scanQR.setOnClickListener(view -> {
+            Intent intent = new Intent(Generate.this, ScanQR.class);
+            startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
+
+
         });
 
-        scanQR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Generate.this, ScanQR.class);
-                startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
+        submit.setOnClickListener(view -> {
+            employee.setId(idEditText.getText().toString());
 
-
-            }
-        });
-
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                employee.setId(idEditText.getText().toString());
-
-                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
-                    @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        if(!dataSnapshot.exists()){
-                            Toast.makeText(getApplicationContext(), "ID Number not found", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            // Set data for Employee
-                            employee.setId(dataSnapshot.child("id").getValue().toString());
-                            employee.setFullName(dataSnapshot.child("fullname").getValue().toString());
-
-                            // Unhide Components
-                            home.setVisibility(View.VISIBLE);
-                            generateQR.setVisibility(View.VISIBLE);
-                            text.setVisibility(View.VISIBLE);
-                            logo.setVisibility(View.VISIBLE);
-                            generateDTR.setVisibility(View.VISIBLE);
-                            generateTAMS.setVisibility(View.VISIBLE);
-                            guide1.setVisibility(View.VISIBLE);
-                            guide2.setVisibility(View.VISIBLE);
-                            guide3.setVisibility(View.VISIBLE);
-                            guide4.setVisibility(View.VISIBLE);
-                            guide5.setVisibility(View.VISIBLE);
-
-                            // Hide Components
-                            prompt.setVisibility(View.GONE);
-                            idEditText.setVisibility(View.GONE);
-                            scanQR.setVisibility(View.GONE);
-                            submit.setVisibility(View.GONE);
-                        }
+            read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
+                @Override
+                public void onSuccess(DataSnapshot dataSnapshot) {
+                    if(!dataSnapshot.exists()){
+                        Toast.makeText(getApplicationContext(), "ID Number not found", Toast.LENGTH_SHORT).show();
                     }
+                    else{
+                        // Set data for Employee
+                        employee.setId(dataSnapshot.child("id").getValue().toString());
+                        employee.setFullName(dataSnapshot.child("fullname").getValue().toString());
 
-                    @Override
-                    public void onFailure(DatabaseError databaseError) {
-                        Log.d("Read", "Error: " + databaseError.getMessage());
-                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Unhide Components
+                        home.setVisibility(View.VISIBLE);
+                        generateQR.setVisibility(View.VISIBLE);
+                        text.setVisibility(View.VISIBLE);
+                        logo.setVisibility(View.VISIBLE);
+                        generateDTR.setVisibility(View.VISIBLE);
+                        generateTAMS.setVisibility(View.VISIBLE);
+                        guide1.setVisibility(View.VISIBLE);
+                        guide2.setVisibility(View.VISIBLE);
+                        guide3.setVisibility(View.VISIBLE);
+                        guide4.setVisibility(View.VISIBLE);
+                        guide5.setVisibility(View.VISIBLE);
+
+                        // Hide Components
+                        prompt.setVisibility(View.GONE);
+                        idEditText.setVisibility(View.GONE);
+                        scanQR.setVisibility(View.GONE);
+                        submit.setVisibility(View.GONE);
                     }
-                });
-            }
+                }
+
+                @Override
+                public void onFailure(DatabaseError databaseError) {
+                    Log.d("Read", "Error: " + databaseError.getMessage());
+                    Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
         // Home button
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Generate.this, MainActivity.class);
-                startActivity(intent);
-            }
+        home.setOnClickListener(view -> {
+            Intent intent = new Intent(Generate.this, MainActivity.class);
+            startActivity(intent);
         });
 
         // Generate QR for employee
-        generateQR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        generateQR.setOnClickListener(view -> {
 
-                // Instance
-                GenerateQR generateQR = new GenerateQR();
+            // Instance
+            GenerateQR generateQR1 = new GenerateQR();
 
-                // Declare ImageView
-                ImageView qr = findViewById(R.id.qrCode_ImageView);
-                // call generateQRCode method from GenerateQR class
-                qr.setImageBitmap(generateQR.generateQRCode(employee.getId()));
+            // Declare ImageView
+            ImageView qr = findViewById(R.id.qrCode_ImageView);
+            // call generateQRCode method from GenerateQR class
+            qr.setImageBitmap(generateQR1.generateQRCode(employee.getId()));
 
-                // Set text Guide
-                text.setText("Tap QR code to download");
+            // Set text Guide
+            text.setText("Tap QR code to download");
 
-                // Download qr if a ImageView is clicked
-                qr.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        DownloadQR imageDownloader = new DownloadQR(qr);
-                        imageDownloader.downloadImage();
-                        //Intent intent = new Intent(Generate.this, Attendance.class);
-                        //startActivity(intent);
-                    }
-                });
-            }
+            // Download qr if a ImageView is clicked
+            qr.setOnClickListener(view1 -> {
+                DownloadQR imageDownloader = new DownloadQR(qr);
+                imageDownloader.downloadImage();
+                //Intent intent = new Intent(Generate.this, Attendance.class);
+                //startActivity(intent);
+            });
         });
 
         // Generate DTR for employee
-        generateDTR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Generate.this, GenerateDTR.class);
-                startActivity(intent);
-            }
+        generateDTR.setOnClickListener(view -> {
+            Intent intent = new Intent(Generate.this, GenerateDTR.class);
+            startActivity(intent);
         });
 
         // TODO Generate TAMS file for Employee
-        generateTAMS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
-            }
-        });
+        generateTAMS.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show());
     }
 
     // Handles Scanned QR Result

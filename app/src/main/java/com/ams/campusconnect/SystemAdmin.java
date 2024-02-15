@@ -30,11 +30,9 @@ import java.util.Calendar;
 
 public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
-    SaveData save = SaveData.getInstance();
     School school = School.getInstance();
     Employee employee = Employee.getInstance();
     Read read = new Read();
-    Create create = new Create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,142 +136,130 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         submitSchool.setVisibility(View.GONE);
         submitEmployee.setVisibility(View.GONE);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent (SystemAdmin.this, AdminLogIn.class);
-                startActivity(intent);
-            }
+        back.setOnClickListener(view -> {
+            Intent intent = new Intent (SystemAdmin.this, AdminLogIn.class);
+            startActivity(intent);
         });
 
-        hamburger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popup = new PopupMenu(SystemAdmin.this, view);
-                MenuInflater inflater = popup.getMenuInflater();
-                inflater.inflate(R.menu.hamburger_systemadmin_menu, popup.getMenu());
-                popup.setOnMenuItemClickListener(SystemAdmin.this);
-                popup.show();
-            }
+        hamburger.setOnClickListener(view -> {
+            PopupMenu popup = new PopupMenu(SystemAdmin.this, view);
+            MenuInflater inflater = popup.getMenuInflater();
+            inflater.inflate(R.menu.hamburger_systemadmin_menu, popup.getMenu());
+            popup.setOnMenuItemClickListener(SystemAdmin.this);
+            popup.show();
         });
 
         // if submitSchool is clicked
-        submitSchool.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Check if all field are filled
-                if(schoolID.getText().toString().isEmpty() && schoolName.getText().toString().isEmpty() && schoolHead.getText().toString().isEmpty() && adminUsername.getText().toString().isEmpty() && adminPassword.getText().toString().isEmpty() && latitudeBottom.getText().toString().isEmpty() && latitudeTop.getText().toString().isEmpty() && longitudeLeft.getText().toString().isEmpty() && longitudeRight.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "Fill all Fields", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    // Get data from EditText and store it in School class
-                    school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
-                    school.setSchoolName(schoolName.getText().toString());
-                    school.setSchoolHead(schoolHead.getText().toString());
-                    school.setAdminUsername(adminUsername.getText().toString());
-                    school.setAdminPassword(adminPassword.getText().toString());
-                    school.setLatitudeBottom(latitudeBottom.getText().toString());
-                    school.setLatitudeTop(latitudeTop.getText().toString());
-                    school.setLongitudeLeft(longitudeLeft.getText().toString());
-                    school.setLongitudeRight(longitudeRight.getText().toString());
+        submitSchool.setOnClickListener(view -> {
+            // Check if all field are filled
+            if(schoolID.getText().toString().isEmpty() && schoolName.getText().toString().isEmpty() && schoolHead.getText().toString().isEmpty() && adminUsername.getText().toString().isEmpty() && adminPassword.getText().toString().isEmpty() && latitudeBottom.getText().toString().isEmpty() && latitudeTop.getText().toString().isEmpty() && longitudeLeft.getText().toString().isEmpty() && longitudeRight.getText().toString().isEmpty()){
+                Toast.makeText(getApplicationContext(), "Fill all Fields", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                // Get data from EditText and store it in School class
+                school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
+                school.setSchoolName(schoolName.getText().toString());
+                school.setSchoolHead(schoolHead.getText().toString());
+                school.setAdminUsername(adminUsername.getText().toString());
+                school.setAdminPassword(adminPassword.getText().toString());
+                school.setLatitudeBottom(latitudeBottom.getText().toString());
+                school.setLatitudeTop(latitudeTop.getText().toString());
+                school.setLongitudeLeft(longitudeLeft.getText().toString());
+                school.setLongitudeRight(longitudeRight.getText().toString());
 
-                    // Check if school Id already exists in the databse
-                    read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
-                        @Override
-                        public void onSuccess(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()){
-                                Toast.makeText(getApplicationContext(), "School ID is already Registered", Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                // Create School
-                                Create create = new Create();
-                                create.createRecord(school.getSchoolID() + "/schoolID", school.getSchoolID());
-                                create.createRecord(school.getSchoolID() + "/schoolName", school.getSchoolName());
-                                create.createRecord(school.getSchoolID() + "/schoolHead", school.getSchoolHead());
-                                create.createRecord(school.getSchoolID() + "/adminUsername", school.getAdminUsername());
-                                create.createRecord(school.getSchoolID() + "/adminPassword", school.getAdminPassword());
-                                create.createRecord(school.getSchoolID() + "/idNumberFeature", true);
-                                create.createRecord(school.getSchoolID() + "/gpsFeature", true);
-                                create.createRecord(school.getSchoolID() + "/qrcodeFeature", true);
-                                create.createRecord(school.getSchoolID() + "/timeBasedFeature", true);
-                                create.createRecord(school.getSchoolID() + "/fingerPrintFeature", true);
-                                create.createRecord(school.getSchoolID() + "/facialRecognitionFeature", true);
-                                create.createRecord(school.getSchoolID() + "/latitudeBottom", school.getLatitudeBottom());
-                                create.createRecord(school.getSchoolID() + "/latitudeTop", school.getLatitudeTop());
-                                create.createRecord(school.getSchoolID() + "/longitudeLeft", school.getLongitudeLeft());
-                                create.createRecord(school.getSchoolID() + "/longitudeRight", school.getLongitudeRight());
-                                create.createRecord(school.getSchoolID() + "/latitudeCenter", "0"); // TODO add EditText for latitudeCenter
-                                create.createRecord(school.getSchoolID() + "/longitudeCenter", "0"); // TODO add EditText for longitudeCenter
-
-                                Toast.makeText(getApplicationContext(), "School Successfully Registered", Toast.LENGTH_SHORT).show();
-
-                                Intent intent = new Intent(SystemAdmin.this, MainActivity.class);
-                                startActivity(intent);
-                            }
+                // Check if school Id already exists in the databse
+                read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            Toast.makeText(getApplicationContext(), "School ID is already Registered", Toast.LENGTH_SHORT).show();
                         }
+                        else{
+                            // Create School
+                            Create create = new Create();
+                            create.createRecord(school.getSchoolID() + "/schoolID", school.getSchoolID());
+                            create.createRecord(school.getSchoolID() + "/schoolName", school.getSchoolName());
+                            create.createRecord(school.getSchoolID() + "/schoolHead", school.getSchoolHead());
+                            create.createRecord(school.getSchoolID() + "/adminUsername", school.getAdminUsername());
+                            create.createRecord(school.getSchoolID() + "/adminPassword", school.getAdminPassword());
+                            create.createRecord(school.getSchoolID() + "/idNumberFeature", true);
+                            create.createRecord(school.getSchoolID() + "/gpsFeature", true);
+                            create.createRecord(school.getSchoolID() + "/qrcodeFeature", true);
+                            create.createRecord(school.getSchoolID() + "/timeBasedFeature", true);
+                            create.createRecord(school.getSchoolID() + "/fingerPrintFeature", true);
+                            create.createRecord(school.getSchoolID() + "/facialRecognitionFeature", true);
+                            create.createRecord(school.getSchoolID() + "/latitudeBottom", school.getLatitudeBottom());
+                            create.createRecord(school.getSchoolID() + "/latitudeTop", school.getLatitudeTop());
+                            create.createRecord(school.getSchoolID() + "/longitudeLeft", school.getLongitudeLeft());
+                            create.createRecord(school.getSchoolID() + "/longitudeRight", school.getLongitudeRight());
+                            create.createRecord(school.getSchoolID() + "/latitudeCenter", "0"); // TODO add EditText for latitudeCenter
+                            create.createRecord(school.getSchoolID() + "/longitudeCenter", "0"); // TODO add EditText for longitudeCenter
 
-                        @Override
-                        public void onFailure(DatabaseError databaseError) {
-                            Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "School Successfully Registered", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(SystemAdmin.this, MainActivity.class);
+                            startActivity(intent);
                         }
-                    });
-                }
+                    }
+
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
         // if submitEmployee is clicked
-        submitEmployee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Check if views are not empty
-                if(!firstName.getText().toString().isEmpty() || !lastName.getText().toString().isEmpty() || !id.getText().toString().isEmpty()){
-                    // Get String from EditText components
-                    employee.setFirstName(firstName.getText().toString());
-                    employee.setLastName(lastName.getText().toString());
-                    employee.setId(id.getText().toString());
-                    employee.setFullName(employee.getLastName() +", "+ employee.getFirstName());
+        submitEmployee.setOnClickListener(view -> {
+            // Check if views are not empty
+            if(!firstName.getText().toString().isEmpty() || !lastName.getText().toString().isEmpty() || !id.getText().toString().isEmpty()){
+                // Get String from EditText components
+                employee.setFirstName(firstName.getText().toString());
+                employee.setLastName(lastName.getText().toString());
+                employee.setId(id.getText().toString());
+                employee.setFullName(employee.getLastName() +", "+ employee.getFirstName());
 
-                    employee.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/"+ yearSpinner.getSelectedItem().toString());
+                employee.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/"+ yearSpinner.getSelectedItem().toString());
 
-                    /*// Initialize Firebase Realtime Database
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                final DatabaseReference myRef = database.getReference(school.getSchoolID() + "/employee");
-                                 */
-                    // Check id if exist
-                    read.readRecord(school.getSchoolID() + "/employee" + employee.getId(), new Read.OnGetDataListener() {
-                        @Override
-                        public void onSuccess(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                Toast.makeText(getApplicationContext(), "Employee is already registered", Toast.LENGTH_SHORT).show();
+                /*// Initialize Firebase Realtime Database
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            final DatabaseReference myRef = database.getReference(school.getSchoolID() + "/employee");
+                             */
+                // Check id if exist
+                read.readRecord(school.getSchoolID() + "/employee" + employee.getId(), new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            Toast.makeText(getApplicationContext(), "Employee is already registered", Toast.LENGTH_SHORT).show();
 
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_SHORT).show();
 
-                                // Push data to Firebase Realtime Database
-                                Create create = new Create();
-                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
-                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
-                                create.createRecord(school.getSchoolID() + "/employee/"+employee.getId()+ "/birthdate", employee.getBirthday());
+                            // Push data to Firebase Realtime Database
+                            Create create = new Create();
+                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
+                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
+                            create.createRecord(school.getSchoolID() + "/employee/"+employee.getId()+ "/birthdate", employee.getBirthday());
 
-                                firstName.setText("");
-                                lastName.setText("");
-                                id.setText("");
-                                /*
-                                Intent intent = new Intent(SystemAdmin.this, MainActivity.class);
-                                startActivity(intent);
-                                 */
-                            }
+                            firstName.setText("");
+                            lastName.setText("");
+                            id.setText("");
+                            /*
+                            Intent intent = new Intent(SystemAdmin.this, MainActivity.class);
+                            startActivity(intent);
+                             */
                         }
+                    }
 
-                        @Override
-                        public void onFailure(DatabaseError databaseError) {
-                            Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
-                }
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
             }
         });
     }

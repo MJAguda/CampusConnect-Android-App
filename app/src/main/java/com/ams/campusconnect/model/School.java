@@ -1,7 +1,5 @@
 package com.ams.campusconnect.model;
 
-import android.util.Log;
-
 public class School {
 
     private static School instance; // Lazy Singleton

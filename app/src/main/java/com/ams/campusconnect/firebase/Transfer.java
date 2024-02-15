@@ -4,6 +4,8 @@ package com.ams.campusconnect.firebase;
 import android.content.Context;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.ams.campusconnect.model.School;
 import com.google.firebase.database.*;
 
@@ -13,8 +15,8 @@ public class Transfer {
 
     private String source;
     private String destination;
-    private String key;
-    private Context context;
+    private final String key;
+    private final Context context;
 
     // Create an instance of the Firebase database
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -31,27 +33,24 @@ public class Transfer {
         // Attach a listener to the 'fromPath' node to read the data
         source.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 // Write the read data to the 'toPath' node
-                destination.setValue(dataSnapshot.getValue(), new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                destination.setValue(dataSnapshot.getValue(), (databaseError, databaseReference) -> {
 
-                        // Check for any error while copying the data
-                        if (databaseError != null) {
-                            System.out.println("Data could not be copied: " + databaseError.getMessage());
-                        } else {
-                            Delete delete = new Delete();
-                            delete.deleteRecord(school.getSchoolID() + "/employee", key);
-                            Toast.makeText(context, "Successfully Transferred ", Toast.LENGTH_SHORT).show();
-                        }
+                    // Check for any error while copying the data
+                    if (databaseError != null) {
+                        System.out.println("Data could not be copied: " + databaseError.getMessage());
+                    } else {
+                        Delete delete = new Delete();
+                        delete.deleteRecord(school.getSchoolID() + "/employee", key);
+                        Toast.makeText(context, "Successfully Transferred ", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 System.out.println("Data copying was cancelled.");
             }
         });

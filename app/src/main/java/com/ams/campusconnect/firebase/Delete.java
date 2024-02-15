@@ -14,7 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Delete {
-    private DatabaseReference mDatabase;
+    private final DatabaseReference mDatabase;
 
     public Delete() {
         mDatabase = FirebaseDatabase.getInstance().getReference();

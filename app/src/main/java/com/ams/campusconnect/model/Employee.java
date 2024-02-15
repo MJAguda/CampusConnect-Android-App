@@ -21,10 +21,7 @@ public class Employee {
     private String qr;
     private double latitude;
     private double longitude;
-    private String timeAM_In;
-    private String timeAM_Out;
-    private String timePM_In;
-    private String timePM_Out;
+
 
 
     // Setters
@@ -54,19 +51,4 @@ public class Employee {
     public String getQr(){return qr;}
     public double getLatitude(){return latitude;}
     public double getLongitude(){return longitude;}
-    public String getTimeAM_In() {
-        return timeAM_In;
-    }
-
-    public String getTimeAM_Out() {
-        return timeAM_Out;
-    }
-
-    public String getTimePM_In() {
-        return timePM_In;
-    }
-
-    public String getTimePM_Out() {
-        return timePM_Out;
-    }
 }

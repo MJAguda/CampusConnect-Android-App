@@ -24,9 +24,6 @@ public class SaveData {
 
     private String authenticate; // stores timeAM_In, timeAM_Out, timePM_In, timePM_Out
 
-    // Setters
-    public void setAdminUsername(String adminUsername) {this.adminUsername = adminUsername;}
-    public void setAdminPassword(String adminPassword) {this.adminPassword = adminPassword;}
 
 
     public void setMonth(String month){this.month = month;}

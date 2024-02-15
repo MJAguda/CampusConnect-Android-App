@@ -13,14 +13,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Create {
-    private DatabaseReference mDatabase;
 
     public Create() {
 
     }
 
     public void createRecord(String node, Object data) {
-        mDatabase = FirebaseDatabase.getInstance().getReference(node);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(node);
         mDatabase.setValue(data);
     }
 }

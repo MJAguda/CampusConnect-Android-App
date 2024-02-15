@@ -1,9 +1,5 @@
 package com.ams.campusconnect.qrcode;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +8,11 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.ams.campusconnect.R;
 import com.google.android.gms.vision.CameraSource;
@@ -45,8 +46,8 @@ public class ScanQR extends AppCompatActivity {
             }
 
             @Override
-            public void receiveDetections(Detector.Detections<Barcode> detections) {
-                if (detections != null && detections.getDetectedItems().size() > 0) {
+            public void receiveDetections(@NonNull Detector.Detections<Barcode> detections) {
+                if (detections.getDetectedItems().size() > 0) {
                     final Barcode barcode = detections.getDetectedItems().valueAt(0);
                     if (barcode != null) {
                         Intent intent = new Intent();
@@ -65,7 +66,7 @@ public class ScanQR extends AppCompatActivity {
 
         cameraSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
-            public void surfaceCreated(SurfaceHolder holder) {
+            public void surfaceCreated(@NonNull SurfaceHolder holder) {
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
                         == PackageManager.PERMISSION_GRANTED) {
                     try {
@@ -79,18 +80,18 @@ public class ScanQR extends AppCompatActivity {
             }
 
             @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
             }
 
             @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
+            public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
                 cameraSource.stop();
             }
         });
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) { // 1001
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

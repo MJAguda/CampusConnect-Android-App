@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Update {
-    private DatabaseReference mDatabase;
+    private final DatabaseReference mDatabase;
 
     public Update() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
