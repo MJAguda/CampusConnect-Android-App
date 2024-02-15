@@ -1,13 +1,11 @@
 package com.ams.campusconnect;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -19,7 +17,6 @@ import androidx.core.content.ContextCompat;
 
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.Employee;
-import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.qrcode.ScanQR;
 import com.google.firebase.database.DataSnapshot;
@@ -57,135 +54,119 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton home = findViewById(R.id.home_Button);
         ImageButton attendance = findViewById(R.id.attendance_Button);
-        ImageView logo = findViewById(R.id.footerlogo_ImageView);
         ImageButton register = findViewById(R.id.admin_Button);
         ImageButton generate = findViewById(R.id.generate_Button);
-        TextView guide1 = findViewById(R.id.buttonGuide_TextView1);
-        TextView guide2 = findViewById(R.id.buttonGuide_TextView2);
-        TextView guide3 = findViewById(R.id.buttonGuide_TextView3);
-        TextView guide4 = findViewById(R.id.buttonGuide_TextView4);
-        TextView guide5 = findViewById(R.id.buttonGuide_TextView5);
 
         TextView dateTimeTextView = findViewById(R.id.dateAndTime_TextView);
-        TableLayout previewHeader = findViewById(R.id.previewHeaderdailyLog_TableLayout);
         table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
 
-        dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
-            @Override
-            public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
-                // Display a Display Date and Time
-                timer = new Timer();
-                TimerTask updateTimeTask = new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
+        dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+            // Display a Display Date and Time
+            timer = new Timer();
+            TimerTask updateTimeTask = new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(() -> dateTimeTextView.setText(String.format("%s/%s/%s %s", month, day, year, currentTimeIn12Hours)));
+                }
+            };
 
-                            @Override
-                            public void run() {
-                                dateTimeTextView.setText(month + "/" + day + "/" + year + " " + currentTimeIn12Hours);
-                            }
-                        });
-                    }
-                };
+            timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // TODO update every 1 second
 
-                timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // TODO update every 1 second
+            //Set school Name
+            schoolName.setText(school.getSchoolName());
 
-                //Set school Name
-                schoolName.setText(school.getSchoolName());
+            read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+                @Override
+                public void onSuccess(DataSnapshot dataSnapshot) {
+                    table.removeAllViews();
 
-                read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
-                    @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        table.removeAllViews();
-
-                        // Get all the names from the "employee" node and store them in a list
-                        List<String> names = new ArrayList<>();
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            String fullName = child.child("fullname").getValue(String.class);
-                            if (fullName != null) {
-                                names.add(fullName);
-                            }
+                    // Get all the names from the "employee" node and store them in a list
+                    List<String> names = new ArrayList<>();
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        String fullName = child.child("fullname").getValue(String.class);
+                        if (fullName != null) {
+                            names.add(fullName);
                         }
+                    }
 
-                        // Sort the names alphabetically
-                        Collections.sort(names);
+                    // Sort the names alphabetically
+                    Collections.sort(names);
 
-                        // Display the sorted names in the UI
-                        for (String fullName : names) {
-                            // Create a row for each name
-                            TableRow row = new TableRow(MainActivity.this);
+                    // Display the sorted names in the UI
+                    for (String fullName : names) {
+                        // Create a row for each name
+                        TableRow row = new TableRow(MainActivity.this);
 
-                            // Add the name to the row
-                            TextView name = new TextView(MainActivity.this);
-                            name.setText(fullName);
-                            name.setTextSize(10);
-                            name.setGravity(Gravity.TOP);
-                            name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-                            name.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
+                        // Add the name to the row
+                        TextView name = new TextView(MainActivity.this);
+                        name.setText(fullName);
+                        name.setTextSize(10);
+                        name.setGravity(Gravity.TOP);
+                        name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                        name.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
 
-                            // Get the height of the first TextView
-                            name.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                            int nameHeight = name.getMeasuredHeight();
+                        // Get the height of the first TextView
+                        name.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                        int nameHeight = name.getMeasuredHeight();
 
-                            TableRow.LayoutParams nameParams = new TableRow.LayoutParams(0, nameHeight, 0.32f);
-                            name.setLayoutParams(nameParams);
-                            row.addView(name);
+                        TableRow.LayoutParams nameParams = new TableRow.LayoutParams(0, nameHeight, 0.32f);
+                        name.setLayoutParams(nameParams);
+                        row.addView(name);
 
-                            // Add the attendance times to the row
-                            for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                String employeeName = child.child("fullname").getValue(String.class);
-                                if (employeeName != null && employeeName.equals(fullName)) {
-                                    for (DataSnapshot grandChild : child.child("attendance/" + year + "/" + dateUtils.getMonthName(month) + "/" + Integer.parseInt(day)).getChildren()) {
-                                        TextView time = new TextView(MainActivity.this);
-                                        time.setText(grandChild.getValue().toString());
-                                        time.setTextSize(10);
-                                        TableRow.LayoutParams timeParams = new TableRow.LayoutParams(0, nameHeight, 0.17f);
-                                        time.setLayoutParams(timeParams);
-                                        time.setGravity(Gravity.CENTER);
-                                        time.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
-                                        row.addView(time);
-                                    }
+                        // Add the attendance times to the row
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            String employeeName = child.child("fullname").getValue(String.class);
+                            if (employeeName != null && employeeName.equals(fullName)) {
+                                for (DataSnapshot grandChild : child.child("attendance/" + year + "/" + dateUtils.getMonthName(month) + "/" + Integer.parseInt(day)).getChildren()) {
+                                    TextView time = new TextView(MainActivity.this);
+                                    time.setText(grandChild.getValue().toString());
+                                    time.setTextSize(10);
+                                    TableRow.LayoutParams timeParams = new TableRow.LayoutParams(0, nameHeight, 0.17f);
+                                    time.setLayoutParams(timeParams);
+                                    time.setGravity(Gravity.CENTER);
+                                    time.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
+                                    row.addView(time);
                                 }
                             }
-
-                            table.addView(row);
                         }
+
+                        table.addView(row);
                     }
+                }
 
-                    @Override
-                    public void onFailure(DatabaseError databaseError) {
-                        Log.d("Read", "Error: " + databaseError.getMessage());
-                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                @Override
+                public void onFailure(DatabaseError databaseError) {
+                    Log.d("Read", "Error: " + databaseError.getMessage());
+                    Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
 
 
-                back.setOnClickListener(view -> {
-                    Intent intent = new Intent(MainActivity.this, SchoolLogIn.class);
-                    startActivity(intent);
-                });
+            back.setOnClickListener(view -> {
+                Intent intent = new Intent(MainActivity.this, SchoolLogIn.class);
+                startActivity(intent);
+            });
 
-                home.setOnClickListener(view -> {
-                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    startActivity(intent);
-                });
+            home.setOnClickListener(view -> {
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+            });
 
-                attendance.setOnClickListener(view -> {
+            attendance.setOnClickListener(view -> {
 
-                    // TODO: Add QR Scan here
-                    Intent intent = new Intent(MainActivity.this, ScanQR.class);
-                    startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
-                });
-                register.setOnClickListener(view -> {
-                    Intent intent = new Intent(MainActivity.this, AdminLogIn.class);
-                    startActivity(intent);
-                });
+                // TODO: Add QR Scan here
+                Intent intent = new Intent(MainActivity.this, ScanQR.class);
+                startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
+            });
+            register.setOnClickListener(view -> {
+                Intent intent = new Intent(MainActivity.this, AdminLogIn.class);
+                startActivity(intent);
+            });
 
-                generate.setOnClickListener(view -> {
-                    Intent intent = new Intent(MainActivity.this, Generate.class);
-                    startActivity(intent);
-                });
-            }
+            generate.setOnClickListener(view -> {
+                Intent intent = new Intent(MainActivity.this, Generate.class);
+                startActivity(intent);
+            });
         });
     }
 
@@ -199,16 +180,15 @@ public class MainActivity extends AppCompatActivity {
             // Handle the QR code result here
 
             // Print Toast message
-            Toast.makeText(this, "" + qrResult, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, qrResult, Toast.LENGTH_SHORT).show();
 
             // TODO: verify if employee id exists
             read.readRecord(school.getSchoolID() + "/employee/" + qrResult, new Read.OnGetDataListener() {
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
-                    if(!dataSnapshot.exists()){
+                    if (!dataSnapshot.exists()) {
                         Toast.makeText(getApplicationContext(), "ID Not Found", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
 
                         // Get employee fields from firebase realtime database
                         String id = dataSnapshot.child("id").getValue().toString();
@@ -220,8 +200,8 @@ public class MainActivity extends AppCompatActivity {
                         String firstName = nameParts[1];
 
                         String birthday = dataSnapshot.child("birthdate").getValue().toString();
-                        double latitude = (double) dataSnapshot.child("latitude").getValue();
-                        double longitude = (double) dataSnapshot.child("longitude").getValue();
+                        double latitude = dataSnapshot.child("latitude").getValue(Double.class);
+                        double longitude = dataSnapshot.child("longitude").getValue(Double.class);
 
 //                        Log.d("Id : ", id);
 //                        Log.d("First Name :", firstName);
