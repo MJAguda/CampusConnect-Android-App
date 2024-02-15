@@ -3,7 +3,6 @@ package com.ams.campusconnect;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,9 +18,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Read;
-import com.ams.campusconnect.gps.GPSCoordinates;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
@@ -36,11 +33,7 @@ public class Attendance extends AppCompatActivity {
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
     Employee employee = Employee.getInstance();
-    Create create = new Create();
     Read read = new Read();
-
-    private static final int REQUEST_CODE_SCAN_QR = 1;
-
     Timer timer;
 
     @Override
@@ -72,10 +65,6 @@ public class Attendance extends AppCompatActivity {
         Button PMOut = findViewById(R.id.PMOut_Button);
 
         TextView name = findViewById(R.id.name_TextView);
-
-        // Request GPS
-        GPSCoordinates gpsCoordinates = new GPSCoordinates(this);
-        Location currentLocation = gpsCoordinates.getCurrentLocation();
 
         back.setOnClickListener(view -> {
             Intent intent = new Intent(Attendance.this, MainActivity.class);
@@ -140,7 +129,7 @@ public class Attendance extends AppCompatActivity {
                 Log.d("Time-Based Feature", "timeBasedFeature : " + school.isTimeBasedFeature());
 
                 // Check if Time-Based Button Feature is On/Off
-                if (school.isTimeBasedFeature() == false) {
+                if (!school.isTimeBasedFeature()) {
                     // Disable the time punch Buttons
                     AMIn.setEnabled(true);
                     AMOut.setEnabled(true);
@@ -151,7 +140,7 @@ public class Attendance extends AppCompatActivity {
                     AMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
                     PMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
                     PMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-                } else if (school.isTimeBasedFeature() == true) {
+                } else {
                     // Enable AMIn button if current time is before 7:00 AM
                     if (hours < 12 || (hours == 12 && minutes < 1)) {
                         AMIn.setEnabled(true);
@@ -170,68 +159,50 @@ public class Attendance extends AppCompatActivity {
                         PMOut.setEnabled(true);
                         PMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
                     }
-                } else {
-                    // Add Default
                 }
-
             });
         }
 
 
-        AMIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save.setAuthenticate("timeAM_In");
-                Intent intent = new Intent(Attendance.this, LogInAttendance.class);
-                startActivity(intent);
-            }
+        AMIn.setOnClickListener(view -> {
+            save.setAuthenticate("timeAM_In");
+            Intent intent = new Intent(Attendance.this, LogInAttendance.class);
+            startActivity(intent);
         });
 
-        AMOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save.setAuthenticate("timeAM_Out");
-                Intent intent = new Intent(Attendance.this, LogInAttendance.class);
-                startActivity(intent);
-            }
+        AMOut.setOnClickListener(view -> {
+            save.setAuthenticate("timeAM_Out");
+            Intent intent = new Intent(Attendance.this, LogInAttendance.class);
+            startActivity(intent);
         });
 
-        PMIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save.setAuthenticate("timePM_In");
-                Intent intent = new Intent(Attendance.this, LogInAttendance.class);
-                startActivity(intent);
-            }
+        PMIn.setOnClickListener(view -> {
+            save.setAuthenticate("timePM_In");
+            Intent intent = new Intent(Attendance.this, LogInAttendance.class);
+            startActivity(intent);
         });
 
-        PMOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save.setAuthenticate("timePM_Out");
-                Intent intent = new Intent(Attendance.this, LogInAttendance.class);
-                startActivity(intent);
-            }
+        PMOut.setOnClickListener(view -> {
+            save.setAuthenticate("timePM_Out");
+            Intent intent = new Intent(Attendance.this, LogInAttendance.class);
+            startActivity(intent);
         });
 
         try {
             if (!employee.getId().isEmpty()) {
-                name.setText(employee.getLastName() + ", " + employee.getFirstName());
-                dateUtils.getDateTime(new DateUtils.VolleyCallBack() {
-                    @Override
-                    public void onGetDateTime(String month, String day, String year, String currentTimeIn24Hours, String currentTimeIn12Hours) {
-                        save.setYear(year);
-                        save.setMonth(DateUtils.getMonthName(month));
-                        save.setDay(String.valueOf(Integer.parseInt(day)));
+                name.setText(String.format("%s, %s", employee.getLastName(), employee.getFirstName()));
+                dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+                    save.setYear(year);
+                    save.setMonth(DateUtils.getMonthName(month));
+                    save.setDay(String.valueOf(Integer.parseInt(day)));
 
-                        getTimeLogs(save.getYear(), save.getMonth());
-                    }
+                    getTimeLogs(save.getYear(), save.getMonth());
                 });
 
 
             }
         } catch (NullPointerException e) {
-            name.setText("Name");
+            name.setText("Null");
         }
     }
 
@@ -264,7 +235,7 @@ public class Attendance extends AppCompatActivity {
 
                     // Add time TextView to the row
                     for (DataSnapshot grandChild : child.getChildren()) {
-                        Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
+                        // Log.d("Time", grandChild.getKey() + " : " + grandChild.getValue());
 
                         // Add time to the row
                         TextView time = new TextView(Attendance.this);
