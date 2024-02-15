@@ -12,6 +12,8 @@ DatabaseError object to the onFailure() method of the listener interface.
  */
 package com.ams.campusconnect.firebase;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,19 +21,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class Read {
-    private DatabaseReference mDatabase;
+    private final DatabaseReference mDatabase;
 
     public Read() {  mDatabase = FirebaseDatabase.getInstance().getReference(); }
 
     public void readRecord(String node, final OnGetDataListener listener) {
         mDatabase.child(node).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listener.onSuccess(dataSnapshot);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 listener.onFailure(databaseError);
             }
         });
