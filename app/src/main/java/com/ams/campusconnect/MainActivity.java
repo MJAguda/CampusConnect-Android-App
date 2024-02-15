@@ -1,5 +1,6 @@
 package com.ams.campusconnect;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,10 +13,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.ams.campusconnect.firebase.Read;
+import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.qrcode.ScanQR;
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
     TableLayout table;
     DateUtils dateUtils;
+    Employee employee = Employee.getInstance();
+
+    private static final int REQUEST_CODE_SCAN_QR = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,11 +173,8 @@ public class MainActivity extends AppCompatActivity {
                 attendance.setOnClickListener(view -> {
 
                     // TODO: Add QR Scan here
-
-                    // TODO: Set Employee model
-
-                    Intent intent = new Intent(MainActivity.this, Attendance.class);
-                    startActivity(intent);
+                    Intent intent = new Intent(MainActivity.this, ScanQR.class);
+                    startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
                 });
                 register.setOnClickListener(view -> {
                     Intent intent = new Intent(MainActivity.this, AdminLogIn.class);
@@ -185,4 +188,70 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    // Handles Scanned QR Result
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
+            String qrResult = data.getStringExtra("QR_RESULT");
+            // Handle the QR code result here
+
+            // Print Toast message
+            Toast.makeText(this, "" + qrResult, Toast.LENGTH_SHORT).show();
+
+            // TODO: verify if employee id exists
+            read.readRecord(school.getSchoolID() + "/employee/" + qrResult, new Read.OnGetDataListener() {
+                @Override
+                public void onSuccess(DataSnapshot dataSnapshot) {
+                    if(!dataSnapshot.exists()){
+                        Toast.makeText(getApplicationContext(), "ID Not Found", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+
+                        // Get employee fields from firebase realtime database
+                        String id = dataSnapshot.child("id").getValue().toString();
+                        String fullName = dataSnapshot.child("fullname").getValue().toString();
+
+                        // Split fullName into firstName and lastName parts
+                        String[] nameParts = fullName.split(", ");
+                        String lastName = nameParts[0];
+                        String firstName = nameParts[1];
+
+                        String birthday = dataSnapshot.child("birthdate").getValue().toString();
+                        double latitude = (double) dataSnapshot.child("latitude").getValue();
+                        double longitude = (double) dataSnapshot.child("longitude").getValue();
+
+//                        Log.d("Id : ", id);
+//                        Log.d("First Name :", firstName);
+//                        Log.d("LastName : ", lastName);
+//                        Log.d("Full Name : ", fullName);
+//                        Log.d("Birthdate : ", birthday);
+//                        Log.d("Latitude : ", String.valueOf(latitude));
+//                        Log.d("Longitude : ", String.valueOf(longitude));
+
+
+                        // Set Employee model
+                        employee.setId(id);
+                        employee.setFirstName(firstName);
+                        employee.setLastName(lastName);
+                        employee.setFullName(fullName);
+                        employee.setBirthday(birthday);
+                        employee.setLatitude(latitude);
+                        employee.setLongitude(longitude);
+
+                        Intent intent = new Intent(MainActivity.this, Attendance.class);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onFailure(DatabaseError databaseError) {
+                    // handle error here
+                }
+            });
+        }
+    }
 }
+
