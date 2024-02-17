@@ -1,10 +1,16 @@
 package com.ams.campusconnect;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -15,10 +21,18 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.ams.campusconnect.biometric.BiometricUtils;
+import com.ams.campusconnect.firebase.Create;
+import com.ams.campusconnect.firebase.Delete;
 import com.ams.campusconnect.firebase.Read;
+import com.ams.campusconnect.firebase.Update;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
@@ -33,15 +47,28 @@ public class Attendance extends AppCompatActivity {
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
     Employee employee = Employee.getInstance();
+    Create create = new Create();
     Read read = new Read();
+    Update update = new Update();
+    Delete delete = new Delete();
     Timer timer;
+    BiometricUtils biometricManagerHelper;
+
+    MediaPlayer thankyou, alreadyhave;
+
+    private static final String TAG = LogInAttendance.class.getSimpleName();
+
+    DateUtils dateUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
 
-        DateUtils dateUtils = new DateUtils(Attendance.this);
+        dateUtils = new DateUtils(Attendance.this);
+
+        thankyou = MediaPlayer.create(this, R.raw.thankyou);
+        alreadyhave = MediaPlayer.create(this, R.raw.alreadyhave);
 
         // Initialize Clock
         TextView dateTimeTextView = findViewById(R.id.dateAndTime_TextView);
@@ -164,28 +191,31 @@ public class Attendance extends AppCompatActivity {
         }
 
 
+        biometricManagerHelper = new BiometricUtils(this, createBiometricCallback());
+        biometricManagerHelper.checkBiometricSupported();
+
         AMIn.setOnClickListener(view -> {
             save.setAuthenticate("timeAM_In");
-            Intent intent = new Intent(Attendance.this, LogInAttendance.class);
-            startActivity(intent);
+
+            biometricManagerHelper.authenticate(false);
         });
 
         AMOut.setOnClickListener(view -> {
             save.setAuthenticate("timeAM_Out");
-            Intent intent = new Intent(Attendance.this, LogInAttendance.class);
-            startActivity(intent);
+
+            biometricManagerHelper.authenticate(false);
         });
 
         PMIn.setOnClickListener(view -> {
             save.setAuthenticate("timePM_In");
-            Intent intent = new Intent(Attendance.this, LogInAttendance.class);
-            startActivity(intent);
+
+            biometricManagerHelper.authenticate(false);
         });
 
         PMOut.setOnClickListener(view -> {
             save.setAuthenticate("timePM_Out");
-            Intent intent = new Intent(Attendance.this, LogInAttendance.class);
-            startActivity(intent);
+
+            biometricManagerHelper.authenticate(false);
         });
 
         try {
@@ -204,6 +234,237 @@ public class Attendance extends AppCompatActivity {
         } catch (NullPointerException e) {
             name.setText("Null");
         }
+    }
+
+    private BiometricPrompt.AuthenticationCallback createBiometricCallback() {
+
+        String employeeAttendancePath = school.getSchoolID() + "/employee/" + employee.getId();
+               
+        return new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(Attendance.this, "Auth error: " + errString, Toast.LENGTH_SHORT).show();
+            }
+            
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                
+                // TODO: Check Developer Option
+
+                // TODO: Add time submit here
+
+                Log.d("Check: ","Outside dateUtils");
+
+                
+                dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+                    
+                    setDateTime(month, day, year);
+
+//                    TODO : Fix Bug time is not registering
+                    // Push Time in Database
+
+                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
+
+
+
+
+                });
+
+
+//                Toast.makeText(Attendance.this, "Auth succeeded", Toast.LENGTH_SHORT).show();
+            }
+
+            private void checkEmployeeAttendance(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
+                
+
+                // Check if the employee ID exists
+                readEmployeeRecord(employeeAttendancePath, save, school, employee, currentTimeIn12Hours);
+            }
+
+            private void readEmployeeRecord(String employeeAttendancePath, SaveData save, School school, Employee employee, String currentTimeIn12Hours) {
+                read.readRecord(employeeAttendancePath, new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            String attendancePath = employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay();
+
+                            // Check if the employee's attendance for the given date exists
+                            readAttendanceRecord(attendancePath, save, employee, school, currentTimeIn12Hours);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "ID Not Found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        // handle error here
+                    }
+                });
+            }
+
+            private void readAttendanceRecord(String attendancePath, SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
+                read.readRecord(attendancePath, new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        try {
+                            if (dataSnapshot.child(save.getAuthenticate()).exists() && !dataSnapshot.child(save.getAuthenticate()).getValue(String.class).equals("")) {
+                                Toast.makeText(getApplicationContext(), "Already Have", Toast.LENGTH_SHORT).show();
+                                alreadyhave.start();
+                            } else {
+                                checkTimeIntervals(dataSnapshot, save, employee, school, currentTimeIn12Hours);
+                                
+                            }
+                        }
+                        catch (NullPointerException e) {
+
+                            // TODO: Create time cells for each day
+                            read.readRecord(attendancePath, new Read.OnGetDataListener() {
+                                @Override
+                                public void onSuccess(DataSnapshot dataSnapshot) {
+                                    for (int i = 1; i <= DateUtils.getNumberOfDays(save.getMonth(), save.getYear()); i++) {
+                                        if (!dataSnapshot.hasChild(String.valueOf(i))) {
+                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timeAM_In", "");
+                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timeAM_Out", "");
+                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timePM_In", "");
+                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timePM_Out", "");
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(DatabaseError databaseError) {
+                                    // handle error here
+                                }
+                            });
+                            //Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        // handle error here
+                    }
+                });
+            }
+
+            private void checkTimeIntervals(DataSnapshot dataSnapshot, SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
+                String priorAuthenticate = calculatePriorAuthenticate(save.getAuthenticate());
+
+                read.readRecord(employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + priorAuthenticate, new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        String priorTime = calculatePriorTime(dataSnapshot);
+
+                        int totalMinuteDifference = calculateTimeDifference(currentTimeIn12Hours, priorTime);
+
+                        if (totalMinuteDifference <= 15) {
+                            Toast.makeText(getApplicationContext(), "Wait 15 minutes", Toast.LENGTH_SHORT).show();
+                        } else {
+                            getLocationAndCheckIn(employee, school, save, currentTimeIn12Hours);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        // handle error here
+                    }
+                });
+            }
+
+            private void getLocationAndCheckIn(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
+                LocationManager locationManager;
+                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+                if (ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Attendance.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                }
+
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, location -> {
+                    employee.setLatitude(location.getLatitude());
+                    employee.setLongitude(location.getLongitude());
+
+                    // Check if GPS is on
+                    // Ask Permission
+
+                    if (school.isGpsFeature() && isEmployeeWithinCampusBounds(employee, school)) {
+                        Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
+//                        saveAttendanceAndLocation(employee, save, school, currentTimeIn12Hours);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Connect to a WIFI for more accurate GPS", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            private boolean isEmployeeWithinCampusBounds(Employee employee, School school) {
+                return (employee.getLatitude() >= Double.parseDouble(school.getLatitudeBottom()) &&
+                        employee.getLatitude() <= Double.parseDouble(school.getLatitudeTop()) &&
+                        employee.getLongitude() >= Double.parseDouble(school.getLongitudeLeft()) &&
+                        employee.getLongitude() <= Double.parseDouble(school.getLongitudeRight()));
+            }
+
+            private int calculateTimeDifference(String currentTimeIn12Hours, String priorTime) {
+                String[] priorTimeParts = priorTime.split(" ")[0].split(":");
+                int priorHour = Integer.parseInt(priorTimeParts[0]);
+                int priorMinutes = Integer.parseInt(priorTimeParts[1]);
+
+                String[] currentTimeParts = currentTimeIn12Hours.split(" ")[0].split(":");
+                int currentHour = Integer.parseInt(currentTimeParts[0]);
+                int currentMinutes = Integer.parseInt(currentTimeParts[1]);
+
+                if (priorTime.contains("PM")) {
+                    priorHour += 12;
+                }
+                if (currentTimeIn12Hours.contains("PM")) {
+                    currentHour += 12;
+                }
+
+                int hourDifference = Math.abs(priorHour - currentHour);
+                int minuteDifference = Math.abs(priorMinutes - currentMinutes);
+                return hourDifference * 60 + minuteDifference;
+            }
+
+            private String calculatePriorTime(DataSnapshot dataSnapshot) {
+                String priorTime;
+                try {
+                    priorTime = (dataSnapshot.exists() && dataSnapshot.getValue(String.class) != null) ? dataSnapshot.getValue(String.class) : "00:00 AM";
+                } catch (NullPointerException e) {
+                    priorTime = "00:00 AM";
+                }
+                return priorTime;
+            }
+
+            private String calculatePriorAuthenticate(String currentAuthenticate) {
+                String priorAuthenticate = null;
+                switch (currentAuthenticate) {
+                    case "timeAM_Out":
+                        priorAuthenticate = "timeAM_In";
+                        break;
+                    case "timePM_In":
+                        priorAuthenticate = "timeAM_Out";
+                        break;
+                    case "timePM_Out":
+                        priorAuthenticate = "timePM_In";
+                        break;
+                }
+                return priorAuthenticate;
+            }
+
+            private void setDateTime(String month, String day, String year) {
+                save.setYear(year);
+                save.setMonth(DateUtils.getMonthName(month));
+                save.setDay(String.valueOf(Integer.parseInt(day)));
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(Attendance.this, "Auth failed", Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     private void getTimeLogs(String year, String month) {

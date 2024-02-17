@@ -269,7 +269,8 @@ public class LogInAttendance extends AppCompatActivity {
                                                 }
                                             });
                                         }
-                                    } catch (NullPointerException e) {
+                                    }
+                                    catch (NullPointerException e) {
 
                                         // Create time cells for each day
                                         read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth(), new Read.OnGetDataListener() {
