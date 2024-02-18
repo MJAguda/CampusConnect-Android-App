@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -257,6 +258,7 @@ public class Attendance extends AppCompatActivity {
 
                 dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
 
+                    Log.d("Code Block : ", "inside dateUtils");
                     setDateTime(month, day, year);
 
 //                    TODO : Fix Bug time is not registering
@@ -271,14 +273,22 @@ public class Attendance extends AppCompatActivity {
 //                Toast.makeText(Attendance.this, "Auth succeeded", Toast.LENGTH_SHORT).show();
             }
 
+            private void setDateTime(String month, String day, String year) {
+                Log.d("Code Block : ", "inside setDateTime");
+                save.setYear(year);
+                save.setMonth(DateUtils.getMonthName(month));
+                save.setDay(String.valueOf(Integer.parseInt(day)));
+            }
+
             private void checkEmployeeAttendance(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
 
-
+                Log.d("Code Block : ", "inside checkEmployeeAttendance");
                 // Check if the employee ID exists
                 readEmployeeRecord(employeeAttendancePath, save, school, employee, currentTimeIn12Hours);
             }
 
             private void readEmployeeRecord(String employeeAttendancePath, SaveData save, School school, Employee employee, String currentTimeIn12Hours) {
+                Log.d("Code Block : ", "inside readEmployeeRecord");
                 read.readRecord(employeeAttendancePath, new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
@@ -300,6 +310,7 @@ public class Attendance extends AppCompatActivity {
             }
 
             private void readAttendanceRecord(String attendancePath, SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
+                Log.d("Code Block : ", "inside readAttendanceRecord");
                 read.readRecord(attendancePath, new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
@@ -307,7 +318,7 @@ public class Attendance extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Already Have", Toast.LENGTH_SHORT).show();
                             alreadyhave.start();
                         } else {
-                            checkTimeIntervals(dataSnapshot, save, employee, school, currentTimeIn12Hours);
+                            checkTimeIntervals(save, employee, school, currentTimeIn12Hours);
 
                         }
                     }
@@ -319,15 +330,36 @@ public class Attendance extends AppCompatActivity {
                 });
             }
 
-            private void checkTimeIntervals(DataSnapshot dataSnapshot, SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
+            private void checkTimeIntervals(SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
+                Log.d("Code Block : ", "inside checkTimeIntervals");
+
                 String priorAuthenticate = calculatePriorAuthenticate(save.getAuthenticate());
+
+                Log.d("year : ", save.getYear());
+                Log.d("month : ", save.getMonth());
+                Log.d("day : ", save.getDay());
+                Log.d("priorAuthenticate : ", priorAuthenticate);
 
                 read.readRecord(employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + priorAuthenticate, new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-                        String priorTime = calculatePriorTime(dataSnapshot);
+                        String priorTime;
+
+                        try {
+                            if (dataSnapshot.getValue(String.class).equals(""))
+                                priorTime = "00:00 AM";
+                            else {
+                                priorTime = dataSnapshot.getValue().toString();
+                            }
+                        } catch (NullPointerException e) {
+                            priorTime = "00:00 AM";
+                        }
+
+                        Log.d("priorTime : ", priorTime);
 
                         int totalMinuteDifference = calculateTimeDifference(currentTimeIn12Hours, priorTime);
+
+                        Log.d("", String.valueOf(totalMinuteDifference));
 
                         if (totalMinuteDifference <= 15) {
                             Toast.makeText(getApplicationContext(), "Wait 15 minutes", Toast.LENGTH_SHORT).show();
@@ -344,6 +376,8 @@ public class Attendance extends AppCompatActivity {
             }
 
             private void getLocationAndCheckIn(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
+                Log.d("Code Block : ", "inside getLocationAndCheckIn");
+
                 LocationManager locationManager;
                 locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -356,15 +390,43 @@ public class Attendance extends AppCompatActivity {
                     employee.setLatitude(location.getLatitude());
                     employee.setLongitude(location.getLongitude());
 
-                    // Check if GPS is on
-                    // Ask Permission
+                    if (checkDeveloperOptions()) {
+                        // Developer options are enabled, open settings
+                        finish();
+                        openDeveloperOptionsSettings();
+                    }
+                    else {
+                        // Check employee Coordinate if employee is inside the 4 corners of the campus
+                        // Toggle switch to punch time without GPS
+                        // Check if currentLocation is not null
 
-                    if (school.isGpsFeature() && isEmployeeWithinCampusBounds(employee, school)) {
-                        Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
-//                        saveAttendanceAndLocation(employee, save, school, currentTimeIn12Hours);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Connect to a WIFI for more accurate GPS", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
+                        if (school.isGpsFeature()) {
+                            if (isEmployeeWithinCampusBounds(employee, school)) {
+                                Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
+
+                                // Push Time in Database
+                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+
+                                // Store employee's last known location
+                                update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "latitude", employee.getLatitude());
+                                update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
+
+//                            thankyou.start();
+
+                                finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Connect to a WIFI for more accurate GPS", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
+
+                            // Push Time in Database
+                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+//                        thankyou.start();
+
+                            finish();
+                        }
                     }
                 });
             }
@@ -423,11 +485,6 @@ public class Attendance extends AppCompatActivity {
                 return priorAuthenticate;
             }
 
-            private void setDateTime(String month, String day, String year) {
-                save.setYear(year);
-                save.setMonth(DateUtils.getMonthName(month));
-                save.setDay(String.valueOf(Integer.parseInt(day)));
-            }
 
             @Override
             public void onAuthenticationFailed() {
@@ -435,6 +492,18 @@ public class Attendance extends AppCompatActivity {
                 Toast.makeText(Attendance.this, "Auth failed", Toast.LENGTH_SHORT).show();
             }
         };
+    }
+
+    private boolean checkDeveloperOptions() {
+        int developerOptions = Settings.Secure.getInt(getContentResolver(), Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0);
+        return developerOptions == 1;
+    }
+
+    private void openDeveloperOptionsSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS);
+        startActivity(intent);
+        // Display a message informing the user
+        Toast.makeText(Attendance.this, "Please turn off Developer Options", Toast.LENGTH_LONG).show();
     }
 
     private void getTimeLogs(String year, String month) {
@@ -499,6 +568,5 @@ public class Attendance extends AppCompatActivity {
         super.onDestroy();
         timer.cancel();
     }
-
 }
 
