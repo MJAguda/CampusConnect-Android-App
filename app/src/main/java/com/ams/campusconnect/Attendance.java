@@ -1,7 +1,6 @@
 package com.ams.campusconnect;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -10,7 +9,6 @@ import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.app.ActivityCompat;
@@ -239,35 +236,33 @@ public class Attendance extends AppCompatActivity {
     private BiometricPrompt.AuthenticationCallback createBiometricCallback() {
 
         String employeeAttendancePath = school.getSchoolID() + "/employee/" + employee.getId();
-               
+
         return new BiometricPrompt.AuthenticationCallback() {
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 Toast.makeText(Attendance.this, "Auth error: " + errString, Toast.LENGTH_SHORT).show();
             }
-            
+
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                
+
                 // TODO: Check Developer Option
 
                 // TODO: Add time submit here
 
-                Log.d("Check: ","Outside dateUtils");
+                Log.d("Check: ", "Outside dateUtils");
 
-                
+
                 dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
-                    
+
                     setDateTime(month, day, year);
 
 //                    TODO : Fix Bug time is not registering
                     // Push Time in Database
 
                     checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
-
-
 
 
                 });
@@ -277,7 +272,7 @@ public class Attendance extends AppCompatActivity {
             }
 
             private void checkEmployeeAttendance(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
-                
+
 
                 // Check if the employee ID exists
                 readEmployeeRecord(employeeAttendancePath, save, school, employee, currentTimeIn12Hours);
@@ -308,37 +303,12 @@ public class Attendance extends AppCompatActivity {
                 read.readRecord(attendancePath, new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-                        try {
-                            if (dataSnapshot.child(save.getAuthenticate()).exists() && !dataSnapshot.child(save.getAuthenticate()).getValue(String.class).equals("")) {
-                                Toast.makeText(getApplicationContext(), "Already Have", Toast.LENGTH_SHORT).show();
-                                alreadyhave.start();
-                            } else {
-                                checkTimeIntervals(dataSnapshot, save, employee, school, currentTimeIn12Hours);
-                                
-                            }
-                        }
-                        catch (NullPointerException e) {
+                        if (dataSnapshot.child(save.getAuthenticate()).exists() && !dataSnapshot.child(save.getAuthenticate()).getValue(String.class).equals("")) {
+                            Toast.makeText(getApplicationContext(), "Already Have", Toast.LENGTH_SHORT).show();
+                            alreadyhave.start();
+                        } else {
+                            checkTimeIntervals(dataSnapshot, save, employee, school, currentTimeIn12Hours);
 
-                            // TODO: Create time cells for each day
-                            read.readRecord(attendancePath, new Read.OnGetDataListener() {
-                                @Override
-                                public void onSuccess(DataSnapshot dataSnapshot) {
-                                    for (int i = 1; i <= DateUtils.getNumberOfDays(save.getMonth(), save.getYear()); i++) {
-                                        if (!dataSnapshot.hasChild(String.valueOf(i))) {
-                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timeAM_In", "");
-                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timeAM_Out", "");
-                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timePM_In", "");
-                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + i + "/timePM_Out", "");
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(DatabaseError databaseError) {
-                                    // handle error here
-                                }
-                            });
-                            //Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_LONG).show();
                         }
                     }
 

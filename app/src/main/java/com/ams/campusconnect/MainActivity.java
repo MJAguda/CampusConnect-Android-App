@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.School;
@@ -31,6 +32,8 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     School school = School.getInstance();
+
+    Create create = new Create();
     Read read = new Read();
     Timer timer;
 
@@ -201,15 +204,6 @@ public class MainActivity extends AppCompatActivity {
                         double latitude = dataSnapshot.child("latitude").getValue(Double.class);
                         double longitude = dataSnapshot.child("longitude").getValue(Double.class);
 
-//                        Log.d("Id : ", id);
-//                        Log.d("First Name :", firstName);
-//                        Log.d("LastName : ", lastName);
-//                        Log.d("Full Name : ", fullName);
-//                        Log.d("Birthdate : ", birthday);
-//                        Log.d("Latitude : ", String.valueOf(latitude));
-//                        Log.d("Longitude : ", String.valueOf(longitude));
-
-
                         // Set Employee model
                         employee.setId(id);
                         employee.setFirstName(firstName);
@@ -219,8 +213,34 @@ public class MainActivity extends AppCompatActivity {
                         employee.setLatitude(latitude);
                         employee.setLongitude(longitude);
 
+
+                        dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+                            read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month), new Read.OnGetDataListener() {
+                                @Override
+                                public void onSuccess(DataSnapshot dataSnapshot) {
+                                    if (!dataSnapshot.exists()) {
+                                        for (int i = 1; i <= DateUtils.getNumberOfDays(DateUtils.getMonthName(month), year) ; i++) {
+                                            if (!dataSnapshot.hasChild(String.valueOf(i))) {
+                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_In", "");
+                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_Out", "");
+                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_In", "");
+                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_Out", "");
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(DatabaseError databaseError) {
+                                    // Handle Error Here
+                                }
+                            });
+
+                        });
+
                         Intent intent = new Intent(MainActivity.this, Attendance.class);
                         startActivity(intent);
+
                     }
                 }
 
