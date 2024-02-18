@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
             // Handle the QR code result here
 
             // Print Toast message
-            Toast.makeText(this, qrResult, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, qrResult, Toast.LENGTH_SHORT).show();
 
             // Verify if employee id exists
             read.readRecord(school.getSchoolID() + "/employee/" + qrResult, new Read.OnGetDataListener() {
