@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
@@ -56,6 +59,42 @@ public class MainActivity extends AppCompatActivity {
         ImageButton attendance = findViewById(R.id.attendance_Button);
         ImageButton register = findViewById(R.id.admin_Button);
         ImageButton generate = findViewById(R.id.generate_Button);
+
+        //Find the spinner in the layout
+        Spinner monthSpinner = findViewById(R.id.month_Spinner);
+        Spinner yearSpinner = findViewById(R.id.year_Spinner);
+
+        // Create an ArrayList for the month
+        ArrayList<String> monthList = new ArrayList<>();
+        monthList.add("January");
+        monthList.add("February");
+        monthList.add("March");
+        monthList.add("April");
+        monthList.add("May");
+        monthList.add("June");
+        monthList.add("July");
+        monthList.add("August");
+        monthList.add("September");
+        monthList.add("October");
+        monthList.add("November");
+        monthList.add("December");
+
+        // Create an ArrayAdapter for the month spinner
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, monthList);
+        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monthSpinner.setAdapter(monthAdapter);
+
+        // Create an ArrayList for the year
+        ArrayList<String> yearList = new ArrayList<>();
+        for (int i = Calendar.getInstance().get(Calendar.YEAR); i >= Calendar.getInstance().get(Calendar.YEAR) - 100; i--) {
+            yearList.add(String.valueOf(i));
+        }
+
+        // Create an ArrayAdapter for the year spinner
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, yearList);
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(yearAdapter);
+
 
         TextView dateTimeTextView = findViewById(R.id.dateAndTime_TextView);
         table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
