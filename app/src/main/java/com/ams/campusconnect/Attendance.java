@@ -335,10 +335,10 @@ public class Attendance extends AppCompatActivity {
 
                 String priorAuthenticate = calculatePriorAuthenticate(save.getAuthenticate());
 
-                Log.d("year : ", save.getYear());
-                Log.d("month : ", save.getMonth());
-                Log.d("day : ", save.getDay());
-                Log.d("priorAuthenticate : ", priorAuthenticate);
+//                Log.d("year : ", save.getYear());
+//                Log.d("month : ", save.getMonth());
+//                Log.d("day : ", save.getDay());
+//                Log.d("priorAuthenticate : ", priorAuthenticate);
 
                 read.readRecord(employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + priorAuthenticate, new Read.OnGetDataListener() {
                     @Override
