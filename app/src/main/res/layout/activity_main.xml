@@ -56,6 +56,19 @@
             android:textColor="#FFF000"
             android:textSize="20sp" />
 
+
+
+        <TextView
+            android:id="@+id/schoolName_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Loading..."
+            android:textAlignment="center"
+            android:textColor="#6A2C70"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,7 +82,19 @@
                 android:layout_height="30sp"/>
 
             <View
-                android:id="@+id/divider3"
+                android:id="@+id/divider1"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/listDivider" />
+
+            <Spinner
+                android:id="@+id/day_Spinner"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:layout_height="30sp"/>
+
+            <View
+                android:id="@+id/divider2"
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
                 android:background="?android:attr/listDivider" />
@@ -80,17 +105,6 @@
                 android:layout_weight="0.5"
                 android:layout_height="30sp" />
         </TableRow>
-
-        <TextView
-            android:id="@+id/schoolName_TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-smallcaps"
-            android:text="Loading..."
-            android:textAlignment="center"
-            android:textColor="#6A2C70"
-            android:textSize="40sp"
-            android:textStyle="bold" />
 
         <TableLayout
             android:id="@+id/previewHeaderdailyLog_TableLayout"
