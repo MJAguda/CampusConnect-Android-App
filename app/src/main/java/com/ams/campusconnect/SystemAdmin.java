@@ -222,6 +222,9 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                 employee.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/"+ yearSpinner.getSelectedItem().toString());
 
+                employee.setLatitude(0);
+                employee.setLongitude(0);
+
                 /*// Initialize Firebase Realtime Database
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             final DatabaseReference myRef = database.getReference(school.getSchoolID() + "/employee");
@@ -241,6 +244,8 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
                             create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
                             create.createRecord(school.getSchoolID() + "/employee/"+employee.getId()+ "/birthdate", employee.getBirthday());
+                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/latitude", employee.getLatitude());
+                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/longitude", employee.getLongitude());
 
                             firstName.setText("");
                             lastName.setText("");
