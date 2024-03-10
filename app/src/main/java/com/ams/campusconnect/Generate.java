@@ -110,7 +110,7 @@ public class Generate extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Generate.this, MainActivity.class);
+                Intent intent = new Intent(Generate.this, LogbookActivity.class);
                 startActivity(intent);
             }
         });
@@ -176,7 +176,7 @@ public class Generate extends AppCompatActivity {
 
         // Home button
         home.setOnClickListener(view -> {
-            Intent intent = new Intent(Generate.this, MainActivity.class);
+            Intent intent = new Intent(Generate.this, LogbookActivity.class);
             startActivity(intent);
         });
 

@@ -92,7 +92,7 @@ public class Attendance extends AppCompatActivity {
         TextView name = findViewById(R.id.name_TextView);
 
         back.setOnClickListener(view -> {
-            Intent intent = new Intent(Attendance.this, MainActivity.class);
+            Intent intent = new Intent(Attendance.this, LogbookActivity.class);
             startActivity(intent);
         });
 

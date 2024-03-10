@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.Employee;
-import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -197,7 +196,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                             Toast.makeText(getApplicationContext(), "School Successfully Registered", Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(SystemAdmin.this, MainActivity.class);
+                            Intent intent = new Intent(SystemAdmin.this, LogbookActivity.class);
                             startActivity(intent);
                         }
                     }

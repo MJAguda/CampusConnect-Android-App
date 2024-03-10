@@ -86,7 +86,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.ams.campusconnect.MainActivity"
+            android:name="com.ams.campusconnect.LogbookActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data

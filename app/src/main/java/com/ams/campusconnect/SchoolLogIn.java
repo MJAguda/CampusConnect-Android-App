@@ -2,8 +2,6 @@ package com.ams.campusconnect;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AnalogClock;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -119,7 +117,7 @@ public class SchoolLogIn extends AppCompatActivity {
 
                     // Toast.makeText(getApplicationContext(), "GPS : " + school.getGpsFeature() + "QR : " + school.isQrScannerFeature() + "Biometric : " + school.isFingerPrintScannerFeature() + "Facial : " + school.isFacialRecognitionFeature(), Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(SchoolLogIn.this, MainActivity.class);
+                    Intent intent = new Intent(SchoolLogIn.this, LogbookActivity.class);
                     startActivity(intent);
                 }
             }

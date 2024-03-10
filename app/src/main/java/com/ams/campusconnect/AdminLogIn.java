@@ -29,12 +29,12 @@ public class AdminLogIn extends AppCompatActivity {
         Button adminLogIn = findViewById(R.id.adminLogIn_Button);
 
         back.setOnClickListener(view -> {
-            Intent intent = new Intent(AdminLogIn.this, MainActivity.class);
+            Intent intent = new Intent(AdminLogIn.this, LogbookActivity.class);
             startActivity(intent);
         });
 
         back.setOnClickListener(view -> {
-            Intent intent = new Intent(AdminLogIn.this, MainActivity.class);
+            Intent intent = new Intent(AdminLogIn.this, LogbookActivity.class);
             startActivity(intent);
         });
 
