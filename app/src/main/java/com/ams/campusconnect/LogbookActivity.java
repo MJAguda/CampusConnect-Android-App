@@ -1,7 +1,6 @@
 package com.ams.campusconnect;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -29,19 +28,14 @@ import com.ams.campusconnect.qrcode.ScanQR;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import kotlin.jvm.internal.SpreadBuilder;
-
-public class MainActivity extends AppCompatActivity {
+public class LogbookActivity extends AppCompatActivity {
 
     School school = School.getInstance();
 
@@ -60,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_logbook);
 
         // Instantiate DateUtils
-        dateUtils = new DateUtils(MainActivity.this);
+        dateUtils = new DateUtils(LogbookActivity.this);
 
         // Declare components
         ImageButton back = findViewById(R.id.backButton_ImageButton);
@@ -200,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             back.setOnClickListener(view -> {
-                Intent intent = new Intent(MainActivity.this, SchoolLogIn.class);
+                Intent intent = new Intent(LogbookActivity.this, SchoolLogIn.class);
                 startActivity(intent);
             });
 
@@ -302,21 +296,21 @@ public class MainActivity extends AppCompatActivity {
 //                });
 
 
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                Intent intent = new Intent(LogbookActivity.this, LogbookActivity.class);
                 startActivity(intent);
             });
 
             attendance.setOnClickListener(view -> {
-                Intent intent = new Intent(MainActivity.this, ScanQR.class);
+                Intent intent = new Intent(LogbookActivity.this, ScanQR.class);
                 startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
             });
             register.setOnClickListener(view -> {
-                Intent intent = new Intent(MainActivity.this, AdminLogIn.class);
+                Intent intent = new Intent(LogbookActivity.this, AdminLogIn.class);
                 startActivity(intent);
             });
 
             generate.setOnClickListener(view -> {
-                Intent intent = new Intent(MainActivity.this, Generate.class);
+                Intent intent = new Intent(LogbookActivity.this, Generate.class);
                 startActivity(intent);
             });
         });
@@ -346,15 +340,15 @@ public class MainActivity extends AppCompatActivity {
                 // Display the sorted names in the UI
                 for (String fullName : names) {
                     // Create a row for each name
-                    TableRow row = new TableRow(MainActivity.this);
+                    TableRow row = new TableRow(LogbookActivity.this);
 
                     // Add the name to the row
-                    TextView name = new TextView(MainActivity.this);
+                    TextView name = new TextView(LogbookActivity.this);
                     name.setText(fullName);
                     name.setTextSize(10);
                     name.setGravity(Gravity.TOP);
                     name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-                    name.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
+                    name.setBackground(ContextCompat.getDrawable(LogbookActivity.this, R.drawable.cell_shape));
 
                     // Get the height of the first TextView
                     name.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -369,13 +363,13 @@ public class MainActivity extends AppCompatActivity {
                         String employeeName = child.child("fullname").getValue(String.class);
                         if (employeeName != null && employeeName.equals(fullName)) {
                             for (DataSnapshot grandChild : child.child("attendance/" + year + "/" + month + "/" + Integer.parseInt(day)).getChildren()) {
-                                TextView time = new TextView(MainActivity.this);
+                                TextView time = new TextView(LogbookActivity.this);
                                 time.setText(grandChild.getValue().toString());
                                 time.setTextSize(10);
                                 TableRow.LayoutParams timeParams = new TableRow.LayoutParams(0, nameHeight, 0.17f);
                                 time.setLayoutParams(timeParams);
                                 time.setGravity(Gravity.CENTER);
-                                time.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.cell_shape));
+                                time.setBackground(ContextCompat.getDrawable(LogbookActivity.this, R.drawable.cell_shape));
                                 row.addView(time);
                             }
                         }
@@ -411,7 +405,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     if (!dataSnapshot.exists()) {
                         Toast.makeText(getApplicationContext(), "ID Not Found", Toast.LENGTH_SHORT).show();
-                    } else {
+                    }
+                    else {
 
                         // Get employee fields from firebase realtime database
                         String id = dataSnapshot.child("id").getValue().toString();
@@ -434,6 +429,23 @@ public class MainActivity extends AppCompatActivity {
                         employee.setBirthday(birthday);
                         employee.setLatitude(latitude);
                         employee.setLongitude(longitude);
+
+                        try {
+                            // Set Employee model
+                            employee.setId(id);
+                            employee.setFirstName(firstName);
+                            employee.setLastName(lastName);
+                            employee.setFullName(fullName);
+                            employee.setBirthday(birthday);
+                            employee.setLatitude(latitude);
+                            employee.setLongitude(longitude);
+                        } catch (NullPointerException e) {
+                            // Handle the case where any of the fields is null
+                            // For example, you can show an error message or log the issue
+                            // You can also throw a different exception or take other appropriate actions based on your requirements
+                            // Here's an example of logging the issue:
+                             Toast.makeText(getApplicationContext(), "Error: " + "Employee Field is missing. Contact your administrator", Toast.LENGTH_SHORT).show();
+                        }
 
 
                         dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
@@ -460,7 +472,7 @@ public class MainActivity extends AppCompatActivity {
 
                         });
 
-                        Intent intent = new Intent(MainActivity.this, Attendance.class);
+                        Intent intent = new Intent(LogbookActivity.this, Attendance.class);
                         startActivity(intent);
 
                     }
