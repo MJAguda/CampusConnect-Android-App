@@ -127,44 +127,51 @@ public class Generate extends AppCompatActivity {
         submit.setOnClickListener(view -> {
             employee.setId(idEditText.getText().toString());
 
-            read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
-                @Override
-                public void onSuccess(DataSnapshot dataSnapshot) {
-                    if(!dataSnapshot.exists()){
-                        Toast.makeText(getApplicationContext(), "ID Number not found", Toast.LENGTH_SHORT).show();
+            if(idEditText.getText().toString().isEmpty()){
+                Toast.makeText(getApplicationContext(), "ID Number should not be empty", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        if(!dataSnapshot.exists()){
+                            Toast.makeText(getApplicationContext(), "ID Number not found", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            // Set data for Employee
+                            employee.setId(dataSnapshot.child("id").getValue().toString());
+                            employee.setFullName(dataSnapshot.child("fullname").getValue().toString());
+
+                            // Unhide Components
+                            home.setVisibility(View.VISIBLE);
+                            generateQR.setVisibility(View.VISIBLE);
+                            text.setVisibility(View.VISIBLE);
+                            logo.setVisibility(View.VISIBLE);
+                            generateDTR.setVisibility(View.VISIBLE);
+                            generateTAMS.setVisibility(View.VISIBLE);
+                            guide1.setVisibility(View.VISIBLE);
+                            guide2.setVisibility(View.VISIBLE);
+                            guide3.setVisibility(View.VISIBLE);
+                            guide4.setVisibility(View.VISIBLE);
+                            guide5.setVisibility(View.VISIBLE);
+
+                            // Hide Components
+                            prompt.setVisibility(View.GONE);
+                            idEditText.setVisibility(View.GONE);
+                            scanQR.setVisibility(View.GONE);
+                            submit.setVisibility(View.GONE);
+                        }
                     }
-                    else{
-                        // Set data for Employee
-                        employee.setId(dataSnapshot.child("id").getValue().toString());
-                        employee.setFullName(dataSnapshot.child("fullname").getValue().toString());
 
-                        // Unhide Components
-                        home.setVisibility(View.VISIBLE);
-                        generateQR.setVisibility(View.VISIBLE);
-                        text.setVisibility(View.VISIBLE);
-                        logo.setVisibility(View.VISIBLE);
-                        generateDTR.setVisibility(View.VISIBLE);
-                        generateTAMS.setVisibility(View.VISIBLE);
-                        guide1.setVisibility(View.VISIBLE);
-                        guide2.setVisibility(View.VISIBLE);
-                        guide3.setVisibility(View.VISIBLE);
-                        guide4.setVisibility(View.VISIBLE);
-                        guide5.setVisibility(View.VISIBLE);
-
-                        // Hide Components
-                        prompt.setVisibility(View.GONE);
-                        idEditText.setVisibility(View.GONE);
-                        scanQR.setVisibility(View.GONE);
-                        submit.setVisibility(View.GONE);
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        Log.d("Read", "Error: " + databaseError.getMessage());
+                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }
+                });
+            }
 
-                @Override
-                public void onFailure(DatabaseError databaseError) {
-                    Log.d("Read", "Error: " + databaseError.getMessage());
-                    Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+
         });
 
         // Home button
