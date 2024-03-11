@@ -197,7 +197,7 @@ public class Generate extends AppCompatActivity {
             // Download qr if a ImageView is clicked
             qr.setOnClickListener(view1 -> {
                 DownloadQR downloadQR = new DownloadQR(qr);
-                downloadQR.downloadImage();
+                downloadQR.downloadImage(Generate.this);
                 //Intent intent = new Intent(Generate.this, Attendance.class);
                 //startActivity(intent);
             });
