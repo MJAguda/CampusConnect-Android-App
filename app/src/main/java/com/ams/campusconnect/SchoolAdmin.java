@@ -712,11 +712,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             // call generateQRCode method from GenerateQR class
                             qr.setImageBitmap(generateQR.generateQRCode(child.getKey()));
 
-
                             // Download qr if a ImageView
                             DownloadQR imageDownloader = new DownloadQR(qr);
-                            imageDownloader.downloadImage();
-
+                            imageDownloader.downloadImage(SchoolAdmin.this);
                         }
                     }
 
