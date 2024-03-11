@@ -23,6 +23,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class DownloadQR {
 
@@ -53,8 +56,8 @@ public class DownloadQR {
 
         File fileImage = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            fileImage = new File(storageVolume.getDirectory().getPath() + "/Download/" + "QRCode_" +
-                    school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + ".png");
+            String fileName = generateFileName();
+            fileImage = new File(storageVolume.getDirectory().getPath() + "/Download/", fileName);
         }
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -71,5 +74,10 @@ public class DownloadQR {
             e.printStackTrace();
             Toast.makeText(context, "Failed to save image", Toast.LENGTH_SHORT).show();
         }
+    }
+    private String generateFileName() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy_HHmmss", Locale.getDefault());
+        String currentDateAndTime = sdf.format(new Date());
+        return "QRCode_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + currentDateAndTime + ".png";
     }
 }

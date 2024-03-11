@@ -26,6 +26,9 @@ import com.google.firebase.database.DatabaseError;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class DTR {
     static Employee employee = Employee.getInstance();
@@ -90,7 +93,7 @@ public class DTR {
         document.finishPage(page);
 
         // Save the PDF to external storage and show a toast with the file path
-        String fileName = "DTR_" + employee.getId() + "_" + save.getMonth() + ", " + save.getYear() + ".pdf";
+        String fileName = generateFileName();
         File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(directory, fileName);
         try {
@@ -104,6 +107,13 @@ public class DTR {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static String generateFileName() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy_HHmmss", Locale.getDefault());
+        String currentDateAndTime = sdf.format(new Date());
+        return "DTR_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + save.getMonth() + ", " + save.getYear() + "_" + currentDateAndTime + ".pdf";
+//        return "QRCode_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + currentDateAndTime + ".png";
     }
 
 
