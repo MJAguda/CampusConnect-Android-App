@@ -1,5 +1,7 @@
 package com.ams.campusconnect.repository;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.ams.campusconnect.model.SchoolModel;
@@ -44,12 +46,13 @@ public class SchoolRepository {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Get the school from the database
-                SchoolModel school = dataSnapshot.getValue(SchoolModel.class);
+                SchoolModel schoolModel = dataSnapshot.getValue(SchoolModel.class);
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.e("Error fetching school data: ", databaseError.getMessage());
             }
         });
     }
