@@ -1,6 +1,9 @@
 package com.ams.campusconnect.repository;
 
+import androidx.annotation.NonNull;
+
 import com.ams.campusconnect.model.SchoolModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -11,38 +14,42 @@ public class SchoolRepository {
     private DatabaseReference databaseReference;
 
     public SchoolRepository() {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
-    public SchoolModel findSchoolById(int schoolID) {
-        SchoolModel school = new SchoolModel(305113, "Flora National High School", "CATHERINE R. CALUYA PhD", "12345",
-                "12345", false, true, true, true, true, false,
-                18.218810, 121.420142, 18.218810, 121.421985, 18.21785994355776, 121.42115711493562);
-        return school;
-    }
+    // Add School
+    public void addSchool(SchoolModel school) {
+        // Get the reference of the database
+        databaseReference = FirebaseDatabase.getInstance().getReference().child(school.getSchoolID() + "/");
 
-    public interface SchoolDataCallback {
-        void onDataReceived(SchoolModel school);
-        void onError(String errorMessage);
-    }
-
-    // find the school by id
-    public void findSchoolById(int schoolID, final SchoolDataCallback callback) {
-        databaseReference.child(String.valueOf(schoolID)).addListenerForSingleValueEvent(new ValueEventListener() {
+        // Add the school to the database
+        databaseReference.setValue(school).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    SchoolModel school = dataSnapshot.getValue(SchoolModel.class);
-                    callback.onDataReceived(school);
-                } else {
-                    callback.onError("School with ID : " + schoolID + " not found");
-                }
+            public void onSuccess(Void aVoid) {
+                // School added successfully
+
+            }
+        });
+    }
+    // // To call addSchool
+    // SchoolRepository schoolRepository = new SchoolRepository();
+    // schoolRepository.addSchool(school);
+
+    public void readSchool(int schoolID) {
+        // Get the reference of the database
+        databaseReference = FirebaseDatabase.getInstance().getReference().child(schoolID + "/");
+
+        // Read the school from the database
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Get the school from the database
+                SchoolModel school = dataSnapshot.getValue(SchoolModel.class);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                callback.onError(databaseError.getMessage());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
