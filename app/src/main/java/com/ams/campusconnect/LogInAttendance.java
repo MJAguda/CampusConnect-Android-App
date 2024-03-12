@@ -3,8 +3,6 @@ package com.ams.campusconnect;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -75,7 +73,7 @@ public class LogInAttendance extends AppCompatActivity {
         // Hide all components
         idNumber.setVisibility(school.isIdNumberFeature() ? View.VISIBLE : View.GONE);
         scanQR.setVisibility(school.isQrScannerFeature() ? View.VISIBLE : View.GONE);
-        scanBiometric.setVisibility(school.isFingerPrintScannerFeature() ? View.VISIBLE : View.GONE);
+        scanBiometric.setVisibility(school.isBiometricFeature() ? View.VISIBLE : View.GONE);
 
         submit.setVisibility(school.isIdNumberFeature() ? View.VISIBLE : View.GONE);
 

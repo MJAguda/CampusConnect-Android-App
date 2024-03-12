@@ -111,8 +111,8 @@ public class Attendance extends AppCompatActivity {
                     school.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
                     school.setTimeBasedFeature(dataSnapshot.child("timeBasedFeature").getValue(Boolean.class));
                     school.setQrScannerFeature(dataSnapshot.child("qrcodeFeature").getValue(Boolean.class));
-                    school.setFingerPrintScannerFeature(dataSnapshot.child("fingerPrintFeature").getValue(Boolean.class));
-                    school.setFacialRecognitionFeature(dataSnapshot.child("facialRecognitionFeature").getValue(Boolean.class));
+                    school.setBiometricFeature(dataSnapshot.child("biometricFeature").getValue(Boolean.class));
+//                    school.setFacialRecognitionFeature(dataSnapshot.child("facialRecognitionFeature").getValue(Boolean.class));
                 }
             }
 
