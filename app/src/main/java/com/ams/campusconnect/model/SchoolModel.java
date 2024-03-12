@@ -52,51 +52,67 @@ public class SchoolModel {
     public int getSchoolID() {
         return schoolID;
     }
+
     public String getSchoolName() {
         return schoolName;
     }
+
     public String getSchoolHead() {
         return schoolHead;
     }
+
     public String getAdminPassword() {
         return adminPassword;
     }
+
     public String getAdminUsername() {
         return adminUsername;
     }
+
     public boolean isGpsFeature() {
         return gpsFeature;
     }
+
     public boolean isIdNumberFeature() {
         return idNumberFeature;
     }
+
     public boolean isQrcodeFeature() {
         return qrcodeFeature;
     }
+
     public boolean isFacialRecognitionFeature() {
         return facialRecognitionFeature;
     }
+
     public boolean isFingerPrintFeature() {
         return fingerPrintFeature;
     }
+
     public boolean isTimeBasedFeature() {
         return timeBasedFeature;
     }
+
     public double getLatitudeTop() {
         return latitudeTop;
     }
+
     public double getLongitudeLeft() {
         return longitudeLeft;
     }
+
     public double getLatitudeBottom() {
         return latitudeBottom;
     }
+
     public double getLongitudeRight() {
         return longitudeRight;
     }
+
     public double getLatitudeCenter() {
         return latitudeCenter;
     }
+
     public double getLongitudeCenter() {
         return longitudeCenter;
     }
@@ -105,51 +121,67 @@ public class SchoolModel {
     public void setSchoolID(int schoolID) {
         this.schoolID = schoolID;
     }
+
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
     }
+
     public void setSchoolHead(String schoolHead) {
         this.schoolHead = schoolHead;
     }
+
     public void setAdminPassword(String adminPassword) {
         this.adminPassword = adminPassword;
     }
+
     public void setAdminUsername(String adminUsername) {
         this.adminUsername = adminUsername;
     }
+
     public void setGpsFeature(boolean gpsFeature) {
         this.gpsFeature = gpsFeature;
     }
+
     public void setIdNumberFeature(boolean idNumberFeature) {
         this.idNumberFeature = idNumberFeature;
     }
+
     public void setQrcodeFeature(boolean qrcodeFeature) {
         this.qrcodeFeature = qrcodeFeature;
     }
+
     public void setFacialRecognitionFeature(boolean facialRecognitionFeature) {
         this.facialRecognitionFeature = facialRecognitionFeature;
     }
+
     public void setFingerPrintFeature(boolean fingerPrintFeature) {
         this.fingerPrintFeature = fingerPrintFeature;
     }
+
     public void setTimeBasedFeature(boolean timeBasedFeature) {
         this.timeBasedFeature = timeBasedFeature;
     }
+
     public void setLatitudeTop(double latitudeTop) {
         this.latitudeTop = latitudeTop;
     }
+
     public void setLongitudeLeft(double longitudeLeft) {
         this.longitudeLeft = longitudeLeft;
     }
+
     public void setLatitudeBottom(double latitudeBottom) {
         this.latitudeBottom = latitudeBottom;
     }
+
     public void setLongitudeRight(double longitudeRight) {
         this.longitudeRight = longitudeRight;
     }
+
     public void setLatitudeCenter(double latitudeCenter) {
         this.latitudeCenter = latitudeCenter;
     }
+
     public void setLongitudeCenter(double longitudeCenter) {
         this.longitudeCenter = longitudeCenter;
     }
@@ -178,4 +210,32 @@ public class SchoolModel {
                 ", longitudeCenter=" + longitudeCenter +
                 '}';
     }
+
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (this == obj) {
+//            return true;
+//        }
+//        if (obj == null || getClass() != obj.getClass()) {
+//            return false;
+//        }
+//        SchoolModel other = (SchoolModel) obj;
+//        return this.schoolID == other.schoolID &&
+//                this.schoolName.equals(other.schoolName) &&
+//                this.schoolHead.equals(other.schoolHead) &&
+//                this.adminPassword.equals(other.adminPassword) &&
+//                this.adminUsername.equals(other.adminUsername) &&
+//                this.gpsFeature == other.gpsFeature &&
+//                this.idNumberFeature == other.idNumberFeature &&
+//                this.qrcodeFeature == other.qrcodeFeature &&
+//                this.facialRecognitionFeature == other.facialRecognitionFeature &&
+//                this.fingerPrintFeature == other.fingerPrintFeature &&
+//                this.timeBasedFeature == other.timeBasedFeature &&
+//                this.latitudeTop == other.latitudeTop &&
+//                this.longitudeLeft == other.longitudeLeft &&
+//                this.latitudeBottom == other.latitudeBottom &&
+//                this.longitudeRight == other.longitudeRight &&
+//                this.latitudeCenter == other.latitudeCenter &&
+//                this.longitudeCenter == other.longitudeCenter;
+//    }
 }
