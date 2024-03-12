@@ -195,25 +195,86 @@ public class Attendance extends AppCompatActivity {
         AMIn.setOnClickListener(view -> {
             save.setAuthenticate("timeAM_In");
 
-            biometricManagerHelper.authenticate(false);
+            if(school.isBiometricFeature()){
+                biometricManagerHelper.authenticate(false);
+            }
+            else{
+                dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+
+                    Log.d("Code Block : ", "inside dateUtils");
+                    setDateTime(month, day, year);
+
+                    // Push Time in Database
+
+                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
+
+
+                });
+            }
         });
 
         AMOut.setOnClickListener(view -> {
             save.setAuthenticate("timeAM_Out");
 
-            biometricManagerHelper.authenticate(false);
+            if(school.isBiometricFeature()){
+                biometricManagerHelper.authenticate(false);
+            }
+            else{
+                dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+
+                    Log.d("Code Block : ", "inside dateUtils");
+                    setDateTime(month, day, year);
+
+                    // Push Time in Database
+
+                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
+
+
+                });
+            }
         });
 
         PMIn.setOnClickListener(view -> {
             save.setAuthenticate("timePM_In");
 
-            biometricManagerHelper.authenticate(false);
+            if(school.isBiometricFeature()){
+                biometricManagerHelper.authenticate(false);
+            }
+            else{
+                dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+
+                    Log.d("Code Block : ", "inside dateUtils");
+                    setDateTime(month, day, year);
+
+                    // Push Time in Database
+
+                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
+
+
+                });
+            }
         });
 
         PMOut.setOnClickListener(view -> {
             save.setAuthenticate("timePM_Out");
 
-            biometricManagerHelper.authenticate(false);
+            if(school.isBiometricFeature()){
+                biometricManagerHelper.authenticate(false);
+            }
+            else{
+                dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+
+                    Log.d("Code Block : ", "inside dateUtils");
+                    setDateTime(month, day, year);
+
+                    // Push Time in Database
+
+                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
+
+
+                });
+            }
+
         });
 
         try {
@@ -234,9 +295,11 @@ public class Attendance extends AppCompatActivity {
         }
     }
 
+    String employeeAttendancePath = school.getSchoolID() + "/employee/" + employee.getId();
+
     private BiometricPrompt.AuthenticationCallback createBiometricCallback() {
 
-        String employeeAttendancePath = school.getSchoolID() + "/employee/" + employee.getId();
+
 
         return new BiometricPrompt.AuthenticationCallback() {
             @Override
@@ -261,7 +324,6 @@ public class Attendance extends AppCompatActivity {
                     Log.d("Code Block : ", "inside dateUtils");
                     setDateTime(month, day, year);
 
-//                    TODO : Fix Bug time is not registering
                     // Push Time in Database
 
                     checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
@@ -273,225 +335,222 @@ public class Attendance extends AppCompatActivity {
 //                Toast.makeText(Attendance.this, "Auth succeeded", Toast.LENGTH_SHORT).show();
             }
 
-            private void setDateTime(String month, String day, String year) {
-                Log.d("Code Block : ", "inside setDateTime");
-                save.setYear(year);
-                save.setMonth(DateUtils.getMonthName(month));
-                save.setDay(String.valueOf(Integer.parseInt(day)));
-            }
-
-            private void checkEmployeeAttendance(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
-
-                Log.d("Code Block : ", "inside checkEmployeeAttendance");
-                // Check if the employee ID exists
-                readEmployeeRecord(employeeAttendancePath, save, school, employee, currentTimeIn12Hours);
-            }
-
-            private void readEmployeeRecord(String employeeAttendancePath, SaveData save, School school, Employee employee, String currentTimeIn12Hours) {
-                Log.d("Code Block : ", "inside readEmployeeRecord");
-                read.readRecord(employeeAttendancePath, new Read.OnGetDataListener() {
-                    @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            String attendancePath = employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay();
-
-                            // Check if the employee's attendance for the given date exists
-                            readAttendanceRecord(attendancePath, save, employee, school, currentTimeIn12Hours);
-                        } else {
-                            Toast.makeText(getApplicationContext(), "ID Not Found", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(DatabaseError databaseError) {
-                        // handle error here
-                    }
-                });
-            }
-
-            private void readAttendanceRecord(String attendancePath, SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
-                Log.d("Code Block : ", "inside readAttendanceRecord");
-                read.readRecord(attendancePath, new Read.OnGetDataListener() {
-                    @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.child(save.getAuthenticate()).exists() && !dataSnapshot.child(save.getAuthenticate()).getValue(String.class).equals("")) {
-                            Toast.makeText(getApplicationContext(), "Already Have", Toast.LENGTH_SHORT).show();
-                            alreadyhave.start();
-                        } else {
-                            checkTimeIntervals(save, employee, school, currentTimeIn12Hours);
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(DatabaseError databaseError) {
-                        // handle error here
-                    }
-                });
-            }
-
-            private void checkTimeIntervals(SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
-                Log.d("Code Block : ", "inside checkTimeIntervals");
-
-                String priorAuthenticate = calculatePriorAuthenticate(save.getAuthenticate());
-
-//                Log.d("year : ", save.getYear());
-//                Log.d("month : ", save.getMonth());
-//                Log.d("day : ", save.getDay());
-//                Log.d("priorAuthenticate : ", priorAuthenticate);
-
-                read.readRecord(employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + priorAuthenticate, new Read.OnGetDataListener() {
-                    @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        String priorTime;
-
-                        try {
-                            if (dataSnapshot.getValue(String.class).equals(""))
-                                priorTime = "00:00 AM";
-                            else {
-                                priorTime = dataSnapshot.getValue().toString();
-                            }
-                        } catch (NullPointerException e) {
-                            priorTime = "00:00 AM";
-                        }
-
-                        Log.d("priorTime : ", priorTime);
-
-                        int totalMinuteDifference = calculateTimeDifference(currentTimeIn12Hours, priorTime);
-
-                        Log.d("", String.valueOf(totalMinuteDifference));
-
-                        if (totalMinuteDifference <= 15) {
-                            Toast.makeText(getApplicationContext(), "Wait 15 minutes", Toast.LENGTH_SHORT).show();
-                        } else {
-                            getLocationAndCheckIn(employee, school, save, currentTimeIn12Hours);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(DatabaseError databaseError) {
-                        // handle error here
-                    }
-                });
-            }
-
-            private void getLocationAndCheckIn(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
-                Log.d("Code Block : ", "inside getLocationAndCheckIn");
-
-                LocationManager locationManager;
-                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-                if (ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(Attendance.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                }
-
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, location -> {
-                    employee.setLatitude(location.getLatitude());
-                    employee.setLongitude(location.getLongitude());
-
-                    if (checkDeveloperOptions()) {
-                        // Developer options are enabled, open settings
-                        finish();
-                        openDeveloperOptionsSettings();
-                    }
-                    else {
-                        // Check employee Coordinate if employee is inside the 4 corners of the campus
-                        // Toggle switch to punch time without GPS
-                        // Check if currentLocation is not null
-
-                        if (school.isGpsFeature()) {
-                            if (isEmployeeWithinCampusBounds(employee, school)) {
-                                Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
-
-                                // Push Time in Database
-                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
-
-                                // Store employee's last known location
-                                update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "latitude", employee.getLatitude());
-                                update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
-
-//                            thankyou.start();
-
-                                finish();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Connect to a WIFI for more accurate GPS", Toast.LENGTH_SHORT).show();
-                                Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
-
-                            // Push Time in Database
-                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
-//                        thankyou.start();
-
-                            finish();
-                        }
-                    }
-                });
-            }
-
-            private boolean isEmployeeWithinCampusBounds(Employee employee, School school) {
-                return (employee.getLatitude() >= school.getLatitudeBottom() &&
-                        employee.getLatitude() <= school.getLatitudeTop() &&
-                        employee.getLongitude() >= school.getLongitudeLeft() &&
-                        employee.getLongitude() <= school.getLongitudeRight());
-            }
-
-            private int calculateTimeDifference(String currentTimeIn12Hours, String priorTime) {
-                String[] priorTimeParts = priorTime.split(" ")[0].split(":");
-                int priorHour = Integer.parseInt(priorTimeParts[0]);
-                int priorMinutes = Integer.parseInt(priorTimeParts[1]);
-
-                String[] currentTimeParts = currentTimeIn12Hours.split(" ")[0].split(":");
-                int currentHour = Integer.parseInt(currentTimeParts[0]);
-                int currentMinutes = Integer.parseInt(currentTimeParts[1]);
-
-                if (priorTime.contains("PM")) {
-                    priorHour += 12;
-                }
-                if (currentTimeIn12Hours.contains("PM")) {
-                    currentHour += 12;
-                }
-
-                int hourDifference = Math.abs(priorHour - currentHour);
-                int minuteDifference = Math.abs(priorMinutes - currentMinutes);
-                return hourDifference * 60 + minuteDifference;
-            }
-
-            private String calculatePriorTime(DataSnapshot dataSnapshot) {
-                String priorTime;
-                try {
-                    priorTime = (dataSnapshot.exists() && dataSnapshot.getValue(String.class) != null) ? dataSnapshot.getValue(String.class) : "00:00 AM";
-                } catch (NullPointerException e) {
-                    priorTime = "00:00 AM";
-                }
-                return priorTime;
-            }
-
-            private String calculatePriorAuthenticate(String currentAuthenticate) {
-                String priorAuthenticate = null;
-                switch (currentAuthenticate) {
-                    case "timeAM_Out":
-                        priorAuthenticate = "timeAM_In";
-                        break;
-                    case "timePM_In":
-                        priorAuthenticate = "timeAM_Out";
-                        break;
-                    case "timePM_Out":
-                        priorAuthenticate = "timePM_In";
-                        break;
-                }
-                return priorAuthenticate;
-            }
-
-
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
                 Toast.makeText(Attendance.this, "Auth failed", Toast.LENGTH_SHORT).show();
             }
         };
+    }
+
+    private void checkEmployeeAttendance(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
+
+        Log.d("Code Block : ", "inside checkEmployeeAttendance");
+        // Check if the employee ID exists
+        readEmployeeRecord(employeeAttendancePath, save, school, employee, currentTimeIn12Hours);
+    }
+
+    private void setDateTime(String month, String day, String year) {
+        Log.d("Code Block : ", "inside setDateTime");
+        save.setYear(year);
+        save.setMonth(DateUtils.getMonthName(month));
+        save.setDay(String.valueOf(Integer.parseInt(day)));
+    }
+
+    private void readEmployeeRecord(String employeeAttendancePath, SaveData save, School school, Employee employee, String currentTimeIn12Hours) {
+        Log.d("Code Block : ", "inside readEmployeeRecord");
+        read.readRecord(employeeAttendancePath, new Read.OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String attendancePath = employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay();
+
+                    // Check if the employee's attendance for the given date exists
+                    readAttendanceRecord(attendancePath, save, employee, school, currentTimeIn12Hours);
+                } else {
+                    Toast.makeText(getApplicationContext(), "ID Not Found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(DatabaseError databaseError) {
+                // handle error here
+            }
+        });
+    }
+
+    private void readAttendanceRecord(String attendancePath, SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
+        Log.d("Code Block : ", "inside readAttendanceRecord");
+        read.readRecord(attendancePath, new Read.OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(save.getAuthenticate()).exists() && !dataSnapshot.child(save.getAuthenticate()).getValue(String.class).equals("")) {
+                    Toast.makeText(getApplicationContext(), "Already Have", Toast.LENGTH_SHORT).show();
+                    alreadyhave.start();
+                } else {
+                    checkTimeIntervals(save, employee, school, currentTimeIn12Hours);
+                }
+            }
+
+            @Override
+            public void onFailure(DatabaseError databaseError) {
+                // handle error here
+            }
+        });
+    }
+
+    private void checkTimeIntervals(SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
+        Log.d("Code Block : ", "inside checkTimeIntervals");
+
+        String priorAuthenticate = calculatePriorAuthenticate(save.getAuthenticate());
+
+//                Log.d("year : ", save.getYear());
+//                Log.d("month : ", save.getMonth());
+//                Log.d("day : ", save.getDay());
+//                Log.d("priorAuthenticate : ", priorAuthenticate);
+
+        read.readRecord(employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + priorAuthenticate, new Read.OnGetDataListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                String priorTime;
+
+                try {
+                    if (dataSnapshot.getValue(String.class).equals(""))
+                        priorTime = "00:00 AM";
+                    else {
+                        priorTime = dataSnapshot.getValue().toString();
+                    }
+                } catch (NullPointerException e) {
+                    priorTime = "00:00 AM";
+                }
+
+                Log.d("priorTime : ", priorTime);
+
+                int totalMinuteDifference = calculateTimeDifference(currentTimeIn12Hours, priorTime);
+
+                Log.d("", String.valueOf(totalMinuteDifference));
+
+                if (totalMinuteDifference <= 15) {
+                    Toast.makeText(getApplicationContext(), "Wait 15 minutes", Toast.LENGTH_SHORT).show();
+                } else {
+                    getLocationAndCheckIn(employee, school, save, currentTimeIn12Hours);
+                }
+            }
+
+            @Override
+            public void onFailure(DatabaseError databaseError) {
+                // handle error here
+            }
+        });
+    }
+
+    private void getLocationAndCheckIn(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
+        Log.d("Code Block : ", "inside getLocationAndCheckIn");
+
+        LocationManager locationManager;
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if (ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Attendance.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, location -> {
+            employee.setLatitude(location.getLatitude());
+            employee.setLongitude(location.getLongitude());
+
+            if (checkDeveloperOptions()) {
+                // Developer options are enabled, open settings
+                finish();
+                openDeveloperOptionsSettings();
+            } else {
+                // Check employee Coordinate if employee is inside the 4 corners of the campus
+                // Toggle switch to punch time without GPS
+                // Check if currentLocation is not null
+
+                if (school.isGpsFeature()) {
+                    if (isEmployeeWithinCampusBounds(employee, school)) {
+                        Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
+
+                        // Push Time in Database
+                        create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+
+                        // Store employee's last known location
+                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "latitude", employee.getLatitude());
+                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
+
+//                            thankyou.start();
+
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Connect to a WIFI for more accurate GPS", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
+
+                    // Push Time in Database
+                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+//                        thankyou.start();
+
+                    finish();
+                }
+            }
+        });
+    }
+
+    private boolean isEmployeeWithinCampusBounds(Employee employee, School school) {
+        return (employee.getLatitude() >= school.getLatitudeBottom() &&
+                employee.getLatitude() <= school.getLatitudeTop() &&
+                employee.getLongitude() >= school.getLongitudeLeft() &&
+                employee.getLongitude() <= school.getLongitudeRight());
+    }
+
+    private int calculateTimeDifference(String currentTimeIn12Hours, String priorTime) {
+        String[] priorTimeParts = priorTime.split(" ")[0].split(":");
+        int priorHour = Integer.parseInt(priorTimeParts[0]);
+        int priorMinutes = Integer.parseInt(priorTimeParts[1]);
+
+        String[] currentTimeParts = currentTimeIn12Hours.split(" ")[0].split(":");
+        int currentHour = Integer.parseInt(currentTimeParts[0]);
+        int currentMinutes = Integer.parseInt(currentTimeParts[1]);
+
+        if (priorTime.contains("PM")) {
+            priorHour += 12;
+        }
+        if (currentTimeIn12Hours.contains("PM")) {
+            currentHour += 12;
+        }
+
+        int hourDifference = Math.abs(priorHour - currentHour);
+        int minuteDifference = Math.abs(priorMinutes - currentMinutes);
+        return hourDifference * 60 + minuteDifference;
+    }
+
+    private String calculatePriorTime(DataSnapshot dataSnapshot) {
+        String priorTime;
+        try {
+            priorTime = (dataSnapshot.exists() && dataSnapshot.getValue(String.class) != null) ? dataSnapshot.getValue(String.class) : "00:00 AM";
+        } catch (NullPointerException e) {
+            priorTime = "00:00 AM";
+        }
+        return priorTime;
+    }
+
+    private String calculatePriorAuthenticate(String currentAuthenticate) {
+        String priorAuthenticate = null;
+        switch (currentAuthenticate) {
+            case "timeAM_Out":
+                priorAuthenticate = "timeAM_In";
+                break;
+            case "timePM_In":
+                priorAuthenticate = "timeAM_Out";
+                break;
+            case "timePM_Out":
+                priorAuthenticate = "timePM_In";
+                break;
+        }
+        return priorAuthenticate;
     }
 
     private boolean checkDeveloperOptions() {
