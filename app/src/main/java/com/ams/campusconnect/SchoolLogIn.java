@@ -71,12 +71,12 @@ public class SchoolLogIn extends AppCompatActivity {
                     boolean qrScannerFeature = dataSnapshot.child("qrcodeFeature").getValue(Boolean.class);
                     boolean fingerPrintScannerFeature = dataSnapshot.child("fingerPrintFeature").getValue(Boolean.class);
                     boolean facialRecognitionFeature = dataSnapshot.child("facialRecognitionFeature").getValue(Boolean.class);
-                    String latitudeBottom = dataSnapshot.child("latitudeBottom").getValue().toString();
-                    String latitudeTop = dataSnapshot.child("latitudeTop").getValue().toString();
-                    String longitudeLeft = dataSnapshot.child("longitudeLeft").getValue().toString();
-                    String longitudeRight = dataSnapshot.child("longitudeRight").getValue().toString();
-                    String latitudeCenter = dataSnapshot.child("latitudeCenter").getValue().toString();
-                    String longitudeCenter = dataSnapshot.child("longitudeCenter").getValue().toString();
+                    double latitudeBottom = (double) dataSnapshot.child("latitudeBottom").getValue();
+                    double latitudeTop = (double) dataSnapshot.child("latitudeTop").getValue();
+                    double longitudeLeft = (double) dataSnapshot.child("longitudeLeft").getValue();
+                    double longitudeRight = (double) dataSnapshot.child("longitudeRight").getValue();
+                    double latitudeCenter = (double) dataSnapshot.child("latitudeCenter").getValue();
+                    double longitudeCenter = (double) dataSnapshot.child("longitudeCenter").getValue();
 
 //                            School school1 = new School(schoolID,
 //                                    schoolName,
