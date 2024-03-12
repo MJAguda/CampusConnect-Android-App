@@ -235,7 +235,7 @@ public class LogInAttendance extends AppCompatActivity {
                                                             // Toggle switch to punch time without GPS
                                                             // Check if currentLocation is not null
                                                             if (school.isGpsFeature()) {
-                                                                if (employee.getLatitude() >= Double.parseDouble(school.getLatitudeBottom()) && employee.getLatitude() <= Double.parseDouble(school.getLatitudeTop()) && employee.getLongitude() >= Double.parseDouble(school.getLongitudeLeft()) && employee.getLongitude() <= Double.parseDouble(school.getLongitudeRight())) {
+                                                                if (employee.getLatitude() >= school.getLatitudeBottom() && employee.getLatitude() <= school.getLatitudeTop() && employee.getLongitude() >= school.getLongitudeLeft() && employee.getLongitude() <= school.getLongitudeRight()) {
                                                                     Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                                                                     // Push Time in Database
