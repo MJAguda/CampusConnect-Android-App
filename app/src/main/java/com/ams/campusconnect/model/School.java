@@ -6,7 +6,7 @@ public class School {
 
     private School(){}
 
-    public School(int schoolID, String schoolName, String schoolHead, String adminUsername, String adminPassword, boolean idNumberFeature, boolean gpsFeature, boolean timeBasedFeature, boolean qrScannerFeature, boolean fingerPrintScannerFeature, boolean facialRecognitionFeature, String latitudeBottom, String latitudeTop, String longitudeLeft, String longitudeRight, String latitudeCenter, String longitudeCenter) {
+    public School(int schoolID, String schoolName, String schoolHead, String adminUsername, String adminPassword, boolean idNumberFeature, boolean gpsFeature, boolean timeBasedFeature, boolean qrScannerFeature, boolean fingerPrintScannerFeature, boolean facialRecognitionFeature, double latitudeBottom, double latitudeTop, double longitudeLeft, double longitudeRight, double latitudeCenter, double longitudeCenter) {
         this.schoolID = schoolID;
         this.schoolName = schoolName;
         this.schoolHead = schoolHead;
@@ -26,7 +26,6 @@ public class School {
         this.longitudeCenter = longitudeCenter;
     }
 
-
     public static School getInstance(){
         if(instance == null){
             instance = new School();
@@ -45,12 +44,12 @@ public class School {
     private boolean qrScannerFeature;
     private boolean fingerPrintScannerFeature;
     private boolean facialRecognitionFeature;
-    private String latitudeBottom;
-    private String latitudeTop;
-    private String longitudeLeft;
-    private String longitudeRight;
-    private String latitudeCenter;
-    private String longitudeCenter;
+    private double latitudeBottom;
+    private double latitudeTop;
+    private double longitudeLeft;
+    private double longitudeRight;
+    private double latitudeCenter;
+    private double longitudeCenter;
 
     // Setters
     public void setSchoolID(int schoolID){this.schoolID = schoolID;}
@@ -64,12 +63,12 @@ public class School {
     public void setQrScannerFeature(boolean qrScannerFeature){this.qrScannerFeature = qrScannerFeature;}
     public void setFingerPrintScannerFeature(boolean fingerPrintScannerFeature){this.fingerPrintScannerFeature = fingerPrintScannerFeature;}
     public void setFacialRecognitionFeature(boolean facialRecognitionFeature){this.facialRecognitionFeature = facialRecognitionFeature;}
-    public void setLatitudeBottom(String latitudeBottom){this.latitudeBottom = latitudeBottom;}
-    public void setLatitudeTop(String latitudeTop){this.latitudeTop = latitudeTop;}
-    public void setLongitudeLeft(String longitudeLeft){this.longitudeLeft = longitudeLeft;}
-    public void setLongitudeRight(String longitudeRight){this.longitudeRight = longitudeRight;}
-    public void setLatitudeCenter(String latitudeCenter){this.latitudeCenter = latitudeCenter;}
-    public void setLongitudeCenter(String longitudeCenter){this.longitudeCenter = longitudeCenter;}
+    public void setLatitudeBottom(double latitudeBottom){this.latitudeBottom = latitudeBottom;}
+    public void setLatitudeTop(double latitudeTop){this.latitudeTop = latitudeTop;}
+    public void setLongitudeLeft(double longitudeLeft){this.longitudeLeft = longitudeLeft;}
+    public void setLongitudeRight(double longitudeRight){this.longitudeRight = longitudeRight;}
+    public void setLatitudeCenter(double latitudeCenter){this.latitudeCenter = latitudeCenter;}
+    public void setLongitudeCenter(double longitudeCenter){this.longitudeCenter = longitudeCenter;}
 
     // Getters
     public int getSchoolID(){return schoolID;}
@@ -83,10 +82,10 @@ public class School {
     public boolean isQrScannerFeature(){return qrScannerFeature;}
     public boolean isFingerPrintScannerFeature(){return fingerPrintScannerFeature;}
     public boolean isFacialRecognitionFeature(){return facialRecognitionFeature;}
-    public String getLatitudeBottom(){return latitudeBottom;}
-    public String getLatitudeTop(){return latitudeTop;}
-    public String getLongitudeLeft(){return longitudeLeft;}
-    public String getLongitudeRight(){return longitudeRight;}
-    public String getLatitudeCenter(){return latitudeCenter;}
-    public String getLongitudeCenter(){return longitudeCenter;}
+    public double getLatitudeBottom(){return latitudeBottom;}
+    public double getLatitudeTop(){return latitudeTop;}
+    public double getLongitudeLeft(){return longitudeLeft;}
+    public double getLongitudeRight(){return longitudeRight;}
+    public double getLatitudeCenter(){return latitudeCenter;}
+    public double getLongitudeCenter(){return longitudeCenter;}
 }
