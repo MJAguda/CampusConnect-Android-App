@@ -821,24 +821,6 @@
                             android:layout_weight="0.25"/>
 
                     </TableRow>
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.75"
-                            android:text="Facial Recog Feature"
-                            android:textSize="20sp"/>
-
-                        <Switch
-                            android:id="@+id/facialRecognitionFeature_Switch"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.25"/>
-
-                    </TableRow>
                 </TableLayout>
 
             </LinearLayout>
