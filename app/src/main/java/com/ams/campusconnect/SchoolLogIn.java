@@ -69,8 +69,8 @@ public class SchoolLogIn extends AppCompatActivity {
                     boolean gpsFeature = dataSnapshot.child("gpsFeature").getValue(Boolean.class);
                     boolean timeBasedFeature = dataSnapshot.child("timeBasedFeature").getValue(Boolean.class);
                     boolean qrScannerFeature = dataSnapshot.child("qrcodeFeature").getValue(Boolean.class);
-                    boolean fingerPrintScannerFeature = dataSnapshot.child("fingerPrintFeature").getValue(Boolean.class);
-                    boolean facialRecognitionFeature = dataSnapshot.child("facialRecognitionFeature").getValue(Boolean.class);
+                    boolean biometricFeature = dataSnapshot.child("biometricFeature").getValue(Boolean.class);
+//                    boolean facialRecognitionFeature = dataSnapshot.child("facialRecognitionFeature").getValue(Boolean.class);
                     double latitudeBottom = (double) dataSnapshot.child("latitudeBottom").getValue();
                     double latitudeTop = (double) dataSnapshot.child("latitudeTop").getValue();
                     double longitudeLeft = (double) dataSnapshot.child("longitudeLeft").getValue();
@@ -106,8 +106,8 @@ public class SchoolLogIn extends AppCompatActivity {
                     school.setGpsFeature(gpsFeature);
                     school.setTimeBasedFeature(timeBasedFeature);
                     school.setQrScannerFeature(qrScannerFeature);
-                    school.setFingerPrintScannerFeature(fingerPrintScannerFeature);
-                    school.setFacialRecognitionFeature(facialRecognitionFeature);
+                    school.setBiometricFeature(biometricFeature);
+//                    school.setFacialRecognitionFeature(facialRecognitionFeature);
                     school.setLatitudeBottom(latitudeBottom);
                     school.setLatitudeTop(latitudeTop);
                     school.setLongitudeLeft(longitudeLeft);

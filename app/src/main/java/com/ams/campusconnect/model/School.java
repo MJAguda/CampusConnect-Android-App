@@ -6,7 +6,7 @@ public class School {
 
     private School(){}
 
-    public School(int schoolID, String schoolName, String schoolHead, String adminUsername, String adminPassword, boolean idNumberFeature, boolean gpsFeature, boolean timeBasedFeature, boolean qrScannerFeature, boolean fingerPrintScannerFeature, boolean facialRecognitionFeature, double latitudeBottom, double latitudeTop, double longitudeLeft, double longitudeRight, double latitudeCenter, double longitudeCenter) {
+    public School(int schoolID, String schoolName, String schoolHead, String adminUsername, String adminPassword, boolean idNumberFeature, boolean gpsFeature, boolean timeBasedFeature, boolean qrScannerFeature, boolean biometricFeature, boolean facialRecognitionFeature, double latitudeBottom, double latitudeTop, double longitudeLeft, double longitudeRight, double latitudeCenter, double longitudeCenter) {
         this.schoolID = schoolID;
         this.schoolName = schoolName;
         this.schoolHead = schoolHead;
@@ -16,8 +16,7 @@ public class School {
         this.gpsFeature = gpsFeature;
         this.timeBasedFeature = timeBasedFeature;
         this.qrScannerFeature = qrScannerFeature;
-        this.fingerPrintScannerFeature = fingerPrintScannerFeature;
-        this.facialRecognitionFeature = facialRecognitionFeature;
+        this.biometricFeature = biometricFeature;
         this.latitudeBottom = latitudeBottom;
         this.latitudeTop = latitudeTop;
         this.longitudeLeft = longitudeLeft;
@@ -42,8 +41,7 @@ public class School {
     private boolean gpsFeature;
     private boolean timeBasedFeature;
     private boolean qrScannerFeature;
-    private boolean fingerPrintScannerFeature;
-    private boolean facialRecognitionFeature;
+    private boolean biometricFeature;
     private double latitudeBottom;
     private double latitudeTop;
     private double longitudeLeft;
@@ -61,8 +59,7 @@ public class School {
     public void setGpsFeature(boolean gpsFeature){this.gpsFeature = gpsFeature;}
     public void setTimeBasedFeature(boolean timeBasedFeature){this.timeBasedFeature = timeBasedFeature;}
     public void setQrScannerFeature(boolean qrScannerFeature){this.qrScannerFeature = qrScannerFeature;}
-    public void setFingerPrintScannerFeature(boolean fingerPrintScannerFeature){this.fingerPrintScannerFeature = fingerPrintScannerFeature;}
-    public void setFacialRecognitionFeature(boolean facialRecognitionFeature){this.facialRecognitionFeature = facialRecognitionFeature;}
+    public void setBiometricFeature(boolean biometricFeature){this.biometricFeature = biometricFeature;}
     public void setLatitudeBottom(double latitudeBottom){this.latitudeBottom = latitudeBottom;}
     public void setLatitudeTop(double latitudeTop){this.latitudeTop = latitudeTop;}
     public void setLongitudeLeft(double longitudeLeft){this.longitudeLeft = longitudeLeft;}
@@ -80,8 +77,7 @@ public class School {
     public boolean isGpsFeature(){return gpsFeature;}
     public boolean isTimeBasedFeature(){return timeBasedFeature;}
     public boolean isQrScannerFeature(){return qrScannerFeature;}
-    public boolean isFingerPrintScannerFeature(){return fingerPrintScannerFeature;}
-    public boolean isFacialRecognitionFeature(){return facialRecognitionFeature;}
+    public boolean isBiometricFeature(){return biometricFeature;}
     public double getLatitudeBottom(){return latitudeBottom;}
     public double getLatitudeTop(){return latitudeTop;}
     public double getLongitudeLeft(){return longitudeLeft;}

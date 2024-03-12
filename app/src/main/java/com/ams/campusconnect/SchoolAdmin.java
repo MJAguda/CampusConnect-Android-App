@@ -91,16 +91,16 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         Switch gpsSwitch = findViewById(R.id.gpsFeature_Switch);
         Switch timeBasedSwitch = findViewById(R.id.timeBased_Switch);
         Switch qrSwitch = findViewById(R.id.qrScannerFeature_Switch);
-        Switch fingerprintSwitch = findViewById(R.id.biometricFeature_Switch);
-        Switch facialrecognitionSwitch = findViewById(R.id.facialRecognitionFeature_Switch);
+        Switch biometricSwitch = findViewById(R.id.biometricFeature_Switch);
+//        Switch facialrecognitionSwitch = findViewById(R.id.facialRecognitionFeature_Switch);
 
         // Set the value for the ToggleSwitch
         idNumberSwitch.setChecked(school.isIdNumberFeature());
         gpsSwitch.setChecked(school.isGpsFeature());
         timeBasedSwitch.setChecked(school.isTimeBasedFeature());
         qrSwitch.setChecked(school.isQrScannerFeature());
-        fingerprintSwitch.setChecked(school.isFingerPrintScannerFeature());
-        facialrecognitionSwitch.setChecked(school.isFacialRecognitionFeature());
+        biometricSwitch.setChecked(school.isBiometricFeature());
+//        facialrecognitionSwitch.setChecked(school.isFacialRecognitionFeature());
 
         // Set an OnCheckedChangedListener to listen for changes in the toggle switch
         idNumberSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -127,19 +127,19 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             update.updateRecord(String.valueOf(school.getSchoolID()), "qrcodeFeature", school.isQrScannerFeature());
         });
 
-        fingerprintSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            Log.d("SchoolAdmin", "fingerprintSwitch checked: " + b);
-            school.setFingerPrintScannerFeature(b);
+        biometricSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            Log.d("SchoolAdmin", "biometricSwitch checked: " + b);
+            school.setBiometricFeature(b);
 
-            update.updateRecord(String.valueOf(school.getSchoolID()), "fingerPrintFeature", school.isFingerPrintScannerFeature());
+            update.updateRecord(String.valueOf(school.getSchoolID()), "biometricFeature", school.isBiometricFeature());
         });
 
-        facialrecognitionSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            Log.d("SchoolAdmin", "facialrecognitionSwitch checked: " + b);
-            school.setFacialRecognitionFeature(b);
-
-            update.updateRecord(String.valueOf(school.getSchoolID()), "facialRecognitionFeature", school.isFacialRecognitionFeature());
-        });
+//        facialrecognitionSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+//            Log.d("SchoolAdmin", "facialrecognitionSwitch checked: " + b);
+//            school.setFacialRecognitionFeature(b);
+//
+//            update.updateRecord(String.valueOf(school.getSchoolID()), "facialRecognitionFeature", school.isFacialRecognitionFeature());
+//        });
     }
 
     @Override
