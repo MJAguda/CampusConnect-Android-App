@@ -156,15 +156,16 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             }
             else{
                 // Get data from EditText and store it in School class
+
                 school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
                 school.setSchoolName(schoolName.getText().toString());
                 school.setSchoolHead(schoolHead.getText().toString());
                 school.setAdminUsername(adminUsername.getText().toString());
                 school.setAdminPassword(adminPassword.getText().toString());
-                school.setLatitudeBottom(latitudeBottom.getText().toString());
-                school.setLatitudeTop(latitudeTop.getText().toString());
-                school.setLongitudeLeft(longitudeLeft.getText().toString());
-                school.setLongitudeRight(longitudeRight.getText().toString());
+                school.setLatitudeBottom(Double.parseDouble(latitudeBottom.getText().toString()));
+                school.setLatitudeTop(Double.parseDouble(latitudeTop.getText().toString()));
+                school.setLongitudeLeft(Double.parseDouble(longitudeLeft.getText().toString()));
+                school.setLongitudeRight(Double.parseDouble(longitudeRight.getText().toString()));
 
                 // Check if school Id already exists in the databse
                 read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
@@ -191,8 +192,8 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             create.createRecord(school.getSchoolID() + "/latitudeTop", school.getLatitudeTop());
                             create.createRecord(school.getSchoolID() + "/longitudeLeft", school.getLongitudeLeft());
                             create.createRecord(school.getSchoolID() + "/longitudeRight", school.getLongitudeRight());
-                            create.createRecord(school.getSchoolID() + "/latitudeCenter", "0"); // TODO add EditText for latitudeCenter
-                            create.createRecord(school.getSchoolID() + "/longitudeCenter", "0"); // TODO add EditText for longitudeCenter
+                            create.createRecord(school.getSchoolID() + "/latitudeCenter", (double) (0.0)); // TODO add EditText for latitudeCenter
+                            create.createRecord(school.getSchoolID() + "/longitudeCenter", (double) (0.0)); // TODO add EditText for longitudeCenter
 
                             Toast.makeText(getApplicationContext(), "School Successfully Registered", Toast.LENGTH_SHORT).show();
 
