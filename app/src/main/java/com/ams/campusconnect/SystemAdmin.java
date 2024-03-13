@@ -17,10 +17,12 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.model.SchoolModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -30,6 +32,7 @@ import java.util.Calendar;
 public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     School school = School.getInstance();
+    SchoolModel schoolModel = new SchoolModel();
     Employee employee = Employee.getInstance();
     Read read = new Read();
 
@@ -163,62 +166,58 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 Toast.makeText(getApplicationContext(), "Latitude and Longitude must contain a decimal", Toast.LENGTH_SHORT).show();
             }
             // Check if the . is followed only by 0 example 123.0 but allow if enter is 123.01
-            else if (latitudeBottom.getText().toString().contains(".") && latitudeBottom.getText().toString().endsWith("0") ||
-                    latitudeTop.getText().toString().contains(".") && latitudeTop.getText().toString().endsWith("0") ||
-                    longitudeLeft.getText().toString().contains(".") && longitudeLeft.getText().toString().endsWith("0") ||
-                    longitudeRight.getText().toString().contains(".") && longitudeRight.getText().toString().endsWith("0")) {
+            else if (latitudeBottom.getText().toString().contains(".") &&
+                    latitudeBottom.getText().toString().endsWith("0") ||
+                    latitudeTop.getText().toString().contains(".") &&
+                            latitudeTop.getText().toString().endsWith("0") ||
+                    longitudeLeft.getText().toString().contains(".") &&
+                            longitudeLeft.getText().toString().endsWith("0") ||
+                    longitudeRight.getText().toString().contains(".") &&
+                            longitudeRight.getText().toString().endsWith("0")) {
                 Toast.makeText(getApplicationContext(), "Latitude and Longitude must not end with 0", Toast.LENGTH_SHORT).show();
             }
             // Check if latitudeBottom is greater than latitudeTop
-            else if (Double.parseDouble(latitudeBottom.getText().toString()) > Double.parseDouble(latitudeTop.getText().toString())) {
+            else if (Double.parseDouble(latitudeBottom.getText().toString()) >
+                    Double.parseDouble(latitudeTop.getText().toString())) {
                 Toast.makeText(getApplicationContext(), "Latitude Bottom must be less than Latitude Top", Toast.LENGTH_SHORT).show();
             }
             // Check if longitudeLeft is greater than longitudeRight
-            else if (Double.parseDouble(longitudeLeft.getText().toString()) > Double.parseDouble(longitudeRight.getText().toString())) {
+            else if (Double.parseDouble(longitudeLeft.getText().toString()) >
+                    Double.parseDouble(longitudeRight.getText().toString())) {
                 Toast.makeText(getApplicationContext(), "Longitude Left must be less than Longitude Right", Toast.LENGTH_SHORT).show();
             }
             else {
                 // Get data from EditText and store it in School class
 
-                school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
-                school.setSchoolName(schoolName.getText().toString());
-                school.setSchoolHead(schoolHead.getText().toString());
-                school.setAdminUsername(adminUsername.getText().toString());
-                school.setAdminPassword(adminPassword.getText().toString());
-                school.setLatitudeBottom(Double.parseDouble(latitudeBottom.getText().toString()));
-                school.setLatitudeTop(Double.parseDouble(latitudeTop.getText().toString()));
-                school.setLongitudeLeft(Double.parseDouble(longitudeLeft.getText().toString()));
-                school.setLongitudeRight(Double.parseDouble(longitudeRight.getText().toString()));
+                schoolModel.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
+                schoolModel.setSchoolName(schoolName.getText().toString());
+                schoolModel.setSchoolHead(schoolHead.getText().toString());
+                schoolModel.setAdminUsername(adminUsername.getText().toString());
+                schoolModel.setAdminPassword(adminPassword.getText().toString());
+                schoolModel.setLatitudeBottom(Double.parseDouble(latitudeBottom.getText().toString()));
+                schoolModel.setLatitudeTop(Double.parseDouble(latitudeTop.getText().toString()));
+                schoolModel.setLongitudeLeft(Double.parseDouble(longitudeLeft.getText().toString()));
+                schoolModel.setLongitudeRight(Double.parseDouble(longitudeRight.getText().toString()));
+                schoolModel.setLatitudeCenter((schoolModel.getLatitudeTop() + schoolModel.getLatitudeBottom()) / 2);
+                schoolModel.setLongitudeCenter((schoolModel.getLongitudeLeft() + schoolModel.getLongitudeRight()) / 2);
 
-                // Check if school Id already exists in the databse
-                read.readRecord(school.getSchoolID() + "/", new Read.OnGetDataListener() {
+                // Check if school Id already exists in the database
+
+                SchoolController schoolController = new SchoolController(schoolModel.getSchoolID());
+                schoolController.getSchoolData(new SchoolController.OnDataFetchListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
                             Toast.makeText(getApplicationContext(), "School ID is already Registered", Toast.LENGTH_SHORT).show();
                         } else {
+
                             // Create School
-                            Create create = new Create();
-                            create.createRecord(school.getSchoolID() + "/schoolID", school.getSchoolID());
-                            create.createRecord(school.getSchoolID() + "/schoolName", school.getSchoolName());
-                            create.createRecord(school.getSchoolID() + "/schoolHead", school.getSchoolHead());
-                            create.createRecord(school.getSchoolID() + "/adminUsername", school.getAdminUsername());
-                            create.createRecord(school.getSchoolID() + "/adminPassword", school.getAdminPassword());
-                            create.createRecord(school.getSchoolID() + "/idNumberFeature", true);
-                            create.createRecord(school.getSchoolID() + "/gpsFeature", true);
-                            create.createRecord(school.getSchoolID() + "/qrcodeFeature", true);
-                            create.createRecord(school.getSchoolID() + "/timeBasedFeature", true);
-                            create.createRecord(school.getSchoolID() + "/biometricFeature", true);
-                            create.createRecord(school.getSchoolID() + "/latitudeBottom", (double) (school.getLatitudeBottom()));
-                            create.createRecord(school.getSchoolID() + "/latitudeTop", (double) (school.getLatitudeTop()));
-                            create.createRecord(school.getSchoolID() + "/longitudeLeft", (double) (school.getLongitudeLeft()));
-                            create.createRecord(school.getSchoolID() + "/longitudeRight", (double) (school.getLongitudeRight()));
-                            create.createRecord(school.getSchoolID() + "/latitudeCenter", (double) ((school.getLatitudeTop() + school.getLatitudeBottom()) / 2)); // TODO add EditText for latitudeCenter
-                            create.createRecord(school.getSchoolID() + "/longitudeCenter", (double) ((school.getLongitudeLeft() + school.getLongitudeRight()) / 2)); // TODO add EditText for longitudeCenter
+
+                            schoolController.addSchool(schoolModel);
 
                             Toast.makeText(getApplicationContext(), "School Successfully Registered", Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(SystemAdmin.this, LogbookActivity.class);
+                            Intent intent = new Intent(SystemAdmin.this, SchoolLogIn.class);
                             startActivity(intent);
                         }
                     }
