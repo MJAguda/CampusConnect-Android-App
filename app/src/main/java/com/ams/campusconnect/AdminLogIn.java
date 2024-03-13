@@ -11,16 +11,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.model.SchoolModel;
 
 public class AdminLogIn extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     School school = School.getInstance();
+    SchoolModel schoolModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_log_in);
+
+        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
 
         // Declare Components
         ImageButton back = findViewById(R.id.backButton_ImageButton);
@@ -44,8 +48,9 @@ public class AdminLogIn extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Welcome System Admin", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AdminLogIn.this, SystemAdmin.class);
                 startActivity(intent);
-            } else if (adminUsername.getText().toString().equals(school.getAdminUsername()) && adminPassword.getText().toString().equals(school.getAdminPassword())) {
-                Toast.makeText(getApplicationContext(), "Welcome " + school.getSchoolName() + " Admin", Toast.LENGTH_SHORT).show();
+            } else if (adminUsername.getText().toString().equals(schoolModel.getAdminUsername()) &&
+                    adminPassword.getText().toString().equals(schoolModel.getAdminPassword())) {
+                Toast.makeText(getApplicationContext(), "Welcome " + schoolModel.getSchoolName() + " Admin", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(AdminLogIn.this, SchoolAdmin.class);
                 startActivity(intent);
             } else {
