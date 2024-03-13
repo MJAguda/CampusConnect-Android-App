@@ -1,6 +1,8 @@
 package com.ams.campusconnect.model;
 
-public class SchoolModel {
+import java.io.Serializable;
+
+public class SchoolModel implements Serializable{
     private int schoolID;
     private String schoolName;
     private String schoolHead;
