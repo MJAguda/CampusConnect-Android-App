@@ -18,12 +18,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Delete;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.firebase.Update;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.model.SchoolModel;
 import com.ams.campusconnect.qrcode.ScanQR;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,8 +38,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class LogbookActivity extends AppCompatActivity {
-
-    School school = School.getInstance();
+    SchoolModel schoolModel;
 
     Create create = new Create();
     Read read = new Read();
@@ -61,6 +62,9 @@ public class LogbookActivity extends AppCompatActivity {
             Toast.makeText(this, "Please allow permission for camera", Toast.LENGTH_SHORT).show();
             requestPermissions(new String[]{android.Manifest.permission.CAMERA}, 0);
         }
+
+        // Get the schoolModel from the previous activity
+        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
 
         // Instantiate DateUtils
         dateUtils = new DateUtils(LogbookActivity.this);
@@ -196,7 +200,7 @@ public class LogbookActivity extends AppCompatActivity {
             timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // TODO update every 1 second
 
             //Set school Name
-            schoolName.setText(school.getSchoolName());
+            schoolName.setText(schoolModel.getSchoolName());
 
 
             back.setOnClickListener(view -> {
@@ -205,113 +209,18 @@ public class LogbookActivity extends AppCompatActivity {
             });
 
             home.setOnClickListener(view -> {
-
-                List<String> ids = new ArrayList<>();
-
-                // Fetch all IDs and store it in ids List
-//                read.readRecord("305113" + "/employee", new Read.OnGetDataListener() {
-//                    @Override
-//                    public void onSuccess(DataSnapshot dataSnapshot) {
-//
-////                         Get all the names from the "employee" node and store them in a list
-//                        List<String> ids = new ArrayList<>();
-//                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-//                            ids.add(childSnapshot.child("id").getValue(String.class));
-//                        }
-////
-//////                        // Delete all 2024 February
-//////                        for(String id : ids){
-//////                            Log.d("ID : ", id);
-//////                            delete.deleteRecord("305113" + "/employee/" + id + "/attendance/2024", "February");
-//////                        }
-////
-//                        // Create February
-//                        for (String id : ids) {
-//                            Log.d("ID : ", id);
-//                            for (int i = 1; i <= 29; i++) {
-//                                if (i == 3 || i == 4 || i == 10 || i == 11 || i == 17 || i == 18 || i == 24 || i == 25) {
-//                                    continue;
-//                                }
-////                                create.createRecord(305113 + "/employee/" + id + "/attendance/" + 2024 + "/" + "February" + "/" + i + "/timeAM_In", "07:00 AM");
-////                                create.createRecord(305113 + "/employee/" + id + "/attendance/" + 2024 + "/" + "February" + "/" + i + "/timeAM_Out", "12:00 PM");
-////                                create.createRecord(305113 + "/employee/" + id + "/attendance/" + 2024 + "/" + "February" + "/" + i + "/timePM_In", "01:00 AM");
-////                                create.createRecord(305113 + "/employee/" + id + "/attendance/" + 2024 + "/" + "February" + "/" + i + "/timePM_Out", "05:00 AM");
-//
-//                                Random random = new Random();
-//
-//                                LocalTime timePM_Out = generateRandomTime(17, 0, 17, 59, random);
-//                                update.updateRecord("305113" + "/employee/" + id + "/attendance/2024/February/" + i, "timePM_Out", formatTime(timePM_Out));
-//                            }
-//                        }
-//
-//                        // Update timePM_Out of all IDs
-////                        update.updateRecord("305113" + "/employee/" + "000009211998" + "/attendance/2024/February/1", "timePM_Out", "");
-////                        for (String id : ids) {
-////                            for (int i = 1; i <= 29; i++) {
-////                                if (i == 3 || i == 4 || i == 10 || i == 11 || i == 17 || i == 18 || i == 24 || i == 25) {
-////                                    continue;
-////                                }
-////                                read.readRecord("305113" + "/employee/" + id + "/attendance/2024/February/" + i, new Read.OnGetDataListener() {
-////                                    @Override
-////                                    public void onSuccess(DataSnapshot dataSnapshot) {
-////                                        if (dataSnapshot.exists()) {
-////                                            String timePM_Out = dataSnapshot.getValue(String.class);
-////                                            Log.d("timePM_Out: ", timePM_Out + "");
-////                                        } else {
-////                                            // Handle the case where timePM_Out doesn't exist for the current day
-////                                        }
-////                                    }
-////
-////                                    @Override
-////                                    public void onFailure(DatabaseError databaseError) {
-////                                        Log.d("Read", "Error: " + databaseError.getMessage());
-////                                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-////                                    }
-////                                });
-////                            }
-////                        }
-//
-//                    }
-//
-//                    private LocalTime generateRandomTime(int hourStart, int minuteStart, int hourEnd, int minuteEnd, Random random) {
-//                        int hour = random.nextInt(hourEnd - hourStart + 1) + hourStart;
-//                        int minute = random.nextInt(minuteEnd - minuteStart + 1) + minuteStart;
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                            return LocalTime.of(hour, minute);
-//                        }
-//                        return null;
-//                    }
-//
-//                    private String formatTime(LocalTime time) {
-//                        DateTimeFormatter formatter = null;
-//                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                            formatter = DateTimeFormatter.ofPattern("hh:mm a");
-//                        }
-//                        String formattedTime = null;
-//                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                            formattedTime = time.format(formatter);
-//                        }
-//                        return formattedTime.toUpperCase();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(DatabaseError databaseError) {
-//                        Log.d("Read", "Error: " + databaseError.getMessage());
-//                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
-
                 Intent intent = new Intent(LogbookActivity.this, LogbookActivity.class);
                 startActivity(intent);
             });
 
             attendance.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, ScanQR.class);
+                intent = intent.putExtra("schoolModel", schoolModel);
                 startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
             });
             register.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, AdminLogIn.class);
+                intent = intent.putExtra("schoolModel", schoolModel);
                 startActivity(intent);
             });
 
@@ -323,10 +232,10 @@ public class LogbookActivity extends AppCompatActivity {
     }
 
     private void displayTimeLogs(String month, String day, String year) {
-//        Log.d("Month : ", month);
-//        Log.d("Day : ", day);
-//        Log.d("Month : ", year);
-        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+        // Get the schoolModel from the previous activity
+        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
+
+        read.readRecord(schoolModel.getSchoolID() + "/employee", new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 table.removeAllViews();
@@ -398,6 +307,9 @@ public class LogbookActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Get the schoolModel from the previous activity
+        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
+
         if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
             String qrResult = data.getStringExtra("QR_RESULT");
             // Handle the QR code result here
@@ -406,7 +318,7 @@ public class LogbookActivity extends AppCompatActivity {
 //            Toast.makeText(this, qrResult, Toast.LENGTH_SHORT).show();
 
             // Verify if employee id exists
-            read.readRecord(school.getSchoolID() + "/employee/" + qrResult, new Read.OnGetDataListener() {
+            read.readRecord(schoolModel.getSchoolID() + "/employee/" + qrResult, new Read.OnGetDataListener() {
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     if (!dataSnapshot.exists()) {
@@ -455,16 +367,16 @@ public class LogbookActivity extends AppCompatActivity {
 
 
                         dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
-                            read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month), new Read.OnGetDataListener() {
+                            read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month), new Read.OnGetDataListener() {
                                 @Override
                                 public void onSuccess(DataSnapshot dataSnapshot) {
                                     if (!dataSnapshot.exists()) {
                                         for (int i = 1; i <= DateUtils.getNumberOfDays(DateUtils.getMonthName(month), year); i++) {
                                             if (!dataSnapshot.hasChild(String.valueOf(i))) {
-                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_In", "");
-                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_Out", "");
-                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_In", "");
-                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_Out", "");
+                                                create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_In", "");
+                                                create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_Out", "");
+                                                create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_In", "");
+                                                create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_Out", "");
                                             }
                                         }
                                     }
