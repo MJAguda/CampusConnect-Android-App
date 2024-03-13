@@ -2,7 +2,6 @@ package com.ams.campusconnect;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -10,18 +9,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.firebase.Delete;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.School;
-import com.ams.campusconnect.model.SchoolModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 public class SchoolLogIn extends AppCompatActivity {
 
     School school = School.getInstance();
-    SchoolModel schoolModel = new SchoolModel();
     Read read = new Read();
     Delete delete = new Delete();
 
@@ -44,10 +40,11 @@ public class SchoolLogIn extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Fill all Fields", Toast.LENGTH_SHORT).show();
             } else {
                 // Store edittext to schoolID in the School class
-                schoolModel.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
+                school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
 
                 // getBySchoolID
                 getBySchoolID(school.getSchoolID());
+
 //                SchoolController schoolController = new SchoolController(schoolModel.getSchoolID());
 //
 //                schoolController.getSchoolData(new SchoolController.OnDataFetchListener() {
@@ -68,11 +65,8 @@ public class SchoolLogIn extends AppCompatActivity {
 //                    }
 //                });
             }
-
         });
     }
-
-
 
     private void getBySchoolID(int schoolID) {
 
@@ -96,8 +90,7 @@ public class SchoolLogIn extends AppCompatActivity {
                     boolean timeBasedFeature = dataSnapshot.child("timeBasedFeature").getValue(Boolean.class);
                     boolean qrScannerFeature = dataSnapshot.child("qrcodeFeature").getValue(Boolean.class);
                     boolean biometricFeature = dataSnapshot.child("biometricFeature").getValue(Boolean.class);
-//                    boolean facialRecognitionFeature = dataSnapshot.child("facialRecognitionFeature").getValue(Boolean.class);
-                    double latitudeBottom = (double) dataSnapshot.child("latitudeBottom").getValue();
+                    double latitudeBottom = Double.parseDouble(dataSnapshot.child("latitudeBottom").getValue().toString());
                     double latitudeTop = (double) dataSnapshot.child("latitudeTop").getValue();
                     double longitudeLeft = (double) dataSnapshot.child("longitudeLeft").getValue();
                     double longitudeRight = (double) dataSnapshot.child("longitudeRight").getValue();
@@ -133,7 +126,6 @@ public class SchoolLogIn extends AppCompatActivity {
                     school.setTimeBasedFeature(timeBasedFeature);
                     school.setQrScannerFeature(qrScannerFeature);
                     school.setBiometricFeature(biometricFeature);
-//                    school.setFacialRecognitionFeature(facialRecognitionFeature);
                     school.setLatitudeBottom(latitudeBottom);
                     school.setLatitudeTop(latitudeTop);
                     school.setLongitudeLeft(longitudeLeft);
