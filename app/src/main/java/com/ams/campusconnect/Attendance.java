@@ -195,10 +195,9 @@ public class Attendance extends AppCompatActivity {
         AMIn.setOnClickListener(view -> {
             save.setAuthenticate("timeAM_In");
 
-            if(school.isBiometricFeature()){
+            if (school.isBiometricFeature()) {
                 biometricManagerHelper.authenticate(false);
-            }
-            else{
+            } else {
                 dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
 
                     Log.d("Code Block : ", "inside dateUtils");
@@ -216,10 +215,9 @@ public class Attendance extends AppCompatActivity {
         AMOut.setOnClickListener(view -> {
             save.setAuthenticate("timeAM_Out");
 
-            if(school.isBiometricFeature()){
+            if (school.isBiometricFeature()) {
                 biometricManagerHelper.authenticate(false);
-            }
-            else{
+            } else {
                 dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
 
                     Log.d("Code Block : ", "inside dateUtils");
@@ -237,10 +235,9 @@ public class Attendance extends AppCompatActivity {
         PMIn.setOnClickListener(view -> {
             save.setAuthenticate("timePM_In");
 
-            if(school.isBiometricFeature()){
+            if (school.isBiometricFeature()) {
                 biometricManagerHelper.authenticate(false);
-            }
-            else{
+            } else {
                 dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
 
                     Log.d("Code Block : ", "inside dateUtils");
@@ -258,10 +255,9 @@ public class Attendance extends AppCompatActivity {
         PMOut.setOnClickListener(view -> {
             save.setAuthenticate("timePM_Out");
 
-            if(school.isBiometricFeature()){
+            if (school.isBiometricFeature()) {
                 biometricManagerHelper.authenticate(false);
-            }
-            else{
+            } else {
                 dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
 
                     Log.d("Code Block : ", "inside dateUtils");
@@ -298,7 +294,6 @@ public class Attendance extends AppCompatActivity {
     String employeeAttendancePath = school.getSchoolID() + "/employee/" + employee.getId();
 
     private BiometricPrompt.AuthenticationCallback createBiometricCallback() {
-
 
 
         return new BiometricPrompt.AuthenticationCallback() {
@@ -455,48 +450,62 @@ public class Attendance extends AppCompatActivity {
             ActivityCompat.requestPermissions(Attendance.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, location -> {
-            employee.setLatitude(location.getLatitude());
-            employee.setLongitude(location.getLongitude());
+        if (checkDeveloperOptions()) {
+            // Developer options are enabled, open settings
+            finish();
+            openDeveloperOptionsSettings();
+        } else {
+            // Check employee Coordinate if employee is inside the 4 corners of the campus
+            // Toggle switch to punch time without GPS
+            // Check if currentLocation is not null
 
-            if (checkDeveloperOptions()) {
-                // Developer options are enabled, open settings
-                finish();
-                openDeveloperOptionsSettings();
-            } else {
-                // Check employee Coordinate if employee is inside the 4 corners of the campus
-                // Toggle switch to punch time without GPS
-                // Check if currentLocation is not null
 
-                if (school.isGpsFeature()) {
-                    if (isEmployeeWithinCampusBounds(employee, school)) {
-                        Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
-
-                        // Push Time in Database
-                        create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
-
-                        // Store employee's last known location
-                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "latitude", employee.getLatitude());
-                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
-
-//                            thankyou.start();
-
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Connect to a WIFI for more accurate GPS", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
+            if (school.isGpsFeature()) {
+                if (isEmployeeWithinCampusBounds(employee, school)) {
                     Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                     // Push Time in Database
                     create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
-//                        thankyou.start();
 
-                    finish();
+                    // Get the current location of the employee Recursively
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, location -> {
+                        employee.setLatitude(location.getLatitude());
+                        employee.setLongitude(location.getLongitude());
+
+                        // Store employee's last known location
+                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "latitude", employee.getLatitude());
+                        update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
+                    });
+
+
+                    thankyou.start();
+
+                    // Refresh Time Logs
+                    TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
+                    table.removeAllViews();
+                    getTimeLogs(save.getYear(), save.getMonth());
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Connect to a WIFI for more accurate GPS", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
+
+                // Push Time in Database
+                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+
+                thankyou.start();
+
+                // Refresh Time Logs
+                TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
+                table.removeAllViews();
+                getTimeLogs(save.getYear(), save.getMonth());
+
             }
-        });
+
+        }
+
     }
 
     private boolean isEmployeeWithinCampusBounds(Employee employee, School school) {
