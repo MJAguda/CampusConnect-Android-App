@@ -2,6 +2,7 @@ package com.ams.campusconnect;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -9,15 +10,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.firebase.Delete;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.model.SchoolModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 public class SchoolLogIn extends AppCompatActivity {
 
     School school = School.getInstance();
+    SchoolModel schoolModel = new SchoolModel();
     Read read = new Read();
     Delete delete = new Delete();
 
@@ -40,13 +44,35 @@ public class SchoolLogIn extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Fill all Fields", Toast.LENGTH_SHORT).show();
             } else {
                 // Store edittext to schoolID in the School class
-                school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
+                schoolModel.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
 
                 // getBySchoolID
                 getBySchoolID(school.getSchoolID());
+//                SchoolController schoolController = new SchoolController(schoolModel.getSchoolID());
+//
+//                schoolController.getSchoolData(new SchoolController.OnDataFetchListener() {
+//                    @Override
+//                    public void onDataFetched(SchoolModel schoolModel) {
+//                        if (schoolModel != null) {
+//                            // Intent
+//                            Intent intent = new Intent(SchoolLogIn.this, LogbookActivity.class);
+//                            startActivity(intent);
+//                        } else {
+//                            Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(String errorMessage) {
+//                        Toast.makeText(getApplicationContext(), "Error : " + errorMessage, Toast.LENGTH_SHORT).show();
+//                    }
+//                });
             }
+
         });
     }
+
+
 
     private void getBySchoolID(int schoolID) {
 
