@@ -45,6 +45,7 @@ public class SchoolLogIn extends AppCompatActivity {
                 // getBySchoolID
                 getBySchoolID(school.getSchoolID());
 
+//                schoolModel.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
 //                SchoolController schoolController = new SchoolController(schoolModel.getSchoolID());
 //
 //                schoolController.getSchoolData(new SchoolController.OnDataFetchListener() {
