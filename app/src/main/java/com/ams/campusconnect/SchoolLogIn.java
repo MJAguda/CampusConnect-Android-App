@@ -2,6 +2,7 @@ package com.ams.campusconnect;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -9,15 +10,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.firebase.Delete;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.model.SchoolModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 public class SchoolLogIn extends AppCompatActivity {
 
     School school = School.getInstance();
+    SchoolModel schoolModel = new SchoolModel();
     Read read = new Read();
     Delete delete = new Delete();
 
@@ -40,112 +44,54 @@ public class SchoolLogIn extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Fill all Fields", Toast.LENGTH_SHORT).show();
             } else {
                 // Store edittext to schoolID in the School class
-                school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
+//                school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
 
                 // getBySchoolID
-                getBySchoolID(school.getSchoolID());
+//                getBySchoolID(school.getSchoolID());
 
-//                schoolModel.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
-//                SchoolController schoolController = new SchoolController(schoolModel.getSchoolID());
-//
-//                schoolController.getSchoolData(new SchoolController.OnDataFetchListener() {
-//                    @Override
-//                    public void onDataFetched(SchoolModel schoolModel) {
-//                        if (schoolModel != null) {
-//                            // Intent
-//                            Intent intent = new Intent(SchoolLogIn.this, LogbookActivity.class);
-//                            startActivity(intent);
-//                        } else {
-//                            Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(String errorMessage) {
-//                        Toast.makeText(getApplicationContext(), "Error : " + errorMessage, Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-            }
-        });
-    }
+                schoolModel.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
+                SchoolController schoolController = new SchoolController(schoolModel.getSchoolID());
 
-    private void getBySchoolID(int schoolID) {
+                schoolController.getSchoolData(new SchoolController.OnDataFetchListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.exists()) {
+                            Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (dataSnapshot.child("employee").child("attendance").exists()) { // Check if employee/attendance exists if so, delete
+                                delete.deleteRecord(school.getSchoolID() + "/employee", "attendance");
+                            }
 
-        read.readRecord(schoolID + "/", new Read.OnGetDataListener() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (dataSnapshot.child("employee").child("attendance").exists()) { // Check if employee/attendance exists if so, delete
-                        delete.deleteRecord(school.getSchoolID() + "/employee", "attendance");
+                            schoolModel.setSchoolID(Integer.parseInt(dataSnapshot.child("schoolID").getValue().toString()));
+                            schoolModel.setSchoolName(dataSnapshot.child("schoolName").getValue().toString());
+                            schoolModel.setSchoolHead(dataSnapshot.child("schoolHead").getValue().toString());
+                            schoolModel.setAdminUsername(dataSnapshot.child("adminUsername").getValue().toString());
+                            schoolModel.setAdminPassword(dataSnapshot.child("adminPassword").getValue().toString());
+                            schoolModel.setIdNumberFeature(dataSnapshot.child("idNumberFeature").getValue(Boolean.class));
+                            schoolModel.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
+                            schoolModel.setTimeBasedFeature(dataSnapshot.child("timeBasedFeature").getValue(Boolean.class));
+                            schoolModel.setQrcodeFeature(dataSnapshot.child("qrcodeFeature").getValue(Boolean.class));
+                            schoolModel.setBiometricFeature(dataSnapshot.child("biometricFeature").getValue(Boolean.class));
+                            schoolModel.setLatitudeBottom(Double.parseDouble(dataSnapshot.child("latitudeBottom").getValue().toString()));
+                            schoolModel.setLatitudeTop(Double.parseDouble(dataSnapshot.child("latitudeTop").getValue().toString()));
+                            schoolModel.setLongitudeLeft(Double.parseDouble(dataSnapshot.child("longitudeLeft").getValue().toString()));
+                            schoolModel.setLongitudeRight(Double.parseDouble(dataSnapshot.child("longitudeRight").getValue().toString()));
+                            schoolModel.setLatitudeCenter(Double.parseDouble(dataSnapshot.child("latitudeCenter").getValue().toString()));
+                            schoolModel.setLongitudeCenter(Double.parseDouble(dataSnapshot.child("longitudeCenter").getValue().toString()));
+
+                            Intent intent = new Intent(SchoolLogIn.this, LogbookActivity.class);
+                            intent.putExtra("schoolModel", schoolModel);
+                            startActivity(intent);
+                        }
                     }
 
-                    int schoolID = Integer.parseInt(dataSnapshot.child("schoolID").getValue().toString());
-                    String schoolName = dataSnapshot.child("schoolName").getValue().toString();
-                    String schoolHead = dataSnapshot.child("schoolHead").getValue().toString();
-                    String adminUsername = dataSnapshot.child("adminUsername").getValue().toString();
-                    String adminPassword = dataSnapshot.child("adminPassword").getValue().toString();
-                    boolean idNumberFeature = dataSnapshot.child("idNumberFeature").getValue(Boolean.class);
-                    boolean gpsFeature = dataSnapshot.child("gpsFeature").getValue(Boolean.class);
-                    boolean timeBasedFeature = dataSnapshot.child("timeBasedFeature").getValue(Boolean.class);
-                    boolean qrScannerFeature = dataSnapshot.child("qrcodeFeature").getValue(Boolean.class);
-                    boolean biometricFeature = dataSnapshot.child("biometricFeature").getValue(Boolean.class);
-                    double latitudeBottom = Double.parseDouble(dataSnapshot.child("latitudeBottom").getValue().toString());
-                    double latitudeTop = (double) dataSnapshot.child("latitudeTop").getValue();
-                    double longitudeLeft = (double) dataSnapshot.child("longitudeLeft").getValue();
-                    double longitudeRight = (double) dataSnapshot.child("longitudeRight").getValue();
-                    double latitudeCenter = (double) dataSnapshot.child("latitudeCenter").getValue();
-                    double longitudeCenter = (double) dataSnapshot.child("longitudeCenter").getValue();
-
-//                            School school1 = new School(schoolID,
-//                                    schoolName,
-//                                    schoolHead,
-//                                    adminUsername,
-//                                    adminPassword,
-//                                    idNumberFeature,
-//                                    gpsFeature,
-//                                    timeBasedFeature,
-//                                    qrScannerFeature,
-//                                    fingerPrintScannerFeature,
-//                                    facialRecognitionFeature,
-//                                    latitudeBottom,
-//                                    latitudeTop,
-//                                    longitudeLeft,
-//                                    longitudeRight,
-//                                    latitudeCenter,
-//                                    longitudeCenter);
-
-                    // Fetch data and store it in School Class
-                    school.setSchoolID(schoolID);
-                    school.setSchoolName(schoolName);
-                    school.setSchoolHead(schoolHead);
-                    school.setAdminUsername(adminUsername);
-                    school.setAdminPassword(adminPassword);
-                    school.setIdNumberFeature(idNumberFeature);
-                    school.setGpsFeature(gpsFeature);
-                    school.setTimeBasedFeature(timeBasedFeature);
-                    school.setQrScannerFeature(qrScannerFeature);
-                    school.setBiometricFeature(biometricFeature);
-                    school.setLatitudeBottom(latitudeBottom);
-                    school.setLatitudeTop(latitudeTop);
-                    school.setLongitudeLeft(longitudeLeft);
-                    school.setLongitudeRight(longitudeRight);
-                    school.setLatitudeCenter(latitudeCenter);
-                    school.setLongitudeCenter(longitudeCenter);
-
-                    // Toast.makeText(getApplicationContext(), "GPS : " + school.getGpsFeature() + "QR : " + school.isQrScannerFeature() + "Biometric : " + school.isFingerPrintScannerFeature() + "Facial : " + school.isFacialRecognitionFeature(), Toast.LENGTH_LONG).show();
-
-                    Intent intent = new Intent(SchoolLogIn.this, LogbookActivity.class);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onFailure(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "getSchoolDataError : " + databaseError, Toast.LENGTH_SHORT).show();
+                        Log.e("getSchoolDataError", databaseError.toString());
+                    }
+                });
             }
         });
-
     }
 }
