@@ -63,6 +63,12 @@ public class Attendance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
 
+        // Request for location permission
+        if (ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Attendance.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
         dateUtils = new DateUtils(Attendance.this);
 
         thankyou = MediaPlayer.create(this, R.raw.thankyou);
@@ -442,22 +448,24 @@ public class Attendance extends AppCompatActivity {
     private void getLocationAndCheckIn(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
         Log.d("Code Block : ", "inside getLocationAndCheckIn");
 
-        LocationManager locationManager;
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
+        // Request for location permission
         if (ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(Attendance.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
+        LocationManager locationManager;
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         if (checkDeveloperOptions()) {
             // Developer options are enabled, open settings
             finish();
             openDeveloperOptionsSettings();
-        } else {
-            // Check employee Coordinate if employee is inside the 4 corners of the campus
-            // Toggle switch to punch time without GPS
-            // Check if currentLocation is not null
+        }
+        else {
+//             Check employee Coordinate if employee is inside the 4 corners of the campus
+//             Toggle switch to punch time without GPS
+//             Check if currentLocation is not null
 
 
             if (school.isGpsFeature()) {
@@ -489,7 +497,8 @@ public class Attendance extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Connect to a WIFI for more accurate GPS", Toast.LENGTH_SHORT).show();
                     Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
                 }
-            } else {
+            }
+            else {
                 Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                 // Push Time in Database
