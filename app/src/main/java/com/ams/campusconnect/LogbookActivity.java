@@ -56,6 +56,12 @@ public class LogbookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logbook);
 
+        // Ask user to allow permission for android.permission.CAMERA
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Please allow permission for camera", Toast.LENGTH_SHORT).show();
+            requestPermissions(new String[]{android.Manifest.permission.CAMERA}, 0);
+        }
+
         // Instantiate DateUtils
         dateUtils = new DateUtils(LogbookActivity.this);
 
