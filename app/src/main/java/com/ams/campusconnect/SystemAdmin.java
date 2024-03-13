@@ -78,7 +78,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
         // Create an ArrayList for the day
         ArrayList<String> dayList = new ArrayList<>();
-        for (int i = 1 ; i <= 31 ; i++) {
+        for (int i = 1; i <= 31; i++) {
             dayList.add(String.valueOf(i));
         }
 
@@ -89,7 +89,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
         // Create an ArrayList for the year
         ArrayList<String> yearList = new ArrayList<>();
-        for (int i = Calendar.getInstance().get(Calendar.YEAR)-100; i <= Calendar.getInstance().get(Calendar.YEAR); i++) {
+        for (int i = Calendar.getInstance().get(Calendar.YEAR) - 100; i <= Calendar.getInstance().get(Calendar.YEAR); i++) {
             yearList.add(String.valueOf(i));
         }
 
@@ -136,7 +136,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         submitEmployee.setVisibility(View.GONE);
 
         back.setOnClickListener(view -> {
-            Intent intent = new Intent (SystemAdmin.this, AdminLogIn.class);
+            Intent intent = new Intent(SystemAdmin.this, AdminLogIn.class);
             startActivity(intent);
         });
 
@@ -151,10 +151,33 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         // if submitSchool is clicked
         submitSchool.setOnClickListener(view -> {
             // Check if all field are filled
-            if(schoolID.getText().toString().isEmpty() && schoolName.getText().toString().isEmpty() && schoolHead.getText().toString().isEmpty() && adminUsername.getText().toString().isEmpty() && adminPassword.getText().toString().isEmpty() && latitudeBottom.getText().toString().isEmpty() && latitudeTop.getText().toString().isEmpty() && longitudeLeft.getText().toString().isEmpty() && longitudeRight.getText().toString().isEmpty()){
+            if (schoolID.getText().toString().isEmpty() && schoolName.getText().toString().isEmpty() && schoolHead.getText().toString().isEmpty() && adminUsername.getText().toString().isEmpty() && adminPassword.getText().toString().isEmpty() && latitudeBottom.getText().toString().isEmpty() && latitudeTop.getText().toString().isEmpty() && longitudeLeft.getText().toString().isEmpty() && longitudeRight.getText().toString().isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Fill all Fields", Toast.LENGTH_SHORT).show();
+
             }
-            else{
+            // Check if latitudeBottom, latitudeTop, longitudeLeft, longitudeRight doesn't contain a .
+            else if (!latitudeBottom.getText().toString().contains(".") ||
+                    !latitudeTop.getText().toString().contains(".") ||
+                    !longitudeLeft.getText().toString().contains(".") ||
+                    !longitudeRight.getText().toString().contains(".")){
+                Toast.makeText(getApplicationContext(), "Latitude and Longitude must contain a decimal", Toast.LENGTH_SHORT).show();
+            }
+            // Check if the . is followed only by 0 example 123.0 but allow if enter is 123.01
+            else if (latitudeBottom.getText().toString().contains(".") && latitudeBottom.getText().toString().endsWith("0") ||
+                    latitudeTop.getText().toString().contains(".") && latitudeTop.getText().toString().endsWith("0") ||
+                    longitudeLeft.getText().toString().contains(".") && longitudeLeft.getText().toString().endsWith("0") ||
+                    longitudeRight.getText().toString().contains(".") && longitudeRight.getText().toString().endsWith("0")) {
+                Toast.makeText(getApplicationContext(), "Latitude and Longitude must not end with 0", Toast.LENGTH_SHORT).show();
+            }
+            // Check if latitudeBottom is greater than latitudeTop
+            else if (Double.parseDouble(latitudeBottom.getText().toString()) > Double.parseDouble(latitudeTop.getText().toString())) {
+                Toast.makeText(getApplicationContext(), "Latitude Bottom must be less than Latitude Top", Toast.LENGTH_SHORT).show();
+            }
+            // Check if longitudeLeft is greater than longitudeRight
+            else if (Double.parseDouble(longitudeLeft.getText().toString()) > Double.parseDouble(longitudeRight.getText().toString())) {
+                Toast.makeText(getApplicationContext(), "Longitude Left must be less than Longitude Right", Toast.LENGTH_SHORT).show();
+            }
+            else {
                 // Get data from EditText and store it in School class
 
                 school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
@@ -168,13 +191,12 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 school.setLongitudeRight(Double.parseDouble(longitudeRight.getText().toString()));
 
                 // Check if school Id already exists in the databse
-                read.readRecord( school.getSchoolID() + "/", new Read.OnGetDataListener() {
+                read.readRecord(school.getSchoolID() + "/", new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()){
+                        if (dataSnapshot.exists()) {
                             Toast.makeText(getApplicationContext(), "School ID is already Registered", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
+                        } else {
                             // Create School
                             Create create = new Create();
                             create.createRecord(school.getSchoolID() + "/schoolID", school.getSchoolID());
@@ -186,14 +208,13 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             create.createRecord(school.getSchoolID() + "/gpsFeature", true);
                             create.createRecord(school.getSchoolID() + "/qrcodeFeature", true);
                             create.createRecord(school.getSchoolID() + "/timeBasedFeature", true);
-                            create.createRecord(school.getSchoolID() + "/fingerPrintFeature", true);
-                            create.createRecord(school.getSchoolID() + "/facialRecognitionFeature", true);
-                            create.createRecord(school.getSchoolID() + "/latitudeBottom", school.getLatitudeBottom());
-                            create.createRecord(school.getSchoolID() + "/latitudeTop", school.getLatitudeTop());
-                            create.createRecord(school.getSchoolID() + "/longitudeLeft", school.getLongitudeLeft());
-                            create.createRecord(school.getSchoolID() + "/longitudeRight", school.getLongitudeRight());
-                            create.createRecord(school.getSchoolID() + "/latitudeCenter", (double) (0.0)); // TODO add EditText for latitudeCenter
-                            create.createRecord(school.getSchoolID() + "/longitudeCenter", (double) (0.0)); // TODO add EditText for longitudeCenter
+                            create.createRecord(school.getSchoolID() + "/biometricFeature", true);
+                            create.createRecord(school.getSchoolID() + "/latitudeBottom", (double) (school.getLatitudeBottom()));
+                            create.createRecord(school.getSchoolID() + "/latitudeTop", (double) (school.getLatitudeTop()));
+                            create.createRecord(school.getSchoolID() + "/longitudeLeft", (double) (school.getLongitudeLeft()));
+                            create.createRecord(school.getSchoolID() + "/longitudeRight", (double) (school.getLongitudeRight()));
+                            create.createRecord(school.getSchoolID() + "/latitudeCenter", (double) ((school.getLatitudeTop() + school.getLatitudeBottom()) / 2)); // TODO add EditText for latitudeCenter
+                            create.createRecord(school.getSchoolID() + "/longitudeCenter", (double) ((school.getLongitudeLeft() + school.getLongitudeRight()) / 2)); // TODO add EditText for longitudeCenter
 
                             Toast.makeText(getApplicationContext(), "School Successfully Registered", Toast.LENGTH_SHORT).show();
 
@@ -213,14 +234,14 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         // if submitEmployee is clicked
         submitEmployee.setOnClickListener(view -> {
             // Check if views are not empty
-            if(!firstName.getText().toString().isEmpty() || !lastName.getText().toString().isEmpty() || !id.getText().toString().isEmpty()){
+            if (!firstName.getText().toString().isEmpty() || !lastName.getText().toString().isEmpty() || !id.getText().toString().isEmpty()) {
                 // Get String from EditText components
                 employee.setFirstName(firstName.getText().toString());
                 employee.setLastName(lastName.getText().toString());
                 employee.setId(id.getText().toString());
-                employee.setFullName(employee.getLastName() +", "+ employee.getFirstName());
+                employee.setFullName(employee.getLastName() + ", " + employee.getFirstName());
 
-                employee.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/"+ yearSpinner.getSelectedItem().toString());
+                employee.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/" + yearSpinner.getSelectedItem().toString());
 
                 employee.setLatitude(0);
                 employee.setLongitude(0);
@@ -243,7 +264,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             Create create = new Create();
                             create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
                             create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
-                            create.createRecord(school.getSchoolID() + "/employee/"+employee.getId()+ "/birthdate", employee.getBirthday());
+                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/birthdate", employee.getBirthday());
                             create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/latitude", employee.getLatitude());
                             create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/longitude", employee.getLongitude());
 
@@ -262,8 +283,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         Toast.makeText(getApplicationContext(), "Read Error", Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
-            else{
+            } else {
                 Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
             }
         });
@@ -302,8 +322,8 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         Button submitSchool = findViewById(R.id.submitSchool_Button);
         Button submitEmployee = findViewById(R.id.submitEmployee_Button);
 
-        switch (menuItem.getItemId()){
-            case R.id.add_school:{
+        switch (menuItem.getItemId()) {
+            case R.id.add_school: {
                 // add school button clicked
 
                 prompt.setText("Register a School");
@@ -327,20 +347,20 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                 // Unhide submitSchool button
                 submitSchool.setVisibility(View.VISIBLE);
-                submitEmployee.setVisibility(View.GONE); 
+                submitEmployee.setVisibility(View.GONE);
                 return true;
             }
-            case R.id.edit_school:{
+            case R.id.edit_school: {
                 // TODO edit school
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
-            case R.id.delete_school:{
+            case R.id.delete_school: {
                 // TODO delete school
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
-            case R.id.add_employee:{
+            case R.id.add_employee: {
                 // add employee button clicked
 
                 prompt.setText("Register an Employee");
@@ -367,17 +387,17 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 submitEmployee.setVisibility(View.VISIBLE);
                 return true;
             }
-            case R.id.edit_employee:{
+            case R.id.edit_employee: {
                 // TODO Edit employee
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
-            case R.id.delete_employee:{
+            case R.id.delete_employee: {
                 // TODO delete employee
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
             }
-            case R.id.transfer_employee:{
+            case R.id.transfer_employee: {
                 // TODO delete employee
                 Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
                 return true;
