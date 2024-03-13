@@ -1,8 +1,11 @@
 package com.ams.campusconnect.controller;
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
 import com.ams.campusconnect.model.SchoolModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,24 +19,41 @@ public class SchoolController {
         databaseReference = FirebaseDatabase.getInstance().getReference().child(schoolID + "/");
     }
 
+    public void addSchool(SchoolModel school) {
+        // Get the reference of the database
+//        databaseReference = FirebaseDatabase.getInstance().getReference().child(school.getSchoolID() + "/");
+
+        // Add the school to the database
+        databaseReference.setValue(school).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // School added successfully
+
+            }
+        });
+    }
+    // // To call addSchool
+    // SchoolRepository schoolRepository = new SchoolRepository();
+    // schoolRepository.addSchool(school);
+
     public void getSchoolData(final OnDataFetchListener listener){
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                SchoolModel schoolModel = snapshot.getValue(SchoolModel.class);
-                listener.onDataFetched(schoolModel);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                listener.onError(error.getMessage());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                listener.onFailure(databaseError);
             }
         });
     }
 
     public interface OnDataFetchListener{
-        void onDataFetched(SchoolModel schoolModel);
-        void onError(String errorMessage);
+        void onSuccess(DataSnapshot dataSnapshot);
+
+        void onFailure(DatabaseError databaseError);
     }
 }
 
