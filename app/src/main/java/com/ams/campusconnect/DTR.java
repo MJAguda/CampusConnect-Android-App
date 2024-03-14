@@ -40,8 +40,8 @@ public class DTR {
     static School school = School.getInstance();
     SchoolModel schoolModel;
 
-    private static final float PDF_WIDTH_INCHES = 8.27f; // A4 paper width
-    private static final float PDF_HEIGHT_INCHES = 11.69f; // A4 paper height
+    private static final float PDF_WIDTH_INCHES = 8.5f; // Legal paper width
+    private static final float PDF_HEIGHT_INCHES = 13f; // Legal paper height
     private static final int COLUMN_MARGIN_DP = 20; // margin between columns in dp
 
 
@@ -219,14 +219,14 @@ public class DTR {
         });
     }
 
-    public static void generateDTR(String id, String month, int day, String year, TextView name, TextView date, TextView schoolHead, TableLayout table, Context context) {
-        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
+    public void generateDTR(String id, String month, int day, String year, TextView name, TextView date, TextView schoolHead, TableLayout table, Context context) {
+        read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 name.setText(dataSnapshot.child("fullname").getValue().toString());
                 date.setText(String.format("%s %s", month, year));
 
-                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
+                read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
 
