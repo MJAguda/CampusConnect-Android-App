@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
+import com.ams.campusconnect.model.SchoolModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,6 +22,7 @@ public class GenerateDTR extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     Employee employee = Employee.getInstance();
+    SchoolModel schoolModel;
 
     //private static final String TAG
 
@@ -28,6 +30,9 @@ public class GenerateDTR extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generate_dtr);
+
+        // Get School Data
+        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
 
         // Find button in the Layout
         ImageButton back = findViewById(R.id.backButton_ImageButton);
@@ -77,6 +82,7 @@ public class GenerateDTR extends AppCompatActivity {
 
         back.setOnClickListener(view -> {
             Intent intent = new Intent(GenerateDTR.this, Generate.class);
+            intent.putExtra("schoolModel", schoolModel);
             startActivity(intent);
         });
 
@@ -92,7 +98,9 @@ public class GenerateDTR extends AppCompatActivity {
             //int day = DateUtils.getNumberOfDays(save.getMonth(), save.getYear());
             int day = DateUtils.getNumberOfDays(month, year);
 
-            DTR.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, GenerateDTR.this);
+            DTR dtr = new DTR(schoolModel);
+
+            dtr.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, GenerateDTR.this);
         });
 
         download.setOnClickListener(view -> DTR.downloadDTR(findViewById(R.id.dtr_LinearLayout), GenerateDTR.this));
