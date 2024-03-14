@@ -16,7 +16,6 @@ import com.ams.campusconnect.model.SchoolModel;
 public class AdminLogIn extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
-    School school = School.getInstance();
     SchoolModel schoolModel;
 
     @Override
@@ -34,24 +33,26 @@ public class AdminLogIn extends AppCompatActivity {
 
         back.setOnClickListener(view -> {
             Intent intent = new Intent(AdminLogIn.this, LogbookActivity.class);
-            startActivity(intent);
-        });
-
-        back.setOnClickListener(view -> {
-            Intent intent = new Intent(AdminLogIn.this, LogbookActivity.class);
+            intent = intent.putExtra("schoolModel", schoolModel);
             startActivity(intent);
         });
 
         adminLogIn.setOnClickListener(view -> {
             // Check if admin account is school level or higher admin
             if (adminUsername.getText().toString().equals(save.getAdminUsername()) && adminPassword.getText().toString().equals(save.getAdminPassword())) {
+
                 Toast.makeText(getApplicationContext(), "Welcome System Admin", Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(AdminLogIn.this, SystemAdmin.class);
+                intent = intent.putExtra("schoolModel", schoolModel);
                 startActivity(intent);
             } else if (adminUsername.getText().toString().equals(schoolModel.getAdminUsername()) &&
                     adminPassword.getText().toString().equals(schoolModel.getAdminPassword())) {
+
                 Toast.makeText(getApplicationContext(), "Welcome " + schoolModel.getSchoolName() + " Admin", Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(AdminLogIn.this, SchoolAdmin.class);
+                intent = intent.putExtra("schoolModel", schoolModel);
                 startActivity(intent);
             } else {
                 Toast.makeText(getApplicationContext(), "Wrong Username or Password", Toast.LENGTH_SHORT).show();

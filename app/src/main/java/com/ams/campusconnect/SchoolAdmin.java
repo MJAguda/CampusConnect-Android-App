@@ -29,7 +29,7 @@ import com.ams.campusconnect.firebase.Transfer;
 import com.ams.campusconnect.firebase.Update;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
-import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.model.SchoolModel;
 import com.ams.campusconnect.qrcode.DownloadQR;
 import com.ams.campusconnect.qrcode.GenerateQR;
 import com.google.firebase.database.DataSnapshot;
@@ -44,7 +44,8 @@ import java.util.Iterator;
 public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     SaveData save = SaveData.getInstance();
-    School school = School.getInstance();
+//    School school = School.getInstance();
+    SchoolModel schoolModel;
     Employee employee = Employee.getInstance();
     Read read = new Read();
     Update update = new Update();
@@ -67,14 +68,16 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_admin);
 
+        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
+
         hideAllComponents();
 
         ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
         ImageButton back = findViewById(R.id.backButton_ImageButton);
 
         back.setOnClickListener(view -> {
-            Intent intent = new Intent(SchoolAdmin.this, AdminLogIn.class);
-            startActivity(intent);
+            // changeScreen method should pass a Activity class to
+            changeScreen(AdminLogIn.class);
         });
 
         hamburger.setOnClickListener(view -> {
@@ -95,55 +98,57 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 //        Switch facialrecognitionSwitch = findViewById(R.id.facialRecognitionFeature_Switch);
 
         // Set the value for the ToggleSwitch
-        idNumberSwitch.setChecked(school.isIdNumberFeature());
-        gpsSwitch.setChecked(school.isGpsFeature());
-        timeBasedSwitch.setChecked(school.isTimeBasedFeature());
-        qrSwitch.setChecked(school.isQrScannerFeature());
-        biometricSwitch.setChecked(school.isBiometricFeature());
-//        facialrecognitionSwitch.setChecked(school.isFacialRecognitionFeature());
+        idNumberSwitch.setChecked(schoolModel.isIdNumberFeature());
+        gpsSwitch.setChecked(schoolModel.isGpsFeature());
+        timeBasedSwitch.setChecked(schoolModel.isTimeBasedFeature());
+        qrSwitch.setChecked(schoolModel.isQrcodeFeature());
+        biometricSwitch.setChecked(schoolModel.isBiometricFeature());
 
         // Set an OnCheckedChangedListener to listen for changes in the toggle switch
         idNumberSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            Log.d("idNumberSwitch", "idSwitchSwitch checked: " + b);
-            school.setIdNumberFeature(b);
+//            Log.d("idNumberSwitch", "idSwitchSwitch checked: " + b);
+            schoolModel.setIdNumberFeature(b);
 
-            update.updateRecord(String.valueOf(school.getSchoolID()), "idNumberFeature", school.isIdNumberFeature());
+            update.updateRecord(String.valueOf(schoolModel.getSchoolID()), "idNumberFeature", schoolModel.isIdNumberFeature());
         });
         gpsSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            Log.d("gpsSwitch", "gpsSwitch checked: " + b);
-            school.setGpsFeature(b);
-            update.updateRecord(String.valueOf(school.getSchoolID()), "gpsFeature", school.isGpsFeature());
+//            Log.d("gpsSwitch", "gpsSwitch checked: " + b);
+            schoolModel.setGpsFeature(b);
+            update.updateRecord(String.valueOf(schoolModel.getSchoolID()), "gpsFeature", schoolModel.isGpsFeature());
         });
         timeBasedSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            Log.d("timeBasedSwitch", "timeBasedSwitch checked: " + b);
-            school.setTimeBasedFeature(b);
-            update.updateRecord(String.valueOf(school.getSchoolID()), "timeBasedFeature", school.isTimeBasedFeature());
+//            Log.d("timeBasedSwitch", "timeBasedSwitch checked: " + b);
+            schoolModel.setTimeBasedFeature(b);
+            update.updateRecord(String.valueOf(schoolModel.getSchoolID()), "timeBasedFeature", schoolModel.isTimeBasedFeature());
         });
 
         qrSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            Log.d("SchoolAdmin", "qrSwitch checked: " + b);
-            school.setQrScannerFeature(b);
+//            Log.d("SchoolAdmin", "qrSwitch checked: " + b);
+            schoolModel.setQrcodeFeature(b);
 
-            update.updateRecord(String.valueOf(school.getSchoolID()), "qrcodeFeature", school.isQrScannerFeature());
+            update.updateRecord(String.valueOf(schoolModel.getSchoolID()), "qrcodeFeature", schoolModel.isQrcodeFeature());
         });
 
         biometricSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
             Log.d("SchoolAdmin", "biometricSwitch checked: " + b);
-            school.setBiometricFeature(b);
+            schoolModel.setBiometricFeature(b);
 
-            update.updateRecord(String.valueOf(school.getSchoolID()), "biometricFeature", school.isBiometricFeature());
+            update.updateRecord(String.valueOf(schoolModel.getSchoolID()), "biometricFeature", schoolModel.isBiometricFeature());
         });
 
-//        facialrecognitionSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-//            Log.d("SchoolAdmin", "facialrecognitionSwitch checked: " + b);
-//            school.setFacialRecognitionFeature(b);
-//
-//            update.updateRecord(String.valueOf(school.getSchoolID()), "facialRecognitionFeature", school.isFacialRecognitionFeature());
-//        });
+    }
+
+    // Add argument fromClass to toClass
+    private void changeScreen(Class<?> toClass) {
+        Intent intent = new Intent(SchoolAdmin.this, toClass);
+        intent = intent.putExtra("schoolModel", schoolModel);
+        startActivity(intent);
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
+
+        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
 
         TextView prompt = findViewById(R.id.prompt);
         monthSpinner = findViewById(R.id.month_Spinner);
@@ -164,6 +169,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         ArrayList<String> idList = new ArrayList<>();
 
         // Read all school ID
+        // TODO: Change this read to get all school ID utilizing the SchoolController class
         read.readRecord("/", new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -187,7 +193,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         });
 
         // Read all employee and add it in the idList
-        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+        read.readRecord(schoolModel.getSchoolID() + "/employee", new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
@@ -306,7 +312,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         employee.setLongitude(0);
 
                         // Check id if exist
-                        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
+                        read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
@@ -317,19 +323,17 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                                     // Push data to Firebase Realtime Database
                                     Create create = new Create();
-                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
-                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
-                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/birthdate", employee.getBirthday());
-                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/latitude", employee.getLatitude());
-                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/longitude", employee.getLongitude());
+                                    create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
+                                    create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
+                                    create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/birthdate", employee.getBirthday());
+                                    create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/latitude", employee.getLatitude());
+                                    create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/longitude", employee.getLongitude());
 
                                     firstNameEditText.setText("");
                                     lastNameEditText.setText("");
                                     idEditText.setText("");
 
-                                    Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
-                                    startActivity(intent);
-
+                                    changeScreen(SchoolAdmin.class);
                                 }
                             }
 
@@ -377,7 +381,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         Toast.makeText(getApplicationContext(), "Selected Item: " + selectedItemName, Toast.LENGTH_SHORT).show();
 
                         // Read the parent node of the selected fullname
-                        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+                        read.readRecord(schoolModel.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 String parentKey = null;
@@ -391,7 +395,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 }
                                 if (parentKey != null) {
                                     // Read Employee data from the selectedItemId
-                                    read.readRecord(school.getSchoolID() + "/employee/" + parentKey, new Read.OnGetDataListener() {
+                                    read.readRecord(schoolModel.getSchoolID() + "/employee/" + parentKey, new Read.OnGetDataListener() {
                                         @Override
                                         public void onSuccess(DataSnapshot dataSnapshot) {
                                             String id = dataSnapshot.child("id").getValue(String.class);
@@ -446,13 +450,12 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 // Submit Button ActionListener
                 submit.setOnClickListener(view -> {
 
-                    update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "fullname", lastNameEditText.getText().toString() + ", " + firstNameEditText.getText().toString());
-                    update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "birthdate", (DateUtils.getMonthName(String.valueOf(monthSpinner.getSelectedItemPosition() + 1))) + "/" + daySpinner.getSelectedItem().toString() + "/" + yearSpinner.getSelectedItem().toString());
+                    update.updateRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId(), "fullname", lastNameEditText.getText().toString() + ", " + firstNameEditText.getText().toString());
+                    update.updateRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId(), "birthdate", (DateUtils.getMonthName(String.valueOf(monthSpinner.getSelectedItemPosition() + 1))) + "/" + daySpinner.getSelectedItem().toString() + "/" + yearSpinner.getSelectedItem().toString());
 
                     Toast.makeText(getApplicationContext(), "Successfully Edited", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
-                    startActivity(intent);
+                    changeScreen(SchoolAdmin.class);
                 });
                 return true;
             }
@@ -490,7 +493,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         Toast.makeText(getApplicationContext(), "Selected Item: " + selectedItemName, Toast.LENGTH_SHORT).show();
 
                         // Read the parent node of the selected fullname
-                        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+                        read.readRecord(schoolModel.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 String parentKey = null;
@@ -504,7 +507,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 }
                                 if (parentKey != null) {
                                     // Read Employee data from the selectedItemId
-                                    read.readRecord(school.getSchoolID() + "/employee/" + parentKey, new Read.OnGetDataListener() {
+                                    read.readRecord(schoolModel.getSchoolID() + "/employee/" + parentKey, new Read.OnGetDataListener() {
                                         @Override
                                         public void onSuccess(DataSnapshot dataSnapshot) {
                                             String id = dataSnapshot.child("id").getValue(String.class);
@@ -557,12 +560,11 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 submit.setText("Delete an Employee");
                 // Submit Button ActionListener
                 submit.setOnClickListener(view -> {
-                    delete.deleteRecord(school.getSchoolID() + "/employee", String.valueOf(idEditText.getText()));
+                    delete.deleteRecord(schoolModel.getSchoolID() + "/employee", String.valueOf(idEditText.getText()));
 
                     Toast.makeText(getApplicationContext(), "Successfully Deleted", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
-                    startActivity(intent);
+                    changeScreen(SchoolAdmin.class);
                 });
                 return true;
             }
@@ -573,7 +575,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 hideAllComponents();
                 submit.setVisibility(View.GONE);
 
-                sourceTextView.setText(school.getSchoolID() + "");
+                sourceTextView.setText(schoolModel.getSchoolID() + "");
 
                 // Unhide components needed in transfering employee
                 sourceAndDestinationTableLayout.setVisibility(View.VISIBLE);
@@ -605,7 +607,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         Toast.makeText(getApplicationContext(), "Selected Item: " + selectedItemName, Toast.LENGTH_SHORT).show();
 
                         // Read the parent node of the selected fullname
-                        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+                        read.readRecord(schoolModel.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 String parentKey = null;
@@ -619,7 +621,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 }
                                 if (parentKey != null) {
                                     // Read Employee data from the selectedItemId
-                                    read.readRecord(school.getSchoolID() + "/employee/" + parentKey, new Read.OnGetDataListener() {
+                                    read.readRecord(schoolModel.getSchoolID() + "/employee/" + parentKey, new Read.OnGetDataListener() {
                                         @Override
                                         public void onSuccess(DataSnapshot dataSnapshot) {
                                             String id = dataSnapshot.child("id").getValue(String.class);
@@ -671,7 +673,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 submit.setText("Download All QRs");
 
                 submit.setOnClickListener(view -> {
-                    DatabaseReference source = FirebaseDatabase.getInstance().getReference(school.getSchoolID() + "/employee/" + employee.getId());
+                    DatabaseReference source = FirebaseDatabase.getInstance().getReference(schoolModel.getSchoolID() + "/employee/" + employee.getId());
                     DatabaseReference destination = FirebaseDatabase.getInstance().getReference(destinationSpinner.getSelectedItem().toString() + "/employee/" + employee.getId());
 
                     // Create an instance of the Transfer class
@@ -680,8 +682,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     // Call the copyRecord method to copy the subtree from the source to the destination node
                     transfer.copyRecord(source, destination);
 
-                    Intent intent = new Intent(SchoolAdmin.this, SchoolAdmin.class);
-                    startActivity(intent);
+                    changeScreen(SchoolAdmin.class);
                 });
                 return true;
             }
@@ -694,7 +695,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 // Unhide QRImageView
                 qrCodeImageView.setVisibility(View.VISIBLE);
 
-                read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+                read.readRecord(schoolModel.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -756,7 +757,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         save.setMonth(month);
                         save.setYear(year);
 
-                        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+                        read.readRecord(schoolModel.getSchoolID() + "/employee", new Read.OnGetDataListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 processChildData(dataSnapshot.getChildren().iterator(), month, day, year);
