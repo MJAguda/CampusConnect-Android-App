@@ -6,6 +6,15 @@
     android:layout_weight="1"
     android:orientation="horizontal">
 
+    <ImageButton
+        android:id="@+id/backButton_ImageButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:background="#B83B5E"
+        app:srcCompat="@drawable/backbutton"
+        android:scaleType="fitCenter"/>
+
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"

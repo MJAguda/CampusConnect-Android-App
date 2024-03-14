@@ -17,21 +17,12 @@
         android:background="#B83B5E"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/backButton_ImageButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:background="#B83B5E"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
-
         <include layout="@layout/header_layout"/>
     </LinearLayout>
 
     <!--Body-->
     <LinearLayout
         android:id="@+id/body_LinearLayout"
-        layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
