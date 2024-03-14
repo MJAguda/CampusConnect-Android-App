@@ -168,7 +168,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         ArrayList<String> idList = new ArrayList<>();
 
         // Read all school ID
-        // TODO: Change this read to get all school ID utilizing the SchoolController class
         read.readRecord("/", new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
