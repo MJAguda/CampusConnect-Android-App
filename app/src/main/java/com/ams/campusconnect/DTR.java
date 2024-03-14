@@ -59,7 +59,7 @@ public class DTR {
     }
 
     // TODO add sending Gmail
-    public static void downloadDTR(View view, Context context) {
+    public void downloadDTR(View view, Context context) {
         // Calculate the pixel dimensions based on the screen density
         int widthPixels = (int) (PDF_WIDTH_INCHES * context.getResources().getDisplayMetrics().densityDpi);
         int heightPixels = (int) (PDF_HEIGHT_INCHES * context.getResources().getDisplayMetrics().densityDpi);
