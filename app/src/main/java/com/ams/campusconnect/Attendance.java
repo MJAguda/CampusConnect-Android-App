@@ -472,14 +472,13 @@ public class Attendance extends AppCompatActivity {
         } else {
 
             // For Testing only
-//        if (checkDeveloperOptions()) {
-//            // Developer options are enabled, open settings
-//            finish();
-//            openDeveloperOptionsSettings();
-//        }
-//        // Check if GPS is enabled
-//        else
-            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            if (checkDeveloperOptions()) {
+                // Developer options are enabled, open settings
+                finish();
+                openDeveloperOptionsSettings();
+            }
+            // Check if GPS is enabled
+            else if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 // GPS is disabled, open settings
                 finish();
                 openGPSSettings();
@@ -529,8 +528,7 @@ public class Attendance extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Connect to a WIFI for more accurate GPS", Toast.LENGTH_SHORT).show();
                         Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
                     }
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                     // Push Time in Database
