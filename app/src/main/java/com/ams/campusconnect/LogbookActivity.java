@@ -205,11 +205,13 @@ public class LogbookActivity extends AppCompatActivity {
 
             back.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, SchoolLogIn.class);
+                intent = intent.putExtra("schoolModel", schoolModel);
                 startActivity(intent);
             });
 
             home.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, LogbookActivity.class);
+                intent = intent.putExtra("schoolModel", schoolModel);
                 startActivity(intent);
             });
 
@@ -218,6 +220,7 @@ public class LogbookActivity extends AppCompatActivity {
                 intent = intent.putExtra("schoolModel", schoolModel);
                 startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
             });
+
             register.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, AdminLogIn.class);
                 intent = intent.putExtra("schoolModel", schoolModel);
@@ -226,6 +229,7 @@ public class LogbookActivity extends AppCompatActivity {
 
             generate.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, Generate.class);
+                intent = intent.putExtra("schoolModel", schoolModel);
                 startActivity(intent);
             });
         });
@@ -391,6 +395,7 @@ public class LogbookActivity extends AppCompatActivity {
                         });
 
                         Intent intent = new Intent(LogbookActivity.this, Attendance.class);
+                        intent = intent.putExtra("schoolModel", schoolModel);
                         startActivity(intent);
 
                     }
