@@ -57,14 +57,14 @@ public class LogbookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logbook);
 
+        // Get the schoolModel from the previous activity
+        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
+
         // Ask user to allow permission for android.permission.CAMERA
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "Please allow permission for camera", Toast.LENGTH_SHORT).show();
             requestPermissions(new String[]{android.Manifest.permission.CAMERA}, 0);
         }
-
-        // Get the schoolModel from the previous activity
-        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
 
         // Instantiate DateUtils
         dateUtils = new DateUtils(LogbookActivity.this);
@@ -236,8 +236,6 @@ public class LogbookActivity extends AppCompatActivity {
     }
 
     private void displayTimeLogs(String month, String day, String year) {
-        // Get the schoolModel from the previous activity
-        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
 
         read.readRecord(schoolModel.getSchoolID() + "/employee", new Read.OnGetDataListener() {
             @Override
@@ -310,9 +308,6 @@ public class LogbookActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Get the schoolModel from the previous activity
-        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
 
         if (requestCode == REQUEST_CODE_SCAN_QR && resultCode == RESULT_OK && data != null) {
             String qrResult = data.getStringExtra("QR_RESULT");

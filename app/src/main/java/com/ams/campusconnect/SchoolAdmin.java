@@ -669,7 +669,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     }
                 });
 
-                submit.setText("Download All QRs");
+                submit.setText("Transfer");
 
                 submit.setOnClickListener(view -> {
                     DatabaseReference source = FirebaseDatabase.getInstance().getReference(schoolModel.getSchoolID() + "/employee/" + employee.getId());
@@ -679,7 +679,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     Transfer transfer = new Transfer(source, destination, employee.getId(), getApplicationContext());
 
                     // Call the copyRecord method to copy the subtree from the source to the destination node
-                    transfer.copyRecord(source, destination);
+                    transfer.copyRecord(schoolModel, source, destination);
 
                     changeScreen(SchoolAdmin.class);
                 });
@@ -713,7 +713,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             qr.setImageBitmap(generateQR.generateQRCode(child.getKey()));
 
                             // Download qr if a ImageView
-                            DownloadQR imageDownloader = new DownloadQR(qr);
+                            DownloadQR imageDownloader = new DownloadQR(qr, schoolModel);
                             imageDownloader.downloadImage(SchoolAdmin.this);
                         }
                     }

@@ -1,23 +1,16 @@
 package com.ams.campusconnect.qrcode;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.model.SchoolModel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -30,15 +23,16 @@ import java.util.Locale;
 public class DownloadQR {
 
     private static Employee employee = Employee.getInstance();
-    private static School school = School.getInstance();
 
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
     private ImageView imageView;
 
     private Bitmap bitmap;
+    SchoolModel schoolModel;
 
-    public DownloadQR(ImageView imageView) {
+    public DownloadQR(ImageView imageView, SchoolModel schoolModel) {
         this.imageView = imageView;
+        this.schoolModel = schoolModel;
     }
 
     // TODO add sending Gmail
@@ -78,6 +72,6 @@ public class DownloadQR {
     private String generateFileName() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy_HHmmss", Locale.getDefault());
         String currentDateAndTime = sdf.format(new Date());
-        return "QRCode_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + currentDateAndTime + ".png";
+        return "QRCode_" + schoolModel.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + currentDateAndTime + ".png";
     }
 }

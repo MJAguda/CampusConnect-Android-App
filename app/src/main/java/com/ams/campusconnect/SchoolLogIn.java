@@ -20,7 +20,6 @@ import com.google.firebase.database.DatabaseError;
 
 public class SchoolLogIn extends AppCompatActivity {
 
-    School school = School.getInstance();
     SchoolModel schoolModel = new SchoolModel();
     Read read = new Read();
     Delete delete = new Delete();
@@ -59,7 +58,7 @@ public class SchoolLogIn extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
                         } else {
                             if (dataSnapshot.child("employee").child("attendance").exists()) { // Check if employee/attendance exists if so, delete
-                                delete.deleteRecord(school.getSchoolID() + "/employee", "attendance");
+                                delete.deleteRecord(schoolModel.getSchoolID() + "/employee", "attendance");
                             }
 
                             schoolModel.setSchoolID(Integer.parseInt(dataSnapshot.child("schoolID").getValue().toString()));
