@@ -231,499 +231,6 @@
                     android:layout_gravity="center"
                     android:background="@drawable/table_border" />
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10px"
-                    android:background="@color/white"
-                    android:layout_gravity="center">
-
-                    <LinearLayout
-                        android:id="@+id/dtr_LinearLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="30px">
-
-                        <!--Header-->
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="Civil Service Form No. 48"
-                            android:textSize="8sp"
-                            android:textStyle="italic"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="DAILY TIME RECORD"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:textAlignment="center"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="-----o0o-----"
-                            android:textSize="8sp"
-                            android:textAlignment="center"/>
-
-                        <TextView
-                            android:id="@+id/name_TextView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="Last Name, First Name"
-                            android:textSize="10sp"
-                            android:textAlignment="center" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:background="@color/black" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="NAME"
-                            android:textSize="8sp"
-                            android:textAlignment="center"/>
-
-                        <TableLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/black"
-                                    android:text="For the month of"
-                                    android:textSize="8sp"
-                                    android:textStyle="italic"/>
-                                <TextView
-                                    android:id="@+id/monthyear_TextView"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/black"
-                                    android:text="Month Year"
-                                    android:textSize="8sp"
-                                    android:textStyle="italic"
-                                    android:gravity="center"/>
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/black"
-                                    android:text=""
-                                    android:textSize="8sp"
-                                    android:textStyle="italic"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/black"
-                                    android:text=""
-                                    android:textSize="8sp"
-                                    android:textStyle="italic"/>
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:background="@color/black" />
-
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="1px"
-                                    android:layout_weight="1"
-                                    android:background="@color/black" />
-
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="0px"
-                                    android:layout_weight="1"
-                                    android:background="@color/black" />
-
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="0px"
-                                    android:layout_weight="1"
-                                    android:background="@color/black" />
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/black"
-                                    android:text="Official hours for arrival"
-                                    android:textSize="8sp"
-                                    android:textStyle="italic"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/black"
-                                    android:text="Regular days"
-                                    android:textSize="8sp"
-                                    android:gravity="right"
-                                    android:textStyle="italic"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/black"
-                                    android:text=""
-                                    android:textSize="8sp"
-                                    android:textStyle="italic"/>
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:background="@color/black" />
-
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="0px"
-                                    android:layout_weight="1"
-                                    android:background="@color/black" />
-
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="1px"
-                                    android:layout_weight="1"
-                                    android:background="@color/black" />
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/black"
-                                    android:text="and departure"
-                                    android:textSize="8sp"
-                                    android:textStyle="italic"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/black"
-                                    android:text="Saturdays"
-                                    android:textSize="8sp"
-                                    android:gravity="right"
-                                    android:textStyle="italic"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/black"
-                                    android:text=""
-                                    android:textSize="8sp"
-                                    android:textStyle="italic"/>
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:background="@color/black" />
-
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="0px"
-                                    android:layout_weight="1"
-                                    android:background="@color/black" />
-
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="1px"
-                                    android:layout_weight="1"
-                                    android:background="@color/black" />
-                            </TableRow>
-
-
-                        </TableLayout>
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="8sp"/>
-
-                        <!--Body-->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:background="@drawable/table_border"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.14285714285714285714285714285714"
-                                android:gravity="center"
-                                android:paddingTop="5px"
-                                android:paddingBottom="5px"
-                                android:text="Date"
-                                android:textColor="@color/black"
-                                android:textSize="9sp"/>
-
-                            <TableLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.85714285714285714285714285714284">
-
-                                <TableRow
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <TextView
-                                        android:background="@drawable/table_border"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="0.28571428571428571428571428571429"
-                                        android:textColor="@color/black"
-                                        android:text="A.M."
-                                        android:textSize="9sp"
-                                        android:gravity="center"
-                                        android:paddingTop="5px"
-                                        android:paddingBottom="5px"
-                                        android:textStyle="bold"/>
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="0.28571428571428571428571428571429"
-                                        android:background="@drawable/table_border"
-                                        android:gravity="center"
-                                        android:paddingTop="5px"
-                                        android:paddingBottom="5px"
-                                        android:text="P.M."
-                                        android:textColor="@color/black"
-                                        android:textSize="9sp"
-                                        android:textStyle="bold" />
-                                    <TextView
-                                        android:background="@drawable/table_border"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="0.28571428571428571428571428571429"
-                                        android:textColor="@color/black"
-                                        android:text="Undertime"
-                                        android:textSize="9sp"
-                                        android:gravity="center"
-                                        android:paddingTop="5px"
-                                        android:paddingBottom="5px"
-                                        android:textStyle="bold"/>
-
-                                </TableRow>
-
-                                <TableRow
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <TextView
-                                        android:background="@drawable/table_border"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="0.14285714285714285714285714285714"
-                                        android:textColor="@color/black"
-                                        android:text="Arrival"
-                                        android:textSize="7sp"
-                                        android:gravity="center"
-                                        android:paddingTop="5px"
-                                        android:paddingBottom="5px"
-                                        android:textStyle="bold"/>
-                                    <TextView
-                                        android:background="@drawable/table_border"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="0.14285714285714285714285714285714"
-                                        android:textColor="@color/black"
-                                        android:text="Departure"
-                                        android:textSize="7sp"
-                                        android:gravity="center"
-                                        android:paddingTop="5px"
-                                        android:paddingBottom="5px"
-                                        android:textStyle="bold"/>
-
-                                    <TextView
-                                        android:background="@drawable/table_border"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="0.14285714285714285714285714285714"
-                                        android:textColor="@color/black"
-                                        android:text="Arrival"
-                                        android:textSize="7sp"
-                                        android:gravity="center"
-                                        android:paddingTop="5px"
-                                        android:paddingBottom="5px"
-                                        android:textStyle="bold"/>
-                                    <TextView
-                                        android:background="@drawable/table_border"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="0.14285714285714285714285714285714"
-                                        android:textColor="@color/black"
-                                        android:text="Departure"
-                                        android:textSize="7sp"
-                                        android:gravity="center"
-                                        android:paddingTop="5px"
-                                        android:paddingBottom="5px"
-                                        android:textStyle="bold"/>
-                                    <TextView
-                                        android:background="@drawable/table_border"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="0.14285714285714285714285714285714"
-                                        android:textColor="@color/black"
-                                        android:text="Hours"
-                                        android:textSize="7sp"
-                                        android:gravity="center"
-                                        android:paddingTop="5px"
-                                        android:paddingBottom="5px"
-                                        android:textStyle="bold"/>
-                                    <TextView
-                                        android:background="@drawable/table_border"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="0.14285714285714285714285714285714"
-                                        android:textColor="@color/black"
-                                        android:text="Minutes"
-                                        android:textSize="7sp"
-                                        android:gravity="center"
-                                        android:paddingTop="5px"
-                                        android:paddingBottom="5px"
-                                        android:textStyle="bold"/>
-                                </TableRow>
-                            </TableLayout>
-
-                        </LinearLayout>
-
-
-                        <TableLayout
-                            android:id="@+id/dtr_TableLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                        </TableLayout>
-
-                        <TableLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:background="@drawable/table_border"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="0.7142857142857142857142857142857"
-                                    android:textColor="@color/black"
-                                    android:text="Total "
-                                    android:textSize="9sp"
-                                    android:gravity="right" />
-
-                                <TextView
-                                    android:background="@drawable/table_border"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="0.28571428571428571428571428571428"
-                                    android:textColor="@color/black"
-                                    android:text=""
-                                    android:textSize="9sp"
-                                    android:gravity="center"
-                                    android:textStyle="bold"/>
-                            </TableRow>
-                        </TableLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="40sp"/>
-                        <!--Footer-->
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="I certify on my honor that the above is a true and correct report of the hours of work performed, record of which was made daily at the time of arrival and departure from office."
-                            android:textSize="7.5sp"
-                            android:gravity="left"
-                            android:textStyle="italic"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="7.5sp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:background="@color/black" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="VERIFIED as to the prescribed office hours:"
-                            android:textSize="7.5sp"
-                            android:gravity="center"
-                            android:textStyle="italic"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="7.5sp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:background="@color/black" />
-
-                        <TextView
-                            android:id="@+id/schoolHead_TextView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="HEAD"
-                            android:textSize="7.5sp"
-                            android:gravity="center"
-                            android:textStyle="italic"/>
-                    </LinearLayout>
-                </ScrollView>
-
                 <TableLayout
                     android:id="@+id/features_TableLayout"
                     android:layout_width="match_parent"
@@ -825,7 +332,498 @@
 
             </LinearLayout>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:background="@color/white"
+            android:layout_gravity="center">
 
+            <LinearLayout
+                android:id="@+id/dtr_LinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="30px">
+
+                <!--Header-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Civil Service Form No. 48"
+                    android:textSize="8sp"
+                    android:textStyle="italic"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="DAILY TIME RECORD"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="-----o0o-----"
+                    android:textSize="8sp"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:id="@+id/name_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Last Name, First Name"
+                    android:textSize="10sp"
+                    android:textAlignment="center" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="NAME"
+                    android:textSize="8sp"
+                    android:textAlignment="center"/>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:text="For the month of"
+                            android:textSize="8sp"
+                            android:textStyle="italic"/>
+                        <TextView
+                            android:id="@+id/monthyear_TextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:text="Month Year"
+                            android:textSize="8sp"
+                            android:textStyle="italic"
+                            android:gravity="center"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:text=""
+                            android:textSize="8sp"
+                            android:textStyle="italic"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:text=""
+                            android:textSize="8sp"
+                            android:textStyle="italic"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@color/black" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1px"
+                            android:layout_weight="1"
+                            android:background="@color/black" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0px"
+                            android:layout_weight="1"
+                            android:background="@color/black" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0px"
+                            android:layout_weight="1"
+                            android:background="@color/black" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:text="Official hours for arrival"
+                            android:textSize="8sp"
+                            android:textStyle="italic"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:text="Regular days"
+                            android:textSize="8sp"
+                            android:gravity="right"
+                            android:textStyle="italic"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:text=""
+                            android:textSize="8sp"
+                            android:textStyle="italic"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@color/black" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0px"
+                            android:layout_weight="1"
+                            android:background="@color/black" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1px"
+                            android:layout_weight="1"
+                            android:background="@color/black" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:text="and departure"
+                            android:textSize="8sp"
+                            android:textStyle="italic"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:text="Saturdays"
+                            android:textSize="8sp"
+                            android:gravity="right"
+                            android:textStyle="italic"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:text=""
+                            android:textSize="8sp"
+                            android:textStyle="italic"/>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@color/black" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0px"
+                            android:layout_weight="1"
+                            android:background="@color/black" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1px"
+                            android:layout_weight="1"
+                            android:background="@color/black" />
+                    </TableRow>
+
+
+                </TableLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="8sp"/>
+
+                <!--Body-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:background="@drawable/table_border"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.14285714285714285714285714285714"
+                        android:gravity="center"
+                        android:paddingTop="5px"
+                        android:paddingBottom="5px"
+                        android:text="Date"
+                        android:textColor="@color/black"
+                        android:textSize="9sp"/>
+
+                    <TableLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.85714285714285714285714285714284">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.28571428571428571428571428571429"
+                                android:textColor="@color/black"
+                                android:text="A.M."
+                                android:textSize="9sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.28571428571428571428571428571429"
+                                android:background="@drawable/table_border"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:text="P.M."
+                                android:textColor="@color/black"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.28571428571428571428571428571429"
+                                android:textColor="@color/black"
+                                android:text="Undertime"
+                                android:textSize="9sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Arrival"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Departure"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Arrival"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Departure"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Hours"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+                            <TextView
+                                android:background="@drawable/table_border"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.14285714285714285714285714285714"
+                                android:textColor="@color/black"
+                                android:text="Minutes"
+                                android:textSize="7sp"
+                                android:gravity="center"
+                                android:paddingTop="5px"
+                                android:paddingBottom="5px"
+                                android:textStyle="bold"/>
+                        </TableRow>
+                    </TableLayout>
+
+                </LinearLayout>
+
+
+                <TableLayout
+                    android:id="@+id/dtr_TableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </TableLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:background="@drawable/table_border"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.7142857142857142857142857142857"
+                            android:textColor="@color/black"
+                            android:text="Total "
+                            android:textSize="9sp"
+                            android:gravity="right" />
+
+                        <TextView
+                            android:background="@drawable/table_border"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.28571428571428571428571428571428"
+                            android:textColor="@color/black"
+                            android:text=""
+                            android:textSize="9sp"
+                            android:gravity="center"
+                            android:textStyle="bold"/>
+                    </TableRow>
+                </TableLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"/>
+                <!--Footer-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="I certify on my honor that the above is a true and correct report of the hours of work performed, record of which was made daily at the time of arrival and departure from office."
+                    android:textSize="7.5sp"
+                    android:gravity="left"
+                    android:textStyle="italic"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="7.5sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="VERIFIED as to the prescribed office hours:"
+                    android:textSize="7.5sp"
+                    android:gravity="center"
+                    android:textStyle="italic"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="7.5sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/black" />
+
+                <TextView
+                    android:id="@+id/schoolHead_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="HEAD"
+                    android:textSize="7.5sp"
+                    android:gravity="center"
+                    android:textStyle="italic"/>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
     <!--Footer-->
