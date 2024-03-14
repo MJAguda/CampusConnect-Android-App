@@ -86,6 +86,8 @@ public class GenerateDTR extends AppCompatActivity {
             startActivity(intent);
         });
 
+        DTR dtr = new DTR(schoolModel);
+
         // Generate DTR
         generate.setOnClickListener(view -> {
 
@@ -98,11 +100,11 @@ public class GenerateDTR extends AppCompatActivity {
             //int day = DateUtils.getNumberOfDays(save.getMonth(), save.getYear());
             int day = DateUtils.getNumberOfDays(month, year);
 
-            DTR dtr = new DTR(schoolModel);
+
 
             dtr.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, GenerateDTR.this);
         });
 
-        download.setOnClickListener(view -> DTR.downloadDTR(findViewById(R.id.dtr_LinearLayout), GenerateDTR.this));
+        download.setOnClickListener(view -> dtr.downloadDTR(findViewById(R.id.dtr_LinearLayout), GenerateDTR.this));
     }
 }
