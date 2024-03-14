@@ -25,7 +25,6 @@ import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.firebase.Update;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.School;
-import com.ams.campusconnect.model.SchoolModel;
 import com.ams.campusconnect.qrcode.ScanQR;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,7 +37,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class LogbookActivity extends AppCompatActivity {
-    SchoolModel schoolModel;
+    School school;
+    SchoolController schoolController = new SchoolController();
 
     Create create = new Create();
     Read read = new Read();
@@ -57,8 +57,10 @@ public class LogbookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logbook);
 
-        // Get the schoolModel from the previous activity
-        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
+        // Get the school from the previous activity
+        school = (School) getIntent().getSerializableExtra("school");
+
+//        randomizeAttendance();
 
         // Ask user to allow permission for android.permission.CAMERA
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
@@ -200,44 +202,91 @@ public class LogbookActivity extends AppCompatActivity {
             timer.scheduleAtFixedRate(updateTimeTask, 0, 1000); // TODO update every 1 second
 
             //Set school Name
-            schoolName.setText(schoolModel.getSchoolName());
+            schoolName.setText(school.getSchoolName());
 
 
             back.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, SchoolLogIn.class);
-                intent = intent.putExtra("schoolModel", schoolModel);
+                intent = intent.putExtra("school", school);
                 startActivity(intent);
             });
 
             home.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, LogbookActivity.class);
-                intent = intent.putExtra("schoolModel", schoolModel);
+                intent = intent.putExtra("school", school);
                 startActivity(intent);
             });
 
             attendance.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, ScanQR.class);
-                intent = intent.putExtra("schoolModel", schoolModel);
+                intent = intent.putExtra("school", school);
                 startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
             });
 
             register.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, AdminLogIn.class);
-                intent = intent.putExtra("schoolModel", schoolModel);
+                intent = intent.putExtra("school", school);
                 startActivity(intent);
             });
 
             generate.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, Generate.class);
-                intent = intent.putExtra("schoolModel", schoolModel);
+                intent = intent.putExtra("school", school);
                 startActivity(intent);
             });
         });
     }
 
+//    private void randomizeAttendance() {
+//        // I want you to randomize the attendance of all the employees of school.getSchoolID() from Day 1 to 14 of the month March 2024
+//        // timeAM_In should be between 7:00 AM and 8:00 AM
+//        // timeAM_Out should be between 12:00 PM and 12:30 PM
+//        // timePM_In should be between 12:31 PM and 1:00 PM
+//        // timePM_Out should be between 4:00 PM and 5:00 PM
+//        // timeAM_In, timeAM_Out, timePM_In, and timePM_Out should be in the 12 hour Formart (e.g. 07:00 AM, 12:30 PM, etc.)
+//
+//        // Get all the employee IDs
+//        read.readRecord(school.getSchoolID() + "/employee" , new Read.OnGetDataListener() {
+//            @Override
+//            public void onSuccess(DataSnapshot dataSnapshot) {
+//                // Traverse all employee IDs
+//                for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                    String employeeID = child.getKey();
+//                    // Traverse all days of March 2024
+//                    for (int day = 11; day <= 14; day++) {
+//                        // Randomize the attendance of the employee for the day
+//                        // timeAM_In, timeAM_Out, timePM_In, and timePM_Out should be in the 12 hour Formart (e.g. 07:00 AM, 12:30 PM, etc.)
+//
+//                        // Randomize timeAM_In in 12 hour format use Math.Random to generate time between 7:00 AM and 8:00 AM
+//                        String timeAM_in = String.format("%02d:%02d %s", 7 + (int) (Math.random() * 2), (int) (Math.random() * 60), (Math.random() < 0.5) ? "AM" : "PM");
+//                        // Randomize timeAM_Out in 12 hour format use Math.Random to generate time between 12:00 PM and 12:30 PM
+//                        String timeAM_out = String.format("%02d:%02d %s", 12, (int) (Math.random() * 30), "PM");
+//                        // Randomize timePM_In in 12 hour format use Math.Random to generate time between 12:31 PM and 1:00 PM
+//                        String timePM_in = String.format("%02d:%02d %s", 12, 31 + (int) (Math.random() * 30), "PM");
+//                        // Randomize timePM_Out in 12 hour format use Math.Random to generate time between 4:00 PM and 5:00 PM
+//                        String timePM_out = String.format("%02d:%02d %s", 4 + (int) (Math.random() * 2), (int) (Math.random() * 60), (Math.random() < 0.5) ? "PM" : "AM");
+//
+//                        // Create the attendance record for the employee for the day
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timeAM_In", timeAM_in);
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timeAM_Out", timeAM_out);
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timePM_In", timePM_in);
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timePM_Out", timePM_out);
+//
+//
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
+
     private void displayTimeLogs(String month, String day, String year) {
 
-        read.readRecord(schoolModel.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 table.removeAllViews();
@@ -317,7 +366,7 @@ public class LogbookActivity extends AppCompatActivity {
 //            Toast.makeText(this, qrResult, Toast.LENGTH_SHORT).show();
 
             // Verify if employee id exists
-            read.readRecord(schoolModel.getSchoolID() + "/employee/" + qrResult, new Read.OnGetDataListener() {
+            read.readRecord(school.getSchoolID() + "/employee/" + qrResult, new Read.OnGetDataListener() {
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     if (!dataSnapshot.exists()) {
@@ -366,16 +415,16 @@ public class LogbookActivity extends AppCompatActivity {
 
 
                         dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
-                            read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month), new Read.OnGetDataListener() {
+                            read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month), new Read.OnGetDataListener() {
                                 @Override
                                 public void onSuccess(DataSnapshot dataSnapshot) {
                                     if (!dataSnapshot.exists()) {
                                         for (int i = 1; i <= DateUtils.getNumberOfDays(DateUtils.getMonthName(month), year); i++) {
                                             if (!dataSnapshot.hasChild(String.valueOf(i))) {
-                                                create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_In", "");
-                                                create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_Out", "");
-                                                create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_In", "");
-                                                create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_Out", "");
+                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_In", "");
+                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_Out", "");
+                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_In", "");
+                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_Out", "");
                                             }
                                         }
                                     }
@@ -390,7 +439,7 @@ public class LogbookActivity extends AppCompatActivity {
                         });
 
                         Intent intent = new Intent(LogbookActivity.this, Attendance.class);
-                        intent = intent.putExtra("schoolModel", schoolModel);
+                        intent = intent.putExtra("school", school);
                         startActivity(intent);
 
                     }

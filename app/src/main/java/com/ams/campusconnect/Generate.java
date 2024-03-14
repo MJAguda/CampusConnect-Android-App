@@ -18,7 +18,6 @@ import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
-import com.ams.campusconnect.model.SchoolModel;
 import com.ams.campusconnect.qrcode.DownloadQR;
 import com.ams.campusconnect.qrcode.GenerateQR;
 import com.ams.campusconnect.qrcode.ScanQR;
@@ -28,7 +27,7 @@ import com.google.firebase.database.DatabaseError;
 public class Generate extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
-    SchoolModel schoolModel;
+    School school;
     Employee employee = Employee.getInstance();
     Read read = new Read();
 
@@ -42,7 +41,7 @@ public class Generate extends AppCompatActivity {
         setContentView(R.layout.activity_generate);
 
         // Get School Data
-        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
+        school = (School) getIntent().getSerializableExtra("school");
 
         // Declare Components
         idEditText = findViewById(R.id.id_EditText);
@@ -115,7 +114,7 @@ public class Generate extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Generate.this, LogbookActivity.class);
-                intent = intent.putExtra("schoolModel", schoolModel);
+                intent = intent.putExtra("school", school);
                 startActivity(intent);
             }
         });
@@ -124,7 +123,7 @@ public class Generate extends AppCompatActivity {
 
         scanQR.setOnClickListener(view -> {
             Intent intent = new Intent(Generate.this, ScanQR.class);
-            intent = intent.putExtra("schoolModel", schoolModel);
+            intent = intent.putExtra("school", school);
             startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
 
 
@@ -137,7 +136,7 @@ public class Generate extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "ID Number should not be empty", Toast.LENGTH_SHORT).show();
             }
             else{
-                read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
+                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         if(!dataSnapshot.exists()){
@@ -183,7 +182,7 @@ public class Generate extends AppCompatActivity {
         // Home button
         home.setOnClickListener(view -> {
             Intent intent = new Intent(Generate.this, LogbookActivity.class);
-            intent = intent.putExtra("schoolModel", schoolModel);
+            intent = intent.putExtra("school", school);
             startActivity(intent);
         });
 
@@ -203,7 +202,7 @@ public class Generate extends AppCompatActivity {
 
             // Download qr if a ImageView is clicked
             qr.setOnClickListener(view1 -> {
-                DownloadQR downloadQR = new DownloadQR(qr, schoolModel);
+                DownloadQR downloadQR = new DownloadQR(qr, school);
                 downloadQR.downloadImage(Generate.this);
             });
         });
@@ -211,7 +210,7 @@ public class Generate extends AppCompatActivity {
         // Generate DTR for employee
         generateDTR.setOnClickListener(view -> {
             Intent intent = new Intent(Generate.this, GenerateDTR.class);
-            intent = intent.putExtra("schoolModel", schoolModel);
+            intent = intent.putExtra("school", school);
             startActivity(intent);
         });
 

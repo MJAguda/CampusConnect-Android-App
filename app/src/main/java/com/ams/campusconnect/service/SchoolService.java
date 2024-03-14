@@ -3,10 +3,7 @@ package com.ams.campusconnect.service;
 import android.util.Log;
 
 import com.ams.campusconnect.model.School;
-import com.ams.campusconnect.model.SchoolModel;
 import com.ams.campusconnect.repository.SchoolRepository;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +19,16 @@ public class SchoolService {
 
     }
 
-    private static List<SchoolModel> schools = new ArrayList<>();
-    private static SchoolModel school = new SchoolModel();
+    private static List<School> schools = new ArrayList<>();
+    private static School school = new School();
 
     // Add school
-    public void addSchool(SchoolModel school) {
+    public void addSchool(School school) {
         schoolRepository.addSchool(school);
     }
 
-    public void fetchSchoolFromFireBase(SchoolModel schoolModel) {
-        Log.d("School ID : ", schoolModel.getSchoolID() + "");
-        Log.d("School Name : ", schoolModel.getSchoolName() + "");
+    public void fetchSchoolFromFireBase(School school) {
+        Log.d("School ID : ", school.getSchoolID() + "");
+        Log.d("School Name : ", school.getSchoolName() + "");
     }
 }

@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.ams.campusconnect.model.SchoolModel;
+import com.ams.campusconnect.model.School;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +20,7 @@ public class SchoolRepository {
     }
 
     // Add School
-    public void addSchool(SchoolModel school) {
+    public void addSchool(School school) {
         // Get the reference of the database
         databaseReference = FirebaseDatabase.getInstance().getReference().child(school.getSchoolID() + "/");
 
@@ -46,7 +46,7 @@ public class SchoolRepository {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Get the school from the database
-                SchoolModel schoolModel = dataSnapshot.getValue(SchoolModel.class);
+                School school = dataSnapshot.getValue(School.class);
 
             }
 

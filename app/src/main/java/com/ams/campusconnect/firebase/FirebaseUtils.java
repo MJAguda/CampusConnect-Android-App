@@ -7,12 +7,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseUtils {
+    School school;
 
-    private final School school = School.getInstance();
-
-    public FirebaseUtils() {
+    public FirebaseUtils(School school) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference locationsReference = firebaseDatabase.getReference("locations");
+        this.school = school;
     }
 
     public boolean isLocationValid(double latitude, double longitude) {

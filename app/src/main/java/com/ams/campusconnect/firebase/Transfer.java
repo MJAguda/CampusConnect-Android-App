@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.ams.campusconnect.model.SchoolModel;
+import com.ams.campusconnect.model.School;
 import com.google.firebase.database.*;
 
 public class Transfer {
@@ -27,7 +27,7 @@ public class Transfer {
     }
 
     // Method to copy the data from 'fromPath' to 'toPath'
-    public void copyRecord(SchoolModel schoolModel, DatabaseReference source, DatabaseReference destination){
+    public void copyRecord(School school, DatabaseReference source, DatabaseReference destination){
         // Attach a listener to the 'fromPath' node to read the data
         source.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -41,7 +41,7 @@ public class Transfer {
                         System.out.println("Data could not be copied: " + databaseError.getMessage());
                     } else {
                         Delete delete = new Delete();
-                        delete.deleteRecord(schoolModel.getSchoolID() + "/employee", key);
+                        delete.deleteRecord(school.getSchoolID() + "/employee", key);
                         Toast.makeText(context, "Successfully Transferred ", Toast.LENGTH_SHORT).show();
                     }
                 });

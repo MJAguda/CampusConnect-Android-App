@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.School;
-import com.ams.campusconnect.model.SchoolModel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,11 +27,11 @@ public class DownloadQR {
     private ImageView imageView;
 
     private Bitmap bitmap;
-    SchoolModel schoolModel;
+    School school;
 
-    public DownloadQR(ImageView imageView, SchoolModel schoolModel) {
+    public DownloadQR(ImageView imageView, School school) {
         this.imageView = imageView;
-        this.schoolModel = schoolModel;
+        this.school = school;
     }
 
     // TODO add sending Gmail
@@ -72,6 +71,6 @@ public class DownloadQR {
     private String generateFileName() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy_HHmmss", Locale.getDefault());
         String currentDateAndTime = sdf.format(new Date());
-        return "QRCode_" + schoolModel.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + currentDateAndTime + ".png";
+        return "QRCode_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + currentDateAndTime + ".png";
     }
 }

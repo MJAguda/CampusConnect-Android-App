@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
-import com.ams.campusconnect.model.SchoolModel;
+import com.ams.campusconnect.model.School;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,7 +22,7 @@ public class GenerateDTR extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     Employee employee = Employee.getInstance();
-    SchoolModel schoolModel;
+    School school;
 
     //private static final String TAG
 
@@ -32,7 +32,7 @@ public class GenerateDTR extends AppCompatActivity {
         setContentView(R.layout.activity_generate_dtr);
 
         // Get School Data
-        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
+        school = (School) getIntent().getSerializableExtra("school");
 
         // Find button in the Layout
         ImageButton back = findViewById(R.id.backButton_ImageButton);
@@ -82,11 +82,11 @@ public class GenerateDTR extends AppCompatActivity {
 
         back.setOnClickListener(view -> {
             Intent intent = new Intent(GenerateDTR.this, Generate.class);
-            intent.putExtra("schoolModel", schoolModel);
+            intent.putExtra("school", school);
             startActivity(intent);
         });
 
-        DTR dtr = new DTR(schoolModel);
+        DTR dtr = new DTR(school);
 
         // Generate DTR
         generate.setOnClickListener(view -> {

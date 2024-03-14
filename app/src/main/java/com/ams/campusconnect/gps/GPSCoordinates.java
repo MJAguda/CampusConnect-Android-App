@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.ams.campusconnect.firebase.FirebaseUtils;
+import com.ams.campusconnect.model.School;
 
 public class GPSCoordinates {
     // TODO Implement server-side verification
@@ -26,9 +27,12 @@ public class GPSCoordinates {
     private LocationListener locationListener;
     private Location currentLocation;
     private Context context;
+    School school;
 
-    public GPSCoordinates(Context context) {
+    public GPSCoordinates(Context context, School school) {
+        this.school = school;
         this.context = context;
+
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -96,7 +100,7 @@ public class GPSCoordinates {
             // Check if location is valid
             double latitude = currentLocation.getLatitude();
             double longitude = currentLocation.getLongitude();
-            FirebaseUtils firebaseUtils = new FirebaseUtils();
+            FirebaseUtils firebaseUtils = new FirebaseUtils(school);
             if (!firebaseUtils.isLocationValid(latitude, longitude)) {
                 return null;
             }

@@ -10,19 +10,19 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ams.campusconnect.model.SaveData;
-import com.ams.campusconnect.model.SchoolModel;
+import com.ams.campusconnect.model.School;
 
 public class AdminLogIn extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
-    SchoolModel schoolModel;
+    School school;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_log_in);
 
-        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
+        school = (School) getIntent().getSerializableExtra("school");
 
         // Declare Components
         ImageButton back = findViewById(R.id.backButton_ImageButton);
@@ -32,7 +32,7 @@ public class AdminLogIn extends AppCompatActivity {
 
         back.setOnClickListener(view -> {
             Intent intent = new Intent(AdminLogIn.this, LogbookActivity.class);
-            intent = intent.putExtra("schoolModel", schoolModel);
+            intent = intent.putExtra("school", school);
             startActivity(intent);
         });
 
@@ -43,15 +43,15 @@ public class AdminLogIn extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Welcome System Admin", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(AdminLogIn.this, SystemAdmin.class);
-                intent = intent.putExtra("schoolModel", schoolModel);
+                intent = intent.putExtra("school", school);
                 startActivity(intent);
-            } else if (adminUsername.getText().toString().equals(schoolModel.getAdminUsername()) &&
-                    adminPassword.getText().toString().equals(schoolModel.getAdminPassword())) {
+            } else if (adminUsername.getText().toString().equals(school.getAdminUsername()) &&
+                    adminPassword.getText().toString().equals(school.getAdminPassword())) {
 
-                Toast.makeText(getApplicationContext(), "Welcome " + schoolModel.getSchoolName() + " Admin", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Welcome " + school.getSchoolName() + " Admin", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(AdminLogIn.this, SchoolAdmin.class);
-                intent = intent.putExtra("schoolModel", schoolModel);
+                intent = intent.putExtra("school", school);
                 startActivity(intent);
             } else {
                 Toast.makeText(getApplicationContext(), "Wrong Username or Password", Toast.LENGTH_SHORT).show();

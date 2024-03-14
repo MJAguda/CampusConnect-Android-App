@@ -20,7 +20,6 @@ import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
-import com.ams.campusconnect.model.SchoolModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -37,7 +36,7 @@ public class DTR {
 
     static Read read = new Read();
 
-    SchoolModel schoolModel;
+    School school;
 
     private static final float PDF_WIDTH_INCHES = 8.5f; // Legal paper width
     private static final float PDF_HEIGHT_INCHES = 13f; // Legal paper height
@@ -48,8 +47,8 @@ public class DTR {
     public DTR() {
     }
 
-    public DTR(SchoolModel schoolModel) {
-        this.schoolModel = schoolModel;
+    public DTR(School school) {
+        this.school = school;
     }
 
 
@@ -122,19 +121,19 @@ public class DTR {
     private String generateFileName() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy_HHmmss", Locale.getDefault());
         String currentDateAndTime = sdf.format(new Date());
-        return "DTR_" + schoolModel.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + save.getMonth() + ", " + save.getYear() + "_" + currentDateAndTime + ".pdf";
+        return "DTR_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + save.getMonth() + ", " + save.getYear() + "_" + currentDateAndTime + ".pdf";
 //        return "QRCode_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + currentDateAndTime + ".png";
     }
 
 
     public void generateDTR(String id, String month, int day, String year, TextView name, TextView date, TextView schoolHead, TableLayout table, Context context, GenerateDTRCallback callback) {
-        read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
+        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 name.setText(dataSnapshot.child("fullname").getValue().toString());
                 date.setText(String.format("%s %s", month, year));
 
-                read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
+                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
 
@@ -204,7 +203,7 @@ public class DTR {
 
 
                 // Set School head
-                schoolHead.setText(schoolModel.getSchoolHead());
+                schoolHead.setText(school.getSchoolHead());
                 Log.d("Status:", "Generated");
 
                 callback.onGenerateDTRFinished(); // Invoke the callback to signal completion
@@ -219,13 +218,13 @@ public class DTR {
     }
 
     public void generateDTR(String id, String month, int day, String year, TextView name, TextView date, TextView schoolHead, TableLayout table, Context context) {
-        read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
+        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 name.setText(dataSnapshot.child("fullname").getValue().toString());
                 date.setText(String.format("%s %s", month, year));
 
-                read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
+                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
 
@@ -295,7 +294,7 @@ public class DTR {
 
 
                 // Set School head
-                schoolHead.setText(schoolModel.getSchoolHead());
+                schoolHead.setText(school.getSchoolHead());
                 Log.d("Status:", "Generated");
             }
 

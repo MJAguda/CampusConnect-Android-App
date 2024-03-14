@@ -35,7 +35,7 @@ import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.firebase.Update;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
-import com.ams.campusconnect.model.SchoolModel;
+import com.ams.campusconnect.model.School;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -45,7 +45,8 @@ import java.util.TimerTask;
 public class Attendance extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
-    SchoolModel schoolModel;
+    School school;
+    SchoolController schoolController = new SchoolController();
     Employee employee = Employee.getInstance();
     Create create = new Create();
     Read read = new Read();
@@ -65,7 +66,7 @@ public class Attendance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
 
-        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
+        school = (School) getIntent().getSerializableExtra("school");
 
         // Request for location permission
         if (ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -103,14 +104,13 @@ public class Attendance extends AppCompatActivity {
 
         back.setOnClickListener(view -> {
             Intent intent = new Intent(Attendance.this, LogbookActivity.class);
-            intent = intent.putExtra("schoolModel", schoolModel);
+            intent = intent.putExtra("school", school);
             startActivity(intent);
         });
 
         hamburger.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show());
 
-        SchoolController schoolController = new SchoolController(schoolModel.getSchoolID());
-        schoolController.getSchoolData(new SchoolController.OnDataFetchListener() {
+        schoolController.getSchoolData(school.getSchoolID(), new SchoolController.OnDataFetchListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 // Check if ID exists in the database
@@ -118,11 +118,11 @@ public class Attendance extends AppCompatActivity {
                     Log.d("Error", "School ID not found");
                     Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
                 } else {
-                    schoolModel.setIdNumberFeature(dataSnapshot.child("idNumberFeature").getValue(Boolean.class));
-                    schoolModel.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
-                    schoolModel.setTimeBasedFeature(dataSnapshot.child("timeBasedFeature").getValue(Boolean.class));
-                    schoolModel.setQrcodeFeature(dataSnapshot.child("qrcodeFeature").getValue(Boolean.class));
-                    schoolModel.setBiometricFeature(dataSnapshot.child("biometricFeature").getValue(Boolean.class));
+                    school.setIdNumberFeature(dataSnapshot.child("idNumberFeature").getValue(Boolean.class));
+                    school.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
+                    school.setTimeBasedFeature(dataSnapshot.child("timeBasedFeature").getValue(Boolean.class));
+                    school.setQrcodeFeature(dataSnapshot.child("qrcodeFeature").getValue(Boolean.class));
+                    school.setBiometricFeature(dataSnapshot.child("biometricFeature").getValue(Boolean.class));
                 }
             }
 
@@ -161,10 +161,10 @@ public class Attendance extends AppCompatActivity {
                 minutes = Integer.parseInt(parts[1].substring(0, 2)); // remove AM/PM
 
                 Log.d("TAG", "Hours: " + hours + " Minutes: " + minutes);
-                Log.d("Time-Based Feature", "timeBasedFeature : " + schoolModel.isTimeBasedFeature());
+                Log.d("Time-Based Feature", "timeBasedFeature : " + school.isTimeBasedFeature());
 
                 // Check if Time-Based Button Feature is On/Off
-                if (!schoolModel.isTimeBasedFeature()) {
+                if (!school.isTimeBasedFeature()) {
                     // Disable the time punch Buttons
                     AMIn.setEnabled(true);
                     AMOut.setEnabled(true);
@@ -205,7 +205,7 @@ public class Attendance extends AppCompatActivity {
         AMIn.setOnClickListener(view -> {
             save.setAuthenticate("timeAM_In");
 
-            if (schoolModel.isBiometricFeature()) {
+            if (school.isBiometricFeature()) {
                 biometricManagerHelper.authenticate(false);
             } else {
                 dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
@@ -215,7 +215,7 @@ public class Attendance extends AppCompatActivity {
 
                     // Push Time in Database
 
-                    checkEmployeeAttendance(employee, schoolModel, save, currentTimeIn12Hours);
+                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
 
 
                 });
@@ -225,7 +225,7 @@ public class Attendance extends AppCompatActivity {
         AMOut.setOnClickListener(view -> {
             save.setAuthenticate("timeAM_Out");
 
-            if (schoolModel.isBiometricFeature()) {
+            if (school.isBiometricFeature()) {
                 biometricManagerHelper.authenticate(false);
             } else {
                 dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
@@ -235,7 +235,7 @@ public class Attendance extends AppCompatActivity {
 
                     // Push Time in Database
 
-                    checkEmployeeAttendance(employee, schoolModel, save, currentTimeIn12Hours);
+                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
 
 
                 });
@@ -245,7 +245,7 @@ public class Attendance extends AppCompatActivity {
         PMIn.setOnClickListener(view -> {
             save.setAuthenticate("timePM_In");
 
-            if (schoolModel.isBiometricFeature()) {
+            if (school.isBiometricFeature()) {
                 biometricManagerHelper.authenticate(false);
             } else {
                 dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
@@ -255,7 +255,7 @@ public class Attendance extends AppCompatActivity {
 
                     // Push Time in Database
 
-                    checkEmployeeAttendance(employee, schoolModel, save, currentTimeIn12Hours);
+                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
 
 
                 });
@@ -265,7 +265,7 @@ public class Attendance extends AppCompatActivity {
         PMOut.setOnClickListener(view -> {
             save.setAuthenticate("timePM_Out");
 
-            if (schoolModel.isBiometricFeature()) {
+            if (school.isBiometricFeature()) {
                 biometricManagerHelper.authenticate(false);
             } else {
                 dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
@@ -275,7 +275,7 @@ public class Attendance extends AppCompatActivity {
 
                     // Push Time in Database
 
-                    checkEmployeeAttendance(employee, schoolModel, save, currentTimeIn12Hours);
+                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
 
 
                 });
@@ -301,7 +301,7 @@ public class Attendance extends AppCompatActivity {
         }
     }
 
-//    String employeeAttendancePath = schoolModel.getSchoolID() + "/employee/" + employee.getId();
+//    String employeeAttendancePath = school.getSchoolID() + "/employee/" + employee.getId();
 
     private BiometricPrompt.AuthenticationCallback createBiometricCallback() {
 
@@ -331,7 +331,7 @@ public class Attendance extends AppCompatActivity {
 
                     // Push Time in Database
 
-                    checkEmployeeAttendance(employee, schoolModel, save, currentTimeIn12Hours);
+                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
 
 
                 });
@@ -348,13 +348,13 @@ public class Attendance extends AppCompatActivity {
         };
     }
 
-    private void checkEmployeeAttendance(Employee employee, SchoolModel school, SaveData save, String currentTimeIn12Hours) {
+    private void checkEmployeeAttendance(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
 
-        String employeeAttendancePath = schoolModel.getSchoolID() + "/employee/" + employee.getId();
+        String employeeAttendancePath = this.school.getSchoolID() + "/employee/" + employee.getId();
 
         Log.d("Code Block : ", "inside checkEmployeeAttendance");
         // Check if the employee ID exists
-        readEmployeeRecord(employeeAttendancePath, save, schoolModel, employee, currentTimeIn12Hours);
+        readEmployeeRecord(employeeAttendancePath, save, this.school, employee, currentTimeIn12Hours);
     }
 
     private void setDateTime(String month, String day, String year) {
@@ -364,7 +364,7 @@ public class Attendance extends AppCompatActivity {
         save.setDay(String.valueOf(Integer.parseInt(day)));
     }
 
-    private void readEmployeeRecord(String employeeAttendancePath, SaveData save, SchoolModel school, Employee employee, String currentTimeIn12Hours) {
+    private void readEmployeeRecord(String employeeAttendancePath, SaveData save, School school, Employee employee, String currentTimeIn12Hours) {
         Log.d("Code Block : ", "inside readEmployeeRecord");
         read.readRecord(employeeAttendancePath, new Read.OnGetDataListener() {
             @Override
@@ -373,7 +373,7 @@ public class Attendance extends AppCompatActivity {
                     String attendancePath = employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay();
 
                     // Check if the employee's attendance for the given date exists
-                    readAttendanceRecord(attendancePath, save, employee, schoolModel, currentTimeIn12Hours);
+                    readAttendanceRecord(attendancePath, save, employee, Attendance.this.school, currentTimeIn12Hours);
                 } else {
                     Toast.makeText(getApplicationContext(), "ID Not Found", Toast.LENGTH_SHORT).show();
                 }
@@ -386,7 +386,7 @@ public class Attendance extends AppCompatActivity {
         });
     }
 
-    private void readAttendanceRecord(String attendancePath, SaveData save, Employee employee, SchoolModel school, String currentTimeIn12Hours) {
+    private void readAttendanceRecord(String attendancePath, SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
         Log.d("Code Block : ", "inside readAttendanceRecord");
         read.readRecord(attendancePath, new Read.OnGetDataListener() {
             @Override
@@ -395,7 +395,7 @@ public class Attendance extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Already Have", Toast.LENGTH_SHORT).show();
                     alreadyhave.start();
                 } else {
-                    checkTimeIntervals(save, employee, schoolModel, currentTimeIn12Hours);
+                    checkTimeIntervals(save, employee, Attendance.this.school, currentTimeIn12Hours);
                 }
             }
 
@@ -406,9 +406,9 @@ public class Attendance extends AppCompatActivity {
         });
     }
 
-    private void checkTimeIntervals(SaveData save, Employee employee, SchoolModel school, String currentTimeIn12Hours) {
+    private void checkTimeIntervals(SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
 
-        String employeeAttendancePath = schoolModel.getSchoolID() + "/employee/" + employee.getId();
+        String employeeAttendancePath = this.school.getSchoolID() + "/employee/" + employee.getId();
 
         Log.d("Code Block : ", "inside checkTimeIntervals");
 
@@ -443,7 +443,7 @@ public class Attendance extends AppCompatActivity {
                 if (totalMinuteDifference <= 15) {
                     Toast.makeText(getApplicationContext(), "Wait 15 minutes", Toast.LENGTH_SHORT).show();
                 } else {
-                    getLocationAndCheckIn(employee, schoolModel, save, currentTimeIn12Hours);
+                    getLocationAndCheckIn(employee, Attendance.this.school, save, currentTimeIn12Hours);
                 }
             }
 
@@ -454,7 +454,7 @@ public class Attendance extends AppCompatActivity {
         });
     }
 
-    private void getLocationAndCheckIn(Employee employee, SchoolModel school, SaveData save, String currentTimeIn12Hours) {
+    private void getLocationAndCheckIn(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
         LocationManager locationManager;
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -466,7 +466,7 @@ public class Attendance extends AppCompatActivity {
             Toast.makeText(Attendance.this, "Location permissions are required for this feature", Toast.LENGTH_LONG).show();
             // Redirect the user to the app settings page
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent = intent.putExtra("schoolModel", schoolModel);
+            intent = intent.putExtra("school", this.school);
             Uri uri = Uri.fromParts("package", getPackageName(), null);
             intent.setData(uri);
             startActivity(intent);
@@ -498,14 +498,14 @@ public class Attendance extends AppCompatActivity {
                 });
 
                 // Wait for employee latitude and longitude not to be null
-                if (schoolModel.isGpsFeature()) {
-                    if (isEmployeeWithinCampusBounds(employee, schoolModel)) {
+                if (this.school.isGpsFeature()) {
+                    if (isEmployeeWithinCampusBounds(employee, this.school)) {
                         Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                         // Open Google Map Google Map
 
                         // Push Time in Database
-                        create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+                        create.createRecord(this.school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
 
                         // Get the current location of the employee Recursively
                         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, location -> {
@@ -513,8 +513,8 @@ public class Attendance extends AppCompatActivity {
                             employee.setLongitude(location.getLongitude());
 
                             // Store employee's last known location
-                            update.updateRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId(), "latitude", employee.getLatitude());
-                            update.updateRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
+                            update.updateRecord(this.school.getSchoolID() + "/employee/" + employee.getId(), "latitude", employee.getLatitude());
+                            update.updateRecord(this.school.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
                         });
 
 
@@ -533,7 +533,7 @@ public class Attendance extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                     // Push Time in Database
-                    create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+                    create.createRecord(this.school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
 
                     thankyou.start();
 
@@ -551,18 +551,18 @@ public class Attendance extends AppCompatActivity {
 
     private void openGPSSettings() {
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        intent = intent.putExtra("schoolModel", schoolModel);
+        intent = intent.putExtra("school", school);
         startActivity(intent);
 
         // Display a message informing the user
         Toast.makeText(Attendance.this, "Please turn on GPS", Toast.LENGTH_LONG).show();
     }
 
-    private boolean isEmployeeWithinCampusBounds(Employee employee, SchoolModel schoolModel) {
-        return (employee.getLatitude() >= schoolModel.getLatitudeBottom() &&
-                employee.getLatitude() <= schoolModel.getLatitudeTop() &&
-                employee.getLongitude() >= schoolModel.getLongitudeLeft() &&
-                employee.getLongitude() <= schoolModel.getLongitudeRight());
+    private boolean isEmployeeWithinCampusBounds(Employee employee, School school) {
+        return (employee.getLatitude() >= school.getLatitudeBottom() &&
+                employee.getLatitude() <= school.getLatitudeTop() &&
+                employee.getLongitude() >= school.getLongitudeLeft() &&
+                employee.getLongitude() <= school.getLongitudeRight());
     }
 
     private int calculateTimeDifference(String currentTimeIn12Hours, String priorTime) {
@@ -619,14 +619,14 @@ public class Attendance extends AppCompatActivity {
 
     private void openDeveloperOptionsSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS);
-        intent = intent.putExtra("schoolModel", schoolModel);
+        intent = intent.putExtra("school", school);
         startActivity(intent);
         // Display a message informing the user
         Toast.makeText(Attendance.this, "Please turn off Developer Options", Toast.LENGTH_LONG).show();
     }
 
     private void getTimeLogs(String year, String month) {
-        read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
+        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
 

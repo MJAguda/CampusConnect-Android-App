@@ -1,19 +1,16 @@
 package com.ams.campusconnect.controller;
 
-import com.ams.campusconnect.model.SchoolModel;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.*;
 
 public class SchoolControllerTest {
-    private SchoolController schoolController;
+    private SchoolController schoolController = new SchoolController();
 
     @Mock
     private DatabaseReference mockedDatabaseReference;
@@ -23,7 +20,6 @@ public class SchoolControllerTest {
         MockitoAnnotations.initMocks(this);
         when(mockedDatabaseReference.child(anyString())).thenReturn(mockedDatabaseReference);
         when(FirebaseDatabase.getInstance().getReference()).thenReturn(mockedDatabaseReference);
-        schoolController = new SchoolController(1);
     }
 
     @Test
