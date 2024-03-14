@@ -30,9 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
-
-    School school = School.getInstance();
-    SchoolModel schoolModel = new SchoolModel();
+    SchoolModel schoolModel;
     Employee employee = Employee.getInstance();
     Read read = new Read();
 
@@ -40,6 +38,8 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_admin);
+
+        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
 
         // Declare and hook Hamburger button
         ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
@@ -140,6 +140,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
         back.setOnClickListener(view -> {
             Intent intent = new Intent(SystemAdmin.this, AdminLogIn.class);
+            intent = intent.putExtra("schoolModel", schoolModel);
             startActivity(intent);
         });
 
@@ -250,7 +251,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             final DatabaseReference myRef = database.getReference(school.getSchoolID() + "/employee");
                              */
                 // Check id if exist
-                read.readRecord(school.getSchoolID() + "/employee" + employee.getId(), new Read.OnGetDataListener() {
+                read.readRecord(schoolModel.getSchoolID() + "/employee" + employee.getId(), new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
@@ -261,11 +262,11 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                             // Push data to Firebase Realtime Database
                             Create create = new Create();
-                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
-                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
-                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/birthdate", employee.getBirthday());
-                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/latitude", employee.getLatitude());
-                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/longitude", employee.getLongitude());
+                            create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
+                            create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
+                            create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/birthdate", employee.getBirthday());
+                            create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/latitude", employee.getLatitude());
+                            create.createRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/longitude", employee.getLongitude());
 
                             firstName.setText("");
                             lastName.setText("");
@@ -290,6 +291,8 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
+
+        schoolModel = (SchoolModel) getIntent().getSerializableExtra("schoolModel");
 
         TextView prompt = findViewById(R.id.prompt);
 
