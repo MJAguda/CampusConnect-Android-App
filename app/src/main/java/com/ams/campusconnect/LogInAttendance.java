@@ -103,7 +103,6 @@ public class LogInAttendance extends AppCompatActivity {
 //            }
 //        });
 //
-//        // TODO: add submit if Auth Succeed
 //        dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
 //
 //            back.setOnClickListener(view -> {
