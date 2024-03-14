@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/layoutbackground"
-    tools:context="com.ams.campusconnect.SystemAdmin"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.ams.campusconnect.SystemAdmin">
 
     <!--Header-->
     <LinearLayout
@@ -17,7 +16,7 @@
         android:background="#B83B5E"
         android:orientation="horizontal">
 
-        <include layout="@layout/header_layout"/>
+        <include layout="@layout/header_layout" />
 
         <ImageButton
             android:id="@+id/hamburger_ImageButton"
@@ -25,8 +24,8 @@
             android:layout_height="match_parent"
             android:layout_weight="0.25"
             android:background="#00000000"
-            android:src="@drawable/kebab"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/kebab" />
 
     </LinearLayout>
 
@@ -35,11 +34,11 @@
         android:id="@+id/body_LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="top"
-        android:background="@drawable/round_body_bg"
         android:layout_margin="35px"
+        android:layout_weight="1"
+        android:background="@drawable/round_body_bg"
+        android:gravity="top"
+        android:orientation="vertical"
         android:padding="50px">
         <!--android:background="#F08A5D"-->
 
@@ -49,7 +48,7 @@
             android:layout_height="wrap_content"
             android:text="Welcome System Admin"
             android:textColor="#6A2C70"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -61,169 +60,186 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#F9ED69">
+
+                    <Spinner
+                        android:id="@+id/schoolID_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="30sp"
+                        android:layout_margin="10px" />
+
+                </LinearLayout>
+
+
                 <EditText
                     android:id="@+id/schoolId_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10px"
+                    android:background="@drawable/round_edittext_bg"
                     android:hint="School ID"
                     android:inputType="number"
-                    android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
+                    android:padding="16dp"
                     android:textAlignment="center"
-                    android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
+
                 <EditText
                     android:id="@+id/schoolName_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="School Name"
                     android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:hint="School Name"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/schoolHead_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="School Head"
                     android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:hint="School Head"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/adminUsername_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Admin Username"
                     android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:hint="Admin Username"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/adminPassword_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Admin Password"
-                    android:ems="10"
-                    android:inputType="textPassword"
                     android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:ems="10"
+                    android:hint="Admin Password"
+                    android:inputType="textPassword"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/latitudeBottom_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Latitude Bottom"
                     android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:hint="Latitude Bottom"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/latitudeTop_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Latitude Top"
                     android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:hint="Latitude Top"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/longitudeLeft_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Longitude Left"
                     android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:hint="Longitude Left"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/longitudeRight_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Longitude Right"
                     android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:hint="Longitude Right"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/id_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10px"
+                    android:background="@drawable/round_edittext_bg"
                     android:hint="Employee ID"
                     android:inputType="number"
-                    android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
+                    android:padding="16dp"
                     android:textAlignment="center"
-                    android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/firstName_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="First Name"
                     android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:hint="First Name"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/lastName_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Last Name"
                     android:layout_margin="10px"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp"
-                    android:textAlignment="center"
                     android:background="@drawable/round_edittext_bg"
-                    android:padding="16dp"/>
+                    android:hint="Last Name"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
 
                 <TableLayout
                     android:id="@+id/birthday_TableLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#F9ED69"
-                        android:layout_margin="20px">
+                        android:layout_margin="20px"
+                        android:background="#F9ED69">
 
                         <Spinner
                             android:id="@+id/month_Spinner"
                             android:layout_width="0dp"
-                            android:layout_weight="0.5"
                             android:layout_height="30sp"
-                            android:layout_margin="10px"/>
+                            android:layout_margin="10px"
+                            android:layout_weight="0.5" />
 
                         <View
 
@@ -234,8 +250,8 @@
                         <Spinner
                             android:id="@+id/day_Spinner"
                             android:layout_width="0dp"
-                            android:layout_weight="0.25"
-                            android:layout_height="30sp" />
+                            android:layout_height="30sp"
+                            android:layout_weight="0.25" />
 
                         <View
 
@@ -246,34 +262,34 @@
                         <Spinner
                             android:id="@+id/year_Spinner"
                             android:layout_width="0dp"
-                            android:layout_weight="0.25"
-                            android:layout_height="30sp" />
+                            android:layout_height="30sp"
+                            android:layout_weight="0.25" />
                     </TableRow>
                 </TableLayout>
 
-<!--                <TableLayout-->
-<!--                    android:id="@+id/gpsFeature_TableLayout"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content">-->
-<!--                    <TableRow-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content">-->
+                <!--                <TableLayout-->
+                <!--                    android:id="@+id/gpsFeature_TableLayout"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content">-->
+                <!--                    <TableRow-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content">-->
 
-<!--                        <TextView-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="0.75"-->
-<!--                            android:text="GPS Feature"-->
-<!--                            android:textSize="20sp"/>-->
+                <!--                        <TextView-->
+                <!--                            android:layout_width="0dp"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:layout_weight="0.75"-->
+                <!--                            android:text="GPS Feature"-->
+                <!--                            android:textSize="20sp"/>-->
 
-<!--                        <Switch-->
-<!--                            android:id="@+id/gpsFeature_Switch"-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="0.25"/>-->
+                <!--                        <Switch-->
+                <!--                            android:id="@+id/gpsFeature_Switch"-->
+                <!--                            android:layout_width="0dp"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:layout_weight="0.25"/>-->
 
-<!--                    </TableRow>-->
-<!--                </TableLayout>-->
+                <!--                    </TableRow>-->
+                <!--                </TableLayout>-->
 
             </LinearLayout>
 
@@ -298,23 +314,24 @@
 
         <Button
             android:id="@+id/submitSchool_Button"
-            android:layout_margin="10px"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_margin="10px"
             android:layout_weight="1"
             android:backgroundTint="#F9ED69"
-            android:textColor="#6A2C70"
             android:text="Submit School"
+            android:textColor="#6A2C70"
             android:textSize="30sp" />
+
         <Button
             android:id="@+id/submitEmployee_Button"
-            android:layout_margin="10px"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_margin="10px"
             android:layout_weight="1"
             android:backgroundTint="#F9ED69"
-            android:textColor="#6A2C70"
             android:text="Submit Employee"
+            android:textColor="#6A2C70"
             android:textSize="30sp" />
 
     </LinearLayout>
