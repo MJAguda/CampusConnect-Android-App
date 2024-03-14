@@ -749,7 +749,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 TextView schoolHead = findViewById(R.id.schoolHead_TextView);
                 TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
 
-                submit.setText("Download All DTRs");
+                submit.setText("Still Not Accurate");
 
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -784,7 +784,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             DTR dtr = new DTR(schoolModel);
 
                             dtr.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, SchoolAdmin.this, () -> {
-                                DTR.downloadDTR(findViewById(R.id.dtr_LinearLayout), SchoolAdmin.this);
+                                // TODO: Wait for the dtr to generate before downloading
+                                // Download DTR
+                                dtr.downloadDTR(findViewById(R.id.dtr_LinearLayout), SchoolAdmin.this);
                                 processChildData(iterator, month, day, year); // Recursive call to process the next child
                             });
 
