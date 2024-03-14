@@ -37,7 +37,6 @@ public class DTR {
 
     static Read read = new Read();
 
-    static School school = School.getInstance();
     SchoolModel schoolModel;
 
     private static final float PDF_WIDTH_INCHES = 8.5f; // Legal paper width
@@ -120,10 +119,10 @@ public class DTR {
         }
     }
 
-    private static String generateFileName() {
+    private String generateFileName() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy_HHmmss", Locale.getDefault());
         String currentDateAndTime = sdf.format(new Date());
-        return "DTR_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + save.getMonth() + ", " + save.getYear() + "_" + currentDateAndTime + ".pdf";
+        return "DTR_" + schoolModel.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + save.getMonth() + ", " + save.getYear() + "_" + currentDateAndTime + ".pdf";
 //        return "QRCode_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + currentDateAndTime + ".png";
     }
 
@@ -296,7 +295,7 @@ public class DTR {
 
 
                 // Set School head
-                schoolHead.setText(school.getSchoolHead());
+                schoolHead.setText(schoolModel.getSchoolHead());
                 Log.d("Status:", "Generated");
             }
 
