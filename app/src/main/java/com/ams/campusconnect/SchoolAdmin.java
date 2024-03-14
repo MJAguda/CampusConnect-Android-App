@@ -95,7 +95,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         Switch timeBasedSwitch = findViewById(R.id.timeBased_Switch);
         Switch qrSwitch = findViewById(R.id.qrScannerFeature_Switch);
         Switch biometricSwitch = findViewById(R.id.biometricFeature_Switch);
-//        Switch facialrecognitionSwitch = findViewById(R.id.facialRecognitionFeature_Switch);
 
         // Set the value for the ToggleSwitch
         idNumberSwitch.setChecked(schoolModel.isIdNumberFeature());
@@ -739,6 +738,11 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 yearSpinner.setVisibility(View.VISIBLE);
                 dtrLinearLayout.setVisibility(View.VISIBLE);
 
+                // setEnabled to true so they are edittable
+                monthSpinner.setEnabled(true);
+                daySpinner.setEnabled(true);
+                yearSpinner.setEnabled(true);
+
                 // Declare components
                 TextView name = findViewById(R.id.name_TextView);
                 TextView date = findViewById(R.id.monthyear_TextView);
@@ -777,7 +781,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             employee.setId((String) child.child("id").getValue());
                             Log.d("ID:", employee.getId());
 
-                            DTR.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, SchoolAdmin.this, () -> {
+                            DTR dtr = new DTR(schoolModel);
+
+                            dtr.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, SchoolAdmin.this, () -> {
                                 DTR.downloadDTR(findViewById(R.id.dtr_LinearLayout), SchoolAdmin.this);
                                 processChildData(iterator, month, day, year); // Recursive call to process the next child
                             });
