@@ -20,6 +20,7 @@ import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.model.SchoolModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -37,10 +38,20 @@ public class DTR {
     static Read read = new Read();
 
     static School school = School.getInstance();
+    SchoolModel schoolModel;
 
     private static final float PDF_WIDTH_INCHES = 8.27f; // A4 paper width
     private static final float PDF_HEIGHT_INCHES = 11.69f; // A4 paper height
     private static final int COLUMN_MARGIN_DP = 20; // margin between columns in dp
+
+
+    // Constructor
+    public DTR() {
+    }
+
+    public DTR(SchoolModel schoolModel) {
+        this.schoolModel = schoolModel;
+    }
 
 
     public interface GenerateDTRCallback {
@@ -117,14 +128,14 @@ public class DTR {
     }
 
 
-    public static void generateDTR(String id, String month, int day, String year, TextView name, TextView date, TextView schoolHead, TableLayout table, Context context, GenerateDTRCallback callback) {
-        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
+    public void generateDTR(String id, String month, int day, String year, TextView name, TextView date, TextView schoolHead, TableLayout table, Context context, GenerateDTRCallback callback) {
+        read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 name.setText(dataSnapshot.child("fullname").getValue().toString());
                 date.setText(String.format("%s %s", month, year));
 
-                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
+                read.readRecord(schoolModel.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
 
@@ -194,7 +205,7 @@ public class DTR {
 
 
                 // Set School head
-                schoolHead.setText(school.getSchoolHead());
+                schoolHead.setText(schoolModel.getSchoolHead());
                 Log.d("Status:", "Generated");
 
                 callback.onGenerateDTRFinished(); // Invoke the callback to signal completion
