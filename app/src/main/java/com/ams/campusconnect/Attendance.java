@@ -28,6 +28,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.ams.campusconnect.biometric.BiometricUtils;
+import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Delete;
 import com.ams.campusconnect.firebase.Read;
@@ -108,8 +109,8 @@ public class Attendance extends AppCompatActivity {
 
         hamburger.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show());
 
-
-        read.readRecord(schoolModel.getSchoolID() + "/", new Read.OnGetDataListener() {
+        SchoolController schoolController = new SchoolController(schoolModel.getSchoolID());
+        schoolController.getSchoolData(new SchoolController.OnDataFetchListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 // Check if ID exists in the database
