@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.model.SchoolModel;
 import com.google.firebase.database.*;
 

@@ -10,7 +10,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ams.campusconnect.model.SaveData;
-import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.model.SchoolModel;
 
 public class AdminLogIn extends AppCompatActivity {

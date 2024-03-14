@@ -1,56 +1,17 @@
 package com.ams.campusconnect;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
-import android.media.MediaPlayer;
+
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.biometric.BiometricPrompt;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import com.ams.campusconnect.biometric.BiometricUtils;
-import com.ams.campusconnect.firebase.Create;
-import com.ams.campusconnect.firebase.Read;
-import com.ams.campusconnect.firebase.Update;
-import com.ams.campusconnect.model.Employee;
-import com.ams.campusconnect.model.SaveData;
-import com.ams.campusconnect.model.School;
-import com.ams.campusconnect.qrcode.ScanQR;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-
-import java.util.concurrent.Executor;
 
 public class LogInAttendance extends AppCompatActivity {
 
-    SaveData save = SaveData.getInstance();
-    School school = School.getInstance();
-    Employee employee = Employee.getInstance();
-    Create create = new Create();
-    Read read = new Read();
 
-    Update update = new Update();
-    private static final int REQUEST_CODE_SCAN_QR = 1;
-    EditText idNumber;
-    Button submit;
 
     private static final String TAG = LogInAttendance.class.getSimpleName();
 
-    // Instance of scanFingerPrint
-    private ImageButton scanBiometric;
-    BiometricUtils biometricManagerHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -314,7 +275,8 @@ public class LogInAttendance extends AppCompatActivity {
 //                });
 //            });
 //        });
-    }}
+    }
+}
 
 //    private BiometricPrompt.AuthenticationCallback createBiometricCallback() {
 //        return new BiometricPrompt.AuthenticationCallback() {

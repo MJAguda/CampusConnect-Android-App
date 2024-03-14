@@ -34,7 +34,6 @@
     <!--Body-->
     <LinearLayout
         android:id="@+id/body_LinearLayout"
-        layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -184,7 +183,7 @@
                                     android:layout_height="30sp"/>
 
                                 <View
-                                    android:id="@+id/divider3"
+
                                     android:layout_width="2dp"
                                     android:layout_height="match_parent"
                                     android:background="?android:attr/listDivider" />
@@ -196,7 +195,7 @@
                                     android:layout_height="30sp" />
 
                                 <View
-                                    android:id="@+id/divider3"
+
                                     android:layout_width="2dp"
                                     android:layout_height="match_parent"
                                     android:background="?android:attr/listDivider" />
