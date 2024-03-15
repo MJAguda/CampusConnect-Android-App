@@ -127,9 +127,9 @@ public class LogbookActivity extends AppCompatActivity {
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(yearAdapter);
 
-        Log.d("Month from Spinner : ", monthSpinner.getSelectedItem() + "");
-        Log.d("Day from Spinner : ", daySpinner.getSelectedItem() + "");
-        Log.d("Year from Spinner : ", yearSpinner.getSelectedItem() + "");
+//        Log.d("Month from Spinner : ", monthSpinner.getSelectedItem() + "");
+//        Log.d("Day from Spinner : ", daySpinner.getSelectedItem() + "");
+//        Log.d("Year from Spinner : ", yearSpinner.getSelectedItem() + "");
 
         TextView dateTimeTextView = findViewById(R.id.dateAndTime_TextView);
         table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
@@ -252,6 +252,22 @@ public class LogbookActivity extends AppCompatActivity {
 //                // Traverse all employee IDs
 //                for (DataSnapshot child : dataSnapshot.getChildren()) {
 //                    String employeeID = child.getKey();
+//
+//                    for (int day = 1; day <= 10; day++) {
+//                        // Create the attendance record for the employee for the day
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timeAM_In", "");
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timeAM_Out", "");
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timePM_In", "");
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timePM_Out", "");
+//                    }
+//
+//                    for (int day = 15; day <= 31; day++) {
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timeAM_In", "");
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timeAM_Out", "");
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timePM_In", "");
+//                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timePM_Out", "");
+//                    }
+//
 //                    // Traverse all days of March 2024
 //                    for (int day = 11; day <= 14; day++) {
 //                        // Randomize the attendance of the employee for the day
@@ -271,8 +287,6 @@ public class LogbookActivity extends AppCompatActivity {
 //                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timeAM_Out", timeAM_out);
 //                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timePM_In", timePM_in);
 //                        create.createRecord(school.getSchoolID() + "/employee/" + employeeID + "/attendance/2024/March/" + day + "/timePM_Out", timePM_out);
-//
-//
 //                    }
 //                }
 //            }
