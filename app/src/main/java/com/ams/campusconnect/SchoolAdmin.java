@@ -1,5 +1,6 @@
 package com.ams.campusconnect;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,18 +43,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     SaveData save = SaveData.getInstance();
-    //    School school = School.getInstance();
     School school;
+    SchoolController schoolController = new SchoolController();
     Employee employee = Employee.getInstance();
     Read read = new Read();
     Update update = new Update();
     Delete delete = new Delete();
 
     TableLayout sourceAndDestinationTableLayout;
+    LinearLayout idSpinnerLinearLayout;
     Spinner idSpinner;
     EditText idEditText;
     EditText firstNameEditText;
@@ -64,8 +67,32 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     TableLayout featuresTableLayout;
     ImageView qrCodeImageView;
     LinearLayout dtrLinearLayout;
-    SchoolController schoolController = new SchoolController();
+    Button submit;
 
+    // Declare components
+    TextView name;
+    TextView date;
+    TextView schoolHead;
+    TableLayout table;
+
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    Switch idNumberSwitch;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    Switch gpsSwitch;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    Switch timeBasedSwitch;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    Switch qrSwitch;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    Switch biometricSwitch;
+    ImageButton hamburger;
+    ImageButton back;
+
+    TextView prompt;
+
+    TextView sourceTextView;
+    //Spinner sourceSpinner;
+    Spinner destinationSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +100,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
         school = (School) getIntent().getSerializableExtra("school");
 
-        hideAllComponents();
+        initializeAllComponents();
 
-        ImageButton hamburger = findViewById(R.id.hamburger_ImageButton);
-        ImageButton back = findViewById(R.id.backButton_ImageButton);
+        hideAllComponents();
 
         back.setOnClickListener(view -> {
             // changeScreen method should pass a Activity class to
@@ -92,13 +118,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         });
 
         // Toggle Switches
-        // Hook the toggle switches
-        Switch idNumberSwitch = findViewById(R.id.idNumber_Switch);
-        Switch gpsSwitch = findViewById(R.id.gpsFeature_Switch);
-        Switch timeBasedSwitch = findViewById(R.id.timeBased_Switch);
-        Switch qrSwitch = findViewById(R.id.qrScannerFeature_Switch);
-        Switch biometricSwitch = findViewById(R.id.biometricFeature_Switch);
-
         // Set the value for the ToggleSwitch
         idNumberSwitch.setChecked(school.isIdNumberFeature());
         gpsSwitch.setChecked(school.isGpsFeature());
@@ -126,7 +145,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             schoolController.updateSchool(school);
 //            update.updateRecord(String.valueOf(school.getSchoolID()), "timeBasedFeature", school.isTimeBasedFeature());
         });
-
         qrSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
 //            Log.d("SchoolAdmin", "qrSwitch checked: " + b);
             school.setQrcodeFeature(b);
@@ -134,7 +152,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             schoolController.updateSchool(school);
 //            update.updateRecord(String.valueOf(school.getSchoolID()), "qrcodeFeature", school.isQrcodeFeature());
         });
-
         biometricSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
             Log.d("SchoolAdmin", "biometricSwitch checked: " + b);
             school.setBiometricFeature(b);
@@ -145,6 +162,44 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
     }
 
+    private void initializeAllComponents() {
+        sourceAndDestinationTableLayout = findViewById(R.id.sourceAndDestination_TableLayout);
+        idSpinnerLinearLayout = findViewById(R.id.id_Spinner_LinearLayout);
+        idEditText = findViewById(R.id.id_EditText);
+        firstNameEditText = findViewById(R.id.firstName_EditText);
+        lastNameEditText = findViewById(R.id.lastName_EditText);
+        monthSpinner = findViewById(R.id.month_Spinner);
+        daySpinner = findViewById(R.id.day_Spinner);
+        yearSpinner = findViewById(R.id.year_Spinner);
+        featuresTableLayout = findViewById(R.id.features_TableLayout);
+        qrCodeImageView = findViewById(R.id.qrCode_ImageView);
+        dtrLinearLayout = findViewById(R.id.dtr_LinearLayout);
+        submit = findViewById(R.id.submitEmployee_Button);
+
+        // Hook the toggle switches
+        idNumberSwitch = findViewById(R.id.idNumber_Switch);
+        gpsSwitch = findViewById(R.id.gpsFeature_Switch);
+        timeBasedSwitch = findViewById(R.id.timeBased_Switch);
+        qrSwitch = findViewById(R.id.qrScannerFeature_Switch);
+        biometricSwitch = findViewById(R.id.biometricFeature_Switch);
+
+        // Declare components
+        name = findViewById(R.id.name_TextView);
+        date = findViewById(R.id.monthyear_TextView);
+        schoolHead = findViewById(R.id.schoolHead_TextView);
+        table = findViewById(R.id.dtr_TableLayout);
+
+        hamburger = findViewById(R.id.hamburger_ImageButton);
+        back = findViewById(R.id.backButton_ImageButton);
+
+        prompt = findViewById(R.id.prompt);
+
+        sourceTextView = findViewById(R.id.source_TextView);
+        //sourceSpinner = findViewById(R.id.source_Spinner);
+        destinationSpinner = findViewById(R.id.destination_Spinner);
+        idSpinner = findViewById(R.id.id_Spinner);
+    }
+
     // Add argument fromClass to toClass
     private void changeScreen(Class<?> toClass) {
         Intent intent = new Intent(SchoolAdmin.this, toClass);
@@ -152,19 +207,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         startActivity(intent);
     }
 
+    @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
-
-        school = (School) getIntent().getSerializableExtra("school");
-
-        TextView prompt = findViewById(R.id.prompt);
-        monthSpinner = findViewById(R.id.month_Spinner);
-        daySpinner = findViewById(R.id.day_Spinner);
-        yearSpinner = findViewById(R.id.year_Spinner);
-        TextView sourceTextView = findViewById(R.id.source_TextView);
-        //Spinner sourceSpinner = findViewById(R.id.source_Spinner);
-        Spinner destinationSpinner = findViewById(R.id.destination_Spinner);
-        Spinner idSpinner = findViewById(R.id.id_Spinner);
 
         // Create an ArrayList for the source schoolID
         //ArrayList<String> sourceList = new ArrayList<>();
@@ -176,12 +221,12 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         ArrayList<String> idList = new ArrayList<>();
 
         // Read all school ID
-        read.readRecord("/", new Read.OnGetDataListener() {
+        schoolController.getAllSchoolIDs(new SchoolController.OnDataFetchListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     // check if the key matches the sourceTextView text
-                    if (childSnapshot.getKey().matches("[0-9]+")){
+                    if (Objects.requireNonNull(childSnapshot.getKey()).matches("[0-9]+")) {
                         destinationList.add(childSnapshot.getKey());
                     }
                 }
@@ -269,8 +314,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearSpinner.setAdapter(yearAdapter);
 
-        Button submit = findViewById(R.id.submitEmployee_Button);
-
         DateUtils dateUtils = new DateUtils(SchoolAdmin.this);
 
         switch (menuItem.getItemId()) {
@@ -281,12 +324,10 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 hideAllComponents();
 
                 // Unhide add employee components
-                idEditText.setVisibility(View.VISIBLE);
-                firstNameEditText.setVisibility(View.VISIBLE);
-                lastNameEditText.setVisibility(View.VISIBLE);
-                monthSpinner.setVisibility(View.VISIBLE);
-                daySpinner.setVisibility(View.VISIBLE);
-                yearSpinner.setVisibility(View.VISIBLE);
+                unHideAllEmployeeComponents();
+
+                // Set the text of the submit button
+                submit.setText("Register an Employee");
 
                 // setEnabled to true so they are edittable
                 idEditText.setEnabled(true);
@@ -302,9 +343,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 firstNameEditText.setText("");
                 lastNameEditText.setText("");
 
-                // Unhide submitSchool button
-                submit.setVisibility(View.VISIBLE);
-                submit.setText("Add an Employee");
                 // Submit Button ActionListener
                 submit.setOnClickListener(view -> {
 
@@ -367,14 +405,15 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 // Hides all components
                 hideAllComponents();
 
-                // Unhide add employee components
-                idEditText.setVisibility(View.VISIBLE);
-                firstNameEditText.setVisibility(View.VISIBLE);
-                lastNameEditText.setVisibility(View.VISIBLE);
-                monthSpinner.setVisibility(View.VISIBLE);
-                daySpinner.setVisibility(View.VISIBLE);
-                yearSpinner.setVisibility(View.VISIBLE);
+                // Unhide edit employee components
+                idSpinnerLinearLayout.setVisibility(View.VISIBLE);
                 idSpinner.setVisibility(View.VISIBLE);
+
+                // Unhide all employee components
+                unHideAllEmployeeComponents();
+
+                // Set the text of the submit button
+                submit.setText("Edit an Employee");
 
                 // setEnabled to true so they are edittable
                 idEditText.setEnabled(true);
@@ -458,9 +497,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     }
                 });
 
-                // Unhide submitSchool button
-                submit.setVisibility(View.VISIBLE);
-                submit.setText("Edit an Employee");
                 // Submit Button ActionListener
                 submit.setOnClickListener(view -> {
 
@@ -479,16 +515,17 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 // Hides all components
                 hideAllComponents();
 
-                // Unhide add employee components
-                idEditText.setVisibility(View.VISIBLE);
-                firstNameEditText.setVisibility(View.VISIBLE);
-                lastNameEditText.setVisibility(View.VISIBLE);
-                monthSpinner.setVisibility(View.VISIBLE);
-                daySpinner.setVisibility(View.VISIBLE);
-                yearSpinner.setVisibility(View.VISIBLE);
+                // Unhide delete employee components
+                idSpinnerLinearLayout.setVisibility(View.VISIBLE);
                 idSpinner.setVisibility(View.VISIBLE);
 
-                // setEnabled to false so they are not edittable
+                // Unhide all employee components
+                unHideAllEmployeeComponents();
+
+                // Set the text of the submit button
+                submit.setText("Delete an Employee");
+
+                // setEnabled to false so they are not editable
                 idEditText.setEnabled(false);
                 firstNameEditText.setEnabled(false);
                 lastNameEditText.setEnabled(false);
@@ -570,9 +607,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     }
                 });
 
-                // Unhide submitSchool button
-                submit.setVisibility(View.VISIBLE);
-                submit.setText("Delete an Employee");
                 // Submit Button ActionListener
                 submit.setOnClickListener(view -> {
                     delete.deleteRecord(school.getSchoolID() + "/employee", String.valueOf(idEditText.getText()));
@@ -590,21 +624,20 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 hideAllComponents();
                 submit.setVisibility(View.GONE);
 
-                sourceTextView.setText(school.getSchoolID() + "");
+                sourceTextView.setText(String.valueOf(school.getSchoolID()));
 
                 // Unhide components needed in transfering employee
                 sourceAndDestinationTableLayout.setVisibility(View.VISIBLE);
+                idSpinnerLinearLayout.setVisibility(View.VISIBLE);
                 idSpinner.setVisibility(View.VISIBLE);
-                submit.setVisibility(View.VISIBLE);
-                submit.setText("Transfer an Employee");
-                idEditText.setVisibility(View.VISIBLE);
-                firstNameEditText.setVisibility(View.VISIBLE);
-                lastNameEditText.setVisibility(View.VISIBLE);
-                monthSpinner.setVisibility(View.VISIBLE);
-                daySpinner.setVisibility(View.VISIBLE);
-                yearSpinner.setVisibility(View.VISIBLE);
 
-                // SetEnabled to false making them unedittable
+                // Unhide all employee components
+                unHideAllEmployeeComponents();
+
+                // Set the text of the submit button
+                submit.setText("Transfer an Employee");
+
+                // SetEnabled to false making them uneditable
                 idEditText.setEnabled(false);
                 firstNameEditText.setEnabled(false);
                 lastNameEditText.setEnabled(false);
@@ -723,13 +756,13 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             GenerateQR generateQR = new GenerateQR();
 
                             // Declare ImageView
-                            ImageView qr = findViewById(R.id.qrCode_ImageView);
+                            qrCodeImageView = findViewById(R.id.qrCode_ImageView);
 
                             // call generateQRCode method from GenerateQR class
-                            qr.setImageBitmap(generateQR.generateQRCode(child.getKey()));
+                            qrCodeImageView.setImageBitmap(generateQR.generateQRCode(child.getKey()));
 
                             // Download qr if a ImageView
-                            DownloadQR imageDownloader = new DownloadQR(qr, school);
+                            DownloadQR imageDownloader = new DownloadQR(qrCodeImageView, school);
                             imageDownloader.downloadImage(SchoolAdmin.this);
                         }
                     }
@@ -745,9 +778,12 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             // Download All DTR
             case R.id.generateAllDTR: {
                 prompt.setText("Generate DTRs");
-
                 // Hide all components
                 hideAllComponents();
+
+                // unhide submit button
+                submit.setVisibility(View.VISIBLE);
+                submit.setText("Still Not Accurate");
 
                 // Unhide needed Component
                 monthSpinner.setVisibility(View.VISIBLE);
@@ -758,14 +794,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 monthSpinner.setEnabled(true);
                 daySpinner.setEnabled(true);
                 yearSpinner.setEnabled(true);
-
-                // Declare components
-                TextView name = findViewById(R.id.name_TextView);
-                TextView date = findViewById(R.id.monthyear_TextView);
-                TextView schoolHead = findViewById(R.id.schoolHead_TextView);
-                TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
-
-                submit.setText("Still Not Accurate");
 
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -802,7 +830,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             dtr.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, SchoolAdmin.this, () -> {
                                 // TODO: Wait for the dtr to generate before downloading
                                 // Download DTR
-                                dtr.downloadDTR(findViewById(R.id.dtr_LinearLayout), SchoolAdmin.this);
+                                dtr.downloadDTR(dtrLinearLayout, SchoolAdmin.this);
                                 processChildData(iterator, month, day, year); // Recursive call to process the next child
                             });
 
@@ -834,22 +862,20 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         }
     }
 
-    private void hideAllComponents() {
-        // Hook all components
-        sourceAndDestinationTableLayout = findViewById(R.id.sourceAndDestination_TableLayout);
-        idSpinner = findViewById(R.id.id_Spinner);
-        idEditText = findViewById(R.id.id_EditText);
-        firstNameEditText = findViewById(R.id.firstName_EditText);
-        lastNameEditText = findViewById(R.id.lastName_EditText);
-        monthSpinner = findViewById(R.id.month_Spinner);
-        daySpinner = findViewById(R.id.day_Spinner);
-        yearSpinner = findViewById(R.id.year_Spinner);
-        qrCodeImageView = findViewById(R.id.qrCode_ImageView);
-        dtrLinearLayout = findViewById(R.id.dtr_LinearLayout);
-        featuresTableLayout = findViewById(R.id.features_TableLayout);
+    private void unHideAllEmployeeComponents() {
+        idEditText.setVisibility(View.VISIBLE);
+        firstNameEditText.setVisibility(View.VISIBLE);
+        lastNameEditText.setVisibility(View.VISIBLE);
+        monthSpinner.setVisibility(View.VISIBLE);
+        daySpinner.setVisibility(View.VISIBLE);
+        yearSpinner.setVisibility(View.VISIBLE);
+        submit.setVisibility(View.VISIBLE);
+    }
 
+    private void hideAllComponents() {
         // Hide all components
         sourceAndDestinationTableLayout.setVisibility(View.GONE);
+        idSpinnerLinearLayout.setVisibility(View.GONE);
         idSpinner.setVisibility(View.GONE);
         idEditText.setVisibility(View.GONE);
         firstNameEditText.setVisibility(View.GONE);
@@ -860,5 +886,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         qrCodeImageView.setVisibility(View.GONE);
         dtrLinearLayout.setVisibility(View.GONE);
         featuresTableLayout.setVisibility(View.GONE);
+
+        submit.setVisibility(View.GONE);
     }
 }
