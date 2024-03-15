@@ -116,10 +116,20 @@
                 </TableLayout>
 
 
-                <Spinner
-                    android:id="@+id/id_Spinner"
+                <LinearLayout
+                    android:id="@+id/id_Spinner_LinearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="30sp"/>
+                    android:layout_height="30sp"
+                    android:orientation="vertical"
+                    android:background="#F9ED69"
+                    android:layout_margin="20px">
+
+                    <Spinner
+                        android:id="@+id/id_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="30sp"/>
+
+                </LinearLayout>
 
                 <ScrollView
                     android:layout_width="match_parent"
