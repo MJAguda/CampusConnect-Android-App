@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.firebase.Delete;
-import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.School;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

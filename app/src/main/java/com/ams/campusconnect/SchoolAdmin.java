@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.firebase.Create;
@@ -75,16 +76,11 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     TextView schoolHead;
     TableLayout table;
 
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    Switch idNumberSwitch;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    Switch gpsSwitch;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    Switch timeBasedSwitch;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    Switch qrSwitch;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    Switch biometricSwitch;
+    SwitchCompat idNumberSwitch;
+    SwitchCompat gpsSwitch;
+    SwitchCompat timeBasedSwitch;
+    SwitchCompat qrSwitch;
+    SwitchCompat biometricSwitch;
     ImageButton hamburger;
     ImageButton back;
 
@@ -104,6 +100,19 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
         hideAllComponents();
 
+        actionListeners();
+
+        // Toggle Switches
+        // Set the value for the ToggleSwitch
+        idNumberSwitch.setChecked(school.isIdNumberFeature());
+        gpsSwitch.setChecked(school.isGpsFeature());
+        timeBasedSwitch.setChecked(school.isTimeBasedFeature());
+        qrSwitch.setChecked(school.isQrcodeFeature());
+        biometricSwitch.setChecked(school.isBiometricFeature());
+
+    }
+
+    private void actionListeners() {
         back.setOnClickListener(view -> {
             // changeScreen method should pass a Activity class to
             changeScreen(AdminLogIn.class);
@@ -116,14 +125,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             popup.setOnMenuItemClickListener(SchoolAdmin.this);
             popup.show();
         });
-
-        // Toggle Switches
-        // Set the value for the ToggleSwitch
-        idNumberSwitch.setChecked(school.isIdNumberFeature());
-        gpsSwitch.setChecked(school.isGpsFeature());
-        timeBasedSwitch.setChecked(school.isTimeBasedFeature());
-        qrSwitch.setChecked(school.isQrcodeFeature());
-        biometricSwitch.setChecked(school.isBiometricFeature());
 
         // Set an OnCheckedChangedListener to listen for changes in the toggle switch
         idNumberSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -159,7 +160,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             schoolController.updateSchool(school);
 //            update.updateRecord(String.valueOf(school.getSchoolID()), "biometricFeature", school.isBiometricFeature());
         });
-
     }
 
     private void initializeAllComponents() {
@@ -210,10 +210,6 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
-
-        // Create an ArrayList for the source schoolID
-        //ArrayList<String> sourceList = new ArrayList<>();
-
         // Create an ArrayList for the destination schoolID
         ArrayList<String> destinationList = new ArrayList<>();
 

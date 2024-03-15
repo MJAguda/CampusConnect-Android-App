@@ -204,8 +204,6 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
 
-        school = (School) getIntent().getSerializableExtra("school");
-
         TextView prompt = findViewById(R.id.prompt);
 
         switch (menuItem.getItemId()) {
@@ -334,19 +332,19 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         schoolController.getSchoolData(Integer.parseInt(selectedItemName), new SchoolController.OnDataFetchListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
-
+                                // Get data from database
                                 school = dataSnapshot.getValue(School.class);
 
                                 // Set data to EditText
-                                schoolID.setText(String.valueOf(school.getSchoolID()));
-                                schoolName.setText(school.getSchoolName());
-                                schoolHead.setText(school.getSchoolHead());
-                                adminUsername.setText(school.getAdminUsername());
-                                adminPassword.setText(school.getAdminPassword());
-                                latitudeBottom.setText(String.valueOf(school.getLatitudeBottom()));
-                                latitudeTop.setText(String.valueOf(school.getLatitudeTop()));
-                                longitudeLeft.setText(String.valueOf(school.getLongitudeLeft()));
-                                longitudeRight.setText(String.valueOf(school.getLongitudeRight()));
+//                                schoolID.setText(String.valueOf(school.getSchoolID()));
+//                                schoolName.setText(school.getSchoolName());
+//                                schoolHead.setText(school.getSchoolHead());
+//                                adminUsername.setText(school.getAdminUsername());
+//                                adminPassword.setText(school.getAdminPassword());
+//                                latitudeBottom.setText(String.valueOf(school.getLatitudeBottom()));
+//                                latitudeTop.setText(String.valueOf(school.getLatitudeTop()));
+//                                longitudeLeft.setText(String.valueOf(school.getLongitudeLeft()));
+//                                longitudeRight.setText(String.valueOf(school.getLongitudeRight()));
                             }
 
                             @Override

@@ -110,13 +110,10 @@ public class Generate extends AppCompatActivity {
 
          */
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Generate.this, LogbookActivity.class);
-                intent = intent.putExtra("school", school);
-                startActivity(intent);
-            }
+        back.setOnClickListener(view -> {
+            Intent intent = new Intent(Generate.this, LogbookActivity.class);
+            intent = intent.putExtra("school", school);
+            startActivity(intent);
         });
 
         hamburger.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show());

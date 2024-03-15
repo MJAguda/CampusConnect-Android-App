@@ -1,11 +1,8 @@
 package com.ams.campusconnect.controller;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.ams.campusconnect.model.School;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,12 +20,8 @@ public class SchoolController {
         databaseReference = FirebaseDatabase.getInstance().getReference().child(school.getSchoolID() + "/");
 
         // Add the school to the database
-        databaseReference.setValue(school).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                // School added successfully
-
-            }
+        databaseReference.setValue(school).addOnSuccessListener(aVoid -> {
+            // School added successfully
         });
     }
     // // To call addSchool
@@ -64,10 +57,17 @@ public class SchoolController {
         databaseReference.child("schoolHead").setValue(school.getSchoolHead());
         databaseReference.child("adminUsername").setValue(school.getAdminUsername());
         databaseReference.child("adminPassword").setValue(school.getAdminPassword());
+        databaseReference.child("idNumberFeature").setValue(school.isIdNumberFeature());
+        databaseReference.child("gpsFeature").setValue(school.isGpsFeature());
+        databaseReference.child("qrcodeFeature").setValue(school.isQrcodeFeature());
+        databaseReference.child("timeBasedFeature").setValue(school.isTimeBasedFeature());
+        databaseReference.child("biometricFeature").setValue(school.isBiometricFeature());
         databaseReference.child("latitudeBottom").setValue(school.getLatitudeBottom());
         databaseReference.child("latitudeTop").setValue(school.getLatitudeTop());
         databaseReference.child("longitudeLeft").setValue(school.getLongitudeLeft());
         databaseReference.child("longitudeRight").setValue(school.getLongitudeRight());
+        databaseReference.child("latitudeCenter").setValue((school.getLatitudeBottom() + school.getLatitudeTop() ) / 2);
+        databaseReference.child("longitudeCenter").setValue((school.getLongitudeLeft() + school.getLongitudeRight()) / 2);
     }
 
     public void deleteSchool(int schoolID){
@@ -88,12 +88,6 @@ public class SchoolController {
                 listener.onFailure(databaseError);
             }
         });
-    }
-
-    public void updateSchoolData(School school){
-        databaseReference = FirebaseDatabase.getInstance().getReference().child(school.getSchoolID() + "/");
-        databaseReference.setValue(school);
-
     }
 }
 

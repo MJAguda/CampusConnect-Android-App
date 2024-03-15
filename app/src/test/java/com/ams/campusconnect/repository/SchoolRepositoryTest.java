@@ -1,9 +1,5 @@
 package com.ams.campusconnect.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-
 public class SchoolRepositoryTest {
 //    @Mock
 //    FirebaseDatabase mockFirebaseDatabase;

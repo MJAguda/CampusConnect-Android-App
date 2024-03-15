@@ -25,12 +25,9 @@ public class SchoolRepository {
         databaseReference = FirebaseDatabase.getInstance().getReference().child(school.getSchoolID() + "/");
 
         // Add the school to the database
-        databaseReference.setValue(school).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                // School added successfully
+        databaseReference.setValue(school).addOnSuccessListener(aVoid -> {
+            // School added successfully
 
-            }
         });
     }
     // // To call addSchool

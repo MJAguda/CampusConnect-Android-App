@@ -2,7 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="Unnamed">
+      <entry key="App">
         <State>
           <targetSelectedWithDropDown>
             <Target>
@@ -10,12 +10,12 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\MJDMiner\.android\avd\Pixel_7_Pro_API_30.avd" />
+                  <value value="C:\Users\MJDMiner\.android\avd\Medium_Phone_API_33.avd" />
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-11T11:31:05.294537700Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-03-15T17:33:31.126358400Z" />
         </State>
       </entry>
     </value>

@@ -1,10 +1,8 @@
 package com.ams.campusconnect.service;
 
-import org.junit.Test;
-
-import static org.mockito.Mockito.mock;
-
 import com.ams.campusconnect.model.School;
+
+import org.junit.Test;
 
 public class SchoolServiceTest {
 
