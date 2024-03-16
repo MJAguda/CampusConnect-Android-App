@@ -78,7 +78,7 @@ public class GenerateDTR extends AppCompatActivity {
         TextView name = findViewById(R.id.name_TextView);
         TextView date = findViewById(R.id.monthyear_TextView);
         TextView schoolHead = findViewById(R.id.schoolHead_TextView);
-        TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
+        TableLayout table = findViewById(R.id.dtr_TableLayout);
 
         back.setOnClickListener(view -> {
             Intent intent = new Intent(GenerateDTR.this, Generate.class);
