@@ -19,8 +19,8 @@ public class SchoolService {
 
     }
 
-    private static List<School> schools = new ArrayList<>();
-    private static School school = new School();
+    private static final List<School> schools = new ArrayList<>();
+    private static final School school = new School();
 
     // Add school
     public void addSchool(School school) {
@@ -28,7 +28,7 @@ public class SchoolService {
     }
 
     public void fetchSchoolFromFireBase(School school) {
-        Log.d("School ID : ", school.getSchoolID() + "");
-        Log.d("School Name : ", school.getSchoolName() + "");
+        Log.d("School ID : ", String.valueOf(school.getSchoolID()));
+        Log.d("School Name : ", school.getSchoolName());
     }
 }
