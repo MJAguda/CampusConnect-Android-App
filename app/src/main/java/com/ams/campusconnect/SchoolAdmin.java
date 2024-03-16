@@ -1,6 +1,7 @@
 package com.ams.campusconnect;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TableLayout;
@@ -62,6 +64,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     EditText idEditText;
     EditText firstNameEditText;
     EditText lastNameEditText;
+    TableLayout birthdateTableLayout;
     Spinner monthSpinner;
     Spinner daySpinner;
     Spinner yearSpinner;
@@ -89,10 +92,14 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     TextView sourceTextView;
     //Spinner sourceSpinner;
     Spinner destinationSpinner;
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_admin);
+
+        progressDialog = new ProgressDialog(SchoolAdmin.this);
+        progressDialog.setCancelable(false);
 
         school = (School) getIntent().getSerializableExtra("school");
 
@@ -168,6 +175,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         idEditText = findViewById(R.id.id_EditText);
         firstNameEditText = findViewById(R.id.firstName_EditText);
         lastNameEditText = findViewById(R.id.lastName_EditText);
+        birthdateTableLayout = findViewById(R.id.birthdate_TableLayout);
         monthSpinner = findViewById(R.id.month_Spinner);
         daySpinner = findViewById(R.id.day_Spinner);
         yearSpinner = findViewById(R.id.year_Spinner);
@@ -314,6 +322,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
         switch (menuItem.getItemId()) {
             case R.id.add_employee: {
+
                 prompt.setText("Register an Employee");
 
                 // Hides all components
@@ -342,13 +351,19 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 // Submit Button ActionListener
                 submit.setOnClickListener(view -> {
 
+                    // Create and show progressDialog
+                    progressDialog.setMessage("Registering an Employee...");
+                    progressDialog.show();
+
                     // Check if one of the TextView are empty
                     if (idEditText.getText().toString().isEmpty() || firstNameEditText.getText().toString().isEmpty() || lastNameEditText.getText().toString().isEmpty()) {
                         Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
                     // Check if the length of id number is 12
                     else if (idEditText.getText().toString().length() != 12) {
                         Toast.makeText(getApplicationContext(), "Id Number must be equal to 12", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     } else {
                         // Get String from EditText components
                         employee.setFirstName(firstNameEditText.getText().toString());
@@ -365,7 +380,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
                                     Toast.makeText(getApplicationContext(), "Employee is already registered", Toast.LENGTH_SHORT).show();
-
+                                    progressDialog.dismiss();
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_SHORT).show();
 
@@ -381,12 +396,19 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                     lastNameEditText.setText("");
                                     idEditText.setText("");
 
+                                    // Dismiss progressDialog
+                                    progressDialog.dismiss();
+
                                     changeScreen(SchoolAdmin.class);
                                 }
                             }
 
                             @Override
                             public void onFailure(DatabaseError databaseError) {
+
+                                // Dismiss progressDialog
+                                progressDialog.dismiss();
+
                                 Log.d("Read", "Error: " + databaseError.getMessage());
                                 Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -423,6 +445,11 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        // Create and show progressDialog
+                        progressDialog.setMessage("Fetching Employee data...");
+                        progressDialog.show();
+
                         // Get the selected item from idSpinner
                         String selectedItemName = parent.getItemAtPosition(position).toString();
 
@@ -466,40 +493,58 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                             daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
 
                                             dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100)));
+
+                                            // Dismiss progressDialog
+                                            progressDialog.dismiss();
+
                                         }
 
                                         @Override
                                         public void onFailure(DatabaseError databaseError) {
+                                            // Dismiss progressDialog
+                                            progressDialog.dismiss();
+
                                             Log.d("Read", "Error: " + databaseError.getMessage());
                                             Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
-
-
                                 }
+
+                                // Dismiss progressDialog
+                                progressDialog.dismiss();
                             }
 
                             @Override
                             public void onFailure(DatabaseError databaseError) {
+                                progressDialog.dismiss();
                                 Log.d("Read", "Error: " + databaseError.getMessage());
                                 Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
+
+                        // Dismiss progressDialog
+                        progressDialog.dismiss();
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
-                        // Do nothing
+                        // Dismiss progressDialog
+                        progressDialog.dismiss();
                     }
                 });
 
                 // Submit Button ActionListener
                 submit.setOnClickListener(view -> {
 
+                    progressDialog.setMessage("Editing Employee...");
+                    progressDialog.show();
+
                     update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "fullname", lastNameEditText.getText().toString() + ", " + firstNameEditText.getText().toString());
                     update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "birthdate", (DateUtils.getMonthName(String.valueOf(monthSpinner.getSelectedItemPosition() + 1))) + "/" + daySpinner.getSelectedItem().toString() + "/" + yearSpinner.getSelectedItem().toString());
 
                     Toast.makeText(getApplicationContext(), "Successfully Edited", Toast.LENGTH_SHORT).show();
+
+                    progressDialog.dismiss();
 
                     changeScreen(SchoolAdmin.class);
                 });
@@ -531,8 +576,14 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                 // ActionListener for the selected Item in the idSpinner
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        // Create and show progressDialog
+                        progressDialog.setMessage("Fetching Employee names...");
+                        progressDialog.show();
+
                         // Get the selected item from idSpinner
                         String selectedItemName = parent.getItemAtPosition(position).toString();
 
@@ -576,21 +627,32 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                             daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
 
                                             dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100)));
+
+                                            progressDialog.dismiss();
+
                                         }
 
                                         @Override
                                         public void onFailure(DatabaseError databaseError) {
+
+                                            progressDialog.dismiss();
+
                                             Log.d("Read", "Error: " + databaseError.getMessage());
                                             Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
-
-
                                 }
+
+                                // Dismiss progressDialog
+                                progressDialog.dismiss();
+
                             }
 
                             @Override
                             public void onFailure(DatabaseError databaseError) {
+                                // Dismiss progressDialog
+                                progressDialog.dismiss();
+
                                 Log.d("Read", "Error: " + databaseError.getMessage());
                                 Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -600,14 +662,21 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
                         // Do nothing
+                        progressDialog.dismiss();
                     }
                 });
 
                 // Submit Button ActionListener
                 submit.setOnClickListener(view -> {
+
+                    progressDialog.setMessage("Deleting Employee...");
+                    progressDialog.show();
+
                     delete.deleteRecord(school.getSchoolID() + "/employee", String.valueOf(idEditText.getText()));
 
                     Toast.makeText(getApplicationContext(), "Successfully Deleted", Toast.LENGTH_SHORT).show();
+
+                    progressDialog.dismiss();
 
                     changeScreen(SchoolAdmin.class);
                 });
@@ -644,6 +713,11 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 idSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        // Create a show progressDialog
+                        progressDialog.setMessage("Fetching Employee names...");
+                        progressDialog.show();
+
                         // Get the selected item from idSpinner
                         String selectedItemName = parent.getItemAtPosition(position).toString();
 
@@ -687,21 +761,35 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                             daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
 
                                             dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100)));
+
+                                            // Dismiss progressDialog
+                                            progressDialog.dismiss();
                                         }
 
                                         @Override
                                         public void onFailure(DatabaseError databaseError) {
+                                            // Dismiss progressDialog
+                                            progressDialog.dismiss();
+
                                             Log.d("Read", "Error: " + databaseError.getMessage());
                                             Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
 
-
+                                    // Dismiss progressDialog
+                                    progressDialog.dismiss();
                                 }
+
+                                // Dismiss progressDialog
+                                progressDialog.dismiss();
                             }
 
                             @Override
                             public void onFailure(DatabaseError databaseError) {
+
+                                // Dismiss progressDialog
+                                progressDialog.dismiss();
+
                                 Log.d("Read", "Error: " + databaseError.getMessage());
                                 Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -717,6 +805,10 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 submit.setText("Transfer");
 
                 submit.setOnClickListener(view -> {
+
+                    progressDialog.setMessage("Transferring Employee...");
+                    progressDialog.show();
+
                     DatabaseReference source = FirebaseDatabase.getInstance().getReference(school.getSchoolID() + "/employee/" + employee.getId());
                     DatabaseReference destination = FirebaseDatabase.getInstance().getReference(destinationSpinner.getSelectedItem().toString() + "/employee/" + employee.getId());
 
@@ -726,11 +818,18 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     // Call the copyRecord method to copy the subtree from the source to the destination node
                     transfer.copyRecord(school, source, destination);
 
+                    // Dismiss progressDialog
+                    progressDialog.dismiss();
+
                     changeScreen(SchoolAdmin.class);
                 });
                 return true;
             }
             case R.id.generateAllQR: {
+
+                progressDialog.setMessage("Generating and Downloading QRs, This might take a while...");
+                progressDialog.show();
+
                 prompt.setText("Generate QRs");
 
                 // Hide all components
@@ -761,12 +860,21 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             DownloadQR imageDownloader = new DownloadQR(qrCodeImageView, school);
                             imageDownloader.downloadImage(SchoolAdmin.this);
                         }
+
+                        // Dismiss progressDialog
+                        progressDialog.dismiss();
+
                     }
 
                     @Override
                     public void onFailure(DatabaseError databaseError) {
+
+                        // Dismiss progressDialog
+                        progressDialog.dismiss();
+
                         Log.d("Read", "Error: " + databaseError.getMessage());
                         Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+
                     }
                 });
                 return true;
@@ -792,8 +900,13 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 yearSpinner.setEnabled(true);
 
                 submit.setOnClickListener(new View.OnClickListener() {
+
                     @Override
                     public void onClick(View view) {
+
+                        progressDialog.setMessage("Generating DTRs, This might take a while...");
+                        progressDialog.show();
+
                         String month = monthSpinner.getSelectedItem().toString();
                         String year = yearSpinner.getSelectedItem().toString();
                         int day = DateUtils.getNumberOfDays(month, year);
@@ -805,10 +918,16 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 processChildData(dataSnapshot.getChildren().iterator(), month, day, year);
+
+                                // Dismiss progressDialog
+                                progressDialog.dismiss();
                             }
 
                             @Override
                             public void onFailure(DatabaseError databaseError) {
+                                // Dismiss progressDialog
+                                progressDialog.dismiss();
+
                                 Log.d("Read", "Error: " + databaseError.getMessage());
                                 Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -862,6 +981,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         idEditText.setVisibility(View.VISIBLE);
         firstNameEditText.setVisibility(View.VISIBLE);
         lastNameEditText.setVisibility(View.VISIBLE);
+        birthdateTableLayout.setVisibility(View.VISIBLE);
         monthSpinner.setVisibility(View.VISIBLE);
         daySpinner.setVisibility(View.VISIBLE);
         yearSpinner.setVisibility(View.VISIBLE);
@@ -876,6 +996,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         idEditText.setVisibility(View.GONE);
         firstNameEditText.setVisibility(View.GONE);
         lastNameEditText.setVisibility(View.GONE);
+        birthdateTableLayout.setVisibility(View.GONE);
         monthSpinner.setVisibility(View.GONE);
         daySpinner.setVisibility(View.GONE);
         yearSpinner.setVisibility(View.GONE);

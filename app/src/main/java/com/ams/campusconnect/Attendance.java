@@ -1,6 +1,7 @@
 package com.ams.campusconnect;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -60,11 +61,19 @@ public class Attendance extends AppCompatActivity {
     private static final String TAG = LogInAttendance.class.getSimpleName();
 
     DateUtils dateUtils;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
+
+        // Create and show progressdialog
+        progressDialog = new ProgressDialog(Attendance.this);
+        progressDialog.setMessage("Fetching time logs...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
 
         school = (School) getIntent().getSerializableExtra("school");
 
@@ -203,6 +212,11 @@ public class Attendance extends AppCompatActivity {
         biometricManagerHelper.checkBiometricSupported();
 
         AMIn.setOnClickListener(view -> {
+
+            progressDialog.setMessage("Processing attendance data, just a moment...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
             save.setAuthenticate("timeAM_In");
 
             if (school.isBiometricFeature()) {
@@ -223,6 +237,11 @@ public class Attendance extends AppCompatActivity {
         });
 
         AMOut.setOnClickListener(view -> {
+
+            progressDialog.setMessage("Processing attendance data, just a moment...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
             save.setAuthenticate("timeAM_Out");
 
             if (school.isBiometricFeature()) {
@@ -243,6 +262,11 @@ public class Attendance extends AppCompatActivity {
         });
 
         PMIn.setOnClickListener(view -> {
+
+            progressDialog.setMessage("Processing attendance data, just a moment...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
             save.setAuthenticate("timePM_In");
 
             if (school.isBiometricFeature()) {
@@ -263,6 +287,11 @@ public class Attendance extends AppCompatActivity {
         });
 
         PMOut.setOnClickListener(view -> {
+
+            progressDialog.setMessage("Processing attendance data, just a moment...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
             save.setAuthenticate("timePM_Out");
 
             if (school.isBiometricFeature()) {
@@ -393,6 +422,10 @@ public class Attendance extends AppCompatActivity {
             public void onSuccess(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(save.getAuthenticate()).exists() && !dataSnapshot.child(save.getAuthenticate()).getValue(String.class).equals("")) {
                     Toast.makeText(getApplicationContext(), "Already Have", Toast.LENGTH_SHORT).show();
+
+                    // Dismiss progressdialog
+                    progressDialog.dismiss();
+
                     alreadyhave.start();
                 } else {
                     checkTimeIntervals(save, employee, Attendance.this.school, currentTimeIn12Hours);
@@ -490,6 +523,8 @@ public class Attendance extends AppCompatActivity {
 
                 // Get the current location of the employee
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, location -> {
+                    progressDialog.setMessage("Getting your location...");
+
                     employee.setLatitude(location.getLatitude());
                     employee.setLongitude(location.getLongitude());
 
@@ -517,6 +552,8 @@ public class Attendance extends AppCompatActivity {
                             update.updateRecord(this.school.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
                         });
 
+                        // Dismiss progressdialog
+                        progressDialog.dismiss();
 
                         thankyou.start();
 
@@ -535,6 +572,8 @@ public class Attendance extends AppCompatActivity {
                     // Push Time in Database
                     create.createRecord(this.school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
 
+                    // Dismiss progressdialog
+                    progressDialog.dismiss();
                     thankyou.start();
 
                     // Refresh Time Logs
@@ -669,11 +708,18 @@ public class Attendance extends AppCompatActivity {
                         row.addView(time);
                     }
                     table.addView(row);
+
+                    // Dismiss progressdialog
+                    progressDialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(DatabaseError databaseError) {
+                // Dismiss progressdialog
+                progressDialog.dismiss();
+                Log.e(TAG, "Error: " + databaseError.getMessage());
+                Toast.makeText(Attendance.this, "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 // handle error here
             }
         });

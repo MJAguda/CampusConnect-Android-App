@@ -127,7 +127,7 @@
                     <Spinner
                         android:id="@+id/id_Spinner"
                         android:layout_width="match_parent"
-                        android:layout_height="30sp"/>
+                        android:layout_height="30sp" />
 
                 </LinearLayout>
 
@@ -177,7 +177,7 @@
                             android:padding="16dp"/>
 
                         <TableLayout
-                            android:id="@+id/birthday_TableLayout"
+                            android:id="@+id/birthdate_TableLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                             <TableRow

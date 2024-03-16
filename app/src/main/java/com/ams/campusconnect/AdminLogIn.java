@@ -1,5 +1,6 @@
 package com.ams.campusconnect;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -16,6 +17,8 @@ public class AdminLogIn extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     School school;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +40,19 @@ public class AdminLogIn extends AppCompatActivity {
         });
 
         adminLogIn.setOnClickListener(view -> {
+
+            progressDialog = new ProgressDialog(AdminLogIn.this);
+            progressDialog.setTitle("Logging In...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
             // Check if admin account is school level or higher admin
             if (adminUsername.getText().toString().equals(save.getAdminUsername()) && adminPassword.getText().toString().equals(save.getAdminPassword())) {
 
                 Toast.makeText(getApplicationContext(), "Welcome System Admin", Toast.LENGTH_SHORT).show();
+
+                // Dismiss progress dialog
+                progressDialog.dismiss();
 
                 Intent intent = new Intent(AdminLogIn.this, SystemAdmin.class);
                 intent = intent.putExtra("school", school);
@@ -50,10 +62,17 @@ public class AdminLogIn extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Welcome " + school.getSchoolName() + " Admin", Toast.LENGTH_SHORT).show();
 
+                // Dismiss progress dialog
+                progressDialog.dismiss();
+
                 Intent intent = new Intent(AdminLogIn.this, SchoolAdmin.class);
                 intent = intent.putExtra("school", school);
                 startActivity(intent);
             } else {
+
+                // Dismiss progress dialog
+                progressDialog.dismiss();
+
                 Toast.makeText(getApplicationContext(), "Wrong Username or Password", Toast.LENGTH_SHORT).show();
             }
         });

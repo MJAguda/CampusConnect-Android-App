@@ -1,5 +1,6 @@
 package com.ams.campusconnect;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +50,7 @@ public class LogbookActivity extends AppCompatActivity {
     TableLayout table;
     DateUtils dateUtils;
     Employee employee = Employee.getInstance();
+    ProgressDialog progressDialog;
 
     private static final int REQUEST_CODE_SCAN_QR = 1;
 
@@ -56,6 +58,12 @@ public class LogbookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logbook);
+
+        // TODO : Create and show a ProgressDialog
+        progressDialog = new ProgressDialog(LogbookActivity.this);
+        progressDialog.setMessage("Fetching data...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         // Get the school from the previous activity
         school = (School) getIntent().getSerializableExtra("school");
@@ -357,10 +365,17 @@ public class LogbookActivity extends AppCompatActivity {
 
                     table.addView(row);
                 }
+
+                // Dismiss the ProgressDialog
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(DatabaseError databaseError) {
+
+                // Dismiss the ProgressDialog
+                progressDialog.dismiss();
+
                 Log.d("Read", "Error: " + databaseError.getMessage());
                 Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
