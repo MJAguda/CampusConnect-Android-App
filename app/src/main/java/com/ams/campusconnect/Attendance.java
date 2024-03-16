@@ -521,7 +521,7 @@ public class Attendance extends AppCompatActivity {
                         thankyou.start();
 
                         // Refresh Time Logs
-                        TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
+                        TableLayout table = findViewById(R.id.dtr_TableLayout);
                         table.removeAllViews();
                         getTimeLogs(save.getYear(), save.getMonth());
 
@@ -538,7 +538,7 @@ public class Attendance extends AppCompatActivity {
                     thankyou.start();
 
                     // Refresh Time Logs
-                    TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
+                    TableLayout table = findViewById(R.id.dtr_TableLayout);
                     table.removeAllViews();
                     getTimeLogs(save.getYear(), save.getMonth());
 
@@ -630,7 +630,7 @@ public class Attendance extends AppCompatActivity {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
 
-                TableLayout table = (TableLayout) findViewById(R.id.dtr_TableLayout);
+                TableLayout table = findViewById(R.id.dtr_TableLayout);
                 table.removeAllViews();
 
                 for (int i = 1; i <= DateUtils.getNumberOfDays(month, year); i++) {
