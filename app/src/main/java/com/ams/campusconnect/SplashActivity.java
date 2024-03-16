@@ -1,6 +1,8 @@
 package com.ams.campusconnect;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -22,10 +24,23 @@ public class SplashActivity extends AppCompatActivity {
 
     Read read = new Read();
 
+
+    TextView versionNameTextView;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        versionNameTextView = findViewById(R.id.versionName_TextView);
+
+        // Set the version name in the versionNameTextView
+        try {
+            String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            versionNameTextView.setText("Version : " + versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         // Declare thankyou sound
         final MediaPlayer welcome = MediaPlayer.create(this, R.raw.welcometocampusconnect);

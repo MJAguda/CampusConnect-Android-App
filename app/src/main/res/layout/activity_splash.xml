@@ -42,11 +42,11 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/version_TextView"
+            android:id="@+id/versionName_TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-smallcaps"
-            android:text="Version : 1.0.9"
+            android:text=""
             android:textAlignment="center"
             android:textColor="#6A2C70"
             android:textSize="20sp"
