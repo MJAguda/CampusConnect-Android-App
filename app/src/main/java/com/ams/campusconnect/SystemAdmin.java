@@ -336,15 +336,15 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 school = dataSnapshot.getValue(School.class);
 
                                 // Set data to EditText
-//                                schoolID.setText(String.valueOf(school.getSchoolID()));
-//                                schoolName.setText(school.getSchoolName());
-//                                schoolHead.setText(school.getSchoolHead());
-//                                adminUsername.setText(school.getAdminUsername());
-//                                adminPassword.setText(school.getAdminPassword());
-//                                latitudeBottom.setText(String.valueOf(school.getLatitudeBottom()));
-//                                latitudeTop.setText(String.valueOf(school.getLatitudeTop()));
-//                                longitudeLeft.setText(String.valueOf(school.getLongitudeLeft()));
-//                                longitudeRight.setText(String.valueOf(school.getLongitudeRight()));
+                                schoolID.setText(String.valueOf(school.getSchoolID()));
+                                schoolName.setText(school.getSchoolName());
+                                schoolHead.setText(school.getSchoolHead());
+                                adminUsername.setText(school.getAdminUsername());
+                                adminPassword.setText(school.getAdminPassword());
+                                latitudeBottom.setText(String.valueOf(school.getLatitudeBottom()));
+                                latitudeTop.setText(String.valueOf(school.getLatitudeTop()));
+                                longitudeLeft.setText(String.valueOf(school.getLongitudeLeft()));
+                                longitudeRight.setText(String.valueOf(school.getLongitudeRight()));
                             }
 
                             @Override
