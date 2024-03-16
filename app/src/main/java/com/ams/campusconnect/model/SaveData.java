@@ -14,8 +14,8 @@ public class SaveData {
     }
 
 
-    private String adminUsername = "administrator";
-    private String adminPassword = "123";
+    private final String adminUsername = "administrator";
+    private final String adminPassword = "123";
 
 
     private String month;
