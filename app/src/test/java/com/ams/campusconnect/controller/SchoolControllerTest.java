@@ -10,7 +10,7 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.*;
 
 public class SchoolControllerTest {
-    private SchoolController schoolController = new SchoolController();
+    private final SchoolController schoolController = new SchoolController();
 
     @Mock
     private DatabaseReference mockedDatabaseReference;
