@@ -21,10 +21,10 @@ import java.util.Locale;
 
 public class DownloadQR {
 
-    private static Employee employee = Employee.getInstance();
+    private static final Employee employee = Employee.getInstance();
 
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
-    private ImageView imageView;
+    private final ImageView imageView;
 
     private Bitmap bitmap;
     School school;

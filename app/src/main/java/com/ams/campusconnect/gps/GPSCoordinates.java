@@ -23,10 +23,10 @@ import com.ams.campusconnect.model.School;
 public class GPSCoordinates {
     // TODO Implement server-side verification
     // TODO Geofencing
-    private LocationManager locationManager;
-    private LocationListener locationListener;
+    private final LocationManager locationManager;
+    private final LocationListener locationListener;
     private Location currentLocation;
-    private Context context;
+    private final Context context;
     School school;
 
     public GPSCoordinates(Context context, School school) {
