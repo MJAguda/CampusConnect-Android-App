@@ -107,7 +107,7 @@ public class LogbookActivity extends AppCompatActivity {
 
         // Create items for day
         ArrayList<String> dayList = new ArrayList<>();
-        for (int i = 1; i <= dateUtils.getNumberOfDays((String) monthSpinner.getSelectedItem(), (String) yearSpinner.getSelectedItem()); i++) {
+        for (int i = 1; i <= DateUtils.getNumberOfDays((String) monthSpinner.getSelectedItem(), (String) yearSpinner.getSelectedItem()); i++) {
             dayList.add(String.valueOf(i));
         }
 
@@ -132,7 +132,7 @@ public class LogbookActivity extends AppCompatActivity {
 //        Log.d("Year from Spinner : ", yearSpinner.getSelectedItem() + "");
 
         TextView dateTimeTextView = findViewById(R.id.dateAndTime_TextView);
-        table = (TableLayout) findViewById(R.id.dailyLog_TableLayout);
+        table = findViewById(R.id.dailyLog_TableLayout);
 
         dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
             // Display a Display Date and Time
