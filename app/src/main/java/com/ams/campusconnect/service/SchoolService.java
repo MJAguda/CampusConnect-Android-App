@@ -1,7 +1,10 @@
 package com.ams.campusconnect.service;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.repository.SchoolRepository;
 
@@ -10,25 +13,38 @@ import java.util.List;
 
 public class SchoolService {
     private SchoolRepository schoolRepository;
+    private Context context;
 
-    public SchoolService(SchoolRepository schoolRepository) {
-        this.schoolRepository = schoolRepository;
+    public SchoolService(Context context) {
+        this.schoolRepository = new SchoolRepository();
+        this.context = context;
     }
 
-    public SchoolService() {
-
-    }
-
-    private static final List<School> schools = new ArrayList<>();
-    private static final School school = new School();
-
-    // Add school
+    // Create/Add Employee
     public void addSchool(School school) {
         schoolRepository.addSchool(school);
+        Toast.makeText(context, "School Added Successfully", Toast.LENGTH_SHORT).show();
     }
 
-    public void fetchSchoolFromFireBase(School school) {
-        Log.d("School ID : ", String.valueOf(school.getSchoolID()));
-        Log.d("School Name : ", school.getSchoolName());
+    public void getSchoolData(int schoolID, final SchoolRepository.OnDataFetchListener listener){
+        schoolRepository.getSchoolData(schoolID, listener);
+    }
+
+    // Update School
+    public void updateSchool(School school){
+        schoolRepository.updateSchool(school);
+        Toast.makeText(context, "School Updated Successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    //Delete School
+    public void deleteSchool(int schoolID){
+        schoolRepository.deleteSchool(schoolID);
+        Toast.makeText(context, "School Deleted Successfully", Toast.LENGTH_SHORT).show();
+    }
+
+
+    // Get all school IDs
+    public void getAllSchoolIDs(final SchoolRepository.OnDataFetchListener listener){
+        schoolRepository.getAllSchoolIDs(listener);
     }
 }

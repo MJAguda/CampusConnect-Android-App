@@ -38,6 +38,7 @@ import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.qrcode.DownloadQR;
 import com.ams.campusconnect.qrcode.GenerateQR;
+import com.ams.campusconnect.repository.SchoolRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,7 +53,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
     SaveData save = SaveData.getInstance();
     School school;
-    SchoolController schoolController = new SchoolController();
+    SchoolController schoolController = new SchoolController(this);
     Employee employee = Employee.getInstance();
     Read read = new Read();
     Update update = new Update();
@@ -226,7 +227,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         ArrayList<String> idList = new ArrayList<>();
 
         // Read all school ID
-        schoolController.getAllSchoolIDs(new SchoolController.OnDataFetchListener() {
+        schoolController.getAllSchoolIDs(new SchoolRepository.OnDataFetchListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {

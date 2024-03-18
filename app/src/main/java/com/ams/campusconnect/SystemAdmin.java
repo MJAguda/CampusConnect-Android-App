@@ -25,6 +25,7 @@ import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.repository.SchoolRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -33,7 +34,7 @@ import java.util.Calendar;
 
 public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
     School school;
-    SchoolController schoolController = new SchoolController();
+    SchoolController schoolController = new SchoolController(this);
     Employee employee = Employee.getInstance();
     Read read = new Read();
 
@@ -100,7 +101,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         ArrayList<String> schoolIDList = new ArrayList<>();
 
         // Fetch all schoolID from the database using schoolController.getSchoolData
-        schoolController.getAllSchoolIDs(new SchoolController.OnDataFetchListener() {
+        schoolController.getAllSchoolIDs(new SchoolRepository.OnDataFetchListener() {
 
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -227,14 +228,9 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
                 // if submitSchool is clicked
                 submitSchool.setOnClickListener(view -> {
-
-                    progressDialog.setMessage("Registering School...");
-                    progressDialog.dismiss();
-
                     // Check if all field are filled
-                    if (schoolID.getText().toString().isEmpty() && schoolName.getText().toString().isEmpty() && schoolHead.getText().toString().isEmpty() && adminUsername.getText().toString().isEmpty() && adminPassword.getText().toString().isEmpty() && latitudeBottom.getText().toString().isEmpty() && latitudeTop.getText().toString().isEmpty() && longitudeLeft.getText().toString().isEmpty() && longitudeRight.getText().toString().isEmpty()) {
+                    if (schoolID.getText().toString().isEmpty() || schoolName.getText().toString().isEmpty() || schoolHead.getText().toString().isEmpty() || adminUsername.getText().toString().isEmpty() || adminPassword.getText().toString().isEmpty() || latitudeBottom.getText().toString().isEmpty() || latitudeTop.getText().toString().isEmpty() || longitudeLeft.getText().toString().isEmpty() || longitudeRight.getText().toString().isEmpty()) {
                         Toast.makeText(getApplicationContext(), "Fill all Fields", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
                     }
                     // Check if latitudeBottom, latitudeTop, longitudeLeft, longitudeRight doesn't contain a .
                     else if (!latitudeBottom.getText().toString().contains(".") ||
@@ -242,7 +238,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             !longitudeLeft.getText().toString().contains(".") ||
                             !longitudeRight.getText().toString().contains(".")) {
                         Toast.makeText(getApplicationContext(), "Latitude and Longitude must contain a decimal", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
+
                     }
                     // Check if the . is followed only by 0 example 123.0 but allow if enter is 123.01
                     else if (latitudeBottom.getText().toString().contains(".") &&
@@ -254,19 +250,18 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             longitudeRight.getText().toString().contains(".") &&
                                     longitudeRight.getText().toString().endsWith("0")) {
                         Toast.makeText(getApplicationContext(), "Latitude and Longitude must not end with 0", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
                     }
                     // Check if latitudeBottom is greater than latitudeTop
                     else if (Double.parseDouble(latitudeBottom.getText().toString()) >
                             Double.parseDouble(latitudeTop.getText().toString())) {
                         Toast.makeText(getApplicationContext(), "Latitude Bottom must be less than Latitude Top", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
+
                     }
                     // Check if longitudeLeft is greater than longitudeRight
                     else if (Double.parseDouble(longitudeLeft.getText().toString()) >
                             Double.parseDouble(longitudeRight.getText().toString())) {
                         Toast.makeText(getApplicationContext(), "Longitude Left must be less than Longitude Right", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
+
                     } else {
                         // Get data from EditText and store it in School class
 
@@ -282,8 +277,11 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         school.setLatitudeCenter((school.getLatitudeTop() + school.getLatitudeBottom()) / 2);
                         school.setLongitudeCenter((school.getLongitudeLeft() + school.getLongitudeRight()) / 2);
 
+                        progressDialog.setMessage("Registering School...");
+                        progressDialog.dismiss();
+
                         // Check if school Id already exists in the database
-                        schoolController.getSchoolData(school.getSchoolID(), new SchoolController.OnDataFetchListener() {
+                        schoolController.getSchoolData(school.getSchoolID(), new SchoolRepository.OnDataFetchListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
@@ -294,10 +292,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 } else {
 
                                     // Create School
-
                                     schoolController.addSchool(school);
-
-                                    Toast.makeText(getApplicationContext(), "School Successfully Registered", Toast.LENGTH_SHORT).show();
 
                                     progressDialog.dismiss();
 
@@ -353,7 +348,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         Toast.makeText(getApplicationContext(), "Selected : " + selectedItemName, Toast.LENGTH_SHORT).show();
 
                         // Get data from database
-                        schoolController.getSchoolData(Integer.parseInt(selectedItemName), new SchoolController.OnDataFetchListener() {
+                        schoolController.getSchoolData(Integer.parseInt(selectedItemName), new SchoolRepository.OnDataFetchListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 // Get data from database
@@ -515,7 +510,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         Toast.makeText(getApplicationContext(), "Selected : " + selectedItemName, Toast.LENGTH_SHORT).show();
 
                         // Get data from database
-                        schoolController.getSchoolData(Integer.parseInt(selectedItemName), new SchoolController.OnDataFetchListener() {
+                        schoolController.getSchoolData(Integer.parseInt(selectedItemName), new SchoolRepository.OnDataFetchListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
 

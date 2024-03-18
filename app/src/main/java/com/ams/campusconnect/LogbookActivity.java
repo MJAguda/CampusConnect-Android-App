@@ -39,7 +39,7 @@ import java.util.TimerTask;
 
 public class LogbookActivity extends AppCompatActivity {
     School school;
-    SchoolController schoolController = new SchoolController();
+    SchoolController schoolController = new SchoolController(this);
 
     Create create = new Create();
     Read read = new Read();

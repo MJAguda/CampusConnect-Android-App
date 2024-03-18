@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.firebase.Delete;
 import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.repository.SchoolRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -47,7 +48,7 @@ public class SchoolLogIn extends AppCompatActivity {
 //                getBySchoolID(school.getSchoolID());
 
                 school.setSchoolID(Integer.parseInt(schoolID.getText().toString()));
-                SchoolController schoolController = new SchoolController();
+                SchoolController schoolController = new SchoolController(this);
 
                 // Declare and initialize a ProgressDialog
                 ProgressDialog progressDialog = new ProgressDialog(SchoolLogIn.this);
@@ -57,7 +58,7 @@ public class SchoolLogIn extends AppCompatActivity {
                 progressDialog.setCancelable(false);
                 progressDialog.show();
 
-                schoolController.getSchoolData(school.getSchoolID(), new SchoolController.OnDataFetchListener() {
+                schoolController.getSchoolData(school.getSchoolID(), new SchoolRepository.OnDataFetchListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
 

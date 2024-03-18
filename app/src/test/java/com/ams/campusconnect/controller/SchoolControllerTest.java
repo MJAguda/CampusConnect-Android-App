@@ -10,25 +10,5 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.*;
 
 public class SchoolControllerTest {
-    private final SchoolController schoolController = new SchoolController();
 
-    @Mock
-    private DatabaseReference mockedDatabaseReference;
-
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        when(mockedDatabaseReference.child(anyString())).thenReturn(mockedDatabaseReference);
-        when(FirebaseDatabase.getInstance().getReference()).thenReturn(mockedDatabaseReference);
-    }
-
-    @Test
-    public void testAddSchool() {
-
-    }
-
-    @Test
-    public void testGetSchoolData() {
-
-    }
 }

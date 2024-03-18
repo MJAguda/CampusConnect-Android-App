@@ -37,6 +37,7 @@ import com.ams.campusconnect.firebase.Update;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
+import com.ams.campusconnect.repository.SchoolRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -47,7 +48,7 @@ public class Attendance extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     School school;
-    SchoolController schoolController = new SchoolController();
+    SchoolController schoolController = new SchoolController(this);
     Employee employee = Employee.getInstance();
     Create create = new Create();
     Read read = new Read();
@@ -119,7 +120,7 @@ public class Attendance extends AppCompatActivity {
 
         hamburger.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show());
 
-        schoolController.getSchoolData(school.getSchoolID(), new SchoolController.OnDataFetchListener() {
+        schoolController.getSchoolData(school.getSchoolID(), new SchoolRepository.OnDataFetchListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 // Check if ID exists in the database
