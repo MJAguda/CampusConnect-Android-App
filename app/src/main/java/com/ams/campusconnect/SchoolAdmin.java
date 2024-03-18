@@ -96,6 +96,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_admin);
 
         progressDialog = new ProgressDialog(SchoolAdmin.this);

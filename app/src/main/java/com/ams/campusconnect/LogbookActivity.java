@@ -161,6 +161,9 @@ public class LogbookActivity extends AppCompatActivity {
                     monthSpinner.setSelection(position);
 //                    Log.d("MonthSprinner Value : ", (String) monthSpinner.getSelectedItem());
 
+                    progressDialog.setMessage("Fetching time logs...");
+                    progressDialog.show();
+
                     displayTimeLogs(monthSpinner.getSelectedItem().toString(), daySpinner.getSelectedItem().toString(), yearSpinner.getSelectedItem().toString());
 
                 }
@@ -178,6 +181,9 @@ public class LogbookActivity extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                     daySpinner.setSelection(position);
+
+                    progressDialog.setMessage("Fetching time logs...");
+                    progressDialog.show();
 
                     displayTimeLogs(monthSpinner.getSelectedItem().toString(), daySpinner.getSelectedItem().toString(), yearSpinner.getSelectedItem().toString());
 
@@ -197,6 +203,9 @@ public class LogbookActivity extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                     yearSpinner.setSelection(position);
+
+                    progressDialog.setMessage("Fetching time logs...");
+                    progressDialog.show();
 
                     displayTimeLogs(monthSpinner.getSelectedItem().toString(), daySpinner.getSelectedItem().toString(), yearSpinner.getSelectedItem().toString());
                 }

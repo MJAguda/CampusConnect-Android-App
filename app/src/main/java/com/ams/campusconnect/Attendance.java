@@ -340,6 +340,8 @@ public class Attendance extends AppCompatActivity {
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 Toast.makeText(Attendance.this, "Auth error: " + errString, Toast.LENGTH_SHORT).show();
+
+                progressDialog.dismiss();
             }
 
             @Override
@@ -367,12 +369,15 @@ public class Attendance extends AppCompatActivity {
 
 
 //                Toast.makeText(Attendance.this, "Auth succeeded", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
 
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
                 Toast.makeText(Attendance.this, "Auth failed", Toast.LENGTH_SHORT).show();
+
+                progressDialog.dismiss();
             }
         };
     }
@@ -512,7 +517,8 @@ public class Attendance extends AppCompatActivity {
                 openDeveloperOptionsSettings();
             }
             // Check if GPS is enabled
-            else if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            else
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 // GPS is disabled, open settings
                 finish();
                 openGPSSettings();
