@@ -7,6 +7,8 @@ import android.widget.Toast;
 import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.repository.SchoolRepository;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,5 +48,9 @@ public class SchoolService {
     // Get all school IDs
     public void getAllSchoolIDs(final SchoolRepository.OnDataFetchListener listener){
         schoolRepository.getAllSchoolIDs(listener);
+    }
+
+    public void getAllSchools(final SchoolRepository.OnDataFetchListener listener){
+        schoolRepository.findAll(listener);
     }
 }
