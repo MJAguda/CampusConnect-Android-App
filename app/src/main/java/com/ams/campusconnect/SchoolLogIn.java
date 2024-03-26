@@ -18,6 +18,10 @@ import com.ams.campusconnect.repository.SchoolRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class SchoolLogIn extends AppCompatActivity {
 
     School school = new School();
@@ -90,6 +94,33 @@ public class SchoolLogIn extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "getSchoolDataError : " + databaseError, Toast.LENGTH_SHORT).show();
                         Log.e("getSchoolDataError", databaseError.toString());
+                    }
+                });
+
+
+                List<School> schools = new ArrayList<>();
+                schoolController.getAllSchools(new SchoolRepository.OnDataFetchListener() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        // Get all schools and their fields and set it to School class
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            if (Objects.requireNonNull(snapshot.getKey()).matches("[0-9]+")) {
+                                // get children of school
+                                School school = snapshot.getValue(School.class);
+                                schools.add(school);
+                            }
+                        }
+
+                        // Traverse List of Schools
+                        for (School school : schools) {
+                            Log.d("School", school.getSchoolName());
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(DatabaseError databaseError) {
+                        Log.e("SchoolController", "Error fetching schools", databaseError.toException());
                     }
                 });
             }
