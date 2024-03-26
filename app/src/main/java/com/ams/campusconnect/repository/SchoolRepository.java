@@ -10,11 +10,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class SchoolRepository {
     private DatabaseReference databaseReference;
 
     public SchoolRepository() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
+    }
+
+    public interface OnDataFetchListener{
+        void onSuccess(DataSnapshot dataSnapshot);
+
+        void onFailure(DatabaseError databaseError);
+
     }
 
     // Create/Add School to the database
@@ -37,12 +46,6 @@ public class SchoolRepository {
                 listener.onFailure(databaseError);
             }
         });
-    }
-
-    public interface OnDataFetchListener{
-        void onSuccess(DataSnapshot dataSnapshot);
-
-        void onFailure(DatabaseError databaseError);
     }
 
     // Update School from the database
@@ -89,4 +92,20 @@ public class SchoolRepository {
             }
         });
     }
+
+    public void findAll(final SchoolRepository.OnDataFetchListener listener){
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                listener.onFailure(databaseError);
+            }
+        });
+    }
+
 }
