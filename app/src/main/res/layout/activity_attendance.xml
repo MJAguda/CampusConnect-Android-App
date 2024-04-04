@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#F9ED69"
             android:textColor="#6A2C70"
-            android:text="Name will appear here when punched in."
+            android:text="Loading..."
             android:textSize="20sp"
             android:textAlignment="center"/>
 

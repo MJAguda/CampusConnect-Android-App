@@ -14,9 +14,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -118,7 +122,29 @@ public class Attendance extends AppCompatActivity {
             startActivity(intent);
         });
 
-        hamburger.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show());
+        hamburger.setOnClickListener(view -> {
+            PopupMenu popup = new PopupMenu(Attendance.this, view);
+            MenuInflater inflater = popup.getMenuInflater();
+            inflater.inflate(R.menu.hamburger_employee_menu, popup.getMenu());
+            popup.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()){
+                    case R.id.request_timelog_change:{
+                        Toast.makeText(Attendance.this, "Request Time Log Change", Toast.LENGTH_SHORT).show();
+                    }
+                    case R.id.logout:{
+                        Intent intent = new Intent(Attendance.this, LogbookActivity.class);
+                        intent = intent.putExtra("school", school);
+                        startActivity(intent);
+                        return true;
+                    }
+                    default:{
+                        return false;
+                    }
+                }
+            });
+            popup.show();
+        });
+
 
         schoolController.getSchoolData(school.getSchoolID(), new SchoolRepository.OnDataFetchListener() {
             @Override
@@ -518,8 +544,7 @@ public class Attendance extends AppCompatActivity {
                 openDeveloperOptionsSettings();
             }
             // Check if GPS is enabled
-            else
-                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            else if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 // GPS is disabled, open settings
                 finish();
                 openGPSSettings();
@@ -732,7 +757,6 @@ public class Attendance extends AppCompatActivity {
         });
 
     }
-
 
     // Destroy Clock
     @Override
