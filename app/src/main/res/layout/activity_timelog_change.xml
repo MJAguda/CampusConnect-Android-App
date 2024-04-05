@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/layoutbackground"
+    android:orientation="vertical"
+    tools:context="com.ams.campusconnect.Attendance">
+
+    <!--Header-->
+    <LinearLayout
+        android:id="@+id/header_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#B83B5E"
+        android:orientation="horizontal">
+
+        <include layout="@layout/header_layout" />
+
+        <ImageButton
+            android:id="@+id/hamburger_ImageButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="#00000000"
+            android:scaleType="fitCenter"
+            android:src="@drawable/kebab" />
+
+    </LinearLayout>
+
+    <!--Body-->
+    <LinearLayout
+        android:id="@+id/body_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="35px"
+        android:layout_weight="1"
+        android:background="@drawable/round_body_bg"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:padding="50px">
+        <!--android:background="#F08A5D"-->
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <EditText
+                    android:id="@+id/requestorId_EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10px"
+                    android:background="@drawable/round_edittext_bg"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:hint="Requestor ID"
+                    android:inputType="number"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/requestorName_EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10px"
+                    android:background="@drawable/round_edittext_bg"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:hint="Requestor Name"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10px"
+                    android:background="#F9ED69"
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:id="@+id/typeOfTimeLogIssue_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="30sp"
+                        android:layout_margin="10px" />
+                </LinearLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10px">
+
+                        <Button
+                            android:id="@+id/AMIn_Button"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10px"
+                            android:layout_weight="0.25"
+                            android:backgroundTint="#F9ED69"
+                            android:text="AM\nIn"
+                            android:textColor="#6A2C70"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/AMOut_Button"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10px"
+                            android:layout_weight="0.25"
+                            android:backgroundTint="#F9ED69"
+                            android:text="AM\nOut"
+                            android:textColor="#6A2C70"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/PMIn_Button"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10px"
+                            android:layout_weight="0.25"
+                            android:backgroundTint="#F9ED69"
+                            android:text="PM\nIn"
+                            android:textColor="#6A2C70"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/PMOut_Button"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10px"
+                            android:layout_weight="0.25"
+                            android:backgroundTint="#F9ED69"
+                            android:text="PM\nOut"
+                            android:textColor="#6A2C70"
+                            android:textSize="12sp" />
+                    </TableRow>
+                </TableLayout>
+
+                <EditText
+                    android:id="@+id/incorrectTimeLogDate_EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10px"
+                    android:background="@drawable/round_edittext_bg"
+                    android:hint="Incorrect Time Log Date"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/correctTimeLogDate_EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10px"
+                    android:background="@drawable/round_edittext_bg"
+                    android:hint="Correct Time Log Date"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/reasonForChange_EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10px"
+                    android:background="@drawable/round_edittext_bg"
+                    android:hint="Reason for Change"
+                    android:inputType="textMultiLine"
+                    android:lines="1"
+                    android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textColor="#6A2C70"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <!--Footer-->
+    <LinearLayout
+        android:id="@+id/footer_LineanLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B83B5E"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/submitSchool_Button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10px"
+            android:layout_weight="1"
+            android:backgroundTint="#F9ED69"
+            android:text="Submit Request"
+            android:textColor="#6A2C70"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+</LinearLayout>
