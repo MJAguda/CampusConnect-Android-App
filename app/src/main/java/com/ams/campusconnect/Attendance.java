@@ -48,7 +48,7 @@ import com.google.firebase.database.DatabaseError;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Attendance extends AppCompatActivity {
+public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
 
     SaveData save = SaveData.getInstance();
     School school;
@@ -126,22 +126,7 @@ public class Attendance extends AppCompatActivity {
             PopupMenu popup = new PopupMenu(Attendance.this, view);
             MenuInflater inflater = popup.getMenuInflater();
             inflater.inflate(R.menu.hamburger_employee_menu, popup.getMenu());
-            popup.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()){
-                    case R.id.request_timelog_change:{
-                        Toast.makeText(Attendance.this, "Request Time Log Change", Toast.LENGTH_SHORT).show();
-                    }
-                    case R.id.logout:{
-                        Intent intent = new Intent(Attendance.this, LogbookActivity.class);
-                        intent = intent.putExtra("school", school);
-                        startActivity(intent);
-                        return true;
-                    }
-                    default:{
-                        return false;
-                    }
-                }
-            });
+            popup.setOnMenuItemClickListener(Attendance.this);
             popup.show();
         });
 
@@ -756,6 +741,27 @@ public class Attendance extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.request_timelog_change:{
+                Intent intent = new Intent(Attendance.this, TimelogChangeActivity.class);
+                intent = intent.putExtra("school", school);
+                startActivity(intent);
+                return true;
+            }
+            case R.id.logout:{
+                Intent intent = new Intent(Attendance.this, LogbookActivity.class);
+                intent = intent.putExtra("school", school);
+                startActivity(intent);
+                return true;
+            }
+            default:{
+                return false;
+            }
+        }
     }
 
     // Destroy Clock
