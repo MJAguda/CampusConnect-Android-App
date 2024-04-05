@@ -25,27 +25,30 @@
         android:theme="@style/Theme.CampusConnect"
         tools:targetApi="34">
         <activity
-            android:name="com.ams.campusconnect.SchoolLogIn"
+            android:name=".TimelogChangeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SchoolLogIn"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.ams.campusconnect.SystemAdmin"
+            android:name=".SystemAdmin"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.ams.campusconnect.SchoolAdmin"
+            android:name=".SchoolAdmin"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.ams.campusconnect.GenerateTAMS"
+            android:name=".GenerateTAMS"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.ams.campusconnect.qrcode.ScanQR"
+            android:name=".qrcode.ScanQR"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.ams.campusconnect.SplashActivity"
+            android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -55,11 +58,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ams.campusconnect.Generate"
+            android:name=".Generate"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.ams.campusconnect.GenerateDTR"
+            android:name=".GenerateDTR"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
@@ -67,7 +70,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.ams.campusconnect.LogInAttendance"
+            android:name=".LogInAttendance"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
@@ -75,7 +78,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.ams.campusconnect.Attendance"
+            android:name=".Attendance"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
@@ -83,7 +86,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.ams.campusconnect.AdminLogIn"
+            android:name=".AdminLogIn"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
@@ -91,7 +94,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.ams.campusconnect.LogbookActivity"
+            android:name=".LogbookActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
