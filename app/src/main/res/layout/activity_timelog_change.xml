@@ -42,6 +42,14 @@
         android:padding="50px">
         <!--android:background="#F08A5D"-->
 
+        <TextView
+            android:id="@+id/prompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Timelog Change Request"
+            android:textColor="#6A2C70"
+            android:textSize="20sp" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,12 +97,64 @@
                     android:background="#F9ED69"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10px"
+                        android:text="Type of Timelog Issue"
+                        android:textColor="#6A2C70"
+                        android:textSize="20sp" />
+
                     <Spinner
-                        android:id="@+id/typeOfTimeLogIssue_Spinner"
+                        android:id="@+id/typeOfTimelogIssue_Spinner"
                         android:layout_width="match_parent"
                         android:layout_height="30sp"
                         android:layout_margin="10px" />
                 </LinearLayout>
+
+                <TableLayout
+                    android:id="@+id/birthdate_TableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#F9ED69"
+                        android:layout_margin="10px">
+
+                        <Spinner
+                            android:id="@+id/month_Spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="30sp"/>
+
+                        <View
+
+                            android:layout_width="2dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/listDivider" />
+
+                        <Spinner
+                            android:id="@+id/day_Spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="30sp" />
+
+                        <View
+
+                            android:layout_width="2dp"
+                            android:layout_height="match_parent"
+                            android:background="?android:attr/listDivider" />
+
+                        <Spinner
+                            android:id="@+id/year_Spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="30sp" />
+                    </TableRow>
+
+                </TableLayout>
 
                 <TableLayout
                     android:layout_width="match_parent"
@@ -102,8 +162,7 @@
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10px">
+                        android:layout_height="match_parent">
 
                         <Button
                             android:id="@+id/AMIn_Button"
@@ -149,27 +208,65 @@
                             android:textColor="#6A2C70"
                             android:textSize="12sp" />
                     </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/AMIn_TextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10px"
+                            android:layout_weight="0.25"
+                            android:text="AM In"
+                            android:textColor="#6A2C70"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/AMOut_TextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10px"
+                            android:layout_weight="0.25"
+                            android:text="AM Out"
+                            android:textColor="#6A2C70"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/PMIn_TextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10px"
+                            android:layout_weight="0.25"
+                            android:text="PM In"
+                            android:textColor="#6A2C70"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/PMOut_TextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10px"
+                            android:layout_weight="0.25"
+                            android:text="PM Out"
+                            android:textColor="#6A2C70"
+                            android:textSize="12sp" />
+
+
+                    </TableRow>
+
+
+
                 </TableLayout>
 
                 <EditText
-                    android:id="@+id/incorrectTimeLogDate_EditText"
+                    android:id="@+id/correctTimelog_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10px"
                     android:background="@drawable/round_edittext_bg"
-                    android:hint="Incorrect Time Log Date"
-                    android:padding="16dp"
-                    android:textAlignment="center"
-                    android:textColor="#6A2C70"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/correctTimeLogDate_EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10px"
-                    android:background="@drawable/round_edittext_bg"
-                    android:hint="Correct Time Log Date"
+                    android:hint="Correct Timelog"
                     android:padding="16dp"
                     android:textAlignment="center"
                     android:textColor="#6A2C70"
@@ -205,7 +302,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/submitSchool_Button"
+            android:id="@+id/submitTimelogChangeRequest_Button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="10px"
