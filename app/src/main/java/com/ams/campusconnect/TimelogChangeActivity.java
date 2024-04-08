@@ -22,8 +22,6 @@ import com.ams.campusconnect.model.Timelog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class TimelogChangeActivity extends AppCompatActivity {
 
@@ -57,7 +55,7 @@ public class TimelogChangeActivity extends AppCompatActivity {
         initViews();
 
         // Set Requestor ID and Requestor Name
-        setRequstorDetials();
+        setRequestorDetials();
 
         // Set Type of Timelog Issue Spinner
         setTypeOfTimeLogIssueSpinner();
@@ -73,8 +71,8 @@ public class TimelogChangeActivity extends AppCompatActivity {
             monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                    setDaySpinner();
                     monthSpinner.setSelection(position);
-
                     // set timelogs in the textview
                 }
 
@@ -105,6 +103,7 @@ public class TimelogChangeActivity extends AppCompatActivity {
             yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                    setDaySpinner();
                     yearSpinner.setSelection(position);
 
                     // Set timelogs in the textview
@@ -198,7 +197,7 @@ public class TimelogChangeActivity extends AppCompatActivity {
     private void setDaySpinner() {
         // Create an ArrayList for the day
         ArrayList<String> dayList = new ArrayList<>();
-        for (int i = 1; i <= 31; i++) {
+        for (int i = 1; i <= DateUtils.getNumberOfDays((String) monthSpinner.getSelectedItem(), (String) yearSpinner.getSelectedItem().toString()); i++) {
             dayList.add(String.valueOf(i));
         }
 
@@ -238,7 +237,7 @@ public class TimelogChangeActivity extends AppCompatActivity {
         typeOfTimeLogIssue.setAdapter(adapter);
     }
 
-    private void setRequstorDetials() {
+    private void setRequestorDetials() {
         requestorId.setText(employee.getId());
         requestorName.setText(String.format("%s, %s", employee.getLastName(), employee.getFirstName()));
     }

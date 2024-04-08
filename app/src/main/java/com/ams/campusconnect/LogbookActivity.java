@@ -54,6 +54,8 @@ public class LogbookActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_SCAN_QR = 1;
 
+    Spinner monthSpinner, daySpinner, yearSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,51 +91,18 @@ public class LogbookActivity extends AppCompatActivity {
         ImageButton generate = findViewById(R.id.generate_Button);
 
         //Find the spinner in the layout
-        Spinner monthSpinner = findViewById(R.id.month_Spinner);
-        Spinner daySpinner = findViewById(R.id.day_Spinner);
-        Spinner yearSpinner = findViewById(R.id.year_Spinner);
+        monthSpinner = findViewById(R.id.month_Spinner);
+        daySpinner = findViewById(R.id.day_Spinner);
+        yearSpinner = findViewById(R.id.year_Spinner);
 
         // Create an ArrayList for the month
-        ArrayList<String> monthList = new ArrayList<>();
-        monthList.add("January");
-        monthList.add("February");
-        monthList.add("March");
-        monthList.add("April");
-        monthList.add("May");
-        monthList.add("June");
-        monthList.add("July");
-        monthList.add("August");
-        monthList.add("September");
-        monthList.add("October");
-        monthList.add("November");
-        monthList.add("December");
-
-        // Create an ArrayAdapter for the month spinner
-        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, monthList);
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        monthSpinner.setAdapter(monthAdapter);
+        setMonthSpinner();
 
         // Create items for day
-        ArrayList<String> dayList = new ArrayList<>();
-        for (int i = 1; i <= DateUtils.getNumberOfDays((String) monthSpinner.getSelectedItem(), (String) yearSpinner.getSelectedItem()); i++) {
-            dayList.add(String.valueOf(i));
-        }
-
-        // Create an ArrayAdapter for day spinner
-        ArrayAdapter<String> dayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dayList);
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        daySpinner.setAdapter(dayAdapter);
+        setDaySpinner();
 
         // Create an ArrayList for the year
-        ArrayList<String> yearList = new ArrayList<>();
-        for (int i = Calendar.getInstance().get(Calendar.YEAR); i >= Calendar.getInstance().get(Calendar.YEAR) - 100; i--) {
-            yearList.add(String.valueOf(i));
-        }
-
-        // Create an ArrayAdapter for the year spinner
-        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, yearList);
-        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        yearSpinner.setAdapter(yearAdapter);
+        setYearSpinner();
 
 //        Log.d("Month from Spinner : ", monthSpinner.getSelectedItem() + "");
 //        Log.d("Day from Spinner : ", daySpinner.getSelectedItem() + "");
@@ -158,6 +127,7 @@ public class LogbookActivity extends AppCompatActivity {
             monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                    setDaySpinner();
                     monthSpinner.setSelection(position);
 //                    Log.d("MonthSprinner Value : ", (String) monthSpinner.getSelectedItem());
 
@@ -202,6 +172,7 @@ public class LogbookActivity extends AppCompatActivity {
             yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                    setDaySpinner();
                     yearSpinner.setSelection(position);
 
                     progressDialog.setMessage("Fetching time logs...");
@@ -252,6 +223,51 @@ public class LogbookActivity extends AppCompatActivity {
                 startActivity(intent);
             });
         });
+    }
+
+    private void setYearSpinner() {
+        ArrayList<String> yearList = new ArrayList<>();
+        for (int i = Calendar.getInstance().get(Calendar.YEAR); i >= Calendar.getInstance().get(Calendar.YEAR) - 100; i--) {
+            yearList.add(String.valueOf(i));
+        }
+
+        // Create an ArrayAdapter for the year spinner
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, yearList);
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(yearAdapter);
+    }
+
+    private void setDaySpinner() {
+        ArrayList<String> dayList = new ArrayList<>();
+        for (int i = 1; i <= DateUtils.getNumberOfDays((String) monthSpinner.getSelectedItem(), (String) yearSpinner.getSelectedItem()); i++) {
+            dayList.add(String.valueOf(i));
+        }
+
+        // Create an ArrayAdapter for day spinner
+        ArrayAdapter<String> dayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dayList);
+        dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        daySpinner.setAdapter(dayAdapter);
+    }
+
+    private void setMonthSpinner() {
+        ArrayList<String> monthList = new ArrayList<>();
+        monthList.add("January");
+        monthList.add("February");
+        monthList.add("March");
+        monthList.add("April");
+        monthList.add("May");
+        monthList.add("June");
+        monthList.add("July");
+        monthList.add("August");
+        monthList.add("September");
+        monthList.add("October");
+        monthList.add("November");
+        monthList.add("December");
+
+        // Create an ArrayAdapter for the month spinner
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, monthList);
+        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monthSpinner.setAdapter(monthAdapter);
     }
 
 //    private void randomizeAttendance() {
