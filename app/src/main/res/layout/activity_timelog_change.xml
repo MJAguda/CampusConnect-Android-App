@@ -53,7 +53,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:paddingTop="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10px"
+                    android:layout_marginBottom="10px"
                     android:background="#F9ED69"
                     android:orientation="vertical">
 
@@ -115,12 +115,20 @@
                 <TableLayout
                     android:id="@+id/birthdate_TableLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="#F9ED69">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10px"
+                        android:text="Date of Timelog Issue"
+                        android:textColor="#6A2C70"
+                        android:textSize="20sp" />
 
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#F9ED69"
                         android:layout_margin="10px">
 
                         <Spinner
@@ -219,9 +227,10 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10px"
                             android:layout_weight="0.25"
-                            android:text="AM In"
+                            android:text="00:00 AM/PM"
                             android:textColor="#6A2C70"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:gravity="center" />
 
                         <TextView
                             android:id="@+id/AMOut_TextView"
@@ -229,9 +238,10 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10px"
                             android:layout_weight="0.25"
-                            android:text="AM Out"
+                            android:text="00:00 AM/PM"
                             android:textColor="#6A2C70"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:gravity="center" />
 
                         <TextView
                             android:id="@+id/PMIn_TextView"
@@ -239,9 +249,10 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10px"
                             android:layout_weight="0.25"
-                            android:text="PM In"
+                            android:text="00:00 AM/PM"
                             android:textColor="#6A2C70"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:gravity="center" />
 
                         <TextView
                             android:id="@+id/PMOut_TextView"
@@ -249,15 +260,11 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10px"
                             android:layout_weight="0.25"
-                            android:text="PM Out"
+                            android:text="00:00 AM/PM"
                             android:textColor="#6A2C70"
-                            android:textSize="12sp" />
-
-
+                            android:textSize="12sp"
+                            android:gravity="center" />
                     </TableRow>
-
-
-
                 </TableLayout>
 
                 <EditText
