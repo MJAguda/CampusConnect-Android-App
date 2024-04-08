@@ -278,47 +278,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             }
         });
 
-        // Create an ArrayList for the month
-        ArrayList<String> monthList = new ArrayList<>();
-        monthList.add("January");
-        monthList.add("February");
-        monthList.add("March");
-        monthList.add("April");
-        monthList.add("May");
-        monthList.add("June");
-        monthList.add("July");
-        monthList.add("August");
-        monthList.add("September");
-        monthList.add("October");
-        monthList.add("November");
-        monthList.add("December");
-
-        // Create an ArrayAdapter for the month spinner
-        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, monthList);
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        monthSpinner.setAdapter(monthAdapter);
-
-        // Create an ArrayList for the day
-        ArrayList<String> dayList = new ArrayList<>();
-        for (int i = 1; i <= 31; i++) {
-            dayList.add(String.valueOf(i));
-        }
-
-        // Create an ArrayAdapter for the day spinner
-        ArrayAdapter<String> dayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dayList);
-        dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        daySpinner.setAdapter(dayAdapter);
-
-        // Create an ArrayList for the year
-        ArrayList<String> yearList = new ArrayList<>();
-        for (int i = Calendar.getInstance().get(Calendar.YEAR); i >= Calendar.getInstance().get(Calendar.YEAR) - 100; i--) {
-            yearList.add(String.valueOf(i));
-        }
-
-        // Create an ArrayAdapter for the year spinner
-        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, yearList);
-        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        yearSpinner.setAdapter(yearAdapter);
+        setMonthSpinner();
+        setDaySpinner();
+        setYearSpinner();
 
         DateUtils dateUtils = new DateUtils(SchoolAdmin.this);
 
@@ -977,6 +939,54 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                 return false;
             }
         }
+    }
+
+    private void setYearSpinner() {
+        // Create an ArrayList for the year
+        ArrayList<String> yearList = new ArrayList<>();
+        for (int i = Calendar.getInstance().get(Calendar.YEAR); i >= Calendar.getInstance().get(Calendar.YEAR) - 100; i--) {
+            yearList.add(String.valueOf(i));
+        }
+
+        // Create an ArrayAdapter for the year spinner
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, yearList);
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(yearAdapter);
+    }
+
+    private void setDaySpinner() {
+        // Create an ArrayList for the day
+        ArrayList<String> dayList = new ArrayList<>();
+        for (int i = 1; i <= 31; i++) {
+            dayList.add(String.valueOf(i));
+        }
+
+        // Create an ArrayAdapter for the day spinner
+        ArrayAdapter<String> dayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dayList);
+        dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        daySpinner.setAdapter(dayAdapter);
+    }
+
+    private void setMonthSpinner() {
+        // Create an ArrayList for the month
+        ArrayList<String> monthList = new ArrayList<>();
+        monthList.add("January");
+        monthList.add("February");
+        monthList.add("March");
+        monthList.add("April");
+        monthList.add("May");
+        monthList.add("June");
+        monthList.add("July");
+        monthList.add("August");
+        monthList.add("September");
+        monthList.add("October");
+        monthList.add("November");
+        monthList.add("December");
+
+        // Create an ArrayAdapter for the month spinner
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, monthList);
+        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monthSpinner.setAdapter(monthAdapter);
     }
 
     private void unHideAllEmployeeComponents() {
