@@ -2,6 +2,7 @@ package com.ams.campusconnect;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -51,6 +52,7 @@ public class LogbookActivity extends AppCompatActivity {
     DateUtils dateUtils;
     Employee employee = Employee.getInstance();
     ProgressDialog progressDialog;
+    MediaPlayer thankyou;
 
     private static final int REQUEST_CODE_SCAN_QR = 1;
 
@@ -61,7 +63,8 @@ public class LogbookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logbook);
 
-        // TODO : Create and show a ProgressDialog
+        thankyou = MediaPlayer.create(this, R.raw.thankyou);
+
         progressDialog = new ProgressDialog(LogbookActivity.this);
         progressDialog.setMessage("Fetching data...");
         progressDialog.setCancelable(false);
@@ -491,6 +494,8 @@ public class LogbookActivity extends AppCompatActivity {
                             });
 
                         });
+
+                        thankyou.start();
 
                         Intent intent = new Intent(LogbookActivity.this, Attendance.class);
                         intent = intent.putExtra("school", school);
