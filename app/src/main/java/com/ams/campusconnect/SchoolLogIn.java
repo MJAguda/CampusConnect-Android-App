@@ -110,12 +110,6 @@ public class SchoolLogIn extends AppCompatActivity {
                                 schools.add(school);
                             }
                         }
-
-                        // Traverse List of Schools
-                        for (School school : schools) {
-                            Log.d("School", school.getSchoolName());
-                        }
-
                     }
 
                     @Override
