@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.model.Timelog;
+import com.ams.campusconnect.repository.SchoolRepository;
+import com.ams.campusconnect.repository.TimelogRepository;
 import com.ams.campusconnect.service.TimelogService;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,6 +24,10 @@ public class TimelogController{
     // Add TimelogChangeRequest
     public void addTimelogChangeRequest(Timelog timelog, School school) {
         timelogService.addTimelogChangeRequest(timelog, school);
+    }
+
+    public void getTimelogs(int schoolID, String employeeID, String year, String month, String day, final TimelogRepository.OnDataFetchListener listener){
+        timelogService.getTimelogs(schoolID, employeeID, year, month, day, listener);
     }
 
 }
