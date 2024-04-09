@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,10 +18,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ams.campusconnect.controller.TimelogController;
 import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.model.Timelog;
+import com.ams.campusconnect.repository.TimelogRepository;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -28,6 +36,7 @@ public class TimelogChangeActivity extends AppCompatActivity {
     School school;
     Employee employee = Employee.getInstance();
     DateUtils dateUtils;
+    TimelogController timelogController = new TimelogController(this);
 
     // Declare components
     ImageButton back, hamburgerMenu;
@@ -73,7 +82,9 @@ public class TimelogChangeActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                     setDaySpinner();
                     monthSpinner.setSelection(position);
-                    // set timelogs in the textview
+
+                    // Get timelogs based from month, day, and year Spinner
+                    getTimelogs();
                 }
 
                 @Override
@@ -89,7 +100,8 @@ public class TimelogChangeActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                     daySpinner.setSelection(position);
 
-                    // Set timelogs in the textview
+                    // Get timelogs based from month, day, and year Spinner
+                    getTimelogs();
                 }
 
                 @Override
@@ -106,7 +118,8 @@ public class TimelogChangeActivity extends AppCompatActivity {
                     setDaySpinner();
                     yearSpinner.setSelection(position);
 
-                    // Set timelogs in the textview
+                    // Get timelogs based from month, day, and year Spinner
+                    getTimelogs();
                 }
 
                 @Override
@@ -138,6 +151,12 @@ public class TimelogChangeActivity extends AppCompatActivity {
             AMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
             PMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
             PMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+
+            // set the drawable of AMIn_TextView to cell_shape.xml
+            AMIn_TextView.setBackgroundResource(R.drawable.cell_shape);
+            AMOut_TextView.setBackgroundResource(0);
+            PMIn_TextView.setBackgroundResource(0);
+            PMOut_TextView.setBackgroundResource(0);
         });
 
         // AM Out Button onClickListener
@@ -149,6 +168,11 @@ public class TimelogChangeActivity extends AppCompatActivity {
             AMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
             PMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
             PMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+
+            AMIn_TextView.setBackgroundResource(0);
+            AMOut_TextView.setBackgroundResource(R.drawable.cell_shape);
+            PMIn_TextView.setBackgroundResource(0);
+            PMOut_TextView.setBackgroundResource(0);
         });
 
         // PM In Button onClickListener
@@ -160,6 +184,11 @@ public class TimelogChangeActivity extends AppCompatActivity {
             AMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
             PMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
             PMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+
+            AMIn_TextView.setBackgroundResource(0);
+            AMOut_TextView.setBackgroundResource(0);
+            PMIn_TextView.setBackgroundResource(R.drawable.cell_shape);
+            PMOut_TextView.setBackgroundResource(0);
         });
 
         // PM Out Button onClickListener
@@ -171,13 +200,83 @@ public class TimelogChangeActivity extends AppCompatActivity {
             AMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
             PMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
             PMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+
+            AMIn_TextView.setBackgroundResource(0);
+            AMOut_TextView.setBackgroundResource(0);
+            PMIn_TextView.setBackgroundResource(0);
+            PMOut_TextView.setBackgroundResource(R.drawable.cell_shape);
         });
 
         // Submit button onClickListener
         submitButton.setOnClickListener(v -> {
-            // Get all Contents
-            // Set it all contents to timelog object
-            // Call addTimelogChangeRequest method from TimelogController
+//            // Get all Contents
+//            int requestorID_Value = Integer.parseInt(String.valueOf(requestorId.getText()));
+//            int requestorSchoolID_Value = school.getSchoolID();
+//            String typeOfTimeLogIssue_Value = typeOfTimeLogIssue.getSelectedItem().toString();
+//
+//            // Store the year, month, day in MM/dd/yyyy format
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                LocalDate date = LocalDate.of(Integer.parseInt((String) yearSpinner.getSelectedItem()), monthSpinner.getSelectedItemPosition() + 1, Integer.parseInt((String) daySpinner.getSelectedItem()));
+//            }
+//
+//            // timeLogSession
+//
+//            // Store the correctTimelog in HH:mm a format
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                LocalTime correctTimelog = LocalTime.parse(correctTimelogDate.getText());
+//            }
+//
+//            String reasonForChange_Value = reasonForChange.getText().toString();
+//
+//            // Error Detector for each components
+//            if (requestorId.getText().toString().isEmpty()) {
+//                Toast.makeText(this, "Requestor ID is empty", Toast.LENGTH_SHORT).show();
+//            } else if (requestorName.getText().toString().isEmpty()) {
+//                Toast.makeText(this, "Requestor Name is empty", Toast.LENGTH_SHORT).show();
+//            } else if (typeOfTimeLogIssue.getSelectedItem().toString().isEmpty()) {
+//                Toast.makeText(this, "Type of Time Log Issue is empty", Toast.LENGTH_SHORT).show();
+//            } else if (correctTimelogDate.getText().toString().isEmpty()) {
+//                Toast.makeText(this, "Correct Timelog is empty", Toast.LENGTH_SHORT).show();
+//            } else if (reasonForChange.getText().toString().isEmpty()) {
+//                Toast.makeText(this, "Reason for Change is empty", Toast.LENGTH_SHORT).show();
+//            } else {
+                // Set all contents to timelog object
+
+
+                // Call addTimelogChangeRequest method from TimelogController
+//            }
+
+        });
+    }
+
+    private void getTimelogs() {
+        timelogController.getTimelogs(school.getSchoolID(), employee.getId(), yearSpinner.getSelectedItem().toString(), monthSpinner.getSelectedItem().toString(), daySpinner.getSelectedItem().toString(), new TimelogRepository.OnDataFetchListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                // Set timelogs in the textview
+                if(!dataSnapshot.exists()){
+                    Log.d("Error", "Timelogs not found");
+                    Toast.makeText(getApplicationContext(), "Timelogs not found", Toast.LENGTH_SHORT).show();
+                    AMIn_TextView.setText("N/A");
+                    AMOut_TextView.setText("N/A");
+                    PMIn_TextView.setText("N/A");
+                    PMOut_TextView.setText("N/A");
+                }
+                else{
+                    // if getValue.toString is null then set it to N/A
+                    AMIn_TextView.setText(dataSnapshot.child("timeAM_In").getValue().toString().isEmpty() ? "N/A" : dataSnapshot.child("timeAM_In").getValue().toString());
+                    AMOut_TextView.setText(dataSnapshot.child("timeAM_Out").getValue().toString().isEmpty() ? "N/A" : dataSnapshot.child("timeAM_Out").getValue().toString());
+                    PMIn_TextView.setText(dataSnapshot.child("timePM_In").getValue().toString().isEmpty() ? "N/A" : dataSnapshot.child("timePM_In").getValue().toString());
+                    PMOut_TextView.setText(dataSnapshot.child("timePM_Out").getValue().toString().isEmpty() ? "N/A" : dataSnapshot.child("timePM_Out").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(DatabaseError databaseError) {
+                Log.d("TimelogChangeActivity", "onFailure: " + databaseError.getMessage());
+                Toast.makeText(TimelogChangeActivity.this, "Failed to get timelogs" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
         });
     }
 
@@ -197,7 +296,7 @@ public class TimelogChangeActivity extends AppCompatActivity {
     private void setDaySpinner() {
         // Create an ArrayList for the day
         ArrayList<String> dayList = new ArrayList<>();
-        for (int i = 1; i <= DateUtils.getNumberOfDays((String) monthSpinner.getSelectedItem(), (String) yearSpinner.getSelectedItem().toString()); i++) {
+        for (int i = 1; i <= DateUtils.getNumberOfDays((String) monthSpinner.getSelectedItem(), (String) yearSpinner.getSelectedItem()); i++) {
             dayList.add(String.valueOf(i));
         }
 
@@ -230,7 +329,7 @@ public class TimelogChangeActivity extends AppCompatActivity {
     }
 
     private void setTypeOfTimeLogIssueSpinner() {
-        String[] timelogIssueType = {"Forgot to Click In", "Forgot to Click Out", "Overbreak", "Off Campus", "Incorrect Time Entry", "Misplaced or Lost Credentials"};
+        String[] timelogIssueType = {"Forgot to Clock In", "Forgot to Clock Out", "Overbreak", "Off Campus Activity", "Incorrect Time Entry", "Misplaced or Lost Credentials"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, timelogIssueType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
