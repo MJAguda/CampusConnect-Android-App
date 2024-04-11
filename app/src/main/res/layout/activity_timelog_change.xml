@@ -267,17 +267,20 @@
                     </TableRow>
                 </TableLayout>
 
-                <EditText
-                    android:id="@+id/correctTimelog_EditText"
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10px"
-                    android:background="@drawable/round_edittext_bg"
-                    android:hint="Correct Timelog"
-                    android:padding="16dp"
-                    android:textAlignment="center"
+                    android:text="Correct Timelog"
                     android:textColor="#6A2C70"
                     android:textSize="20sp" />
+
+                <TimePicker
+                    android:id="@+id/correctTimelog_TimePicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:timePickerMode="spinner" />
 
                 <EditText
                     android:id="@+id/reasonForChange_EditText"
