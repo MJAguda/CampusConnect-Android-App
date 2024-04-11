@@ -11,6 +11,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DateUtils {
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
+    private int seconds;
+    private int milliSeconds;
+    private String dateTime;
+    private String date;
+    private String time;
+    private String timeZone;
+    private String dayOfWeek;
+    private boolean dstActive;
 
     private static final String URL_TIME_API = "https://timeapi.io/api/Time/current/coordinate";
     private static final String LATITUDE = "18";
@@ -26,6 +39,27 @@ public class DateUtils {
         this.activity = activity;
 
         requestQueue = Volley.newRequestQueue(activity);
+    }
+
+    // extract each field from the JSONObject and store it in the class fields
+    public void parseDateTime(JSONObject jsonObject) {
+        try {
+            year = jsonObject.getInt("year");
+            month = jsonObject.getInt("month");
+            day = jsonObject.getInt("day");
+            hour = jsonObject.getInt("hour");
+            minute = jsonObject.getInt("minute");
+            seconds = jsonObject.getInt("seconds");
+            milliSeconds = jsonObject.getInt("milliseconds");
+            dateTime = jsonObject.getString("dateTime");
+            date = jsonObject.getString("date");
+            time = jsonObject.getString("time");
+            timeZone = jsonObject.getString("timeZone");
+            dayOfWeek = jsonObject.getString("dayOfWeek");
+            dstActive = jsonObject.getBoolean("dstActive");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getDateTime(VolleyCallBack volleyCallBack) {
