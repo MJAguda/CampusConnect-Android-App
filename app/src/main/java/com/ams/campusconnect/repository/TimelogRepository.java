@@ -26,8 +26,7 @@ public class TimelogRepository {
 
     // Add Timelog to the database
     public void addTimelogChangeRequest(Timelog timelog, School school){
-        databaseReference = FirebaseDatabase.getInstance().getReference().child( school.getSchoolID() + "/timelogChangeRequest/");
-        // Add the timelog to the database
+        databaseReference = FirebaseDatabase.getInstance().getReference().child( school.getSchoolID() + "/timelogChangeRequest/" + timelog.getRequestID());       // Add the timelog to the database
         databaseReference.setValue(timelog);
     }
 
