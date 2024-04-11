@@ -1,7 +1,5 @@
 package com.ams.campusconnect;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -16,7 +14,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.ams.campusconnect.controller.TimelogController;
 import com.ams.campusconnect.model.Employee;
@@ -28,6 +30,8 @@ import com.google.firebase.database.DatabaseError;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -41,16 +45,17 @@ public class TimelogChangeActivity extends AppCompatActivity {
     // Declare components
     ImageButton back, hamburgerMenu;
     TextView AMIn_TextView, AMOut_TextView, PMIn_TextView, PMOut_TextView;
-    EditText requestorId, requestorName, correctTimelogDate, reasonForChange;
+    TimePicker correctTimelogDate;
+    EditText requestorId, requestorName, reasonForChange;
     Spinner typeOfTimeLogIssue, monthSpinner, daySpinner, yearSpinner;
     Button AMInButton, AMOutButton, PMInButton, PMOutButton, submitButton;
-    TextView AMIn, AMOut, PMIn, PMOut;
 
     String timelogSession;
 
     Timelog timelog = new Timelog();
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,41 +215,53 @@ public class TimelogChangeActivity extends AppCompatActivity {
         // Submit button onClickListener
         submitButton.setOnClickListener(v -> {
 //            // Get all Contents
-//            int requestorID_Value = Integer.parseInt(String.valueOf(requestorId.getText()));
-//            int requestorSchoolID_Value = school.getSchoolID();
-//            String typeOfTimeLogIssue_Value = typeOfTimeLogIssue.getSelectedItem().toString();
-//
-//            // Store the year, month, day in MM/dd/yyyy format
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                LocalDate date = LocalDate.of(Integer.parseInt((String) yearSpinner.getSelectedItem()), monthSpinner.getSelectedItemPosition() + 1, Integer.parseInt((String) daySpinner.getSelectedItem()));
-//            }
-//
-//            // timeLogSession
-//
-//            // Store the correctTimelog in HH:mm a format
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                LocalTime correctTimelog = LocalTime.parse(correctTimelogDate.getText());
-//            }
-//
-//            String reasonForChange_Value = reasonForChange.getText().toString();
-//
-//            // Error Detector for each components
-//            if (requestorId.getText().toString().isEmpty()) {
-//                Toast.makeText(this, "Requestor ID is empty", Toast.LENGTH_SHORT).show();
-//            } else if (requestorName.getText().toString().isEmpty()) {
-//                Toast.makeText(this, "Requestor Name is empty", Toast.LENGTH_SHORT).show();
-//            } else if (typeOfTimeLogIssue.getSelectedItem().toString().isEmpty()) {
-//                Toast.makeText(this, "Type of Time Log Issue is empty", Toast.LENGTH_SHORT).show();
-//            } else if (correctTimelogDate.getText().toString().isEmpty()) {
-//                Toast.makeText(this, "Correct Timelog is empty", Toast.LENGTH_SHORT).show();
-//            } else if (reasonForChange.getText().toString().isEmpty()) {
-//                Toast.makeText(this, "Reason for Change is empty", Toast.LENGTH_SHORT).show();
-//            } else {
+            String requestorID_Value = String.valueOf(requestorId.getText());
+            int requestorSchoolID_Value = school.getSchoolID();
+            String typeOfTimeLogIssue_Value = typeOfTimeLogIssue.getSelectedItem().toString();
+
+            String month_Value = monthSpinner.getSelectedItem().toString();
+            String day_Value = daySpinner.getSelectedItem().toString();
+            String year_Value = yearSpinner.getSelectedItem().toString();
+
+            // timeLogSession
+            int correctTimelogDate_Hour = correctTimelogDate.getHour();
+            int correctTimelogDate_Minute = correctTimelogDate.getMinute();
+
+            String reasonForChange_Value = reasonForChange.getText().toString();
+
+            LocalTime correctTimeLog_LocalTime = LocalTime.of(correctTimelogDate_Hour, correctTimelogDate_Minute);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
+            String timeString = correctTimeLog_LocalTime.format(formatter);
+
+            // Error Detector for each components
+            // Check if the following are empty or null requestorID_Value, requestorSchoolID_Value, typeOfTimeLogIssue_Value, month_Value, day_Value, year_Value, timelogSession, timeString, reasonForChange_Value
+            if (requestorID_Value == null || requestorID_Value.isEmpty() ||
+                    typeOfTimeLogIssue_Value == null || typeOfTimeLogIssue_Value.isEmpty() ||
+                    month_Value == null || month_Value.isEmpty() ||
+                    day_Value == null || day_Value.isEmpty() ||
+                    year_Value == null || year_Value.isEmpty() ||
+                    timelogSession == null || timelogSession.isEmpty() ||
+                    timeString == null || timeString.isEmpty() ||
+                    reasonForChange_Value == null || reasonForChange_Value.isEmpty()) {
+                Toast.makeText(this, "Please fill up all the fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(AMIn_TextView.getText().toString().equals("N/A") && timelogSession.equals("timeAM_In")){
+                Toast.makeText(this, "Please select date and timelog", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+                String requestID = requestorID_Value + "_" + year + "_" + month + "_" + day + "_" + currentTimeIn12Hours;
                 // Set all contents to timelog object
+                Timelog timelog = new Timelog(requestID, requestorID_Value, requestorSchoolID_Value, typeOfTimeLogIssue_Value, month_Value, day_Value, year_Value, timelogSession, timeString, reasonForChange_Value);
+            });
 
+            // Log timelog
+            Log.d("Timelog", timelog.toString());
 
-                // Call addTimelogChangeRequest method from TimelogController
-//            }
+            // Call addTimelogChangeRequest method from TimelogController
+            timelogController.addTimelogChangeRequest(timelog, school);
 
         });
     }
@@ -254,15 +271,14 @@ public class TimelogChangeActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 // Set timelogs in the textview
-                if(!dataSnapshot.exists()){
+                if (!dataSnapshot.exists()) {
                     Log.d("Error", "Timelogs not found");
                     Toast.makeText(getApplicationContext(), "Timelogs not found", Toast.LENGTH_SHORT).show();
                     AMIn_TextView.setText("N/A");
                     AMOut_TextView.setText("N/A");
                     PMIn_TextView.setText("N/A");
                     PMOut_TextView.setText("N/A");
-                }
-                else{
+                } else {
                     // if getValue.toString is null then set it to N/A
                     AMIn_TextView.setText(dataSnapshot.child("timeAM_In").getValue().toString().isEmpty() ? "N/A" : dataSnapshot.child("timeAM_In").getValue().toString());
                     AMOut_TextView.setText(dataSnapshot.child("timeAM_Out").getValue().toString().isEmpty() ? "N/A" : dataSnapshot.child("timeAM_Out").getValue().toString());
@@ -358,7 +374,7 @@ public class TimelogChangeActivity extends AppCompatActivity {
         AMOut_TextView = findViewById(R.id.AMOut_TextView);
         PMIn_TextView = findViewById(R.id.PMIn_TextView);
         PMOut_TextView = findViewById(R.id.PMOut_TextView);
-        correctTimelogDate = findViewById(R.id.correctTimelog_EditText);
+        correctTimelogDate = findViewById(R.id.correctTimelog_TimePicker);
         reasonForChange = findViewById(R.id.reasonForChange_EditText);
         submitButton = findViewById(R.id.submitTimelogChangeRequest_Button);
     }
