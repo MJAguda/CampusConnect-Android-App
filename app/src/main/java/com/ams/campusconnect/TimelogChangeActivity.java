@@ -52,7 +52,7 @@ public class TimelogChangeActivity extends AppCompatActivity {
 
     String timelogSession;
 
-    Timelog timelog = new Timelog();
+    Timelog timelog;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -254,15 +254,14 @@ public class TimelogChangeActivity extends AppCompatActivity {
             dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
                 String requestID = requestorID_Value + "_" + year + "_" + month + "_" + day + "_" + currentTimeIn12Hours;
                 // Set all contents to timelog object
-                Timelog timelog = new Timelog(requestID, requestorID_Value, requestorSchoolID_Value, typeOfTimeLogIssue_Value, month_Value, day_Value, year_Value, timelogSession, timeString, reasonForChange_Value);
+                timelog = new Timelog(requestID, requestorID_Value, requestorSchoolID_Value, typeOfTimeLogIssue_Value, month_Value, day_Value, year_Value, timelogSession, timeString, reasonForChange_Value);
+
+                // Log timelog
+                Log.d("Timelog", timelog.toString());
+
+                // Call addTimelogChangeRequest method from TimelogController
+                timelogController.addTimelogChangeRequest(timelog, school);
             });
-
-            // Log timelog
-            Log.d("Timelog", timelog.toString());
-
-            // Call addTimelogChangeRequest method from TimelogController
-            timelogController.addTimelogChangeRequest(timelog, school);
-
         });
     }
 
