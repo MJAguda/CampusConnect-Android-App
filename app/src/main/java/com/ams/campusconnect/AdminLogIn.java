@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ams.campusconnect.controller.EmployeeController;
+import com.ams.campusconnect.model.EmployeeModel;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
 
@@ -17,7 +19,6 @@ public class AdminLogIn extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
     School school;
-
     ProgressDialog progressDialog;
 
     @Override
@@ -45,6 +46,28 @@ public class AdminLogIn extends AppCompatActivity {
             progressDialog.setTitle("Logging In...");
             progressDialog.setCancelable(false);
             progressDialog.show();
+
+            // Error detection
+            // if admin username and password is empty
+            if (adminUsername.getText().toString().isEmpty() || adminPassword.getText().toString().isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                return;
+            }
+
+            // if admin username and password is not equal to the saved admin username and password
+            if (!adminUsername.getText().toString().equals(save.getAdminUsername()) && !adminPassword.getText().toString().equals(save.getAdminPassword())) {
+                Toast.makeText(getApplicationContext(), "Wrong Username or Password", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                return;
+            }
+
+            // if admin username and password is not equal to the school admin username and password
+            if (!adminUsername.getText().toString().equals(school.getAdminUsername()) && !adminPassword.getText().toString().equals(school.getAdminPassword())) {
+                Toast.makeText(getApplicationContext(), "Wrong Username or Password", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                return;
+            }
 
             // Check if admin account is school level or higher admin
             if (adminUsername.getText().toString().equals(save.getAdminUsername()) && adminPassword.getText().toString().equals(save.getAdminPassword())) {
