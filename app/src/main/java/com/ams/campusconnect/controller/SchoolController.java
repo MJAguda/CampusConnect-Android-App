@@ -1,23 +1,9 @@
 package com.ams.campusconnect.controller;
 
 import android.content.Context;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.ams.campusconnect.SchoolAdmin;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.repository.SchoolRepository;
-import com.ams.campusconnect.service.SchoolService;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class SchoolController {
     private SchoolRepository schoolRepository;
