@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ams.campusconnect.controller.TimelogController;
 import com.ams.campusconnect.model.Employee;
+import com.ams.campusconnect.model.EmployeeModel;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.model.Timelog;
 import com.ams.campusconnect.repository.TimelogRepository;
@@ -38,7 +39,7 @@ import java.util.Locale;
 public class TimelogChangeActivity extends AppCompatActivity{
 
     School school;
-    Employee employee = Employee.getInstance();
+    EmployeeModel employeeModel;
     DateUtils dateUtils;
     TimelogController timelogController = new TimelogController(this);
 
@@ -64,6 +65,7 @@ public class TimelogChangeActivity extends AppCompatActivity{
         setContentView(R.layout.activity_timelog_change);
 
         school = (School) getIntent().getSerializableExtra("school");
+        employeeModel = (EmployeeModel) getIntent().getSerializableExtra("employee");
 
         dateUtils = new DateUtils(TimelogChangeActivity.this);
 
@@ -212,6 +214,7 @@ public class TimelogChangeActivity extends AppCompatActivity{
     private void changeScreen(Class<?> toClass) {
         Intent intent = new Intent(TimelogChangeActivity.this, toClass);
         intent = intent.putExtra("school", school);
+        intent = intent.putExtra("employee", employeeModel);
         startActivity(intent);
     }
 
@@ -281,7 +284,7 @@ public class TimelogChangeActivity extends AppCompatActivity{
     }
 
     private void getTimelogs() {
-        timelogController.getTimelogs(school.getSchoolID(), employee.getId(), yearSpinner.getSelectedItem().toString(), monthSpinner.getSelectedItem().toString(), daySpinner.getSelectedItem().toString(), new TimelogRepository.OnDataFetchListener() {
+        timelogController.getTimelogs(school.getSchoolID(), employeeModel.getId(), yearSpinner.getSelectedItem().toString(), monthSpinner.getSelectedItem().toString(), daySpinner.getSelectedItem().toString(), new TimelogRepository.OnDataFetchListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 try {
@@ -366,8 +369,8 @@ public class TimelogChangeActivity extends AppCompatActivity{
     }
 
     private void setRequestorDetials() {
-        requestorId.setText(employee.getId());
-        requestorName.setText(String.format("%s, %s", employee.getLastName(), employee.getFirstName()));
+        requestorId.setText(employeeModel.getId());
+        requestorName.setText(String.format("%s, %s", employeeModel.getLastName(), employeeModel.getFirstName()));
     }
 
     private void initViews() {

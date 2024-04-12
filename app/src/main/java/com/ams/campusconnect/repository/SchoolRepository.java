@@ -34,7 +34,7 @@ public class SchoolRepository {
     }
 
     // Read School from the database
-    public void getSchoolData(int schoolID, final SchoolRepository.OnDataFetchListener listener){
+    public void getSchool(int schoolID, final SchoolRepository.OnDataFetchListener listener){
         databaseReference.child(String.valueOf(schoolID)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

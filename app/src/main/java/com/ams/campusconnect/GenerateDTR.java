@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ams.campusconnect.model.Employee;
+import com.ams.campusconnect.model.EmployeeModel;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
 
@@ -21,7 +22,7 @@ import java.util.Calendar;
 public class GenerateDTR extends AppCompatActivity {
 
     SaveData save = SaveData.getInstance();
-    Employee employee = Employee.getInstance();
+    EmployeeModel employeeModel;
     School school;
 
     //private static final String TAG
@@ -33,6 +34,7 @@ public class GenerateDTR extends AppCompatActivity {
 
         // Get School Data
         school = (School) getIntent().getSerializableExtra("school");
+        employeeModel = (EmployeeModel) getIntent().getSerializableExtra("employee");
 
         // Find button in the Layout
         ImageButton back = findViewById(R.id.backButton_ImageButton);
@@ -86,7 +88,7 @@ public class GenerateDTR extends AppCompatActivity {
             startActivity(intent);
         });
 
-        DTR dtr = new DTR(school);
+        DTR dtr = new DTR(school, employeeModel);
 
         // Generate DTR
         generate.setOnClickListener(view -> {
@@ -102,7 +104,7 @@ public class GenerateDTR extends AppCompatActivity {
 
 
 
-            dtr.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, GenerateDTR.this);
+            dtr.generateDTR(employeeModel.getId(), month, day, year, name, date, schoolHead, table, GenerateDTR.this);
         });
 
         download.setOnClickListener(view -> dtr.downloadDTR(findViewById(R.id.dtr_LinearLayout), GenerateDTR.this));

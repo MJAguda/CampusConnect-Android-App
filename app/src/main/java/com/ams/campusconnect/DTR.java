@@ -17,7 +17,7 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 
 import com.ams.campusconnect.firebase.Read;
-import com.ams.campusconnect.model.Employee;
+import com.ams.campusconnect.model.EmployeeModel;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DTR {
-    static Employee employee = Employee.getInstance();
+    EmployeeModel employeeModel;
     static SaveData save = SaveData.getInstance();
 
     static Read read = new Read();
@@ -47,8 +47,9 @@ public class DTR {
     public DTR() {
     }
 
-    public DTR(School school) {
+    public DTR(School school, EmployeeModel employeeModel) {
         this.school = school;
+        this.employeeModel = employeeModel;
     }
 
 
@@ -121,19 +122,18 @@ public class DTR {
     private String generateFileName() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy_HHmmss", Locale.getDefault());
         String currentDateAndTime = sdf.format(new Date());
-        return "DTR_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + save.getMonth() + ", " + save.getYear() + "_" + currentDateAndTime + ".pdf";
-//        return "QRCode_" + school.getSchoolID() + "_" + employee.getId() + "_" + employee.getFullName() + "_" + currentDateAndTime + ".png";
+        return "DTR_" + school.getSchoolID() + "_" + employeeModel.getId() + "_" + employeeModel.getLastName() + ", " + employeeModel.getFirstName() + "_" + save.getMonth() + ", " + save.getYear() + "_" + currentDateAndTime + ".pdf";
     }
 
 
     public void generateDTR(String id, String month, int day, String year, TextView name, TextView date, TextView schoolHead, TableLayout table, Context context, GenerateDTRCallback callback) {
-        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
+        read.readRecord(school.getSchoolID() + "/employee/" + id, new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 name.setText(dataSnapshot.child("fullname").getValue().toString());
                 date.setText(String.format("%s %s", month, year));
 
-                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
+                read.readRecord(school.getSchoolID() + "/employee/" + employeeModel.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
 
@@ -218,13 +218,19 @@ public class DTR {
     }
 
     public void generateDTR(String id, String month, int day, String year, TextView name, TextView date, TextView schoolHead, TableLayout table, Context context) {
-        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
+
+
+        read.readRecord(school.getSchoolID() + "/employee/" + id, new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
-                name.setText(dataSnapshot.child("fullname").getValue().toString());
+
+                String firstName = dataSnapshot.child("firstName").getValue().toString();
+                String lastName = dataSnapshot.child("lastName").getValue().toString();
+
+                name.setText(lastName + ", " + firstName);
                 date.setText(String.format("%s %s", month, year));
 
-                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
+                read.readRecord(school.getSchoolID() + "/employee/" + employeeModel.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
 

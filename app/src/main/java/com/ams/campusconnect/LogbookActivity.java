@@ -20,14 +20,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.ams.campusconnect.controller.EmployeeController;
 import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Delete;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.firebase.Update;
 import com.ams.campusconnect.model.Employee;
+import com.ams.campusconnect.model.EmployeeModel;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.qrcode.ScanQR;
+import com.ams.campusconnect.repository.EmployeeRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -41,7 +44,6 @@ import java.util.TimerTask;
 public class LogbookActivity extends AppCompatActivity {
     School school;
     SchoolController schoolController = new SchoolController(this);
-
     Create create = new Create();
     Read read = new Read();
     Update update = new Update();
@@ -51,6 +53,8 @@ public class LogbookActivity extends AppCompatActivity {
     TableLayout table;
     DateUtils dateUtils;
     Employee employee = Employee.getInstance();
+    EmployeeModel employeeModel;
+    EmployeeController employeeController;
     ProgressDialog progressDialog;
     MediaPlayer thankyou;
 
@@ -72,6 +76,7 @@ public class LogbookActivity extends AppCompatActivity {
 
         // Get the school from the previous activity
         school = (School) getIntent().getSerializableExtra("school");
+        employeeModel = (EmployeeModel) getIntent().getSerializableExtra("employee");
 
 //        randomizeAttendance();
 
@@ -211,6 +216,7 @@ public class LogbookActivity extends AppCompatActivity {
             attendance.setOnClickListener(view -> {
                 Intent intent = new Intent(LogbookActivity.this, ScanQR.class);
                 intent = intent.putExtra("school", school);
+                intent = intent.putExtra("employee", employeeModel);
                 startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
             });
 
@@ -422,93 +428,145 @@ public class LogbookActivity extends AppCompatActivity {
             // Print Toast message
 //            Toast.makeText(this, qrResult, Toast.LENGTH_SHORT).show();
 
+             employeeController = new EmployeeController(this, school);
+
             // Verify if employee id exists
-            read.readRecord(school.getSchoolID() + "/employee/" + qrResult, new Read.OnGetDataListener() {
+            employeeController.getEmployee(school, qrResult, new EmployeeRepository.OnDataFetchListener() {
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     if (!dataSnapshot.exists()) {
                         Toast.makeText(getApplicationContext(), "ID Not Found", Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                    else {
 
-                        // Get employee fields from firebase realtime database
-                        String id = dataSnapshot.child("id").getValue().toString();
-                        String fullName = dataSnapshot.child("fullname").getValue().toString();
+                    // Get employee fields from firebase realtime database
+                    employeeModel = dataSnapshot.getValue(EmployeeModel.class);
 
-                        // Split fullName into firstName and lastName parts
-                        String[] nameParts = fullName.split(", ");
-                        String lastName = nameParts[0];
-                        String firstName = nameParts[1];
-
-                        String birthday = dataSnapshot.child("birthdate").getValue().toString();
-                        double latitude = dataSnapshot.child("latitude").getValue(Double.class);
-                        double longitude = dataSnapshot.child("longitude").getValue(Double.class);
-
-                        // Set Employee model
-                        employee.setId(id);
-                        employee.setFirstName(firstName);
-                        employee.setLastName(lastName);
-                        employee.setFullName(fullName);
-                        employee.setBirthday(birthday);
-                        employee.setLatitude(latitude);
-                        employee.setLongitude(longitude);
-
-                        try {
-                            // Set Employee model
-                            employee.setId(id);
-                            employee.setFirstName(firstName);
-                            employee.setLastName(lastName);
-                            employee.setFullName(fullName);
-                            employee.setBirthday(birthday);
-                            employee.setLatitude(latitude);
-                            employee.setLongitude(longitude);
-                        } catch (NullPointerException e) {
-                            // Handle the case where any of the fields is null
-                            // For example, you can show an error message or log the issue
-                            // You can also throw a different exception or take other appropriate actions based on your requirements
-                            // Here's an example of logging the issue:
-                             Toast.makeText(getApplicationContext(), "Error: " + "Employee Field is missing. Contact your administrator", Toast.LENGTH_SHORT).show();
-                        }
-
-
-                        dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
-                            read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month), new Read.OnGetDataListener() {
-                                @Override
-                                public void onSuccess(DataSnapshot dataSnapshot) {
-                                    if (!dataSnapshot.exists()) {
-                                        for (int i = 1; i <= DateUtils.getNumberOfDays(DateUtils.getMonthName(month), year); i++) {
-                                            if (!dataSnapshot.hasChild(String.valueOf(i))) {
-                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_In", "");
-                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_Out", "");
-                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_In", "");
-                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_Out", "");
-                                            }
+                    dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+                        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month), new Read.OnGetDataListener() {
+                            @Override
+                            public void onSuccess(DataSnapshot dataSnapshot) {
+                                if (!dataSnapshot.exists()) {
+                                    for (int i = 1; i <= DateUtils.getNumberOfDays(DateUtils.getMonthName(month), year); i++) {
+                                        if (!dataSnapshot.hasChild(String.valueOf(i))) {
+                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_In", "");
+                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_Out", "");
+                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_In", "");
+                                            create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_Out", "");
                                         }
                                     }
                                 }
+                            }
 
-                                @Override
-                                public void onFailure(DatabaseError databaseError) {
-                                    // Handle Error Here
-                                }
-                            });
-
+                            @Override
+                            public void onFailure(DatabaseError databaseError) {
+                                // Handle Error Here
+                            }
                         });
 
-                        thankyou.start();
+                    });
 
-                        Intent intent = new Intent(LogbookActivity.this, Attendance.class);
-                        intent = intent.putExtra("school", school);
-                        startActivity(intent);
+                    thankyou.start();
 
-                    }
+                    Intent intent = new Intent(LogbookActivity.this, Attendance.class);
+                    intent = intent.putExtra("school", school);
+                    intent = intent.putExtra("employee", employeeModel);
+                    startActivity(intent);
                 }
 
                 @Override
                 public void onFailure(DatabaseError databaseError) {
                     // handle error here
+                    Log.d("EmployeeController", "Error: " + databaseError.getMessage());
                 }
             });
+
+//            read.readRecord(school.getSchoolID() + "/employee/" + qrResult, new Read.OnGetDataListener() {
+//                @Override
+//                public void onSuccess(DataSnapshot dataSnapshot) {
+//                    if (!dataSnapshot.exists()) {
+//                        Toast.makeText(getApplicationContext(), "ID Not Found", Toast.LENGTH_SHORT).show();
+//                    }
+//                    else {
+//
+//                        // Get employee fields from firebase realtime database
+//                        String id = dataSnapshot.child("id").getValue().toString();
+//                        String fullName = dataSnapshot.child("fullname").getValue().toString();
+//
+//                        // Split fullName into firstName and lastName parts
+//                        String[] nameParts = fullName.split(", ");
+//                        String lastName = nameParts[0];
+//                        String firstName = nameParts[1];
+//
+//                        String birthday = dataSnapshot.child("birthdate").getValue().toString();
+//                        double latitude = dataSnapshot.child("latitude").getValue(Double.class);
+//                        double longitude = dataSnapshot.child("longitude").getValue(Double.class);
+//
+//                        // Set Employee model
+//                        employee.setId(id);
+//                        employee.setFirstName(firstName);
+//                        employee.setLastName(lastName);
+//                        employee.setFullName(fullName);
+//                        employee.setBirthday(birthday);
+//                        employee.setLatitude(latitude);
+//                        employee.setLongitude(longitude);
+//
+//                        try {
+//                            // Set Employee model
+//                            employee.setId(id);
+//                            employee.setFirstName(firstName);
+//                            employee.setLastName(lastName);
+//                            employee.setFullName(fullName);
+//                            employee.setBirthday(birthday);
+//                            employee.setLatitude(latitude);
+//                            employee.setLongitude(longitude);
+//                        } catch (NullPointerException e) {
+//                            // Handle the case where any of the fields is null
+//                            // For example, you can show an error message or log the issue
+//                            // You can also throw a different exception or take other appropriate actions based on your requirements
+//                            // Here's an example of logging the issue:
+//                             Toast.makeText(getApplicationContext(), "Error: " + "Employee Field is missing. Contact your administrator", Toast.LENGTH_SHORT).show();
+//                        }
+//
+//
+//                        dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+//                            read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month), new Read.OnGetDataListener() {
+//                                @Override
+//                                public void onSuccess(DataSnapshot dataSnapshot) {
+//                                    if (!dataSnapshot.exists()) {
+//                                        for (int i = 1; i <= DateUtils.getNumberOfDays(DateUtils.getMonthName(month), year); i++) {
+//                                            if (!dataSnapshot.hasChild(String.valueOf(i))) {
+//                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_In", "");
+//                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timeAM_Out", "");
+//                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_In", "");
+//                                                create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + DateUtils.getMonthName(month) + "/" + i + "/timePM_Out", "");
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onFailure(DatabaseError databaseError) {
+//                                    // Handle Error Here
+//                                }
+//                            });
+//
+//                        });
+//
+//                        thankyou.start();
+//
+//                        Intent intent = new Intent(LogbookActivity.this, Attendance.class);
+//                        intent = intent.putExtra("school", school);
+//                        startActivity(intent);
+//
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(DatabaseError databaseError) {
+//                    // handle error here
+//                }
+//            });
         }
     }
 }

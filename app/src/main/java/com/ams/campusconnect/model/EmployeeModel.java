@@ -2,11 +2,12 @@ package com.ams.campusconnect.model;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class EmployeeModel {
-    private int id;
+public class EmployeeModel implements Serializable {
+    private String id;
     private String firstName;
     private String lastName;
     private String month;
@@ -19,7 +20,7 @@ public class EmployeeModel {
     public EmployeeModel(){}
 
     // Constructor that accepts all field
-    public EmployeeModel(int id, String firstName, String lastName, String month, int day, int year, double latitude, double longitude){
+    public EmployeeModel(String id, String firstName, String lastName, String month, int day, int year, double latitude, double longitude){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,7 +32,7 @@ public class EmployeeModel {
     }
 
     // Getters
-    public int getId() { return id; }
+    public String getId() { return id; }
     public String getLastName() { return lastName; }
     public String getMonth() { return month; }
     public int getDay() { return day; }
@@ -41,7 +42,7 @@ public class EmployeeModel {
     public String getFirstName() { return firstName; }
 
     // Setters
-    public void setId(int id) { this.id = id; }
+    public void setId(String id) { this.id = id; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
     public void setMonth(String month) { this.month = month; }

@@ -18,8 +18,8 @@ public class SchoolController {
         schoolRepository.addSchool(school);
     }
 
-    public void getSchoolData(int schoolID, final SchoolRepository.OnDataFetchListener listener){
-        schoolRepository.getSchoolData(schoolID, listener);
+    public void getSchool(int schoolID, final SchoolRepository.OnDataFetchListener listener){
+        schoolRepository.getSchool(schoolID, listener);
     }
 
     public void updateSchool(School school){

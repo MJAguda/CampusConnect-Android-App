@@ -17,7 +17,6 @@ import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -39,6 +38,7 @@ import com.ams.campusconnect.firebase.Delete;
 import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.firebase.Update;
 import com.ams.campusconnect.model.Employee;
+import com.ams.campusconnect.model.EmployeeModel;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.repository.SchoolRepository;
@@ -53,7 +53,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
     SaveData save = SaveData.getInstance();
     School school;
     SchoolController schoolController = new SchoolController(this);
-    Employee employee = Employee.getInstance();
+    EmployeeModel employeeModel;
     Create create = new Create();
     Read read = new Read();
     Update update = new Update();
@@ -79,8 +79,9 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-
+        // Get the school and employee objects from the previous activity
         school = (School) getIntent().getSerializableExtra("school");
+        employeeModel = (EmployeeModel) getIntent().getSerializableExtra("employee");
 
         // Request for location permission
         if (ContextCompat.checkSelfPermission(Attendance.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -117,9 +118,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
         TextView name = findViewById(R.id.name_TextView);
 
         back.setOnClickListener(view -> {
-            Intent intent = new Intent(Attendance.this, LogbookActivity.class);
-            intent = intent.putExtra("school", school);
-            startActivity(intent);
+            changeScreen(LogbookActivity.class);
         });
 
         hamburger.setOnClickListener(view -> {
@@ -131,7 +130,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
         });
 
 
-        schoolController.getSchoolData(school.getSchoolID(), new SchoolRepository.OnDataFetchListener() {
+        schoolController.getSchool(school.getSchoolID(), new SchoolRepository.OnDataFetchListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 // Check if ID exists in the database
@@ -241,7 +240,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
 
                     // Push Time in Database
 
-                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
+                    checkEmployeeAttendance(employeeModel, school, save, currentTimeIn12Hours);
 
 
                 });
@@ -266,7 +265,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
 
                     // Push Time in Database
 
-                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
+                    checkEmployeeAttendance(employeeModel, school, save, currentTimeIn12Hours);
 
 
                 });
@@ -291,7 +290,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
 
                     // Push Time in Database
 
-                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
+                    checkEmployeeAttendance(employeeModel, school, save, currentTimeIn12Hours);
 
 
                 });
@@ -316,7 +315,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
 
                     // Push Time in Database
 
-                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
+                    checkEmployeeAttendance(employeeModel, school, save, currentTimeIn12Hours);
 
 
                 });
@@ -325,8 +324,8 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
         });
 
         try {
-            if (!employee.getId().isEmpty()) {
-                name.setText(String.format("%s, %s", employee.getLastName(), employee.getFirstName()));
+            if (!employeeModel.getId().isEmpty()) {
+                name.setText(String.format("%s, %s", employeeModel.getLastName(), employeeModel.getFirstName()));
                 dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
                     save.setYear(year);
                     save.setMonth(DateUtils.getMonthName(month));
@@ -374,7 +373,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
 
                     // Push Time in Database
 
-                    checkEmployeeAttendance(employee, school, save, currentTimeIn12Hours);
+                    checkEmployeeAttendance(employeeModel, school, save, currentTimeIn12Hours);
 
 
                 });
@@ -394,13 +393,13 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
         };
     }
 
-    private void checkEmployeeAttendance(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
+    private void checkEmployeeAttendance(EmployeeModel employee, School school, SaveData save, String currentTimeIn12Hours) {
 
-        String employeeAttendancePath = this.school.getSchoolID() + "/employee/" + employee.getId();
+        String employeeAttendancePath = this.school.getSchoolID() + "/employee/" + employeeModel.getId();
 
         Log.d("Code Block : ", "inside checkEmployeeAttendance");
         // Check if the employee ID exists
-        readEmployeeRecord(employeeAttendancePath, save, this.school, employee, currentTimeIn12Hours);
+        readEmployeeRecord(employeeAttendancePath, save, this.school, employeeModel, currentTimeIn12Hours);
     }
 
     private void setDateTime(String month, String day, String year) {
@@ -410,7 +409,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
         save.setDay(String.valueOf(Integer.parseInt(day)));
     }
 
-    private void readEmployeeRecord(String employeeAttendancePath, SaveData save, School school, Employee employee, String currentTimeIn12Hours) {
+    private void readEmployeeRecord(String employeeAttendancePath, SaveData save, School school, EmployeeModel employee, String currentTimeIn12Hours) {
         Log.d("Code Block : ", "inside readEmployeeRecord");
         read.readRecord(employeeAttendancePath, new Read.OnGetDataListener() {
             @Override
@@ -419,7 +418,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
                     String attendancePath = employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay();
 
                     // Check if the employee's attendance for the given date exists
-                    readAttendanceRecord(attendancePath, save, employee, Attendance.this.school, currentTimeIn12Hours);
+                    readAttendanceRecord(attendancePath, save, employeeModel, Attendance.this.school, currentTimeIn12Hours);
                 } else {
                     Toast.makeText(getApplicationContext(), "ID Not Found", Toast.LENGTH_SHORT).show();
                 }
@@ -432,7 +431,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
         });
     }
 
-    private void readAttendanceRecord(String attendancePath, SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
+    private void readAttendanceRecord(String attendancePath, SaveData save, EmployeeModel employee, School school, String currentTimeIn12Hours) {
         Log.d("Code Block : ", "inside readAttendanceRecord");
         read.readRecord(attendancePath, new Read.OnGetDataListener() {
             @Override
@@ -445,7 +444,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
 
                     alreadyhave.start();
                 } else {
-                    checkTimeIntervals(save, employee, Attendance.this.school, currentTimeIn12Hours);
+                    checkTimeIntervals(save, employeeModel, Attendance.this.school, currentTimeIn12Hours);
                 }
             }
 
@@ -456,9 +455,9 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
         });
     }
 
-    private void checkTimeIntervals(SaveData save, Employee employee, School school, String currentTimeIn12Hours) {
+    private void checkTimeIntervals(SaveData save, EmployeeModel employee, School school, String currentTimeIn12Hours) {
 
-        String employeeAttendancePath = this.school.getSchoolID() + "/employee/" + employee.getId();
+        String employeeAttendancePath = this.school.getSchoolID() + "/employee/" + employeeModel.getId();
 
         Log.d("Code Block : ", "inside checkTimeIntervals");
 
@@ -493,7 +492,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
                 if (totalMinuteDifference <= 15) {
                     Toast.makeText(getApplicationContext(), "Wait 15 minutes", Toast.LENGTH_SHORT).show();
                 } else {
-                    getLocationAndCheckIn(employee, Attendance.this.school, save, currentTimeIn12Hours);
+                    getLocationAndCheckIn(employeeModel, Attendance.this.school, save, currentTimeIn12Hours);
                 }
             }
 
@@ -504,7 +503,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
         });
     }
 
-    private void getLocationAndCheckIn(Employee employee, School school, SaveData save, String currentTimeIn12Hours) {
+    private void getLocationAndCheckIn(EmployeeModel employee, School school, SaveData save, String currentTimeIn12Hours) {
         LocationManager locationManager;
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -515,8 +514,11 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
             // Show a message to the user explaining why the app needs the location permission
             Toast.makeText(Attendance.this, "Location permissions are required for this feature", Toast.LENGTH_LONG).show();
             // Redirect the user to the app settings page
+
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             intent = intent.putExtra("school", this.school);
+            intent = intent.putExtra("employee", this.employeeModel);
+
             Uri uri = Uri.fromParts("package", getPackageName(), null);
             intent.setData(uri);
             startActivity(intent);
@@ -542,31 +544,31 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, location -> {
                     progressDialog.setMessage("Getting your location...");
 
-                    employee.setLatitude(location.getLatitude());
-                    employee.setLongitude(location.getLongitude());
+                    employeeModel.setLatitude(location.getLatitude());
+                    employeeModel.setLongitude(location.getLongitude());
 
-                    Log.d("Latitude", String.valueOf(employee.getLatitude()));
-                    Log.d("Longitude", String.valueOf(employee.getLongitude()));
+                    Log.d("Latitude", String.valueOf(employeeModel.getLatitude()));
+                    Log.d("Longitude", String.valueOf(employeeModel.getLongitude()));
                 });
 
                 // Wait for employee latitude and longitude not to be null
                 if (this.school.isGpsFeature()) {
-                    if (isEmployeeWithinCampusBounds(employee, this.school)) {
+                    if (isEmployeeWithinCampusBounds(employeeModel, this.school)) {
                         Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                         // Open Google Map Google Map
 
                         // Push Time in Database
-                        create.createRecord(this.school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+                        create.createRecord(this.school.getSchoolID() + "/employee/" + employeeModel.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
 
                         // Get the current location of the employee Recursively
                         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, location -> {
-                            employee.setLatitude(location.getLatitude());
-                            employee.setLongitude(location.getLongitude());
+                            employeeModel.setLatitude(location.getLatitude());
+                            employeeModel.setLongitude(location.getLongitude());
 
                             // Store employee's last known location
-                            update.updateRecord(this.school.getSchoolID() + "/employee/" + employee.getId(), "latitude", employee.getLatitude());
-                            update.updateRecord(this.school.getSchoolID() + "/employee/" + employee.getId(), "longitude", employee.getLongitude());
+                            update.updateRecord(this.school.getSchoolID() + "/employee/" + employeeModel.getId(), "latitude", employeeModel.getLatitude());
+                            update.updateRecord(this.school.getSchoolID() + "/employee/" + employeeModel.getId(), "longitude", employeeModel.getLongitude());
                         });
 
                         // Dismiss progressdialog
@@ -587,7 +589,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
                     Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
                     // Push Time in Database
-                    create.createRecord(this.school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+                    create.createRecord(this.school.getSchoolID() + "/employee/" + employeeModel.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
 
                     // Dismiss progressdialog
                     progressDialog.dismiss();
@@ -608,17 +610,18 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
     private void openGPSSettings() {
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         intent = intent.putExtra("school", school);
+        intent = intent.putExtra("employee", employeeModel);
         startActivity(intent);
 
         // Display a message informing the user
         Toast.makeText(Attendance.this, "Please turn on GPS", Toast.LENGTH_LONG).show();
     }
 
-    private boolean isEmployeeWithinCampusBounds(Employee employee, School school) {
-        return (employee.getLatitude() >= school.getLatitudeBottom() &&
-                employee.getLatitude() <= school.getLatitudeTop() &&
-                employee.getLongitude() >= school.getLongitudeLeft() &&
-                employee.getLongitude() <= school.getLongitudeRight());
+    private boolean isEmployeeWithinCampusBounds(EmployeeModel employee, School school) {
+        return (employeeModel.getLatitude() >= school.getLatitudeBottom() &&
+                employeeModel.getLatitude() <= school.getLatitudeTop() &&
+                employeeModel.getLongitude() >= school.getLongitudeLeft() &&
+                employeeModel.getLongitude() <= school.getLongitudeRight());
     }
 
     private int calculateTimeDifference(String currentTimeIn12Hours, String priorTime) {
@@ -676,13 +679,14 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
     private void openDeveloperOptionsSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS);
         intent = intent.putExtra("school", school);
+        intent = intent.putExtra("employee", employeeModel);
         startActivity(intent);
         // Display a message informing the user
         Toast.makeText(Attendance.this, "Please turn off Developer Options", Toast.LENGTH_LONG).show();
     }
 
     private void getTimeLogs(String year, String month) {
-        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
+        read.readRecord(school.getSchoolID() + "/employee/" + employeeModel.getId() + "/attendance/" + year + "/" + month, new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
 
@@ -747,21 +751,24 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){
             case R.id.request_timelog_change:{
-                Intent intent = new Intent(Attendance.this, TimelogChangeActivity.class);
-                intent = intent.putExtra("school", school);
-                startActivity(intent);
+                changeScreen(TimelogChangeActivity.class);
                 return true;
             }
             case R.id.logout:{
-                Intent intent = new Intent(Attendance.this, LogbookActivity.class);
-                intent = intent.putExtra("school", school);
-                startActivity(intent);
+                changeScreen(LogInAttendance.class);
                 return true;
             }
             default:{
                 return false;
             }
         }
+    }
+
+    private void changeScreen(Class<?> toClass) {
+        Intent intent = new Intent(Attendance.this, toClass);
+        intent = intent.putExtra("school", school);
+        intent = intent.putExtra("employee", employeeModel);
+        startActivity(intent);
     }
 
     // Destroy Clock

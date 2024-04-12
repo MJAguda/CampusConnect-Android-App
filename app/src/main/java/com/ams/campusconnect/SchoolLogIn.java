@@ -62,7 +62,7 @@ public class SchoolLogIn extends AppCompatActivity {
                 progressDialog.setCancelable(false);
                 progressDialog.show();
 
-                schoolController.getSchoolData(school.getSchoolID(), new SchoolRepository.OnDataFetchListener() {
+                schoolController.getSchool(school.getSchoolID(), new SchoolRepository.OnDataFetchListener() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
 

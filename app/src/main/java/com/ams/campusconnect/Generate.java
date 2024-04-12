@@ -1,8 +1,5 @@
 package com.ams.campusconnect;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,22 +11,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ams.campusconnect.firebase.Read;
-import com.ams.campusconnect.model.Employee;
-import com.ams.campusconnect.model.SaveData;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.ams.campusconnect.controller.EmployeeController;
+import com.ams.campusconnect.model.EmployeeModel;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.qrcode.DownloadQR;
 import com.ams.campusconnect.qrcode.GenerateQR;
 import com.ams.campusconnect.qrcode.ScanQR;
+import com.ams.campusconnect.repository.EmployeeRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 public class Generate extends AppCompatActivity {
-
-    SaveData save = SaveData.getInstance();
     School school;
-    Employee employee = Employee.getInstance();
-    Read read = new Read();
+    EmployeeModel employeeModel;
+    EmployeeController employeeController;
 
     private static final int REQUEST_CODE_SCAN_QR = 1;
     EditText idEditText;
@@ -42,6 +40,7 @@ public class Generate extends AppCompatActivity {
 
         // Get School Data
         school = (School) getIntent().getSerializableExtra("school");
+        employeeModel = (EmployeeModel) getIntent().getSerializableExtra("employee");
 
         // Declare Components
         idEditText = findViewById(R.id.id_EditText);
@@ -81,38 +80,10 @@ public class Generate extends AppCompatActivity {
         guide4.setVisibility(View.GONE);
         guide5.setVisibility(View.GONE);
 
-        // Set click listener on button to start ScanQR activity
-        /*scanQR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Generate.this, ScanQR.class);
-                startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
-            }
-        });
-
-         */
-
-        /*scanFingerPrint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-         */
-
-        /*scanFacial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "On going", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-         */
-
         back.setOnClickListener(view -> {
             Intent intent = new Intent(Generate.this, LogbookActivity.class);
             intent = intent.putExtra("school", school);
+            intent = intent.putExtra("employee", employeeModel);
             startActivity(intent);
         });
 
@@ -121,65 +92,64 @@ public class Generate extends AppCompatActivity {
         scanQR.setOnClickListener(view -> {
             Intent intent = new Intent(Generate.this, ScanQR.class);
             intent = intent.putExtra("school", school);
+            intent = intent.putExtra("employee", employeeModel);
             startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
 
 
         });
 
         submit.setOnClickListener(view -> {
-            employee.setId(idEditText.getText().toString());
-
-            if(idEditText.getText().toString().isEmpty()){
+            if (idEditText.getText().toString().isEmpty()) {
                 Toast.makeText(getApplicationContext(), "ID Number should not be empty", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
-                    @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        if(!dataSnapshot.exists()){
-                            Toast.makeText(getApplicationContext(), "ID Number not found", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            // Set data for Employee
-                            employee.setId(dataSnapshot.child("id").getValue().toString());
-                            employee.setFullName(dataSnapshot.child("fullname").getValue().toString());
-
-                            // Unhide Components
-                            home.setVisibility(View.VISIBLE);
-                            generateQR.setVisibility(View.VISIBLE);
-                            text.setVisibility(View.VISIBLE);
-                            logo.setVisibility(View.VISIBLE);
-                            generateDTR.setVisibility(View.VISIBLE);
-                            generateTAMS.setVisibility(View.VISIBLE);
-                            guide1.setVisibility(View.VISIBLE);
-                            guide2.setVisibility(View.VISIBLE);
-                            guide3.setVisibility(View.VISIBLE);
-                            guide4.setVisibility(View.VISIBLE);
-                            guide5.setVisibility(View.VISIBLE);
-
-                            // Hide Components
-                            prompt.setVisibility(View.GONE);
-                            idEditText.setVisibility(View.GONE);
-                            scanQR.setVisibility(View.GONE);
-                            submit.setVisibility(View.GONE);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(DatabaseError databaseError) {
-                        Log.d("Read", "Error: " + databaseError.getMessage());
-                        Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                return;
             }
 
+            employeeController = new EmployeeController(this, school);
+            employeeController.getEmployee(school, idEditText.getText().toString(), new EmployeeRepository.OnDataFetchListener() {
+                @Override
+                public void onSuccess(DataSnapshot dataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        Toast.makeText(getApplicationContext(), "ID Number not found", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
+                    // Set data for Employee
+                    employeeModel = dataSnapshot.getValue(EmployeeModel.class);
+
+                    // Unhide Components
+                    home.setVisibility(View.VISIBLE);
+                    generateQR.setVisibility(View.VISIBLE);
+                    text.setVisibility(View.VISIBLE);
+                    logo.setVisibility(View.VISIBLE);
+                    generateDTR.setVisibility(View.VISIBLE);
+                    generateTAMS.setVisibility(View.VISIBLE);
+                    guide1.setVisibility(View.VISIBLE);
+                    guide2.setVisibility(View.VISIBLE);
+                    guide3.setVisibility(View.VISIBLE);
+                    guide4.setVisibility(View.VISIBLE);
+                    guide5.setVisibility(View.VISIBLE);
+
+                    // Hide Components
+                    prompt.setVisibility(View.GONE);
+                    idEditText.setVisibility(View.GONE);
+                    scanQR.setVisibility(View.GONE);
+                    submit.setVisibility(View.GONE);
+
+                }
+
+                @Override
+                public void onFailure(DatabaseError databaseError) {
+                    Log.d("Read", "Error: " + databaseError.getMessage());
+                    Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
         // Home button
         home.setOnClickListener(view -> {
             Intent intent = new Intent(Generate.this, LogbookActivity.class);
             intent = intent.putExtra("school", school);
+            intent = intent.putExtra("employee", employeeModel);
             startActivity(intent);
         });
 
@@ -192,7 +162,7 @@ public class Generate extends AppCompatActivity {
             // Declare ImageView
             ImageView qr = findViewById(R.id.qrCode_ImageView);
             // call generateQRCode method from GenerateQR class
-            qr.setImageBitmap(generateQR1.generateQRCode(employee.getId()));
+            qr.setImageBitmap(generateQR1.generateQRCode(employeeModel.getId()));
 
             // Set text Guide
             text.setText("Tap QR code to download");
@@ -208,6 +178,7 @@ public class Generate extends AppCompatActivity {
         generateDTR.setOnClickListener(view -> {
             Intent intent = new Intent(Generate.this, GenerateDTR.class);
             intent = intent.putExtra("school", school);
+            intent = intent.putExtra("employee", employeeModel);
             startActivity(intent);
         });
 
@@ -229,8 +200,7 @@ public class Generate extends AppCompatActivity {
             // Handle the QR code result here
             Toast.makeText(this, "QR code result: " + qrResult, Toast.LENGTH_SHORT).show();
 
-            // set the idNumber_TextView
-
+            // set the idNumber_TextView to the scanned QR code
             idEditText.setText(qrResult);
 
             // Perform click
