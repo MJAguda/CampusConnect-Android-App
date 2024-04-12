@@ -9,7 +9,9 @@ public class EmployeeModel {
     private int id;
     private String firstName;
     private String lastName;
-    private LocalDate birthdate;
+    private String month;
+    private int day;
+    private int year;
     private double latitude;
     private double longitude;
 
@@ -17,11 +19,13 @@ public class EmployeeModel {
     public EmployeeModel(){}
 
     // Constructor that accepts all field
-    public EmployeeModel(int id, String firstName, String lastName, LocalDate birthdate, double latitude, double longitude){
+    public EmployeeModel(int id, String firstName, String lastName, String month, int day, int year, double latitude, double longitude){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthdate = birthdate;
+        this.month = month;
+        this.day = day;
+        this.year = year;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -29,7 +33,9 @@ public class EmployeeModel {
     // Getters
     public int getId() { return id; }
     public String getLastName() { return lastName; }
-    public LocalDate getBirthdate() { return birthdate; }
+    public String getMonth() { return month; }
+    public int getDay() { return day; }
+    public int getYear() { return year; }
     public double getLatitude() { return latitude; }
     public double getLongitude() { return longitude; }
     public String getFirstName() { return firstName; }
@@ -38,7 +44,9 @@ public class EmployeeModel {
     public void setId(int id) { this.id = id; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
-    public void setBirthdate(LocalDate birthdate) { this.birthdate = birthdate; }
+    public void setMonth(String month) { this.month = month; }
+    public void setDay(int day) { this.day = day; }
+    public void setYear(int year) { this.year = year; }
     public void setLatitude(double latitude) { this.latitude = latitude; }
     public void setLongitude(double longitude) { this.longitude = longitude; }
 
@@ -51,7 +59,9 @@ public class EmployeeModel {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", birthdate=" + birthdate +
+                ", month='" + month + '\'' +
+                ", day='" + day + '\'' +
+                ", year='" + year + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 '}';
