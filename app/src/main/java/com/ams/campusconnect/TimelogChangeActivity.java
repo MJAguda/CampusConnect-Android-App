@@ -25,6 +25,7 @@ import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.model.Timelog;
 import com.ams.campusconnect.repository.TimelogRepository;
+import com.ams.campusconnect.service.TimelogService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -32,6 +33,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class TimelogChangeActivity extends AppCompatActivity {
@@ -140,7 +142,7 @@ public class TimelogChangeActivity extends AppCompatActivity {
 
         timelog = new Timelog(requestID, requestorID_Value, requestorSchoolID_Value, typeOfTimeLogIssue_Value, month_Value, day_Value, year_Value, timelogSession, timeString, reasonForChange_Value);
 
-        Log.d("Timelog", timelog.toString());
+//        Log.d("Timelog", timelog.toString());
 
         timelogController.addTimelogChangeRequest(timelog, school);
     }
@@ -151,12 +153,12 @@ public class TimelogChangeActivity extends AppCompatActivity {
                 || monthSpinner.getSelectedItem().toString().isEmpty()
                 || daySpinner.getSelectedItem().toString().isEmpty()
                 || yearSpinner.getSelectedItem().toString().isEmpty()
-                || timelogSession.isEmpty()
+                || (timelogSession == null || timelogSession.isEmpty())
                 || reasonForChange.getText().toString().isEmpty());
     }
 
     private boolean validateTimelogSession() {
-        return !(AMIn_TextView.getText().toString().equals("N/A") && timelogSession.equals("timeAM_In"));
+        return !(AMIn_TextView.getText().toString().equals("N/A") || AMOut_TextView.getText().toString().equals("N/A") || PMIn_TextView.getText().toString().equals("N/A") || PMOut_TextView.getText().toString().equals("N/A"));
     }
 
     private void selectTimelogSession(String timelogSessionStr, Button timelogButton, TextView timelogTextView) {
@@ -264,21 +266,22 @@ public class TimelogChangeActivity extends AppCompatActivity {
         timelogController.getTimelogs(school.getSchoolID(), employee.getId(), yearSpinner.getSelectedItem().toString(), monthSpinner.getSelectedItem().toString(), daySpinner.getSelectedItem().toString(), new TimelogRepository.OnDataFetchListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
-                // Set timelogs in the textview
-                if (!dataSnapshot.exists()) {
+                try {
+                    AMIn_TextView.setText(dataSnapshot.child("timeAM_In").getValue().toString());
+                    AMOut_TextView.setText(dataSnapshot.child("timeAM_Out").getValue().toString());
+                    PMIn_TextView.setText(dataSnapshot.child("timePM_In").getValue().toString());
+                    PMOut_TextView.setText(dataSnapshot.child("timePM_Out").getValue().toString());
+                }
+                catch (NullPointerException e){
                     Log.d("Error", "Timelogs not found");
                     Toast.makeText(getApplicationContext(), "Timelogs not found", Toast.LENGTH_SHORT).show();
                     AMIn_TextView.setText("N/A");
                     AMOut_TextView.setText("N/A");
                     PMIn_TextView.setText("N/A");
                     PMOut_TextView.setText("N/A");
-                } else {
-                    // if getValue.toString is null then set it to N/A
-                    AMIn_TextView.setText(dataSnapshot.child("timeAM_In").getValue().toString().isEmpty() ? "N/A" : dataSnapshot.child("timeAM_In").getValue().toString());
-                    AMOut_TextView.setText(dataSnapshot.child("timeAM_Out").getValue().toString().isEmpty() ? "N/A" : dataSnapshot.child("timeAM_Out").getValue().toString());
-                    PMIn_TextView.setText(dataSnapshot.child("timePM_In").getValue().toString().isEmpty() ? "N/A" : dataSnapshot.child("timePM_In").getValue().toString());
-                    PMOut_TextView.setText(dataSnapshot.child("timePM_Out").getValue().toString().isEmpty() ? "N/A" : dataSnapshot.child("timePM_Out").getValue().toString());
                 }
+
+
             }
 
             @Override
