@@ -20,66 +20,36 @@ import java.util.List;
 import java.util.Objects;
 
 public class SchoolController {
-    private DatabaseReference databaseReference;
-    private SchoolService schoolService;
+    private SchoolRepository schoolRepository;
     private Context context;
 
     public SchoolController(Context context){
-        this.databaseReference = FirebaseDatabase.getInstance().getReference();
         this.context = context;
-        this.schoolService = new SchoolService(context);
+        this.schoolRepository = new SchoolRepository();
     }
 
     public void addSchool(School school) {
-        schoolService.addSchool(school);
+        schoolRepository.addSchool(school);
     }
 
     public void getSchoolData(int schoolID, final SchoolRepository.OnDataFetchListener listener){
-        schoolService.getSchoolData(schoolID, listener);
+        schoolRepository.getSchoolData(schoolID, listener);
     }
 
     public void updateSchool(School school){
-        schoolService.updateSchool(school);
+        schoolRepository.updateSchool(school);
     }
 
     public void deleteSchool(int schoolID){
-        schoolService.deleteSchool(schoolID);
+        schoolRepository.deleteSchool(schoolID);
     }
 
     public void getAllSchoolIDs(final SchoolRepository.OnDataFetchListener listener){
-        schoolService.getAllSchoolIDs(listener);
+        schoolRepository.getAllSchoolIDs(listener);
     }
 
     public void getAllSchools(final SchoolRepository.OnDataFetchListener listener){
-        schoolService.getAllSchools(listener);
+        schoolRepository.findAll(listener);
     }
-
-//    public List<School> getAllSchools (){
-//        List<School> schools = new ArrayList<>();
-//        schoolService.getAllSchools(new SchoolRepository.OnDataFetchListener() {
-//            @Override
-//            public void onSuccess(DataSnapshot dataSnapshot) {
-//                // Get all schools and their fields and set it to School class
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    if (Objects.requireNonNull(snapshot.getKey()).matches("[0-9]+")) {
-//                        // get children of school
-//                        School school = snapshot.getValue(School.class);
-//                        schools.add(school);
-//                    }
-//                }
-//
-//                // Traverse List of Schools
-//                for (School school : schools) {
-//                    Log.d("School", school.getSchoolName());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(DatabaseError databaseError) {
-//                Log.e("SchoolController", "Error fetching schools", databaseError.toException());
-//            }
-//        });
-//        return schools;
-//    }
 }
 
