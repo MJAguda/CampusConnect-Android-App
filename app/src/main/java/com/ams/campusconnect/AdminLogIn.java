@@ -47,6 +47,9 @@ public class AdminLogIn extends AppCompatActivity {
             progressDialog.setCancelable(false);
             progressDialog.show();
 
+            String enteredUsername = adminUsername.getText().toString();
+            String enteredPassword = adminPassword.getText().toString();
+
             // Error detection
             // if admin username and password is empty
             if (adminUsername.getText().toString().isEmpty() || adminPassword.getText().toString().isEmpty()) {
@@ -55,22 +58,8 @@ public class AdminLogIn extends AppCompatActivity {
                 return;
             }
 
-            // if admin username and password is not equal to the saved admin username and password
-            if (!adminUsername.getText().toString().equals(save.getAdminUsername()) && !adminPassword.getText().toString().equals(save.getAdminPassword())) {
-                Toast.makeText(getApplicationContext(), "Wrong Username or Password", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                return;
-            }
-
-            // if admin username and password is not equal to the school admin username and password
-            if (!adminUsername.getText().toString().equals(school.getAdminUsername()) && !adminPassword.getText().toString().equals(school.getAdminPassword())) {
-                Toast.makeText(getApplicationContext(), "Wrong Username or Password", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                return;
-            }
-
             // Check if admin account is school level or higher admin
-            if (adminUsername.getText().toString().equals(save.getAdminUsername()) && adminPassword.getText().toString().equals(save.getAdminPassword())) {
+            if (enteredUsername.equals(save.getAdminUsername()) && enteredPassword.equals(save.getAdminPassword())) {
 
                 Toast.makeText(getApplicationContext(), "Welcome System Admin", Toast.LENGTH_SHORT).show();
 
@@ -80,8 +69,8 @@ public class AdminLogIn extends AppCompatActivity {
                 Intent intent = new Intent(AdminLogIn.this, SystemAdmin.class);
                 intent = intent.putExtra("school", school);
                 startActivity(intent);
-            } else if (adminUsername.getText().toString().equals(school.getAdminUsername()) &&
-                    adminPassword.getText().toString().equals(school.getAdminPassword())) {
+            } else if (enteredUsername.equals(school.getAdminUsername()) &&
+                    enteredPassword.equals(school.getAdminPassword())) {
 
                 Toast.makeText(getApplicationContext(), "Welcome " + school.getSchoolName() + " Admin", Toast.LENGTH_SHORT).show();
 
