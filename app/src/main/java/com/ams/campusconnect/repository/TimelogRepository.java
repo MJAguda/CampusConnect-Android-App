@@ -31,6 +31,21 @@ public class TimelogRepository {
     }
 
     // Read Timelog from the database
+    public void getAllTimelogRequests(int schoolID, final TimelogRepository.OnDataFetchListener listener){
+        databaseReference = FirebaseDatabase.getInstance().getReference().child(schoolID + "/timelogChangeRequest/");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                listener.onFailure(databaseError);
+            }
+        });
+    }
 
     // Update Timelog from the database
 
@@ -38,7 +53,8 @@ public class TimelogRepository {
 
     // Read School from the database
     public void getTimelogs(int schoolID, String employeeID, String year, String month, String day, final TimelogRepository.OnDataFetchListener listener){
-        databaseReference.child(schoolID + "/employee/" + employeeID + "/attendance/" + year + "/" + month +  "/" + day).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child(schoolID + "/employee/" + employeeID + "/attendance/" + year + "/" + month +  "/" + day);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listener.onSuccess(dataSnapshot);

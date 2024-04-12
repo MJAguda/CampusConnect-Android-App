@@ -25,7 +25,6 @@ import com.ams.campusconnect.model.Employee;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.model.Timelog;
 import com.ams.campusconnect.repository.TimelogRepository;
-import com.ams.campusconnect.service.TimelogService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
@@ -36,7 +35,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class TimelogChangeActivity extends AppCompatActivity {
+public class TimelogChangeActivity extends AppCompatActivity{
 
     School school;
     Employee employee = Employee.getInstance();
@@ -145,6 +144,25 @@ public class TimelogChangeActivity extends AppCompatActivity {
 //        Log.d("Timelog", timelog.toString());
 
         timelogController.addTimelogChangeRequest(timelog, school);
+
+        List<Timelog> timelogs = new ArrayList<>();
+        timelogController.getAllTimelogRequests(school.getSchoolID(), new TimelogRepository.OnDataFetchListener() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Timelog timelog = snapshot.getValue(Timelog.class);
+                    timelogs.add(timelog);
+                }
+                Log.d("TimelogChangeActivity", "onSuccess: " + timelogs);
+            }
+
+            @Override
+            public void onFailure(DatabaseError databaseError) {
+                Log.d("TimelogChangeActivity", "onFailure: " + databaseError.getMessage());
+            }
+        });
+
+        changeScreen(Attendance.class);
     }
 
     private boolean validateInputs() {
@@ -280,8 +298,6 @@ public class TimelogChangeActivity extends AppCompatActivity {
                     PMIn_TextView.setText("N/A");
                     PMOut_TextView.setText("N/A");
                 }
-
-
             }
 
             @Override
