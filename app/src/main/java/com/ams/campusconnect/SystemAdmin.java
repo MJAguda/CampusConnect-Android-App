@@ -290,7 +290,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         progressDialog.dismiss();
 
                         // Check if school Id already exists in the database
-                        schoolController.getSchoolData(school.getSchoolID(), new SchoolRepository.OnDataFetchListener() {
+                        schoolController.getSchool(school.getSchoolID(), new SchoolRepository.OnDataFetchListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
@@ -357,7 +357,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         Toast.makeText(getApplicationContext(), "Selected : " + selectedItemName, Toast.LENGTH_SHORT).show();
 
                         // Get data from database
-                        schoolController.getSchoolData(Integer.parseInt(selectedItemName), new SchoolRepository.OnDataFetchListener() {
+                        schoolController.getSchool(Integer.parseInt(selectedItemName), new SchoolRepository.OnDataFetchListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 // Get data from database
@@ -519,7 +519,7 @@ public class SystemAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                         Toast.makeText(getApplicationContext(), "Selected : " + selectedItemName, Toast.LENGTH_SHORT).show();
 
                         // Get data from database
-                        schoolController.getSchoolData(Integer.parseInt(selectedItemName), new SchoolRepository.OnDataFetchListener() {
+                        schoolController.getSchool(Integer.parseInt(selectedItemName), new SchoolRepository.OnDataFetchListener() {
                             @Override
                             public void onSuccess(DataSnapshot dataSnapshot) {
 
