@@ -28,12 +28,11 @@ import com.ams.campusconnect.repository.TimelogRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class TimelogChangeActivity extends AppCompatActivity {
 
@@ -53,6 +52,8 @@ public class TimelogChangeActivity extends AppCompatActivity {
     String timelogSession;
 
     Timelog timelog;
+
+    String monthGlobal, dayGlobal, yearGlobal, currentTimeIn12HoursGlobal, currentTimeIn24HoursGlobal;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -79,7 +80,130 @@ public class TimelogChangeActivity extends AppCompatActivity {
         setDaySpinner();
         setYearSpinner();
 
+        setDateTime();
+
+        // Back button
+        back.setOnClickListener(v -> {
+            changeScreen(Attendance.class);
+        });
+
+        // Hamburger menu
+        hamburgerMenu.setOnClickListener(v -> showOnGoingToast());
+
+        // AM In Button onClickListener
+        AMInButton.setOnClickListener(v -> selectTimelogSession("timeAM_In", AMInButton, AMIn_TextView));
+
+        // AM Out Button onClickListener
+        AMOutButton.setOnClickListener(v -> selectTimelogSession("timeAM_Out", AMOutButton, AMOut_TextView));
+
+        // PM In Button onClickListener
+        PMInButton.setOnClickListener(v -> selectTimelogSession("timePM_In", PMInButton, PMIn_TextView));
+
+        // PM Out Button onClickListener
+        PMOutButton.setOnClickListener(v -> selectTimelogSession("timePM_Out", PMOutButton, PMOut_TextView));
+
+        // Submit button onClickListener
+        submitButton.setOnClickListener(v -> {
+            // Error Detector for each components
+            // Check if the following are empty or null requestorID_Value, requestorSchoolID_Value, typeOfTimeLogIssue_Value, month_Value, day_Value, year_Value, timelogSession, timeString, reasonForChange_Value
+            if (!validateInputs()) {
+                Toast.makeText(this, "Please fill up all the fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (!validateTimelogSession()) {
+                Toast.makeText(this, "Please select date and timelog", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            createAndSubmitTimelogChangeRequest();
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void createAndSubmitTimelogChangeRequest() {
+        // Get all the values from the components
+        String requestorID_Value = String.valueOf(requestorId.getText());
+        int requestorSchoolID_Value = school.getSchoolID();
+        String typeOfTimeLogIssue_Value = typeOfTimeLogIssue.getSelectedItem().toString();
+        String month_Value = monthSpinner.getSelectedItem().toString();
+        String day_Value = daySpinner.getSelectedItem().toString();
+        String year_Value = yearSpinner.getSelectedItem().toString();
+        int correctTimelogDate_Hour = correctTimelogDate.getHour();
+        int correctTimelogDate_Minute = correctTimelogDate.getMinute();
+        String reasonForChange_Value = reasonForChange.getText().toString();
+
+        LocalTime correctTimeLog_LocalTime = LocalTime.of(correctTimelogDate_Hour, correctTimelogDate_Minute);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
+        String timeString = correctTimeLog_LocalTime.format(formatter);
+
+        String requestID = requestorID_Value + "_" + yearGlobal + "_" + monthGlobal + "_" + dayGlobal + "_" + currentTimeIn24HoursGlobal;
+
+        timelog = new Timelog(requestID, requestorID_Value, requestorSchoolID_Value, typeOfTimeLogIssue_Value, month_Value, day_Value, year_Value, timelogSession, timeString, reasonForChange_Value);
+
+        Log.d("Timelog", timelog.toString());
+
+        timelogController.addTimelogChangeRequest(timelog, school);
+    }
+
+    private boolean validateInputs() {
+        return !(String.valueOf(requestorId.getText()).isEmpty()
+                || typeOfTimeLogIssue.getSelectedItem().toString().isEmpty()
+                || monthSpinner.getSelectedItem().toString().isEmpty()
+                || daySpinner.getSelectedItem().toString().isEmpty()
+                || yearSpinner.getSelectedItem().toString().isEmpty()
+                || timelogSession.isEmpty()
+                || reasonForChange.getText().toString().isEmpty());
+    }
+
+    private boolean validateTimelogSession() {
+        return !(AMIn_TextView.getText().toString().equals("N/A") && timelogSession.equals("timeAM_In"));
+    }
+
+    private void selectTimelogSession(String timelogSessionStr, Button timelogButton, TextView timelogTextView) {
+        timelogSession = timelogSessionStr;
+
+        // Set button and textview to default state
+        setButtonAndTextViewToDefaultState();
+
+        // Change button colors
+        timelogButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
+
+        // set the drawable of AMIn_TextView to cell_shape.xml
+        timelogTextView.setBackgroundResource(R.drawable.cell_shape);
+    }
+
+    private void setButtonAndTextViewToDefaultState() {
+        AMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+        AMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+        PMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+        PMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
+
+        // set the drawable of AMIn_TextView to cell_shape.xml
+        AMIn_TextView.setBackgroundResource(0);
+        AMOut_TextView.setBackgroundResource(0);
+        PMIn_TextView.setBackgroundResource(0);
+        PMOut_TextView.setBackgroundResource(0);
+    }
+
+    private void showOnGoingToast() {
+        Toast.makeText(this, "On Going", Toast.LENGTH_SHORT).show();
+    }
+
+    private void changeScreen(Class<?> toClass) {
+        Intent intent = new Intent(TimelogChangeActivity.this, toClass);
+        intent = intent.putExtra("school", school);
+        startActivity(intent);
+    }
+
+    private void setDateTime() {
         dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
+
+            monthGlobal = month;
+            dayGlobal = day;
+            yearGlobal = year;
+            currentTimeIn24HoursGlobal = currentTimeIn24Hours;
+            currentTimeIn12HoursGlobal = currentTimeIn12Hours;
+
             // Set timelogs using setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() for monthSpinner
             monthSpinner.setSelection(Integer.parseInt(month) - 1);
             monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -133,135 +257,6 @@ public class TimelogChangeActivity extends AppCompatActivity {
                 }
             });
 
-        });
-
-        // Back button
-        back.setOnClickListener(v -> {
-            Intent intent = new Intent(TimelogChangeActivity.this, Attendance.class);
-            intent = intent.putExtra("school", school);
-            startActivity(intent);
-        });
-
-        // Hamburger menu
-        hamburgerMenu.setOnClickListener(v -> {
-            Toast.makeText(this, "On Going", Toast.LENGTH_SHORT).show();
-        });
-
-        // AM In Button onClickListener
-        AMInButton.setOnClickListener(v -> {
-            timelogSession = "timeAM_In";
-
-            // Change button colors
-            AMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-            AMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-            PMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-            PMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-
-            // set the drawable of AMIn_TextView to cell_shape.xml
-            AMIn_TextView.setBackgroundResource(R.drawable.cell_shape);
-            AMOut_TextView.setBackgroundResource(0);
-            PMIn_TextView.setBackgroundResource(0);
-            PMOut_TextView.setBackgroundResource(0);
-        });
-
-        // AM Out Button onClickListener
-        AMOutButton.setOnClickListener(v -> {
-            timelogSession = "timeAM_Out";
-
-            // Change button colors
-            AMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-            AMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-            PMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-            PMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-
-            AMIn_TextView.setBackgroundResource(0);
-            AMOut_TextView.setBackgroundResource(R.drawable.cell_shape);
-            PMIn_TextView.setBackgroundResource(0);
-            PMOut_TextView.setBackgroundResource(0);
-        });
-
-        // PM In Button onClickListener
-        PMInButton.setOnClickListener(v -> {
-            timelogSession = "timePM_In";
-
-            // Change button colors
-            AMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-            AMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-            PMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-            PMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-
-            AMIn_TextView.setBackgroundResource(0);
-            AMOut_TextView.setBackgroundResource(0);
-            PMIn_TextView.setBackgroundResource(R.drawable.cell_shape);
-            PMOut_TextView.setBackgroundResource(0);
-        });
-
-        // PM Out Button onClickListener
-        PMOutButton.setOnClickListener(v -> {
-            timelogSession = "timePM_Out";
-
-            // Change button colors
-            AMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-            AMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-            PMInButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#808080")));
-            PMOutButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-
-            AMIn_TextView.setBackgroundResource(0);
-            AMOut_TextView.setBackgroundResource(0);
-            PMIn_TextView.setBackgroundResource(0);
-            PMOut_TextView.setBackgroundResource(R.drawable.cell_shape);
-        });
-
-        // Submit button onClickListener
-        submitButton.setOnClickListener(v -> {
-//            // Get all Contents
-            String requestorID_Value = String.valueOf(requestorId.getText());
-            int requestorSchoolID_Value = school.getSchoolID();
-            String typeOfTimeLogIssue_Value = typeOfTimeLogIssue.getSelectedItem().toString();
-
-            String month_Value = monthSpinner.getSelectedItem().toString();
-            String day_Value = daySpinner.getSelectedItem().toString();
-            String year_Value = yearSpinner.getSelectedItem().toString();
-
-            // timeLogSession
-            int correctTimelogDate_Hour = correctTimelogDate.getHour();
-            int correctTimelogDate_Minute = correctTimelogDate.getMinute();
-
-            String reasonForChange_Value = reasonForChange.getText().toString();
-
-            LocalTime correctTimeLog_LocalTime = LocalTime.of(correctTimelogDate_Hour, correctTimelogDate_Minute);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
-            String timeString = correctTimeLog_LocalTime.format(formatter);
-
-            // Error Detector for each components
-            // Check if the following are empty or null requestorID_Value, requestorSchoolID_Value, typeOfTimeLogIssue_Value, month_Value, day_Value, year_Value, timelogSession, timeString, reasonForChange_Value
-            if (requestorID_Value == null || requestorID_Value.isEmpty() ||
-                    typeOfTimeLogIssue_Value == null || typeOfTimeLogIssue_Value.isEmpty() ||
-                    month_Value == null || month_Value.isEmpty() ||
-                    day_Value == null || day_Value.isEmpty() ||
-                    year_Value == null || year_Value.isEmpty() ||
-                    timelogSession == null || timelogSession.isEmpty() ||
-                    timeString == null || timeString.isEmpty() ||
-                    reasonForChange_Value == null || reasonForChange_Value.isEmpty()) {
-                Toast.makeText(this, "Please fill up all the fields", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if(AMIn_TextView.getText().toString().equals("N/A") && timelogSession.equals("timeAM_In")){
-                Toast.makeText(this, "Please select date and timelog", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> {
-                String requestID = requestorID_Value + "_" + year + "_" + month + "_" + day + "_" + currentTimeIn12Hours;
-                // Set all contents to timelog object
-                timelog = new Timelog(requestID, requestorID_Value, requestorSchoolID_Value, typeOfTimeLogIssue_Value, month_Value, day_Value, year_Value, timelogSession, timeString, reasonForChange_Value);
-
-                // Log timelog
-                Log.d("Timelog", timelog.toString());
-
-                // Call addTimelogChangeRequest method from TimelogController
-                timelogController.addTimelogChangeRequest(timelog, school);
-            });
         });
     }
 

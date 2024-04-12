@@ -11,7 +11,6 @@ public class Timelog {
     private String month, day, year;
     private String timelogSession;
     private String correctTimelog;
-
     private String reasonForChange;
 
     public Timelog(String requestID, String requestorID, int requestorSchoolID, String typeOfTimeLogIssue, String month, String day, String year, String timelogSession, String correctTimelog, String reasonForChange) {
