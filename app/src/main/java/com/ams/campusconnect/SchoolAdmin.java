@@ -27,6 +27,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.ams.campusconnect.controller.EmployeeController;
 import com.ams.campusconnect.controller.SchoolController;
 import com.ams.campusconnect.firebase.Create;
 import com.ams.campusconnect.firebase.Delete;
@@ -34,10 +35,12 @@ import com.ams.campusconnect.firebase.Read;
 import com.ams.campusconnect.firebase.Transfer;
 import com.ams.campusconnect.firebase.Update;
 import com.ams.campusconnect.model.Employee;
+import com.ams.campusconnect.model.EmployeeModel;
 import com.ams.campusconnect.model.SaveData;
 import com.ams.campusconnect.model.School;
 import com.ams.campusconnect.qrcode.DownloadQR;
 import com.ams.campusconnect.qrcode.GenerateQR;
+import com.ams.campusconnect.repository.EmployeeRepository;
 import com.ams.campusconnect.repository.SchoolRepository;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,44 +58,21 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
     School school;
     SchoolController schoolController = new SchoolController(this);
     Employee employee = Employee.getInstance();
+    EmployeeModel employeeModel;
+    EmployeeController employeeController;
     Read read = new Read();
     Update update = new Update();
     Delete delete = new Delete();
 
-    TableLayout sourceAndDestinationTableLayout;
-    LinearLayout idSpinnerLinearLayout;
-    Spinner idSpinner;
-    EditText idEditText;
-    EditText firstNameEditText;
-    EditText lastNameEditText;
-    TableLayout birthdateTableLayout;
-    Spinner monthSpinner;
-    Spinner daySpinner;
-    Spinner yearSpinner;
-    TableLayout featuresTableLayout;
+    TableLayout sourceAndDestinationTableLayout, birthdateTableLayout, featuresTableLayout, table;
+    LinearLayout idSpinnerLinearLayout, dtrLinearLayout;
+    EditText idEditText, firstNameEditText, lastNameEditText;
+    Spinner idSpinner, monthSpinner, daySpinner, yearSpinner, destinationSpinner;
     ImageView qrCodeImageView;
-    LinearLayout dtrLinearLayout;
     Button submit;
-
-    // Declare components
-    TextView name;
-    TextView date;
-    TextView schoolHead;
-    TableLayout table;
-
-    SwitchCompat idNumberSwitch;
-    SwitchCompat gpsSwitch;
-    SwitchCompat timeBasedSwitch;
-    SwitchCompat qrSwitch;
-    SwitchCompat biometricSwitch;
-    ImageButton hamburger;
-    ImageButton back;
-
-    TextView prompt;
-
-    TextView sourceTextView;
-    //Spinner sourceSpinner;
-    Spinner destinationSpinner;
+    TextView name, date, schoolHead, prompt, sourceTextView;
+    SwitchCompat idNumberSwitch, gpsSwitch, timeBasedSwitch, qrSwitch, biometricSwitch;
+    ImageButton hamburger, back;
     ProgressDialog progressDialog;
 
     @Override
@@ -104,6 +84,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         progressDialog.setCancelable(false);
 
         school = (School) getIntent().getSerializableExtra("school");
+        employeeModel = (EmployeeModel) getIntent().getSerializableExtra("employee");
+
+        employeeController = new EmployeeController(this, school);
 
         initializeAllComponents();
 
@@ -255,7 +238,7 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
             public void onSuccess(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     // check if it doesn't contain a ,
-                    idList.add(childSnapshot.child("fullname").getValue(String.class));
+                    idList.add(childSnapshot.child("lastName").getValue(String.class) + ", " + childSnapshot.child("firstName").getValue(String.class));
 
 
                 }
@@ -323,61 +306,67 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     if (idEditText.getText().toString().isEmpty() || firstNameEditText.getText().toString().isEmpty() || lastNameEditText.getText().toString().isEmpty()) {
                         Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
+                        return;
                     }
                     // Check if the length of id number is 12
-                    else if (idEditText.getText().toString().length() != 12) {
+                    if (idEditText.getText().toString().length() != 12) {
                         Toast.makeText(getApplicationContext(), "Id Number must be equal to 12", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
-                    } else {
-                        // Get String from EditText components
-                        employee.setFirstName(firstNameEditText.getText().toString());
-                        employee.setLastName(lastNameEditText.getText().toString());
-                        employee.setId(idEditText.getText().toString());
-                        employee.setFullName(employee.getLastName() + ", " + employee.getFirstName());
-                        employee.setBirthday(monthSpinner.getSelectedItem().toString() + "/" + daySpinner.getSelectedItem().toString() + "/" + yearSpinner.getSelectedItem().toString());
-                        employee.setLatitude(0);
-                        employee.setLongitude(0);
-
-                        // Check id if exist
-                        read.readRecord(school.getSchoolID() + "/employee/" + employee.getId(), new Read.OnGetDataListener() {
-                            @Override
-                            public void onSuccess(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    Toast.makeText(getApplicationContext(), "Employee is already registered", Toast.LENGTH_SHORT).show();
-                                    progressDialog.dismiss();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_SHORT).show();
-
-                                    // Push data to Firebase Realtime Database
-                                    Create create = new Create();
-                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/id", employee.getId());
-                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/fullname", employee.getFullName());
-                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/birthdate", employee.getBirthday());
-                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/latitude", employee.getLatitude());
-                                    create.createRecord(school.getSchoolID() + "/employee/" + employee.getId() + "/longitude", employee.getLongitude());
-
-                                    firstNameEditText.setText("");
-                                    lastNameEditText.setText("");
-                                    idEditText.setText("");
-
-                                    // Dismiss progressDialog
-                                    progressDialog.dismiss();
-
-                                    changeScreen(SchoolAdmin.class);
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(DatabaseError databaseError) {
-
-                                // Dismiss progressDialog
-                                progressDialog.dismiss();
-
-                                Log.d("Read", "Error: " + databaseError.getMessage());
-                                Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        return;
                     }
+
+                    // Get String from EditText components
+                    String employeeID = idEditText.getText().toString();
+                    String firstName = firstNameEditText.getText().toString();
+                    String lastName = lastNameEditText.getText().toString();
+                    String month = monthSpinner.getSelectedItem().toString();
+                    int day = Integer.parseInt(daySpinner.getSelectedItem().toString());
+                    int year = Integer.parseInt(yearSpinner.getSelectedItem().toString());
+                    double latitude = 0;
+                    double longitude = 0;
+
+                    // Set the values in the Employee class
+                    employeeModel = new EmployeeModel(employeeID, firstName, lastName, month, day, year, latitude, longitude);
+
+                    Log.d("School", school.toString());
+                    Log.d("Employee", employeeModel.toString());
+
+
+                    // Check id if exist
+                    employeeController.getEmployee(school, employeeID, new EmployeeRepository.OnDataFetchListener() {
+                        @Override
+                        public void onSuccess(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                Toast.makeText(getApplicationContext(), "Employee is already registered", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                                return;
+                            }
+
+                            Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_SHORT).show();
+
+                            // Push data to Firebase Realtime Database
+                            employeeController.addEmployee(school, employeeModel);
+
+                            firstNameEditText.setText("");
+                            lastNameEditText.setText("");
+                            idEditText.setText("");
+
+                            // Dismiss progressDialog
+                            progressDialog.dismiss();
+
+                            changeScreen(SchoolAdmin.class);
+                        }
+
+                        @Override
+                        public void onFailure(DatabaseError databaseError) {
+
+                            // Dismiss progressDialog
+                            progressDialog.dismiss();
+
+                            Log.d("Read", "Error: " + databaseError.getMessage());
+                            Toast.makeText(getApplicationContext(), "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 });
                 return true;
             }
@@ -904,14 +893,14 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             employee.setId((String) child.child("id").getValue());
                             Log.d("ID:", employee.getId());
 
-                            DTR dtr = new DTR(school);
-
-                            dtr.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, SchoolAdmin.this, () -> {
-                                // TODO: Wait for the dtr to generate before downloading
-                                // Download DTR
-                                dtr.downloadDTR(dtrLinearLayout, SchoolAdmin.this);
-                                processChildData(iterator, month, day, year); // Recursive call to process the next child
-                            });
+//                            DTR dtr = new DTR(school);
+//
+//                            dtr.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, SchoolAdmin.this, () -> {
+//                                // TODO: Wait for the dtr to generate before downloading
+//                                // Download DTR
+//                                dtr.downloadDTR(dtrLinearLayout, SchoolAdmin.this);
+//                                processChildData(iterator, month, day, year); // Recursive call to process the next child
+//                            });
 
 
                         } else {
