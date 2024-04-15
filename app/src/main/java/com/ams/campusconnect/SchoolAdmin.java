@@ -893,14 +893,14 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             employee.setId((String) child.child("id").getValue());
                             Log.d("ID:", employee.getId());
 
-//                            DTR dtr = new DTR(school);
-//
-//                            dtr.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, SchoolAdmin.this, () -> {
-//                                // TODO: Wait for the dtr to generate before downloading
-//                                // Download DTR
-//                                dtr.downloadDTR(dtrLinearLayout, SchoolAdmin.this);
-//                                processChildData(iterator, month, day, year); // Recursive call to process the next child
-//                            });
+                            DTR dtr = new DTR(school, employeeModel);
+
+                            dtr.generateDTR(employee.getId(), month, day, year, name, date, schoolHead, table, SchoolAdmin.this, () -> {
+                                // TODO: Wait for the dtr to generate before downloading
+                                // Download DTR
+                                dtr.downloadDTR(dtrLinearLayout, SchoolAdmin.this);
+                                processChildData(iterator, month, day, year); // Recursive call to process the next child
+                            });
 
 
                         } else {

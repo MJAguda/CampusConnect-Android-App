@@ -27,6 +27,10 @@ public class GenerateDTR extends AppCompatActivity {
 
     //private static final String TAG
 
+    ImageButton back;
+    Button generate, download;
+    Spinner monthSpinner, yearSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,45 +40,10 @@ public class GenerateDTR extends AppCompatActivity {
         school = (School) getIntent().getSerializableExtra("school");
         employeeModel = (EmployeeModel) getIntent().getSerializableExtra("employee");
 
-        // Find button in the Layout
-        ImageButton back = findViewById(R.id.backButton_ImageButton);
-        Button generate = findViewById(R.id.generateDTR_Button);
-        Button download = findViewById(R.id.downloadDTR_Button);
+        initComponents();
 
-        //Find the spinner in the layout
-        Spinner monthSpinner = findViewById(R.id.month_Spinner);
-        Spinner yearSpinner = findViewById(R.id.year_Spinner);
-
-        // Create an ArrayList for the month
-        ArrayList<String> monthList = new ArrayList<>();
-        monthList.add("January");
-        monthList.add("February");
-        monthList.add("March");
-        monthList.add("April");
-        monthList.add("May");
-        monthList.add("June");
-        monthList.add("July");
-        monthList.add("August");
-        monthList.add("September");
-        monthList.add("October");
-        monthList.add("November");
-        monthList.add("December");
-
-        // Create an ArrayAdapter for the month spinner
-        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, monthList);
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        monthSpinner.setAdapter(monthAdapter);
-
-        // Create an ArrayList for the year
-        ArrayList<String> yearList = new ArrayList<>();
-        for (int i = Calendar.getInstance().get(Calendar.YEAR); i >= Calendar.getInstance().get(Calendar.YEAR) - 100; i--) {
-            yearList.add(String.valueOf(i));
-        }
-
-        // Create an ArrayAdapter for the year spinner
-        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, yearList);
-        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        yearSpinner.setAdapter(yearAdapter);
+        monthSpinnerInit();
+        yearSpinnerInit();
 
         // Declare components
         TextView name = findViewById(R.id.name_TextView);
@@ -108,5 +77,51 @@ public class GenerateDTR extends AppCompatActivity {
         });
 
         download.setOnClickListener(view -> dtr.downloadDTR(findViewById(R.id.dtr_LinearLayout), GenerateDTR.this));
+    }
+
+    private void yearSpinnerInit() {
+        // Create an ArrayList for the year
+        ArrayList<String> yearList = new ArrayList<>();
+        for (int i = Calendar.getInstance().get(Calendar.YEAR); i >= Calendar.getInstance().get(Calendar.YEAR) - 100; i--) {
+            yearList.add(String.valueOf(i));
+        }
+
+        // Create an ArrayAdapter for the year spinner
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, yearList);
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(yearAdapter);
+    }
+
+    private void monthSpinnerInit() {
+        // Create an ArrayList for the month
+        ArrayList<String> monthList = new ArrayList<>();
+        monthList.add("January");
+        monthList.add("February");
+        monthList.add("March");
+        monthList.add("April");
+        monthList.add("May");
+        monthList.add("June");
+        monthList.add("July");
+        monthList.add("August");
+        monthList.add("September");
+        monthList.add("October");
+        monthList.add("November");
+        monthList.add("December");
+
+        // Create an ArrayAdapter for the month spinner
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, monthList);
+        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monthSpinner.setAdapter(monthAdapter);
+    }
+
+    private void initComponents() {
+        // Find button in the Layout
+        back = findViewById(R.id.backButton_ImageButton);
+        generate = findViewById(R.id.generateDTR_Button);
+        download = findViewById(R.id.downloadDTR_Button);
+
+        //Find the spinner in the layout
+        monthSpinner = findViewById(R.id.month_Spinner);
+        yearSpinner = findViewById(R.id.year_Spinner);
     }
 }

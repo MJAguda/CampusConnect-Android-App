@@ -361,7 +361,12 @@ public class TimelogChangeActivity extends AppCompatActivity{
     }
 
     private void setTypeOfTimeLogIssueSpinner() {
-        String[] timelogIssueType = {"Forgot to Clock In", "Forgot to Clock Out", "Overbreak", "Off Campus Activity", "Incorrect Time Entry", "Misplaced or Lost Credentials"};
+        String[] timelogIssueType = {"Forgot to Clock In",
+                "Forgot to Clock Out",
+                "Overbreak",
+                "Off Campus Activity",
+                "Incorrect Time Entry",
+                "Misplaced or Lost Credentials"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, timelogIssueType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

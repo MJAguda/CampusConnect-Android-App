@@ -48,7 +48,7 @@ import com.google.firebase.database.DatabaseError;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
+public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     SaveData save = SaveData.getInstance();
     School school;
@@ -137,13 +137,15 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
                 if (!dataSnapshot.exists()) {
                     Log.d("Error", "School ID not found");
                     Toast.makeText(getApplicationContext(), "School ID not found", Toast.LENGTH_SHORT).show();
-                } else {
-                    school.setIdNumberFeature(dataSnapshot.child("idNumberFeature").getValue(Boolean.class));
-                    school.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
-                    school.setTimeBasedFeature(dataSnapshot.child("timeBasedFeature").getValue(Boolean.class));
-                    school.setQrcodeFeature(dataSnapshot.child("qrcodeFeature").getValue(Boolean.class));
-                    school.setBiometricFeature(dataSnapshot.child("biometricFeature").getValue(Boolean.class));
+                    return;
                 }
+
+                school.setIdNumberFeature(dataSnapshot.child("idNumberFeature").getValue(Boolean.class));
+                school.setGpsFeature(dataSnapshot.child("gpsFeature").getValue(Boolean.class));
+                school.setTimeBasedFeature(dataSnapshot.child("timeBasedFeature").getValue(Boolean.class));
+                school.setQrcodeFeature(dataSnapshot.child("qrcodeFeature").getValue(Boolean.class));
+                school.setBiometricFeature(dataSnapshot.child("biometricFeature").getValue(Boolean.class));
+
             }
 
             @Override
@@ -195,7 +197,8 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
                     AMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
                     PMIn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
                     PMOut.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F9ED69")));
-                } else {
+                }
+                else {
                     // Enable AMIn button if current time is before 7:00 AM
                     if (hours < 12 || (hours == 12 && minutes < 1)) {
                         AMIn.setEnabled(true);
@@ -414,14 +417,15 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
         read.readRecord(employeeAttendancePath, new Read.OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String attendancePath = employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay();
-
-                    // Check if the employee's attendance for the given date exists
-                    readAttendanceRecord(attendancePath, save, employeeModel, Attendance.this.school, currentTimeIn12Hours);
-                } else {
+                if (!dataSnapshot.exists()) {
                     Toast.makeText(getApplicationContext(), "ID Not Found", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+
+                String attendancePath = employeeAttendancePath + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay();
+
+                // Check if the employee's attendance for the given date exists
+                readAttendanceRecord(attendancePath, save, employeeModel, Attendance.this.school, currentTimeIn12Hours);
             }
 
             @Override
@@ -553,38 +557,38 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
 
                 // Wait for employee latitude and longitude not to be null
                 if (this.school.isGpsFeature()) {
-                    if (isEmployeeWithinCampusBounds(employeeModel, this.school)) {
-                        Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
-
-                        // Open Google Map Google Map
-
-                        // Push Time in Database
-                        create.createRecord(this.school.getSchoolID() + "/employee/" + employeeModel.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
-
-                        // Get the current location of the employee Recursively
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, location -> {
-                            employeeModel.setLatitude(location.getLatitude());
-                            employeeModel.setLongitude(location.getLongitude());
-
-                            // Store employee's last known location
-                            update.updateRecord(this.school.getSchoolID() + "/employee/" + employeeModel.getId(), "latitude", employeeModel.getLatitude());
-                            update.updateRecord(this.school.getSchoolID() + "/employee/" + employeeModel.getId(), "longitude", employeeModel.getLongitude());
-                        });
-
-                        // Dismiss progressdialog
-                        progressDialog.dismiss();
-
-                        thankyou.start();
-
-                        // Refresh Time Logs
-                        TableLayout table = findViewById(R.id.dtr_TableLayout);
-                        table.removeAllViews();
-                        getTimeLogs(save.getYear(), save.getMonth());
-
-                    } else {
+                    if (!isEmployeeWithinCampusBounds(employeeModel, this.school)) {
                         Toast.makeText(getApplicationContext(), "Connect to a WIFI for more accurate GPS", Toast.LENGTH_SHORT).show();
                         Toast.makeText(getApplicationContext(), "You are outside the Campus", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+
+                    Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
+
+                    // Open Google Map Google Map
+
+                    // Push Time in Database
+                    create.createRecord(this.school.getSchoolID() + "/employee/" + employeeModel.getId() + "/attendance/" + save.getYear() + "/" + save.getMonth() + "/" + save.getDay() + "/" + save.getAuthenticate(), currentTimeIn12Hours);
+
+                    // Get the current location of the employee Recursively
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 1, location -> {
+                        employeeModel.setLatitude(location.getLatitude());
+                        employeeModel.setLongitude(location.getLongitude());
+
+                        // Store employee's last known location
+                        update.updateRecord(this.school.getSchoolID() + "/employee/" + employeeModel.getId(), "latitude", employeeModel.getLatitude());
+                        update.updateRecord(this.school.getSchoolID() + "/employee/" + employeeModel.getId(), "longitude", employeeModel.getLongitude());
+                    });
+
+                    // Dismiss progressdialog
+                    progressDialog.dismiss();
+
+                    thankyou.start();
+
+                    // Refresh Time Logs
+                    TableLayout table = findViewById(R.id.dtr_TableLayout);
+                    table.removeAllViews();
+                    getTimeLogs(save.getYear(), save.getMonth());
                 } else {
                     Toast.makeText(getApplicationContext(), "Thank you", Toast.LENGTH_SHORT).show();
 
@@ -599,9 +603,7 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
                     TableLayout table = findViewById(R.id.dtr_TableLayout);
                     table.removeAllViews();
                     getTimeLogs(save.getYear(), save.getMonth());
-
                 }
-
             }
         }
 
@@ -749,16 +751,16 @@ public class Attendance extends AppCompatActivity implements PopupMenu.OnMenuIte
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.request_timelog_change:{
+        switch (item.getItemId()) {
+            case R.id.request_timelog_change: {
                 changeScreen(TimelogChangeActivity.class);
                 return true;
             }
-            case R.id.logout:{
+            case R.id.logout: {
                 changeScreen(LogInAttendance.class);
                 return true;
             }
-            default:{
+            default: {
                 return false;
             }
         }
