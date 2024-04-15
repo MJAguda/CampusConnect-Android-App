@@ -44,6 +44,21 @@ public class EmployeeRepository {
         });
     }
 
+    // Get all Employees
+    public void getAllEmployees(School school, final EmployeeRepository.OnDataFetchListener listener){
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                listener.onFailure(databaseError);
+            }
+        });
+    }
+
     // Update Employee
     // Delete Employee
 

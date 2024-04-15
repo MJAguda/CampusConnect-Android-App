@@ -77,6 +77,7 @@ public class LogbookActivity extends AppCompatActivity {
         // Get the school from the previous activity
         school = (School) getIntent().getSerializableExtra("school");
         employeeModel = (EmployeeModel) getIntent().getSerializableExtra("employee");
+        employeeController = new EmployeeController(this, school);
 
 //        randomizeAttendance();
 
@@ -342,7 +343,7 @@ public class LogbookActivity extends AppCompatActivity {
 
     private void displayTimeLogs(String month, String day, String year) {
 
-        read.readRecord(school.getSchoolID() + "/employee", new Read.OnGetDataListener() {
+        employeeController.getAllEmployees(school, new EmployeeRepository.OnDataFetchListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 table.removeAllViews();
@@ -350,10 +351,10 @@ public class LogbookActivity extends AppCompatActivity {
                 // Get all the names from the "employee" node and store them in a list
                 List<String> names = new ArrayList<>();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String fullName = child.child("fullname").getValue(String.class);
-                    if (fullName != null) {
-                        names.add(fullName);
-                    }
+                    String lastName = child.child("lastName").getValue(String.class);
+                    String firstName = child.child("firstName").getValue(String.class);
+                    String fullName = lastName + ", " + firstName;
+                    names.add(fullName);
                 }
 
                 // Sort the names alphabetically
@@ -382,8 +383,8 @@ public class LogbookActivity extends AppCompatActivity {
 
                     // Add the attendance times to the row
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        String employeeName = child.child("fullname").getValue(String.class);
-                        if (employeeName != null && employeeName.equals(fullName)) {
+                        String employeeName = child.child("lastName").getValue(String.class) + ", " + child.child("firstName").getValue(String.class);
+                        if (employeeName.equals(fullName)) {
                             for (DataSnapshot grandChild : child.child("attendance/" + year + "/" + month + "/" + Integer.parseInt(day)).getChildren()) {
                                 TextView time = new TextView(LogbookActivity.this);
                                 time.setText(grandChild.getValue().toString());
@@ -427,8 +428,6 @@ public class LogbookActivity extends AppCompatActivity {
 
             // Print Toast message
 //            Toast.makeText(this, qrResult, Toast.LENGTH_SHORT).show();
-
-             employeeController = new EmployeeController(this, school);
 
             // Verify if employee id exists
             employeeController.getEmployee(school, qrResult, new EmployeeRepository.OnDataFetchListener() {
