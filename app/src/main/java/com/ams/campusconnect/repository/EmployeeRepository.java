@@ -60,6 +60,18 @@ public class EmployeeRepository {
     }
 
     // Update Employee
+    public void updateEmployee(School school, EmployeeModel employeeModel){
+        // Reference to the employee in the database
+        databaseReference = FirebaseDatabase.getInstance().getReference().child(school.getSchoolID() + "/employee/" + employeeModel.getId());
+
+        // Set the values for each child that needsd to be updated only
+        databaseReference.child("lastName").setValue(employeeModel.getLastName());
+        databaseReference.child("firstName").setValue(employeeModel.getFirstName());
+        databaseReference.child("month").setValue(employeeModel.getMonth());
+        databaseReference.child("day").setValue(employeeModel.getDay());
+        databaseReference.child("year").setValue(employeeModel.getYear());
+    }
+
     // Delete Employee
 
 }

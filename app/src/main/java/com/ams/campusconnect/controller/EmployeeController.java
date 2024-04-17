@@ -27,4 +27,8 @@ public class EmployeeController {
     public void getAllEmployees(School school, final EmployeeRepository.OnDataFetchListener listener){
         employeeRepository.getAllEmployees(school, listener);
     }
+
+    public void updateEmployee(School school, EmployeeModel employeeModel){
+        employeeRepository.updateEmployee(school, employeeModel);
+    }
 }
