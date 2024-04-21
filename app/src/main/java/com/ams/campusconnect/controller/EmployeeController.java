@@ -31,4 +31,8 @@ public class EmployeeController {
     public void updateEmployee(School school, EmployeeModel employeeModel){
         employeeRepository.updateEmployee(school, employeeModel);
     }
+
+    public void deleteEmployee(School school, EmployeeModel employeeModel){
+        employeeRepository.deleteEmployee(school, employeeModel);
+    }
 }

@@ -73,5 +73,8 @@ public class EmployeeRepository {
     }
 
     // Delete Employee
-
+    public void deleteEmployee(School school, EmployeeModel employeeModel){
+        databaseReference = FirebaseDatabase.getInstance().getReference().child(school.getSchoolID() + "/employee/" + employeeModel.getId());
+        databaseReference.removeValue();
+    }
 }
