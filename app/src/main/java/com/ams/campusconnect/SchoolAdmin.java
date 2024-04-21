@@ -415,8 +415,10 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                             public void onSuccess(DataSnapshot dataSnapshot) {
                                 String parentKey = null;
                                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                    String fullname = childSnapshot.child("fullname").getValue(String.class);
-                                    if (fullname != null && fullname.equals(selectedItemName)) {
+                                    String lastName = childSnapshot.child("lastName").getValue(String.class);
+                                    String firstName = childSnapshot.child("firstName").getValue(String.class);
+                                    String fullname = lastName + ", " + firstName;
+                                    if (fullname.equals(selectedItemName)) {
                                         parentKey = childSnapshot.getKey();
                                         employee.setId(parentKey);
                                         break;
@@ -424,28 +426,28 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                                 }
                                 if (parentKey != null) {
                                     // Read Employee data from the selectedItemId
-                                    read.readRecord(school.getSchoolID() + "/employee/" + parentKey, new Read.OnGetDataListener() {
+                                    employeeController.getEmployee(school, parentKey, new EmployeeRepository.OnDataFetchListener() {
                                         @Override
                                         public void onSuccess(DataSnapshot dataSnapshot) {
                                             String id = dataSnapshot.child("id").getValue(String.class);
-                                            String fullname = dataSnapshot.child("fullname").getValue(String.class);
-                                            String birthday = dataSnapshot.child("birthdate").getValue(String.class);
+                                            String lastName = dataSnapshot.child("lastName").getValue(String.class);
+                                            String firstName = dataSnapshot.child("firstName").getValue(String.class);
 
-                                            String[] nameArray = fullname.split(", ");
-                                            String[] birthdayArray = birthday.split("/");
+                                            String birth_month = dataSnapshot.child("month").getValue(String.class);
+                                            int birth_day = dataSnapshot.child("day").getValue(Integer.class);
+                                            int birth_year = dataSnapshot.child("year").getValue(Integer.class);
 
                                             employee.setId(id);
 
                                             // Set the values in the EditText
                                             idEditText.setText(id);
                                             idEditText.setEnabled(false);
-                                            lastNameEditText.setText(nameArray[0]);
-                                            firstNameEditText.setText(nameArray[1]);
-                                            //monthSpinner.setSelection(Integer.parseInt(birthdayArray[0]) - 1) ;
-                                            monthSpinner.setSelection(DateUtils.getMonthNumber(birthdayArray[0]));
-                                            daySpinner.setSelection(Integer.parseInt(birthdayArray[1]) - 1);
+                                            lastNameEditText.setText(lastName);
+                                            firstNameEditText.setText(firstName);
+                                            monthSpinner.setSelection(DateUtils.getMonthNumber(birth_month));
+                                            daySpinner.setSelection(birth_day - 1);
 
-                                            dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> yearSpinner.setSelection(Integer.parseInt(birthdayArray[2]) - (Integer.parseInt(year) - 100)));
+                                            dateUtils.getDateTime((month, day, year, currentTimeIn24Hours, currentTimeIn12Hours) -> yearSpinner.setSelection(Integer.parseInt(year) - birth_year));
 
                                             // Dismiss progressDialog
                                             progressDialog.dismiss();
@@ -492,8 +494,9 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
                     progressDialog.setMessage("Editing Employee...");
                     progressDialog.show();
 
-                    update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "fullname", lastNameEditText.getText().toString() + ", " + firstNameEditText.getText().toString());
-                    update.updateRecord(school.getSchoolID() + "/employee/" + employee.getId(), "birthdate", (DateUtils.getMonthName(String.valueOf(monthSpinner.getSelectedItemPosition() + 1))) + "/" + daySpinner.getSelectedItem().toString() + "/" + yearSpinner.getSelectedItem().toString());
+                    employeeModel = new EmployeeModel(idEditText.getText().toString(), firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), monthSpinner.getSelectedItem().toString(), Integer.parseInt(daySpinner.getSelectedItem().toString()), Integer.parseInt(yearSpinner.getSelectedItem().toString()), 0, 0);
+
+                    employeeController.updateEmployee(school, employeeModel);
 
                     Toast.makeText(getApplicationContext(), "Successfully Edited", Toast.LENGTH_SHORT).show();
 
