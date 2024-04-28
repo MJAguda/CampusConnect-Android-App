@@ -121,6 +121,11 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         // Set an OnCheckedChangedListener to listen for changes in the toggle switch
         idNumberSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
 //            Log.d("idNumberSwitch", "idSwitchSwitch checked: " + b);
+            if(qrSwitch.isChecked() == b) {
+                qrSwitch.setChecked(!b);
+            }
+
+            school.setQrcodeFeature(!b);
             school.setIdNumberFeature(b);
 
             schoolController.updateSchool(school);
@@ -140,7 +145,12 @@ public class SchoolAdmin extends AppCompatActivity implements PopupMenu.OnMenuIt
         });
         qrSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
 //            Log.d("SchoolAdmin", "qrSwitch checked: " + b);
+            if(idNumberSwitch.isChecked() == b){
+                idNumberSwitch.setChecked(!b);
+            }
+
             school.setQrcodeFeature(b);
+            school.setIdNumberFeature(!b);
 
             schoolController.updateSchool(school);
 //            update.updateRecord(String.valueOf(school.getSchoolID()), "qrcodeFeature", school.isQrcodeFeature());
