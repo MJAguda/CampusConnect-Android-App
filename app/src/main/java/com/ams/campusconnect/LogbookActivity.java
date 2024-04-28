@@ -215,10 +215,18 @@ public class LogbookActivity extends AppCompatActivity {
             });
 
             attendance.setOnClickListener(view -> {
-                Intent intent = new Intent(LogbookActivity.this, ScanQR.class);
-                intent = intent.putExtra("school", school);
-                intent = intent.putExtra("employee", employeeModel);
-                startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
+                if(school.isQrcodeFeature()){
+                    Intent intent = new Intent(LogbookActivity.this, ScanQR.class);
+                    intent = intent.putExtra("school", school);
+                    intent = intent.putExtra("employee", employeeModel);
+                    startActivityForResult(intent, REQUEST_CODE_SCAN_QR);
+                }
+                if(school.isIdNumberFeature()){
+                    Intent intent = new Intent(LogbookActivity.this, LogInAttendance.class);
+                    intent = intent.putExtra("school", school);
+                    intent = intent.putExtra("employee", employeeModel);
+                    startActivity(intent);
+                }
             });
 
             register.setOnClickListener(view -> {

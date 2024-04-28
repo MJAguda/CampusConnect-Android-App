@@ -38,7 +38,7 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Authenticate"
+            android:text="Login"
             android:gravity="left"
             android:textSize="20sp"/>
 
@@ -62,47 +62,6 @@
                 android:textAlignment="center"
                 android:background="@drawable/round_edittext_bg"
                 android:padding="16dp"/>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tx_info"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text=""
-            android:layout_gravity="center"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/scanQR_ImageButton"
-                android:layout_width="10dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginRight="30px"
-                android:layout_marginTop="30px"
-                android:layout_marginBottom="30px"
-                android:adjustViewBounds="true"
-                android:background="@color/zxing_transparent"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/scanqrbutton" />
-
-            <ImageButton
-                android:id="@+id/scanFingerPrint_ImageButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginRight="30px"
-                android:layout_marginTop="30px"
-                android:layout_marginBottom="30px"
-                android:adjustViewBounds="true"
-                android:background="@color/zxing_transparent"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/scanfingerprintbutton" />
-
         </LinearLayout>
 
     </LinearLayout>
